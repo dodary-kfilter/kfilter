@@ -98,7 +98,7 @@ function render(){
   let rows=items.map((it,i)=>`
     <tr><td class="rank">${i+1}</td>
       <td><span class="tag ${it.market}">${it.market}</span></td>
-      <td><div class="name"><a href="https://www.tossinvest.com/stocks/A${it.code}" target="_blank">${it.name}</a></div>
+      <td><div class="name"><a href="https://finance.naver.com/item/frgn.naver?code=${it.code}" target="_blank">${it.name}</a></div>
         <div class="code code-col">${it.code}</div></td>
       <td class="num net">${fmt(it.net)}</td>
       <td class="num days">${it.buydays}</td></tr>`).join('');
