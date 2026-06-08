@@ -88,6 +88,12 @@
 </div>
 <script>
 let DATA=null, CUR='foreign';
+const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+function naverUrl(code){
+  return IS_MOBILE
+    ? 'https://m.stock.naver.com/domestic/stock/'+code+'/total'
+    : 'https://finance.naver.com/item/frgn.naver?code='+code;
+}
 function fmt(n){return (n>=0?'+':'')+n.toLocaleString('ko-KR');}
 function render(){
   const content=document.getElementById('content');
@@ -98,7 +104,7 @@ function render(){
   let rows=items.map((it,i)=>`
     <tr><td class="rank">${i+1}</td>
       <td><span class="tag ${it.market}">${it.market}</span></td>
-      <td><div class="name"><a href="https://finance.naver.com/item/frgn.naver?code=${it.code}" target="_blank">${it.name}</a></div>
+      <td><div class="name"><a href="${naverUrl(it.code)}" target="_blank">${it.name}</a></div>
         <div class="code code-col">${it.code}</div></td>
       <td class="num net">${fmt(it.net)}</td>
       <td class="num days">${it.buydays}</td></tr>`).join('');
