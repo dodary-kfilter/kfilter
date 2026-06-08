@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수급 필터 · 외국인 · 연기금</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e14; --panel:#111722; --line:#1e2733;
+    --txt:#e6edf3; --dim:#8b98a9;
+    --foreign:#3fb950; --pension:#d29922; --both:#f778ba;
+    --kospi:#58a6ff; --kosdaq:#bc8cff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg); color:var(--txt);
+    font-family:'IBM Plex Sans KR',sans-serif; -webkit-font-smoothing:antialiased; line-height:1.5;
+    background-image:radial-gradient(circle at 20% 0%, #131c2b 0%, transparent 45%),
+                     radial-gradient(circle at 85% 100%, #14130f 0%, transparent 40%);
+    min-height:100vh;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:28px 18px 80px}
+  header{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    padding-bottom:18px; border-bottom:1px solid var(--line)}
+  h1{font-size:20px; font-weight:700; letter-spacing:-0.3px; display:flex; align-items:center; gap:10px}
+  h1::before{content:"●"; color:var(--foreign); font-size:13px; animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .meta{font-family:'Space Mono',monospace; font-size:12px; color:var(--dim); text-align:right}
+  .meta b{color:var(--txt); font-weight:700}
+  .rule{font-size:12.5px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--foreign); border-radius:8px; padding:11px 14px; margin:18px 0}
+  .rule b{color:var(--txt)}
+  .tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap}
+  .tab{flex:1; min-width:90px; background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:13px 10px; cursor:pointer; text-align:center; transition:all .15s}
+  .tab .c{font-family:'Space Mono',monospace; font-size:24px; font-weight:700}
+  .tab .l{font-size:12px; color:var(--dim); margin-top:2px}
+  .tab[data-k="foreign"] .c{color:var(--foreign)}
+  .tab[data-k="pension"] .c{color:var(--pension)}
+  .tab[data-k="both"] .c{color:var(--both)}
+  .tab.active[data-k="foreign"]{border-color:var(--foreign)}
+  .tab.active[data-k="pension"]{border-color:var(--pension)}
+  .tab.active[data-k="both"]{border-color:var(--both)}
+  table{width:100%; border-collapse:collapse; font-size:14px}
+  thead th{text-align:left; font-size:11.5px; font-weight:600; color:var(--dim); text-transform:uppercase;
+    letter-spacing:.5px; padding:10px 12px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg)}
+  thead th.num{text-align:right}
+  tbody td{padding:12px; border-bottom:1px solid var(--line)}
+  tbody tr:hover{background:#0e1620}
+  .rank{font-family:'Space Mono',monospace; color:var(--dim); width:34px}
+  .tag{font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:5px; letter-spacing:.5px}
+  .tag.KOSPI{color:var(--kospi); background:rgba(88,166,255,.12)}
+  .tag.KOSDAQ{color:var(--kosdaq); background:rgba(188,140,255,.12)}
+  .name{font-weight:600}
+  .name a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--line)}
+  .name a:hover{color:var(--foreign)}
+  .code{font-family:'Space Mono',monospace; font-size:11.5px; color:var(--dim); margin-top:2px}
+  .num{text-align:right; font-family:'Space Mono',monospace}
+  .net{font-weight:700}
+  .days{color:var(--dim)}
+  .loading,.empty{text-align:center; color:var(--dim); padding:50px 0; font-size:14px}
+  .refresh{margin-top:24px; text-align:center}
+  .refresh button{font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:600; color:var(--txt);
+    background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 22px; cursor:pointer; transition:all .15s}
+  .refresh button:hover{border-color:var(--foreign); color:var(--foreign)}
+  .foot{margin-top:14px; text-align:center; font-size:11px; color:var(--dim)}
+  @media(max-width:560px){.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>수급 필터</h1>
+    <div class="meta">최종 갱신 <b id="updated">—</b></div>
+  </header>
+  <div class="rule" id="rule">판정 기준을 불러오는 중…</div>
+  <div class="tabs">
+    <div class="tab active" data-k="foreign" onclick="show('foreign')"><div class="c" id="c-foreign">—</div><div class="l">외국인</div></div>
+    <div class="tab" data-k="pension" onclick="show('pension')"><div class="c" id="c-pension">—</div><div class="l">연기금</div></div>
+    <div class="tab" data-k="both" onclick="show('both')"><div class="c" id="c-both">—</div><div class="l">동시 (0순위)</div></div>
+  </div>
+  <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
+  <div class="refresh"><button onclick="load()">새로고침</button></div>
+  <div class="foot">명단: 네이버 금융 시총순 · 수급: 토스증권 투자자별 매매동향</div>
+</div>
+<script>
+let DATA=null, CUR='foreign';
+function fmt(n){return (n>=0?'+':'')+n.toLocaleString('ko-KR');}
+function render(){
+  const content=document.getElementById('content');
+  if(!DATA){content.innerHTML='<div class="empty">데이터 없음</div>';return;}
+  const items=DATA[CUR]||[];
+  const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
+  if(items.length===0){content.innerHTML='<div class="empty">'+label+' 조건을 통과한 종목이 없습니다.</div>';return;}
+  let rows=items.map((it,i)=>`
+    <tr><td class="rank">${i+1}</td>
+      <td><span class="tag ${it.market}">${it.market}</span></td>
+      <td><div class="name"><a href="https://www.tossinvest.com/stocks/A${it.code}" target="_blank">${it.name}</a></div>
+        <div class="code code-col">${it.code}</div></td>
+      <td class="num net">${fmt(it.net)}</td>
+      <td class="num days">${it.buydays}</td></tr>`).join('');
+  content.innerHTML=`<table><thead><tr><th>#</th><th>시장</th><th>종목</th>
+    <th class="num">${label} 누적순매수(주)</th><th class="num">순매수일</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+function show(k){CUR=k;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));render();}
+async function load(){
+  document.getElementById('content').innerHTML='<div class="loading">데이터를 불러오는 중…</div>';
+  try{
+    const res=await fetch('data.json?t='+Date.now());
+    if(!res.ok) throw new Error();
+    DATA=await res.json();
+    document.getElementById('updated').textContent=DATA.updated;
+    document.getElementById('c-foreign').textContent=DATA.foreign.length;
+    document.getElementById('c-pension').textContent=DATA.pension.length;
+    document.getElementById('c-both').textContent=DATA.both.length;
+    document.getElementById('rule').innerHTML='판정: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수 <b>&gt; 0</b> 그리고 순매수일 <b>'+DATA.buy_ratio+'% 이상</b> · 스캔 <b>'+DATA.scanned+'종목</b>';
+    render();
+  }catch(e){
+    document.getElementById('content').innerHTML='<div class="empty">data.json 을 불러오지 못했습니다.<br>스캐너를 먼저 실행했는지 확인하세요.</div>';
+  }
+}
+load();
+</script>
+</body>
+</html>
