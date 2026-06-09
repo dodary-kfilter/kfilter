@@ -61,6 +61,12 @@
   .num{text-align:right; font-family:'Space Mono',monospace}
   .net{font-weight:700}
   .days{color:var(--dim)}
+  .mkt-head{font-family:'Space Mono',monospace; font-size:12px; font-weight:700; letter-spacing:1px;
+    margin:22px 0 6px; padding-bottom:4px; display:flex; align-items:center; gap:8px}
+  .mkt-head span{font-weight:400; color:var(--dim)}
+  .mkt-head.kospi{color:var(--kospi); border-bottom:1px solid rgba(88,166,255,.25)}
+  .mkt-head.kosdaq{color:var(--kosdaq); border-bottom:1px solid rgba(188,140,255,.25)}
+  .mkt-head:first-child{margin-top:4px}
   .loading,.empty{text-align:center; color:var(--dim); padding:50px 0; font-size:14px}
   .refresh{margin-top:24px; text-align:center}
   .refresh button{font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:600; color:var(--txt);
@@ -95,22 +101,43 @@ function naverUrl(code){
     : 'https://finance.naver.com/item/frgn.naver?code='+code;
 }
 function fmt(n){return (n>=0?'+':'')+n.toLocaleString('ko-KR');}
+function buyCount(it){ return parseInt(String(it.buydays).split('/')[0],10)||0; }
+function sortItems(arr){
+  const a=arr.slice();
+  if(CUR==='both'){
+    // 동시: 금액순
+    a.sort((x,y)=>y.net-x.net);
+  }else{
+    // 외국인·연기금: 순매수일 많은 순, 같으면 금액순
+    a.sort((x,y)=> buyCount(y)-buyCount(x) || y.net-x.net );
+  }
+  return a;
+}
+function rowHtml(it,i){
+  return `<tr><td class="rank">${i}</td>
+    <td><div class="name"><a href="${naverUrl(it.code)}" target="_blank">${it.name}</a></div>
+      <div class="code code-col">${it.code}</div></td>
+    <td class="num net">${fmt(it.net)}</td>
+    <td class="num days">${it.buydays}</td></tr>`;
+}
+function sectionHtml(title, list, cls){
+  if(list.length===0) return '';
+  let rows=list.map((it,idx)=>rowHtml(it,idx+1)).join('');
+  return `<div class="mkt-head ${cls}">${title} <span>${list.length}</span></div>
+    <table><thead><tr><th>#</th><th>종목</th>
+      <th class="num">누적순매수(주)</th><th class="num">순매수일</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
 function render(){
   const content=document.getElementById('content');
   if(!DATA){content.innerHTML='<div class="empty">데이터 없음</div>';return;}
   const items=DATA[CUR]||[];
   const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
   if(items.length===0){content.innerHTML='<div class="empty">'+label+' 조건을 통과한 종목이 없습니다.</div>';return;}
-  let rows=items.map((it,i)=>`
-    <tr><td class="rank">${i+1}</td>
-      <td><span class="tag ${it.market}">${it.market}</span></td>
-      <td><div class="name"><a href="${naverUrl(it.code)}" target="_blank">${it.name}</a></div>
-        <div class="code code-col">${it.code}</div></td>
-      <td class="num net">${fmt(it.net)}</td>
-      <td class="num days">${it.buydays}</td></tr>`).join('');
-  content.innerHTML=`<table><thead><tr><th>#</th><th>시장</th><th>종목</th>
-    <th class="num">${label} 누적순매수(주)</th><th class="num">순매수일</th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+  const sorted=sortItems(items);
+  const kospi=sorted.filter(x=>x.market==='KOSPI');
+  const kosdaq=sorted.filter(x=>x.market==='KOSDAQ');
+  content.innerHTML = sectionHtml('KOSPI', kospi, 'kospi') + sectionHtml('KOSDAQ', kosdaq, 'kosdaq');
 }
 function show(k){CUR=k;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));render();}
 async function load(){
