@@ -117,11 +117,20 @@ def main():
 
     foreign_pass.sort(key=lambda x: x["net"], reverse=True)
     pension_pass.sort(key=lambda x: x["net"], reverse=True)
-    # 0순위 = 교집합
-    f_codes = {x["code"] for x in foreign_pass}
-    p_codes = {x["code"] for x in pension_pass}
-    both_codes = f_codes & p_codes
-    both = [x for x in foreign_pass if x["code"] in both_codes]
+    # 0순위 = 교집합. 외국인·연기금 값 둘 다 담는다.
+    f_map = {x["code"]: x for x in foreign_pass}
+    p_map = {x["code"]: x for x in pension_pass}
+    both_codes = set(f_map) & set(p_map)
+    both = []
+    for code in both_codes:
+        f = f_map[code]; p = p_map[code]
+        both.append({
+            "market": f["market"], "code": code, "name": f["name"],
+            "f_net": f["net"], "f_buydays": f["buydays"],
+            "p_net": p["net"], "p_buydays": p["buydays"],
+        })
+    # 외국인 누적순매수 많은 순 정렬 (화면에서 다시 정렬하므로 보조용)
+    both.sort(key=lambda x: x["f_net"], reverse=True)
 
     result = {
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
