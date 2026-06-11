@@ -1,1750 +1,1673 @@
 {
-  "updated": "2026-06-10 20:10",
+  "updated": "2026-06-11 20:14",
   "window": 10,
   "buy_ratio": 70,
   "scanned": 800,
   "foreign": [
     {
-      "market": "KOSDAQ",
-      "code": "027360",
-      "name": "아주IB투자",
-      "net": 7880799,
-      "buydays": "7/10"
-    },
-    {
       "market": "KOSPI",
       "code": "047040",
       "name": "대우건설",
-      "net": 7546971,
+      "net": 8734883,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "027360",
+      "name": "아주IB투자",
+      "net": 8390763,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
       "code": "093370",
       "name": "후성",
-      "net": 4966099,
-      "buydays": "8/10"
+      "net": 6357378,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001510",
+      "name": "SK증권",
+      "net": 5096311,
+      "buydays": "9/10"
     },
     {
       "market": "KOSDAQ",
       "code": "032820",
       "name": "우리기술",
-      "net": 4194848,
+      "net": 4257449,
       "buydays": "9/10"
     },
     {
       "market": "KOSPI",
       "code": "006340",
       "name": "대원전선",
-      "net": 3960475,
+      "net": 3506721,
       "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003280",
-      "name": "흥아해운",
-      "net": 3820776,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001510",
-      "name": "SK증권",
-      "net": 3420916,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "323410",
-      "name": "카카오뱅크",
-      "net": 3081040,
-      "buydays": "10/10"
     },
     {
       "market": "KOSPI",
       "code": "024110",
       "name": "기업은행",
-      "net": 3046074,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "033790",
-      "name": "피노",
-      "net": 2809599,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "440110",
-      "name": "파두",
-      "net": 2476286,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "038500",
-      "name": "삼표시멘트",
-      "net": 2466902,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "090710",
-      "name": "휴림로봇",
-      "net": 2032556,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "403870",
-      "name": "HPSP",
-      "net": 2012075,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "178320",
-      "name": "서진시스템",
-      "net": 1955892,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "010820",
-      "name": "퍼스텍",
-      "net": 1892693,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "006800",
-      "name": "미래에셋증권",
-      "net": 1867077,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003690",
-      "name": "코리안리",
-      "net": 1658121,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000720",
-      "name": "현대건설",
-      "net": 1578593,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "005880",
-      "name": "대한해운",
-      "net": 1526053,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000270",
-      "name": "기아",
-      "net": 1473516,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "032350",
-      "name": "롯데관광개발",
-      "net": 1456434,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "319400",
-      "name": "현대무벡스",
-      "net": 1442509,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "089030",
-      "name": "테크윙",
-      "net": 1312910,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "417200",
-      "name": "LS머트리얼즈",
-      "net": 1266342,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "005940",
-      "name": "NH투자증권",
-      "net": 1245049,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "012030",
-      "name": "DB",
-      "net": 1181188,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "375500",
-      "name": "DL이앤씨",
-      "net": 1180487,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "047050",
-      "name": "포스코인터내셔널",
-      "net": 1114498,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "222080",
-      "name": "씨아이에스",
-      "net": 1099853,
+      "net": 2605852,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "006360",
       "name": "GS건설",
-      "net": 1092656,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "187660",
-      "name": "페니트리움바이오",
-      "net": 972773,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "064260",
-      "name": "다날",
-      "net": 958676,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "058470",
-      "name": "리노공업",
-      "net": 941790,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "015750",
-      "name": "성우하이텍",
-      "net": 903151,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "064350",
-      "name": "현대로템",
-      "net": 898233,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "010950",
-      "name": "S-Oil",
-      "net": 880562,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "052020",
-      "name": "에스티큐브",
-      "net": 866533,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003470",
-      "name": "유안타증권",
-      "net": 826155,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "077970",
-      "name": "STX엔진",
-      "net": 799725,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "139130",
-      "name": "iM금융지주",
-      "net": 776060,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "272210",
-      "name": "한화시스템",
-      "net": 773863,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "082920",
-      "name": "비츠로셀",
-      "net": 771063,
+      "net": 2518952,
       "buydays": "9/10"
     },
     {
       "market": "KOSPI",
-      "code": "120110",
-      "name": "코오롱인더",
-      "net": 770553,
+      "code": "323410",
+      "name": "카카오뱅크",
+      "net": 2453003,
       "buydays": "9/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "458870",
-      "name": "씨어스",
-      "net": 755996,
+      "code": "440110",
+      "name": "파두",
+      "net": 2260332,
       "buydays": "9/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "218410",
-      "name": "RFHIC",
-      "net": 736716,
-      "buydays": "9/10"
+      "code": "046890",
+      "name": "서울반도체",
+      "net": 2088170,
+      "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "161390",
-      "name": "한국타이어앤테크놀로지",
-      "net": 726936,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "034230",
-      "name": "파라다이스",
-      "net": 720787,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "240810",
-      "name": "원익IPS",
-      "net": 708316,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "092190",
-      "name": "서울바이오시스",
-      "net": 697737,
+      "code": "003690",
+      "name": "코리안리",
+      "net": 1668915,
       "buydays": "9/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "232140",
-      "name": "와이씨",
-      "net": 696136,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "290550",
-      "name": "디케이티",
-      "net": 691709,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003000",
-      "name": "부광약품",
-      "net": 690427,
+      "code": "033790",
+      "name": "피노",
+      "net": 1646856,
       "buydays": "8/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "023160",
-      "name": "태광",
-      "net": 661448,
-      "buydays": "8/10"
+      "code": "403870",
+      "name": "HPSP",
+      "net": 1601313,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "417200",
+      "name": "LS머트리얼즈",
+      "net": 1506447,
+      "buydays": "9/10"
     },
     {
       "market": "KOSPI",
-      "code": "058430",
-      "name": "포스코스틸리온",
-      "net": 656837,
+      "code": "000720",
+      "name": "현대건설",
+      "net": 1388617,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "011930",
-      "name": "신성이엔지",
-      "net": 642371,
+      "code": "032350",
+      "name": "롯데관광개발",
+      "net": 1261122,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "089030",
+      "name": "테크윙",
+      "net": 1205087,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "005880",
+      "name": "대한해운",
+      "net": 1197705,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "090710",
+      "name": "휴림로봇",
+      "net": 1144201,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "222080",
+      "name": "씨아이에스",
+      "net": 1127998,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "395400",
-      "name": "SK리츠",
-      "net": 634935,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "397030",
-      "name": "에이프릴바이오",
-      "net": 622928,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "003380",
-      "name": "하림지주",
-      "net": 620248,
+      "code": "015760",
+      "name": "한국전력",
+      "net": 1082360,
       "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "019210",
-      "name": "와이지-원",
-      "net": 599456,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "006910",
-      "name": "보성파워텍",
-      "net": 581042,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "290650",
-      "name": "엘앤씨바이오",
-      "net": 573702,
-      "buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "090460",
       "name": "비에이치",
-      "net": 572344,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "229640",
-      "name": "LS에코에너지",
-      "net": 570020,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "036540",
-      "name": "SFA반도체",
-      "net": 568983,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "475830",
-      "name": "오름테라퓨틱",
-      "net": 553328,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "452260",
-      "name": "한화갤러리아",
-      "net": 546587,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "096530",
-      "name": "씨젠",
-      "net": 540623,
+      "net": 1073619,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "130660",
-      "name": "한전산업",
-      "net": 513638,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "174900",
-      "name": "앱클론",
-      "net": 509962,
+      "code": "377190",
+      "name": "디앤디플랫폼리츠",
+      "net": 1065176,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "249420",
-      "name": "일동제약",
-      "net": 504863,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "327260",
-      "name": "RF머트리얼즈",
-      "net": 501016,
+      "code": "375500",
+      "name": "DL이앤씨",
+      "net": 1030841,
       "buydays": "7/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "456010",
-      "name": "아이씨티케이",
-      "net": 500459,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "263750",
-      "name": "펄어비스",
-      "net": 497755,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "298380",
-      "name": "에이비엘바이오",
-      "net": 497474,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "002350",
-      "name": "넥센타이어",
-      "net": 490844,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "044490",
-      "name": "태웅",
-      "net": 485826,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "027410",
-      "name": "BGF",
-      "net": 476500,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001430",
-      "name": "세아베스틸지주",
-      "net": 470111,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "424870",
-      "name": "이뮨온시아",
-      "net": 465246,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "078930",
-      "name": "GS",
-      "net": 464538,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "161000",
-      "name": "애경케미칼",
-      "net": 462943,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "062040",
-      "name": "산일전기",
-      "net": 460329,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "101490",
-      "name": "에스앤에스텍",
-      "net": 449995,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "060280",
-      "name": "큐렉소",
-      "net": 447065,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "105840",
-      "name": "우진",
-      "net": 442184,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "005010",
-      "name": "휴스틸",
-      "net": 433501,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "010580",
-      "name": "에스엠벡셀",
-      "net": 429015,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "021240",
-      "name": "코웨이",
-      "net": 428777,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "005490",
-      "name": "POSCO홀딩스",
-      "net": 427805,
+      "code": "015750",
+      "name": "성우하이텍",
+      "net": 1015077,
       "buydays": "9/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "476830",
-      "name": "알지노믹스",
-      "net": 427563,
+      "code": "038500",
+      "name": "삼표시멘트",
+      "net": 1012281,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "352820",
-      "name": "하이브",
-      "net": 421801,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "014620",
-      "name": "성광벤드",
-      "net": 421610,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "267270",
-      "name": "HD건설기계",
-      "net": 417411,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "103140",
-      "name": "풍산",
-      "net": 416333,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "178920",
-      "name": "PI첨단소재",
-      "net": 412703,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "004020",
-      "name": "현대제철",
-      "net": 406933,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "103590",
-      "name": "일진전기",
-      "net": 405671,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "006260",
-      "name": "LS",
-      "net": 403696,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "028260",
-      "name": "삼성물산",
-      "net": 398492,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "078350",
-      "name": "한양디지텍",
-      "net": 397330,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003520",
-      "name": "영진약품",
-      "net": 380779,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "090360",
-      "name": "로보스타",
-      "net": 377414,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "368770",
-      "name": "파이버프로",
-      "net": 372207,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "055550",
-      "name": "신한지주",
-      "net": 368707,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "230360",
-      "name": "에코마케팅",
-      "net": 360085,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "051910",
-      "name": "LG화학",
-      "net": 356813,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "373220",
-      "name": "LG에너지솔루션",
-      "net": 352063,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "119850",
-      "name": "지엔씨에너지",
-      "net": 350526,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "293940",
-      "name": "신한알파리츠",
-      "net": 347791,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "095340",
-      "name": "ISC",
-      "net": 346116,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "254490",
-      "name": "미래반도체",
-      "net": 343294,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "099320",
-      "name": "쎄트렉아이",
-      "net": 342333,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "267250",
-      "name": "HD현대",
-      "net": 329467,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "030530",
-      "name": "원익홀딩스",
-      "net": 325767,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "248070",
-      "name": "솔루엠",
-      "net": 325320,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "125490",
-      "name": "한라캐스트",
-      "net": 320998,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "024850",
-      "name": "HLB이노베이션",
-      "net": 315920,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "041510",
-      "name": "에스엠",
-      "net": 312247,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "124500",
-      "name": "아이티센글로벌",
-      "net": 306956,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "319660",
-      "name": "피에스케이",
-      "net": 304280,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "005850",
-      "name": "에스엘",
-      "net": 290730,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "039030",
-      "name": "이오테크닉스",
-      "net": 289328,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "033100",
-      "name": "제룡전기",
-      "net": 287558,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "031430",
-      "name": "신세계인터내셔날",
-      "net": 283244,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "241560",
-      "name": "두산밥캣",
-      "net": 281065,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "214320",
-      "name": "이노션",
-      "net": 280759,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "377300",
-      "name": "카카오페이",
-      "net": 280340,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "007340",
-      "name": "DN오토모티브",
-      "net": 279985,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "126340",
-      "name": "비나텍",
-      "net": 278270,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "456160",
-      "name": "지투지바이오",
-      "net": 276233,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "025860",
-      "name": "남해화학",
-      "net": 275153,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "071050",
-      "name": "한국금융지주",
-      "net": 273979,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "052690",
-      "name": "한전기술",
-      "net": 273704,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "475150",
-      "name": "SK이터닉스",
-      "net": 271884,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001820",
-      "name": "삼화콘덴서",
-      "net": 270190,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "234340",
-      "name": "헥토파이낸셜",
-      "net": 268305,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "008060",
-      "name": "대덕",
-      "net": 267526,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001800",
-      "name": "오리온홀딩스",
-      "net": 267095,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "086790",
-      "name": "하나금융지주",
-      "net": 266299,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "354320",
-      "name": "알멕",
-      "net": 262875,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "083650",
-      "name": "비에이치아이",
-      "net": 261338,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "011170",
-      "name": "롯데케미칼",
-      "net": 259892,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "183300",
-      "name": "코미코",
-      "net": 254144,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "484590",
-      "name": "삼양컴텍",
-      "net": 253890,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "468530",
-      "name": "프로티나",
-      "net": 249848,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000080",
-      "name": "하이트진로",
-      "net": 233338,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "033780",
-      "name": "KT&G",
-      "net": 230617,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "002790",
-      "name": "아모레퍼시픽홀딩스",
-      "net": 230493,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "122870",
-      "name": "와이지엔터테인먼트",
-      "net": 229655,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "036810",
-      "name": "에프에스티",
-      "net": 229200,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "271560",
-      "name": "오리온",
-      "net": 228686,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "437730",
-      "name": "삼현",
-      "net": 225826,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "100840",
-      "name": "SNT에너지",
-      "net": 224888,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "018290",
-      "name": "브이티",
-      "net": 214276,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "230240",
-      "name": "에치에프알",
-      "net": 214103,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "128820",
-      "name": "대성산업",
-      "net": 213537,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "278470",
-      "name": "에이피알",
-      "net": 203379,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "026890",
-      "name": "스틱인베스트먼트",
-      "net": 202644,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "300720",
-      "name": "한일시멘트",
-      "net": 198118,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "023530",
-      "name": "롯데쇼핑",
-      "net": 196506,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "064760",
-      "name": "티씨케이",
-      "net": 195665,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "332570",
-      "name": "PS일렉트로닉스",
-      "net": 193508,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "000250",
-      "name": "삼천당제약",
-      "net": 190962,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "200710",
-      "name": "에이디테크놀로지",
-      "net": 188366,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "079550",
-      "name": "LIG디펜스앤에어로스페이스",
-      "net": 185015,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "237690",
-      "name": "에스티팜",
-      "net": 184626,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "017810",
-      "name": "풀무원",
-      "net": 184036,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "035900",
-      "name": "JYP Ent.",
-      "net": 176141,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "452280",
-      "name": "한선엔지니어링",
-      "net": 173790,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "322000",
-      "name": "HD현대에너지솔루션",
-      "net": 169171,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000240",
-      "name": "한국앤컴퍼니",
-      "net": 167577,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "011210",
-      "name": "현대위아",
-      "net": 166124,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "011500",
-      "name": "한농화성",
-      "net": 161288,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000150",
-      "name": "두산",
-      "net": 161230,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "348340",
-      "name": "뉴로메카",
-      "net": 161097,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "420770",
-      "name": "기가비스",
-      "net": 161085,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "200880",
-      "name": "서연이화",
-      "net": 153450,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "029780",
-      "name": "삼성카드",
-      "net": 151736,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "488900",
-      "name": "비츠로넥스텍",
-      "net": 150295,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "102710",
-      "name": "이엔에프테크놀로지",
-      "net": 149294,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "161890",
-      "name": "한국콜마",
-      "net": 148687,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "051600",
-      "name": "한전KPS",
-      "net": 144405,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003540",
-      "name": "대신증권",
-      "net": 143270,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "372320",
-      "name": "큐로셀",
-      "net": 141874,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003570",
-      "name": "SNT다이내믹스",
-      "net": 140680,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "381970",
-      "name": "케이카",
-      "net": 135838,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "493280",
-      "name": "아이엠바이오로직스",
-      "net": 131306,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "389470",
-      "name": "인벤티지랩",
-      "net": 131069,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "357120",
-      "name": "코람코라이프인프라리츠",
-      "net": 128602,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "376300",
-      "name": "디어유",
-      "net": 125138,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "287840",
-      "name": "인투셀",
-      "net": 123483,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "031210",
-      "name": "서울보증보험",
-      "net": 116542,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "460930",
-      "name": "현대힘스",
-      "net": 115602,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "475960",
-      "name": "토모큐브",
-      "net": 113063,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "081660",
-      "name": "미스토홀딩스",
-      "net": 107654,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "009290",
-      "name": "광동제약",
-      "net": 106453,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000210",
-      "name": "DL",
-      "net": 106003,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "034730",
-      "name": "SK",
-      "net": 105441,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "121600",
-      "name": "나노신소재",
-      "net": 102842,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "030190",
-      "name": "NICE평가정보",
-      "net": 98829,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "008730",
-      "name": "율촌화학",
-      "net": 95404,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "012510",
-      "name": "더존비즈온",
-      "net": 92010,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "065350",
-      "name": "신성델타테크",
-      "net": 91503,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "009450",
-      "name": "경동나비엔",
-      "net": 89784,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "005680",
-      "name": "삼영전자",
-      "net": 86603,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001060",
-      "name": "JW중외제약",
-      "net": 86385,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "357780",
-      "name": "솔브레인",
-      "net": 81784,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000810",
-      "name": "삼성화재",
-      "net": 80632,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "271940",
-      "name": "일진하이솔루스",
-      "net": 72826,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "012750",
-      "name": "에스원",
-      "net": 71974,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "456040",
-      "name": "OCI",
-      "net": 71799,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "257720",
-      "name": "실리콘투",
-      "net": 71793,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "002810",
-      "name": "삼영무역",
-      "net": 70160,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "004000",
-      "name": "롯데정밀화학",
-      "net": 68505,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "004360",
-      "name": "세방",
-      "net": 66291,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "004800",
-      "name": "효성",
-      "net": 62238,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "448900",
-      "name": "한국피아이엠",
-      "net": 60847,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "112040",
-      "name": "위메이드",
-      "net": 60201,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "131290",
-      "name": "티에스이",
-      "net": 59028,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "950210",
-      "name": "프레스티지바이오파마",
-      "net": 57686,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "003030",
-      "name": "세아제강지주",
-      "net": 48598,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "298020",
-      "name": "효성티앤씨",
-      "net": 43808,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "079940",
-      "name": "가비아",
-      "net": 42383,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "009240",
-      "name": "한샘",
-      "net": 41560,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "462900",
-      "name": "KoAct 바이오헬스케어액티브",
-      "net": 38361,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "475560",
-      "name": "더본코리아",
-      "net": 38218,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "214430",
-      "name": "아이쓰리시스템",
-      "net": 37954,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "060250",
-      "name": "NHN KCP",
-      "net": 36258,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "241710",
-      "name": "코스메카코리아",
-      "net": 35963,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "399720",
-      "name": "가온칩스",
-      "net": 34311,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "207940",
-      "name": "삼성바이오로직스",
-      "net": 33401,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "140860",
-      "name": "파크시스템스",
-      "net": 31866,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "004170",
-      "name": "신세계",
-      "net": 31846,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "111770",
-      "name": "영원무역",
-      "net": 31506,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "025540",
-      "name": "한국단자",
-      "net": 31320,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "024720",
-      "name": "콜마홀딩스",
-      "net": 29152,
+      "code": "028670",
+      "name": "팬오션",
+      "net": 999691,
       "buydays": "7/10"
     },
     {
       "market": "KOSDAQ",
       "code": "079370",
       "name": "제우스",
-      "net": 28676,
+      "net": 969172,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "012030",
+      "name": "DB",
+      "net": 964406,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "082740",
+      "name": "한화엔진",
+      "net": 960507,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "126720",
-      "name": "수산인더스트리",
-      "net": 28534,
+      "code": "005940",
+      "name": "NH투자증권",
+      "net": 952694,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "058470",
+      "name": "리노공업",
+      "net": 935179,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "178320",
+      "name": "서진시스템",
+      "net": 898436,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "187660",
+      "name": "페니트리움바이오",
+      "net": 876307,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "064260",
+      "name": "다날",
+      "net": 865163,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "014830",
-      "name": "유니드",
-      "net": 24467,
+      "code": "047050",
+      "name": "포스코인터내셔널",
+      "net": 864010,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "460930",
+      "name": "현대힘스",
+      "net": 854818,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "064350",
+      "name": "현대로템",
+      "net": 845668,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "290550",
+      "name": "디케이티",
+      "net": 781600,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "052020",
+      "name": "에스티큐브",
+      "net": 772517,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "077970",
+      "name": "STX엔진",
+      "net": 768642,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "218410",
+      "name": "RFHIC",
+      "net": 766190,
       "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "064400",
+      "name": "LG씨엔에스",
+      "net": 757645,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "003470",
+      "name": "유안타증권",
+      "net": 757139,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "025320",
+      "name": "시노펙스",
+      "net": 756663,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "240810",
+      "name": "원익IPS",
+      "net": 756614,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "006910",
+      "name": "보성파워텍",
+      "net": 725057,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "011930",
+      "name": "신성이엔지",
+      "net": 720914,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "120110",
+      "name": "코오롱인더",
+      "net": 716573,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "010950",
+      "name": "S-Oil",
+      "net": 715821,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "023160",
+      "name": "태광",
+      "net": 706512,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "232140",
+      "name": "와이씨",
+      "net": 701456,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "092190",
+      "name": "서울바이오시스",
+      "net": 688401,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "290650",
+      "name": "엘앤씨바이오",
+      "net": 664311,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "161390",
+      "name": "한국타이어앤테크놀로지",
+      "net": 659717,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "272210",
+      "name": "한화시스템",
+      "net": 659582,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "034230",
+      "name": "파라다이스",
+      "net": 657651,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "027410",
+      "name": "BGF",
+      "net": 651391,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "003000",
+      "name": "부광약품",
+      "net": 632882,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "003380",
+      "name": "하림지주",
+      "net": 615570,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "088260",
+      "name": "이리츠코크렙",
+      "net": 609932,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001430",
+      "name": "세아베스틸지주",
+      "net": 609086,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "298380",
+      "name": "에이비엘바이오",
+      "net": 584030,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "095340",
+      "name": "ISC",
+      "net": 581627,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "327260",
+      "name": "RF머트리얼즈",
+      "net": 566685,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "174900",
+      "name": "앱클론",
+      "net": 565936,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "021240",
+      "name": "코웨이",
+      "net": 562588,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "229640",
+      "name": "LS에코에너지",
+      "net": 555507,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "002350",
+      "name": "넥센타이어",
+      "net": 541240,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "005010",
+      "name": "휴스틸",
+      "net": 535203,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "014620",
+      "name": "성광벤드",
+      "net": 529054,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "096530",
+      "name": "씨젠",
+      "net": 518626,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "249420",
+      "name": "일동제약",
+      "net": 514252,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "161000",
+      "name": "애경케미칼",
+      "net": 513596,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "058430",
+      "name": "포스코스틸리온",
+      "net": 511856,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "060280",
+      "name": "큐렉소",
+      "net": 500275,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "004020",
+      "name": "현대제철",
+      "net": 495272,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "424870",
+      "name": "이뮨온시아",
+      "net": 484715,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "103140",
+      "name": "풍산",
+      "net": 481951,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "319400",
+      "name": "현대무벡스",
+      "net": 479311,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "332570",
+      "name": "PS일렉트로닉스",
+      "net": 478087,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "476830",
+      "name": "알지노믹스",
+      "net": 475904,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "105840",
+      "name": "우진",
+      "net": 473694,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "178920",
+      "name": "PI첨단소재",
+      "net": 467477,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "458870",
+      "name": "씨어스",
+      "net": 462660,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "044490",
+      "name": "태웅",
+      "net": 456622,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "130660",
+      "name": "한전산업",
+      "net": 442556,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "041510",
+      "name": "에스엠",
+      "net": 434904,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "368770",
+      "name": "파이버프로",
+      "net": 429206,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "078930",
+      "name": "GS",
+      "net": 421921,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "456160",
+      "name": "지투지바이오",
+      "net": 417524,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "005490",
+      "name": "POSCO홀딩스",
+      "net": 412062,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "397030",
+      "name": "에이프릴바이오",
+      "net": 408976,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "051910",
+      "name": "LG화학",
+      "net": 408717,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "101490",
+      "name": "에스앤에스텍",
+      "net": 401135,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "031430",
+      "name": "신세계인터내셔날",
+      "net": 391845,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "248070",
+      "name": "솔루엠",
+      "net": 389394,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "006260",
+      "name": "LS",
+      "net": 385192,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001500",
+      "name": "현대차증권",
+      "net": 385022,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "357120",
+      "name": "코람코라이프인프라리츠",
+      "net": 380975,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "254490",
+      "name": "미래반도체",
+      "net": 375257,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "395400",
+      "name": "SK리츠",
+      "net": 369476,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "018290",
+      "name": "브이티",
+      "net": 348105,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "103590",
+      "name": "일진전기",
+      "net": 347097,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001820",
+      "name": "삼화콘덴서",
+      "net": 336188,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "263750",
+      "name": "펄어비스",
+      "net": 335681,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "052690",
+      "name": "한전기술",
+      "net": 333938,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "008060",
+      "name": "대덕",
+      "net": 333532,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "373220",
+      "name": "LG에너지솔루션",
+      "net": 332167,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "230360",
+      "name": "에코마케팅",
+      "net": 330992,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "354320",
+      "name": "알멕",
+      "net": 326068,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "010580",
+      "name": "에스엠벡셀",
+      "net": 324397,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "082270",
+      "name": "젬백스",
+      "net": 320718,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "352820",
+      "name": "하이브",
+      "net": 318015,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "002790",
+      "name": "아모레퍼시픽홀딩스",
+      "net": 315406,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "126340",
+      "name": "비나텍",
+      "net": 313026,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "100840",
+      "name": "SNT에너지",
+      "net": 305297,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "026890",
+      "name": "스틱인베스트먼트",
+      "net": 301960,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "033100",
+      "name": "제룡전기",
+      "net": 295828,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "078350",
+      "name": "한양디지텍",
+      "net": 290362,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "083650",
+      "name": "비에이치아이",
+      "net": 287668,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "000080",
+      "name": "하이트진로",
+      "net": 283620,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "039030",
+      "name": "이오테크닉스",
+      "net": 270452,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "028260",
+      "name": "삼성물산",
+      "net": 265713,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "452280",
+      "name": "한선엔지니어링",
+      "net": 263934,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "122870",
+      "name": "와이지엔터테인먼트",
+      "net": 248156,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "267250",
+      "name": "HD현대",
+      "net": 243091,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "007340",
+      "name": "DN오토모티브",
+      "net": 241781,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "062040",
+      "name": "산일전기",
+      "net": 240862,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "300720",
+      "name": "한일시멘트",
+      "net": 240860,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "200710",
+      "name": "에이디테크놀로지",
+      "net": 239095,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "189300",
+      "name": "인텔리안테크",
+      "net": 234726,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "011170",
+      "name": "롯데케미칼",
+      "net": 233315,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "024850",
+      "name": "HLB이노베이션",
+      "net": 232776,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "078600",
+      "name": "대주전자재료",
+      "net": 228393,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "468530",
+      "name": "프로티나",
+      "net": 226732,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "271560",
+      "name": "오리온",
+      "net": 226034,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "293940",
+      "name": "신한알파리츠",
+      "net": 225948,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "079550",
+      "name": "LIG디펜스앤에어로스페이스",
+      "net": 221092,
+      "buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "004490",
       "name": "세방전지",
-      "net": 22213,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "251970",
-      "name": "펌텍코리아",
-      "net": 20996,
+      "net": 218721,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "123890",
-      "name": "한국자산신탁",
-      "net": 20154,
+      "code": "005850",
+      "name": "에스엘",
+      "net": 216527,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "011500",
+      "name": "한농화성",
+      "net": 215763,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "200880",
+      "name": "서연이화",
+      "net": 215703,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "000250",
+      "name": "삼천당제약",
+      "net": 209789,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "128820",
+      "name": "대성산업",
+      "net": 209031,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "029780",
+      "name": "삼성카드",
+      "net": 205365,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "357780",
+      "name": "솔브레인",
+      "net": 201987,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "012510",
+      "name": "더존비즈온",
+      "net": 200555,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "381970",
+      "name": "케이카",
+      "net": 193930,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "488900",
+      "name": "비츠로넥스텍",
+      "net": 188668,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "234340",
+      "name": "헥토파이낸셜",
+      "net": 187630,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "214320",
+      "name": "이노션",
+      "net": 182173,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "035900",
+      "name": "JYP Ent.",
+      "net": 182030,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "023530",
+      "name": "롯데쇼핑",
+      "net": 173744,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "037460",
+      "name": "삼지전자",
+      "net": 168949,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "183300",
+      "name": "코미코",
+      "net": 168380,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "017810",
+      "name": "풀무원",
+      "net": 166985,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "348340",
+      "name": "뉴로메카",
+      "net": 165864,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "086790",
+      "name": "하나금융지주",
+      "net": 165453,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "322000",
+      "name": "HD현대에너지솔루션",
+      "net": 163856,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "119850",
+      "name": "지엔씨에너지",
+      "net": 162569,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "003540",
+      "name": "대신증권",
+      "net": 161028,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "138080",
+      "name": "오이솔루션",
+      "net": 155292,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "060250",
+      "name": "NHN KCP",
+      "net": 154963,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "000150",
+      "name": "두산",
+      "net": 148764,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "493280",
+      "name": "아이엠바이오로직스",
+      "net": 146548,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "237690",
+      "name": "에스티팜",
+      "net": 145286,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "241560",
+      "name": "두산밥캣",
+      "net": 144266,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "389470",
+      "name": "인벤티지랩",
+      "net": 140750,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "064760",
+      "name": "티씨케이",
+      "net": 140097,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "475960",
+      "name": "토모큐브",
+      "net": 138728,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "011210",
+      "name": "현대위아",
+      "net": 137681,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "003570",
+      "name": "SNT다이내믹스",
+      "net": 137617,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "372320",
+      "name": "큐로셀",
+      "net": 135185,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "102710",
+      "name": "이엔에프테크놀로지",
+      "net": 133897,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "084110",
+      "name": "휴온스글로벌",
+      "net": 133448,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "214450",
+      "name": "파마리서치",
+      "net": 132085,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "000210",
+      "name": "DL",
+      "net": 131762,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "112040",
+      "name": "위메이드",
+      "net": 131000,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "034730",
+      "name": "SK",
+      "net": 130221,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "036810",
+      "name": "에프에스티",
+      "net": 127562,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "451800",
+      "name": "한화리츠",
+      "net": 126373,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "065350",
+      "name": "신성델타테크",
+      "net": 125181,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "008730",
+      "name": "율촌화학",
+      "net": 124312,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "377300",
+      "name": "카카오페이",
+      "net": 120168,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "122900",
+      "name": "아이마켓코리아",
+      "net": 114647,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "287840",
+      "name": "인투셀",
+      "net": 113464,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "071050",
+      "name": "한국금융지주",
+      "net": 113137,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001800",
+      "name": "오리온홀딩스",
+      "net": 109122,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001530",
+      "name": "DI동일",
+      "net": 102790,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "051600",
+      "name": "한전KPS",
+      "net": 99515,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "121600",
+      "name": "나노신소재",
+      "net": 97217,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "457190",
+      "name": "이수스페셜티케미컬",
+      "net": 96661,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "462900",
+      "name": "KoAct 바이오헬스케어액티브",
+      "net": 93122,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "217590",
+      "name": "티엠씨",
+      "net": 92967,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "009290",
+      "name": "광동제약",
+      "net": 92256,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "056080",
+      "name": "유진로봇",
+      "net": 91760,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "030190",
+      "name": "NICE평가정보",
+      "net": 88573,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "161890",
+      "name": "한국콜마",
+      "net": 88205,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "085660",
+      "name": "차바이오텍",
+      "net": 86280,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "019170",
+      "name": "신풍제약",
+      "net": 82200,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "293490",
+      "name": "카카오게임즈",
+      "net": 75178,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "098070",
+      "name": "한텍",
+      "net": 73282,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "004000",
+      "name": "롯데정밀화학",
+      "net": 67837,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "099320",
+      "name": "쎄트렉아이",
+      "net": 65894,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "399720",
+      "name": "가온칩스",
+      "net": 65081,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "004360",
+      "name": "세방",
+      "net": 64212,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "003030",
+      "name": "세아제강지주",
+      "net": 62862,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "002810",
+      "name": "삼영무역",
+      "net": 60785,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "298020",
+      "name": "효성티앤씨",
+      "net": 59084,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "466100",
+      "name": "클로봇",
+      "net": 56155,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "207940",
+      "name": "삼성바이오로직스",
+      "net": 55343,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "005680",
+      "name": "삼영전자",
+      "net": 55063,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "024720",
+      "name": "콜마홀딩스",
+      "net": 49890,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "241710",
+      "name": "코스메카코리아",
+      "net": 44889,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "037710",
+      "name": "광주신세계",
+      "net": 44707,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "475560",
+      "name": "더본코리아",
+      "net": 40188,
       "buydays": "7/10"
     },
     {
       "market": "KOSDAQ",
       "code": "101930",
       "name": "인화정공",
-      "net": 18592,
-      "buydays": "8/10"
+      "net": 40145,
+      "buydays": "9/10"
     },
     {
       "market": "KOSPI",
-      "code": "002380",
-      "name": "KCC",
-      "net": 14592,
+      "code": "009450",
+      "name": "경동나비엔",
+      "net": 37413,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "004800",
+      "name": "효성",
+      "net": 36995,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "253450",
+      "name": "스튜디오드래곤",
+      "net": 33158,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "484590",
+      "name": "삼양컴텍",
+      "net": 32634,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "039130",
+      "name": "하나투어",
+      "net": 29585,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "009240",
+      "name": "한샘",
+      "net": 29077,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "012750",
+      "name": "에스원",
+      "net": 28843,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "271940",
+      "name": "일진하이솔루스",
+      "net": 28155,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "010130",
+      "name": "고려아연",
+      "net": 26719,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "079940",
+      "name": "가비아",
+      "net": 24595,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "140860",
+      "name": "파크시스템스",
+      "net": 21586,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "456040",
+      "name": "OCI",
+      "net": 15977,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "126720",
+      "name": "수산인더스트리",
+      "net": 15832,
       "buydays": "7/10"
     },
     {
       "market": "KOSDAQ",
       "code": "093320",
       "name": "케이아이엔엑스",
-      "net": 13078,
+      "net": 13022,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "251970",
+      "name": "펌텍코리아",
+      "net": 12882,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "020150",
-      "name": "롯데에너지머티리얼즈",
-      "net": 9453,
+      "code": "005610",
+      "name": "삼립",
+      "net": 10610,
       "buydays": "7/10"
     },
     {
-      "market": "KOSDAQ",
-      "code": "041830",
-      "name": "인바디",
-      "net": 8456,
-      "buydays": "7/10"
+      "market": "KOSPI",
+      "code": "018250",
+      "name": "애경산업",
+      "net": 7601,
+      "buydays": "8/10"
     },
     {
-      "market": "KOSDAQ",
-      "code": "295310",
-      "name": "에이치브이엠",
-      "net": 388,
+      "market": "KOSPI",
+      "code": "014830",
+      "name": "유니드",
+      "net": 6382,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "268280",
+      "name": "미원에스씨",
+      "net": 912,
       "buydays": "7/10"
     }
   ],
@@ -1753,434 +1676,504 @@
       "market": "KOSPI",
       "code": "279570",
       "name": "케이뱅크",
-      "net": 2560090,
+      "net": 2608462,
       "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "035420",
-      "name": "NAVER",
-      "net": 1513690,
-      "buydays": "9/10"
     },
     {
       "market": "KOSPI",
       "code": "093370",
       "name": "후성",
-      "net": 1408040,
+      "net": 1627931,
       "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "035420",
+      "name": "NAVER",
+      "net": 1584343,
+      "buydays": "10/10"
     },
     {
       "market": "KOSPI",
       "code": "097230",
       "name": "HJ중공업",
-      "net": 969808,
+      "net": 1085824,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "005930",
+      "name": "삼성전자",
+      "net": 959077,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "085620",
       "name": "미래에셋생명",
-      "net": 827455,
-      "buydays": "9/10"
+      "net": 867279,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "055550",
+      "name": "신한지주",
+      "net": 810981,
+      "buydays": "7/10"
     },
     {
       "market": "KOSPI",
       "code": "004710",
       "name": "한솔테크닉스",
-      "net": 655893,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001450",
-      "name": "현대해상",
-      "net": 602651,
+      "net": 717547,
       "buydays": "10/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "043260",
-      "name": "성호전자",
-      "net": 497212,
-      "buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "323410",
       "name": "카카오뱅크",
-      "net": 482219,
-      "buydays": "7/10"
+      "net": 561173,
+      "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "005930",
-      "name": "삼성전자",
-      "net": 478766,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "018880",
-      "name": "한온시스템",
-      "net": 476331,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001440",
-      "name": "대한전선",
-      "net": 354168,
-      "buydays": "7/10"
+      "code": "001450",
+      "name": "현대해상",
+      "net": 529178,
+      "buydays": "10/10"
     },
     {
       "market": "KOSDAQ",
       "code": "252990",
       "name": "샘씨엔에스",
-      "net": 344675,
-      "buydays": "8/10"
+      "net": 393661,
+      "buydays": "9/10"
     },
     {
       "market": "KOSPI",
       "code": "006110",
       "name": "삼아알미늄",
-      "net": 333198,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "181710",
-      "name": "NHN",
-      "net": 321361,
+      "net": 371257,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "075580",
       "name": "세진중공업",
-      "net": 294778,
+      "net": 336613,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "043260",
+      "name": "성호전자",
+      "net": 306815,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "139130",
+      "name": "iM금융지주",
+      "net": 298719,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "030000",
+      "name": "제일기획",
+      "net": 265005,
       "buydays": "7/10"
     },
     {
       "market": "KOSDAQ",
       "code": "213420",
       "name": "덕산네오룩스",
-      "net": 287763,
+      "net": 238257,
       "buydays": "9/10"
     },
     {
       "market": "KOSPI",
-      "code": "005440",
-      "name": "현대지에프홀딩스",
-      "net": 218315,
+      "code": "181710",
+      "name": "NHN",
+      "net": 233733,
       "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "139130",
-      "name": "iM금융지주",
-      "net": 213167,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "204320",
-      "name": "HL만도",
-      "net": 200108,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "475150",
-      "name": "SK이터닉스",
-      "net": 183675,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001040",
-      "name": "CJ",
-      "net": 178982,
-      "buydays": "9/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "007070",
-      "name": "GS리테일",
-      "net": 178100,
-      "buydays": "9/10"
     },
     {
       "market": "KOSPI",
       "code": "336260",
       "name": "두산퓨얼셀",
-      "net": 177888,
+      "net": 220137,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "042660",
-      "name": "한화오션",
-      "net": 151540,
+      "code": "475150",
+      "name": "SK이터닉스",
+      "net": 217645,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "018260",
-      "name": "삼성에스디에스",
-      "net": 145989,
+      "code": "005440",
+      "name": "현대지에프홀딩스",
+      "net": 212190,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "012330",
-      "name": "현대모비스",
-      "net": 142941,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "086790",
-      "name": "하나금융지주",
-      "net": 135680,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "036570",
-      "name": "NC",
-      "net": 127949,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "010780",
-      "name": "아이에스동서",
-      "net": 124735,
-      "buydays": "7/10"
+      "code": "007070",
+      "name": "GS리테일",
+      "net": 211738,
+      "buydays": "9/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "052400",
-      "name": "코나아이",
-      "net": 119238,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "016360",
-      "name": "삼성증권",
-      "net": 117010,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "042520",
-      "name": "한스바이오메드",
-      "net": 109726,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "131970",
-      "name": "두산테스나",
-      "net": 97506,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "030610",
-      "name": "교보증권",
-      "net": 96193,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000240",
-      "name": "한국앤컴퍼니",
-      "net": 90200,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "329180",
-      "name": "HD현대중공업",
-      "net": 84416,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "170920",
-      "name": "엘티씨",
-      "net": 69826,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "128940",
-      "name": "한미약품",
-      "net": 64410,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "082920",
-      "name": "비츠로셀",
-      "net": 63887,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "171090",
-      "name": "선익시스템",
-      "net": 62165,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000270",
-      "name": "기아",
-      "net": 57006,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "443060",
-      "name": "HD현대마린솔루션",
-      "net": 54118,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "033780",
-      "name": "KT&G",
-      "net": 51636,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "010060",
-      "name": "OCI홀딩스",
-      "net": 38686,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "456040",
-      "name": "OCI",
-      "net": 37234,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "007340",
-      "name": "DN오토모티브",
-      "net": 33838,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "195940",
-      "name": "HK이노엔",
-      "net": 30760,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "009970",
-      "name": "영원무역홀딩스",
-      "net": 28901,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "069620",
-      "name": "대웅제약",
-      "net": 25260,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "051900",
-      "name": "LG생활건강",
-      "net": 22050,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "001720",
-      "name": "신영증권",
-      "net": 21678,
-      "buydays": "10/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "069960",
-      "name": "현대백화점",
-      "net": 21413,
-      "buydays": "8/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "006650",
-      "name": "대한유화",
-      "net": 20846,
-      "buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "282330",
-      "name": "BGF리테일",
-      "net": 20788,
+      "code": "089970",
+      "name": "브이엠",
+      "net": 209444,
       "buydays": "7/10"
     },
     {
       "market": "KOSDAQ",
       "code": "098460",
       "name": "고영",
-      "net": 18756,
+      "net": 204508,
       "buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "006280",
-      "name": "녹십자",
-      "net": 15223,
+      "code": "001040",
+      "name": "CJ",
+      "net": 190650,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "012330",
+      "name": "현대모비스",
+      "net": 172698,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "204320",
+      "name": "HL만도",
+      "net": 163380,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "031980",
+      "name": "피에스케이홀딩스",
+      "net": 139806,
       "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "131970",
+      "name": "두산테스나",
+      "net": 139191,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "082920",
+      "name": "비츠로셀",
+      "net": 131410,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "052400",
+      "name": "코나아이",
+      "net": 120466,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "010780",
+      "name": "아이에스동서",
+      "net": 112768,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "499790",
+      "name": "GS피앤엘",
+      "net": 107470,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "000240",
+      "name": "한국앤컴퍼니",
+      "net": 106011,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "005830",
+      "name": "DB손해보험",
+      "net": 99941,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "017800",
+      "name": "현대엘리베이터",
+      "net": 98067,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "030610",
+      "name": "교보증권",
+      "net": 96834,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "036570",
+      "name": "NC",
+      "net": 96706,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "042520",
+      "name": "한스바이오메드",
+      "net": 93162,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "090460",
+      "name": "비에이치",
+      "net": 91613,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "329180",
+      "name": "HD현대중공업",
+      "net": 89195,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "033780",
+      "name": "KT&G",
+      "net": 78814,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "000120",
+      "name": "CJ대한통운",
+      "net": 73835,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "170920",
+      "name": "엘티씨",
+      "net": 69567,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "006730",
+      "name": "서부T&D",
+      "net": 55058,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001120",
+      "name": "LX인터내셔널",
+      "net": 52762,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "007340",
+      "name": "DN오토모티브",
+      "net": 46708,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "195940",
+      "name": "HK이노엔",
+      "net": 42829,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "006650",
+      "name": "대한유화",
+      "net": 37679,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "000270",
+      "name": "기아",
+      "net": 33262,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "078350",
+      "name": "한양디지텍",
+      "net": 32253,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "042660",
+      "name": "한화오션",
+      "net": 31820,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "010060",
+      "name": "OCI홀딩스",
+      "net": 29480,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "069960",
+      "name": "현대백화점",
+      "net": 28166,
+      "buydays": "8/10"
     },
     {
       "market": "KOSDAQ",
       "code": "090360",
       "name": "로보스타",
-      "net": 13667,
-      "buydays": "7/10"
+      "net": 26829,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "069620",
+      "name": "대웅제약",
+      "net": 26121,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "009970",
+      "name": "영원무역홀딩스",
+      "net": 25934,
+      "buydays": "10/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "051900",
+      "name": "LG생활건강",
+      "net": 24627,
+      "buydays": "9/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001720",
+      "name": "신영증권",
+      "net": 22183,
+      "buydays": "10/10"
     },
     {
       "market": "KOSDAQ",
-      "code": "340570",
-      "name": "티앤엘",
-      "net": 10658,
+      "code": "171090",
+      "name": "선익시스템",
+      "net": 19616,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
-      "code": "002020",
-      "name": "코오롱",
-      "net": 4416,
+      "code": "282330",
+      "name": "BGF리테일",
+      "net": 19229,
       "buydays": "7/10"
     },
     {
-      "market": "KOSDAQ",
-      "code": "214450",
-      "name": "파마리서치",
-      "net": 4180,
+      "market": "KOSPI",
+      "code": "456040",
+      "name": "OCI",
+      "net": 18583,
       "buydays": "7/10"
     },
     {
       "market": "KOSPI",
       "code": "111770",
       "name": "영원무역",
-      "net": 3481,
+      "net": 18432,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001820",
+      "name": "삼화콘덴서",
+      "net": 14173,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "161890",
+      "name": "한국콜마",
+      "net": 11642,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "326030",
+      "name": "SK바이오팜",
+      "net": 10751,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "006280",
+      "name": "녹십자",
+      "net": 9923,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "214450",
+      "name": "파마리서치",
+      "net": 9888,
+      "buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "340570",
+      "name": "티앤엘",
+      "net": 9799,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "002020",
+      "name": "코오롱",
+      "net": 3883,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "004370",
+      "name": "농심",
+      "net": 3344,
+      "buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "298040",
+      "name": "효성중공업",
+      "net": 49,
       "buydays": "7/10"
     }
   ],
@@ -2189,117 +2182,81 @@
       "market": "KOSPI",
       "code": "093370",
       "name": "후성",
-      "f_net": 4966099,
-      "f_buydays": "8/10",
-      "p_net": 1408040,
+      "f_net": 6357378,
+      "f_buydays": "9/10",
+      "p_net": 1627931,
       "p_buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "323410",
       "name": "카카오뱅크",
-      "f_net": 3081040,
-      "f_buydays": "10/10",
-      "p_net": 482219,
-      "p_buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000270",
-      "name": "기아",
-      "f_net": 1473516,
-      "f_buydays": "7/10",
-      "p_net": 57006,
-      "p_buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "139130",
-      "name": "iM금융지주",
-      "f_net": 776060,
-      "f_buydays": "7/10",
-      "p_net": 213167,
-      "p_buydays": "8/10"
-    },
-    {
-      "market": "KOSDAQ",
-      "code": "082920",
-      "name": "비츠로셀",
-      "f_net": 771063,
+      "f_net": 2453003,
       "f_buydays": "9/10",
-      "p_net": 63887,
+      "p_net": 561173,
       "p_buydays": "8/10"
     },
     {
-      "market": "KOSDAQ",
-      "code": "090360",
-      "name": "로보스타",
-      "f_net": 377414,
+      "market": "KOSPI",
+      "code": "090460",
+      "name": "비에이치",
+      "f_net": 1073619,
+      "f_buydays": "8/10",
+      "p_net": 91613,
+      "p_buydays": "7/10"
+    },
+    {
+      "market": "KOSPI",
+      "code": "001820",
+      "name": "삼화콘덴서",
+      "f_net": 336188,
       "f_buydays": "7/10",
-      "p_net": 13667,
+      "p_net": 14173,
+      "p_buydays": "7/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "078350",
+      "name": "한양디지텍",
+      "f_net": 290362,
+      "f_buydays": "7/10",
+      "p_net": 32253,
       "p_buydays": "7/10"
     },
     {
       "market": "KOSPI",
       "code": "007340",
       "name": "DN오토모티브",
-      "f_net": 279985,
-      "f_buydays": "8/10",
-      "p_net": 33838,
+      "f_net": 241781,
+      "f_buydays": "7/10",
+      "p_net": 46708,
+      "p_buydays": "8/10"
+    },
+    {
+      "market": "KOSDAQ",
+      "code": "214450",
+      "name": "파마리서치",
+      "f_net": 132085,
+      "f_buydays": "7/10",
+      "p_net": 9888,
       "p_buydays": "8/10"
     },
     {
       "market": "KOSPI",
-      "code": "475150",
-      "name": "SK이터닉스",
-      "f_net": 271884,
-      "f_buydays": "8/10",
-      "p_net": 183675,
-      "p_buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "086790",
-      "name": "하나금융지주",
-      "f_net": 266299,
+      "code": "161890",
+      "name": "한국콜마",
+      "f_net": 88205,
       "f_buydays": "7/10",
-      "p_net": 135680,
-      "p_buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "033780",
-      "name": "KT&G",
-      "f_net": 230617,
-      "f_buydays": "8/10",
-      "p_net": 51636,
-      "p_buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "000240",
-      "name": "한국앤컴퍼니",
-      "f_net": 167577,
-      "f_buydays": "7/10",
-      "p_net": 90200,
-      "p_buydays": "7/10"
+      "p_net": 11642,
+      "p_buydays": "8/10"
     },
     {
       "market": "KOSPI",
       "code": "456040",
       "name": "OCI",
-      "f_net": 71799,
-      "f_buydays": "8/10",
-      "p_net": 37234,
-      "p_buydays": "7/10"
-    },
-    {
-      "market": "KOSPI",
-      "code": "111770",
-      "name": "영원무역",
-      "f_net": 31506,
-      "f_buydays": "8/10",
-      "p_net": 3481,
+      "f_net": 15977,
+      "f_buydays": "7/10",
+      "p_net": 18583,
       "p_buydays": "7/10"
     }
   ]
