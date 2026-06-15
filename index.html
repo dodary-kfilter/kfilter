@@ -12,7 +12,7 @@
     --bg:#0a0e14; --panel:#111722; --line:#1e2733;
     --txt:#e6edf3; --dim:#8b98a9;
     --foreign:#3fb950; --pension:#d29922; --both:#f778ba;
-    --kospi:#58a6ff; --kosdaq:#bc8cff;
+    --kospi:#58a6ff; --kosdaq:#bc8cff; --red:#ef5350;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{
@@ -74,7 +74,66 @@
     background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 22px; cursor:pointer; transition:all .15s}
   .refresh button:hover{border-color:var(--foreign); color:var(--foreign)}
   .foot{margin-top:14px; text-align:center; font-size:11px; color:var(--dim)}
-  @media(max-width:560px){.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}}
+
+  /* ── 동시 펼침 카드 ── */
+  .cards{display:flex; flex-direction:column; gap:8px; margin-top:4px}
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden}
+  .card-h{display:flex; align-items:center; gap:10px; padding:12px 14px; cursor:pointer; flex-wrap:wrap}
+  .card-h:hover{background:#0e1620}
+  .card-h .rank{font-family:'Space Mono',monospace; color:var(--dim); font-size:13px; width:18px; flex:none}
+  .cn{font-weight:600; display:flex; align-items:center; gap:7px; min-width:0}
+  .cn a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--line); white-space:nowrap}
+  .cn a:hover{color:var(--both)}
+  .cs{margin-left:auto; display:flex; gap:12px; font-family:'Space Mono',monospace; font-size:11.5px; flex-wrap:wrap}
+  .chev{color:var(--dim); transition:transform .2s; flex:none; font-size:13px}
+  .card.open .chev{transform:rotate(180deg)}
+  .card-b{display:none; padding:0 14px 14px; border-top:1px solid var(--line)}
+  .card.open .card-b{display:block}
+  .en-empty{color:var(--dim); font-size:12.5px; padding:14px 0}
+  .en-hero{padding:14px 0 4px}
+  .en-price{display:flex; align-items:baseline; gap:10px}
+  .en-price .pv{font-family:'Space Mono',monospace; font-size:26px; font-weight:700}
+  .en-price .pc{font-family:'Space Mono',monospace; font-size:14px; font-weight:700}
+  .en-52{margin-top:10px}
+  .en-52bar{height:6px; background:#1b2430; border-radius:3px; overflow:hidden}
+  .en-52bar i{display:block; height:100%; background:linear-gradient(90deg,var(--kospi),var(--both))}
+  .en-52lab{display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-size:10.5px; color:var(--dim); margin-top:4px}
+  .en-52lab b{color:var(--txt)}
+  .en-line{display:flex; gap:8px; align-items:center; font-size:12.5px; padding:6px 0}
+  .en-k,.vg-k{color:var(--dim); font-size:11px}
+  .en-line b{font-family:'Space Mono',monospace}
+  .en-sec{padding:12px 0; border-top:1px solid var(--line)}
+  .en-h{font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; color:var(--dim); text-transform:uppercase; letter-spacing:.6px; margin-bottom:8px}
+  .ma-row{display:flex; gap:7px; flex-wrap:wrap; align-items:center}
+  .ma-chip{background:#0e1620; border:1px solid var(--line); border-radius:6px; padding:4px 9px; font-size:12px}
+  .ma-chip b{font-family:'Space Mono',monospace; margin-left:5px; font-size:11.5px}
+  .badge-al{background:rgba(63,185,80,.14); color:var(--foreign); border-radius:6px; padding:4px 9px; font-size:11px; font-weight:700; font-family:'Space Mono',monospace}
+  .pk{display:flex; align-items:center; gap:8px; margin:4px 0; font-family:'Space Mono',monospace; font-size:11px}
+  .pk-r{color:var(--dim); width:128px; flex:none}
+  .pk-bar{flex:1; height:8px; background:#1b2430; border-radius:4px; overflow:hidden}
+  .pk-bar i{display:block; height:100%; background:var(--pension)}
+  .pk-v{width:42px; text-align:right; color:var(--txt)}
+  .vg{display:grid; grid-template-columns:1fr 1fr; gap:6px 14px}
+  .vg-c{display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px dotted #1b2430; padding-bottom:3px}
+  .vg-c b{font-family:'Space Mono',monospace; font-size:12.5px}
+  .vg-cap{font-family:'Space Mono',monospace; font-size:11px; color:var(--dim); margin-top:7px}
+  .cons{display:flex; gap:18px; flex-wrap:wrap}
+  .cons-c{display:flex; flex-direction:column; gap:2px}
+  .cons-c b{font-family:'Space Mono',monospace; font-size:15px}
+  .rp{display:flex; gap:8px; align-items:baseline; padding:4px 0; font-size:12px; border-bottom:1px dotted #1b2430}
+  .rp-f{color:var(--kospi); flex:none; width:84px; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .rp-t{flex:1; min-width:0}
+  .rp-d{font-family:'Space Mono',monospace; color:var(--dim); font-size:10.5px; flex:none}
+  .peer-row{display:flex; gap:8px; flex-wrap:wrap}
+  .peer{background:#0e1620; border:1px solid var(--line); border-radius:6px; padding:4px 9px; font-size:11.5px}
+  .peer b{font-family:'Space Mono',monospace; margin-left:4px; font-size:11px}
+  .nw{display:block; padding:6px 0; border-bottom:1px dotted #1b2430; text-decoration:none; color:inherit}
+  .nw:hover .nw-t{color:var(--both)}
+  .nw-t{display:block; font-size:12.5px; line-height:1.45}
+  .nw-m{display:block; font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); margin-top:2px}
+
+  @media(max-width:560px){.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}
+    .cs{width:100%; margin-left:0; margin-top:6px} .pk-r{width:104px} .vg{gap:6px 10px}}
 </style>
 </head>
 <body>
@@ -122,26 +181,110 @@ function sectionSingle(title, list, cls){
     <tbody>${rows}</tbody></table></div>`;
 }
 
-// ── 동시 탭 (외국인·연기금 둘 다) ──
-function rowBoth(it,i){
-  return `<tr><td class="rank">${i}</td>
-    <td><div class="name"><a href="${naverUrl(it.code)}" target="_blank">${it.name}</a></div>
-      <div class="code code-col">${it.code}</div></td>
-    <td class="num net" style="color:var(--foreign)">${fmt(it.f_net)}</td>
-    <td class="num days">${it.f_buydays}</td>
-    <td class="num net" style="color:var(--pension)">${fmt(it.p_net)}</td>
-    <td class="num days">${it.p_buydays}</td></tr>`;
+// ── 동시 탭 (외국인·연기금 둘 다) — 펼침 카드 + 분석 패널 ──
+function won(n){ return (n==null)?'—':Math.round(n).toLocaleString('ko-KR'); }
+function volShort(n){
+  if(n==null) return '—';
+  const s=n<0?'-':'+', a=Math.abs(n);
+  if(a>=1e8) return s+(a/1e8).toFixed(1)+'억';
+  if(a>=1e4) return s+Math.round(a/1e4).toLocaleString('ko-KR')+'만';
+  return s+a.toLocaleString('ko-KR');
+}
+function sgn(n,suf){ return n==null?'—':((n>=0?'+':'')+n+(suf||'')); }
+function colNum(n){ return n==null?'var(--dim)':(n>=0?'var(--foreign)':'var(--red)'); }
+function arr(n){ return n==null?'':(n>=0?'▲':'▼'); }
+function ymd(s){ s=String(s||''); return s.length>=8? s.slice(4,6)+'/'+s.slice(6,8):s; }
+function hhmm(s){ s=String(s||''); return s.length>=12? s.slice(4,6)+'/'+s.slice(6,8)+' '+s.slice(8,10)+':'+s.slice(10,12):s; }
+function esc(s){ return String(s==null?'':s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])); }
+
+function renderEnrich(en){
+  if(!en) return '<div class="en-empty">분석 데이터 없음 — 다음 스캔에서 채워집니다.</div>';
+  let h='';
+  if(en.now!=null){
+    const p=en.pos52w||{};
+    h+=`<div class="en-hero"><div class="en-price">
+        <span class="pv">${won(en.now)}</span>
+        <span class="pc" style="color:${colNum(en.changePct)}">${arr(en.changePct)} ${sgn(en.changePct,'%')}</span></div>`;
+    if(p.pct!=null){
+      const w=Math.max(0,Math.min(100,p.pct));
+      h+=`<div class="en-52"><div class="en-52bar"><i style="width:${w}%"></i></div>
+        <div class="en-52lab"><span>${won(p.low)}</span><b>52주 ${p.pct}%</b><span>${won(p.high)}</span></div></div>`;
+    }
+    h+='</div>';
+    if(en.trend20!=null) h+=`<div class="en-line"><span class="en-k">20일 추이</span><b style="color:${colNum(en.trend20)}">${arr(en.trend20)} ${sgn(en.trend20,'%')}</b></div>`;
+  }
+  if(en.ma){
+    const vs=en.ma.vs||{};
+    const chip=(lab,v)=>`<span class="ma-chip">${lab}<b style="color:${colNum(v)}">${arr(v)}${v==null?'':Math.abs(v)+'%'}</b></span>`;
+    h+=`<div class="en-sec"><div class="en-h">이평선 · 현재가 대비</div><div class="ma-row">
+      ${chip('5',vs.ma5)}${chip('20',vs.ma20)}${chip('60',vs.ma60)}${chip('120',vs.ma120)}
+      ${en.ma.aligned?'<span class="badge-al">정배열</span>':''}</div></div>`;
+  }
+  if(en.pocket&&en.pocket.length){
+    const bars=en.pocket.map(p=>`<div class="pk"><span class="pk-r">${won(p.low)}~${won(p.high)}</span>
+      <span class="pk-bar"><i style="width:${Math.min(100,p.volPct*3)}%"></i></span>
+      <span class="pk-v">${p.volPct}%</span></div>`).join('');
+    h+=`<div class="en-sec"><div class="en-h">매물대 · 거래량 상위</div>${bars}</div>`;
+  }
+  const v=en.valuation;
+  if(v){
+    const cell=(k,val,suf)=>`<div class="vg-c"><span class="vg-k">${k}</span><b>${val==null?'—':won(val)+(suf||'')}</b></div>`;
+    h+=`<div class="en-sec"><div class="en-h">밸류에이션</div><div class="vg">
+      ${cell('PER',v.per,'배')}${cell('추정PER',v.fwdPer,'배')}
+      ${cell('PBR',v.pbr,'배')}${cell('배당',v.divYield,'%')}
+      ${cell('EPS',v.eps,'원')}${cell('추정EPS',v.fwdEps,'원')}
+      ${cell('BPS',v.bps,'원')}${cell('외인소진',v.foreignRate,'%')}
+      </div>${v.marketCap?`<div class="vg-cap">시총 ${esc(v.marketCap)}</div>`:''}</div>`;
+  }
+  const c=en.consensus;
+  if(c&&(c.target!=null||c.opinion!=null)){
+    h+=`<div class="en-sec"><div class="en-h">증권가 컨센서스</div><div class="cons">
+      ${c.target!=null?`<span class="cons-c"><span class="vg-k">목표주가</span><b>${won(c.target)}</b></span>`:''}
+      ${c.upsidePct!=null?`<span class="cons-c"><span class="vg-k">괴리율</span><b style="color:${colNum(c.upsidePct)}">${sgn(c.upsidePct,'%')}</b></span>`:''}
+      ${c.opinion!=null?`<span class="cons-c"><span class="vg-k">투자의견</span><b>${c.opinion}</b></span>`:''}
+      </div></div>`;
+  }
+  if(en.reports&&en.reports.length){
+    const r=en.reports.map(x=>`<div class="rp"><span class="rp-f">${esc(x.firm)}</span><span class="rp-t">${esc(x.title)}</span><span class="rp-d">${ymd(x.date)}</span></div>`).join('');
+    h+=`<div class="en-sec"><div class="en-h">증권가 리포트</div>${r}</div>`;
+  }
+  if(en.peers&&en.peers.length){
+    const p=en.peers.map(x=>`<span class="peer">${esc(x.name)} <b style="color:${colNum(x.changePct)}">${sgn(x.changePct,'%')}</b></span>`).join('');
+    h+=`<div class="en-sec"><div class="en-h">동일업종</div><div class="peer-row">${p}</div></div>`;
+  }
+  if(en.news&&en.news.length){
+    const n=en.news.map(x=>`<a class="nw" href="${x.url||'#'}" target="_blank">
+      <span class="nw-t">${esc(x.title)}</span><span class="nw-m">${esc(x.office)} · ${hhmm(x.date)}</span></a>`).join('');
+    h+=`<div class="en-sec"><div class="en-h">최근 뉴스</div>${n}</div>`;
+  }
+  return h;
+}
+
+function cardBoth(it,i){
+  const tag = it.market==='KOSDAQ'?'KOSDAQ':'KOSPI';
+  return `<div class="card" data-code="${it.code}">
+    <div class="card-h" onclick="toggleCard('${it.code}')">
+      <span class="rank">${i}</span>
+      <span class="cn"><a href="${naverUrl(it.code)}" target="_blank" onclick="event.stopPropagation()">${esc(it.name)}</a>
+        <span class="tag ${tag}">${tag}</span></span>
+      <span class="cs">
+        <b style="color:var(--foreign)">외 ${volShort(it.f_net)} ${it.f_buydays}</b>
+        <b style="color:var(--pension)">연 ${volShort(it.p_net)} ${it.p_buydays}</b></span>
+      <span class="chev">⌄</span>
+    </div>
+    <div class="card-b">${renderEnrich(it.enrich)}</div>
+  </div>`;
 }
 function sectionBoth(title, list, cls){
   if(list.length===0) return '';
-  // 외국인 순매수일 우선, 같으면 외국인 금액
   list=list.slice().sort((x,y)=> bc(y.f_buydays)-bc(x.f_buydays) || y.f_net-x.f_net);
-  let rows=list.map((it,idx)=>rowBoth(it,idx+1)).join('');
+  const cards=list.map((it,idx)=>cardBoth(it,idx+1)).join('');
   return `<div class="mkt-head ${cls}">${title} <span>${list.length}</span></div>
-    <div class="tw"><table><thead><tr><th>#</th><th>종목</th>
-      <th class="num" style="color:var(--foreign)">외국인 순매수</th><th class="num">일수</th>
-      <th class="num" style="color:var(--pension)">연기금 순매수</th><th class="num">일수</th></tr></thead>
-    <tbody>${rows}</tbody></table></div>`;
+    <div class="cards">${cards}</div>`;
+}
+function toggleCard(code){
+  const card=document.querySelector('.card[data-code="'+code+'"]');
+  if(card) card.classList.toggle('open');
 }
 
 function render(){
