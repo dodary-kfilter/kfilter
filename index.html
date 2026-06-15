@@ -54,7 +54,8 @@
   .tag{font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:5px; letter-spacing:.5px}
   .tag.KOSPI{color:var(--kospi); background:rgba(88,166,255,.12)}
   .tag.KOSDAQ{color:var(--kosdaq); background:rgba(188,140,255,.12)}
-  .name{font-weight:600}
+  .name{font-weight:600; white-space:nowrap}
+  .tw{overflow-x:auto; -webkit-overflow-scrolling:touch}
   .name a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--line)}
   .name a:hover{color:var(--foreign)}
   .code{font-family:'Space Mono',monospace; font-size:11.5px; color:var(--dim); margin-top:2px}
@@ -116,9 +117,9 @@ function sectionSingle(title, list, cls){
   list=list.slice().sort((x,y)=> bc(y.buydays)-bc(x.buydays) || y.net-x.net);
   let rows=list.map((it,idx)=>rowSingle(it,idx+1)).join('');
   return `<div class="mkt-head ${cls}">${title} <span>${list.length}</span></div>
-    <table><thead><tr><th>#</th><th>종목</th>
+    <div class="tw"><table><thead><tr><th>#</th><th>종목</th>
       <th class="num">누적순매수(주)</th><th class="num">순매수일</th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+    <tbody>${rows}</tbody></table></div>`;
 }
 
 // ── 동시 탭 (외국인·연기금 둘 다) ──
@@ -137,10 +138,10 @@ function sectionBoth(title, list, cls){
   list=list.slice().sort((x,y)=> bc(y.f_buydays)-bc(x.f_buydays) || y.f_net-x.f_net);
   let rows=list.map((it,idx)=>rowBoth(it,idx+1)).join('');
   return `<div class="mkt-head ${cls}">${title} <span>${list.length}</span></div>
-    <table><thead><tr><th>#</th><th>종목</th>
+    <div class="tw"><table><thead><tr><th>#</th><th>종목</th>
       <th class="num" style="color:var(--foreign)">외국인 순매수</th><th class="num">일수</th>
       <th class="num" style="color:var(--pension)">연기금 순매수</th><th class="num">일수</th></tr></thead>
-    <tbody>${rows}</tbody></table>`;
+    <tbody>${rows}</tbody></table></div>`;
 }
 
 function render(){
