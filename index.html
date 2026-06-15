@@ -84,7 +84,16 @@
   .cn{font-weight:600; display:flex; align-items:center; gap:7px; min-width:0}
   .cn a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--line); white-space:nowrap}
   .cn a:hover{color:var(--both)}
-  .cs{margin-left:auto; display:flex; gap:12px; font-family:'Space Mono',monospace; font-size:11.5px; flex-wrap:wrap}
+  .cmid{flex:1; min-width:0; display:flex; flex-direction:column; gap:3px}
+  .cs{display:flex; gap:12px; font-family:'Space Mono',monospace; font-size:11.5px; flex-wrap:wrap}
+  .copybtn{font-family:'IBM Plex Sans KR',sans-serif; font-size:11.5px; font-weight:600; color:var(--both);
+    background:rgba(247,120,186,.1); border:1px solid rgba(247,120,186,.4); border-radius:7px;
+    padding:6px 10px; cursor:pointer; white-space:nowrap; flex:none; transition:all .15s}
+  .copybtn:hover{background:rgba(247,120,186,.2)}
+  .copybtn.copied{color:var(--foreign); border-color:var(--foreign); background:rgba(63,185,80,.14)}
+  .bothtip{font-size:12px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--both); border-radius:8px; padding:10px 12px; margin:8px 0 4px}
+  .bothtip b{color:var(--both)}
   .chev{color:var(--dim); transition:transform .2s; flex:none; font-size:13px}
   .card.open .chev{transform:rotate(180deg)}
   .card-b{display:none; padding:0 14px 14px; border-top:1px solid var(--line)}
@@ -133,7 +142,7 @@
   .nw-m{display:block; font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); margin-top:2px}
 
   @media(max-width:560px){.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}
-    .cs{width:100%; margin-left:0; margin-top:6px} .pk-r{width:104px} .vg{gap:6px 10px}}
+    .pk-r{width:104px} .vg{gap:6px 10px} .copybtn{padding:6px 8px; font-size:10.5px}}
 </style>
 </head>
 <body>
@@ -265,11 +274,14 @@ function cardBoth(it,i){
   return `<div class="card" data-code="${it.code}">
     <div class="card-h" onclick="toggleCard('${it.code}')">
       <span class="rank">${i}</span>
-      <span class="cn"><a href="${naverUrl(it.code)}" target="_blank" onclick="event.stopPropagation()">${esc(it.name)}</a>
-        <span class="tag ${tag}">${tag}</span></span>
-      <span class="cs">
-        <b style="color:var(--foreign)">외 ${volShort(it.f_net)} ${it.f_buydays}</b>
-        <b style="color:var(--pension)">연 ${volShort(it.p_net)} ${it.p_buydays}</b></span>
+      <div class="cmid">
+        <span class="cn"><a href="${naverUrl(it.code)}" target="_blank" onclick="event.stopPropagation()">${esc(it.name)}</a>
+          <span class="tag ${tag}">${tag}</span></span>
+        <span class="cs">
+          <b style="color:var(--foreign)">외 ${volShort(it.f_net)} ${it.f_buydays}</b>
+          <b style="color:var(--pension)">연 ${volShort(it.p_net)} ${it.p_buydays}</b></span>
+      </div>
+      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 복사 → Claude에 붙여넣기">프롬프트 복사</button>
       <span class="chev">⌄</span>
     </div>
     <div class="card-b">${renderEnrich(it.enrich)}</div>
@@ -287,6 +299,43 @@ function toggleCard(code){
   if(card) card.classList.toggle('open');
 }
 
+// ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
+function buildPrompt(it){
+  const url='https://dodary-kfilter.github.io/kfilter/report-data/'+it.code+'.json';
+  return `${it.name}(${it.code}) 투자 분석 리포트를 작성해줘.
+
+데이터(원본 전체): ${url}
+위 링크를 열어서 안의 JSON 데이터를 읽고, 아래 항목을 빠짐없이 분석해줘. 숫자엔 반드시 해석을 붙이고, 데이터에 없는 맥락(업종 평균 밸류, 섹터 업황·동향, 뉴스·공시의 배경과 촉매, 실적 추이의 의미, 매크로 등)은 웹 검색으로 보충해줘. 데이터에 있는 숫자는 지어내지 말고 그대로 사용해.
+
+1. 수급 — 외국인·연기금 동시 매집 강도와 지속성, 최근 일별 흐름(외인/기관/개인)
+2. 주가 위치·추이 — 현재가, 52주 위치, 이평선(5·20·60·120) 정배열 여부
+3. 매물대 — 주요 구간으로 본 지지/저항
+4. 밸류에이션 — PER vs 추정PER(이익개선 기대), PBR, 배당 — 업종 평균과 비교(검색)
+5. 실적 — 매출·영업이익·영업이익률·순이익 추이(연간/분기) + 컨센서스 추정치 의미
+6. 증권가 컨센서스 — 목표주가 괴리율·투자의견·최근 리포트 논지
+7. 공시 — 주요 공시 점검(노이즈성 제외, 의미 있는 것 위주)
+8. 뉴스·이슈 — 핵심 촉매·배경(검색 보충)
+9. 종합 투자 의견 — 강점·리스크·시나리오·매력도 (참고용, 매수/매도 단정 아님)`;
+}
+function copyPrompt(ev, code){
+  ev.stopPropagation();
+  const it=(DATA && DATA.both||[]).find(x=>x.code===code);
+  if(!it) return;
+  const text=buildPrompt(it);
+  const btn=ev.currentTarget;
+  const done=()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  }else{ fallbackCopy(text,done); }
+}
+function fallbackCopy(text, done){
+  const ta=document.createElement('textarea'); ta.value=text;
+  ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.focus(); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta); done();
+}
+
 function render(){
   const content=document.getElementById('content');
   if(!DATA){content.innerHTML='<div class="empty">데이터 없음</div>';return;}
@@ -296,7 +345,8 @@ function render(){
   const kospi=items.filter(x=>x.market==='KOSPI');
   const kosdaq=items.filter(x=>x.market==='KOSDAQ');
   if(CUR==='both'){
-    content.innerHTML = sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
+    const tip='<div class="bothtip"><b>프롬프트 복사</b> → Claude에 붙여넣으면 그 종목 원본 데이터(수급·주가·실적·밸류·컨센서스·공시·뉴스)를 링크로 읽어 분석 리포트를 만들어줍니다. 부족한 건 Claude가 검색으로 보충합니다.</div>';
+    content.innerHTML = tip + sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
   }else{
     content.innerHTML = sectionSingle('KOSPI', kospi, 'kospi') + sectionSingle('KOSDAQ', kosdaq, 'kosdaq');
   }

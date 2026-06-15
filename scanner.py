@@ -15,7 +15,7 @@
 실행: python scanner.py
 ---------------------------------------------------------------
 """
-import re, ast, time, json, html
+import re, ast, time, json, html, os
 from statistics import mean
 from datetime import datetime, timedelta
 import requests
@@ -44,6 +44,10 @@ CHART_URL = ("https://m.stock.naver.com/front-api/external/chart/domestic/info"
              "?symbol={code}&requestType=1&startTime={start}&endTime={end}&timeframe=day")
 INTEG_URL = "https://m.stock.naver.com/api/stock/{code}/integration"
 NEWS_URL  = "https://api.stock.naver.com/news/stock/{code}?pageSize=6&page=1"
+FIN_A_URL = "https://m.stock.naver.com/api/stock/{code}/finance/annual"
+FIN_Q_URL = "https://m.stock.naver.com/api/stock/{code}/finance/quarter"
+DISC_URL  = "https://m.stock.naver.com/api/stock/{code}/disclosure?pageSize=10&page=1"
+REPORT_DIR = "report-data"
 
 def nhdr(code):
     return {"User-Agent": UA,
@@ -204,32 +208,81 @@ def judge(series):
     cum = sum(recent); buy = sum(1 for x in recent if x > 0)
     return (cum > 0 and buy / WINDOW >= BUY_RATIO_MIN), cum, buy
 
-def enrich_stock(code):
-    """both 종목 1개 분석 데이터. 부분 실패 허용(개별 키 None/에러표시)."""
-    out = {}
-    now_price = None
+def fetch_all(code):
+    """6개 엔드포인트 원본 응답을 한 번에. 개별 실패 허용(None + _err)."""
     end = datetime.now().strftime("%Y%m%d")
     start = (datetime.now() - timedelta(days=CANDLE_DAYS)).strftime("%Y%m%d")
-    # 1) 일봉 → 주가/이평선/매물대
+    spec = [
+        ("candles", CHART_URL.format(code=code, start=start, end=end), True),
+        ("integ",   INTEG_URL.format(code=code), False),
+        ("fin_a",   FIN_A_URL.format(code=code), False),
+        ("fin_q",   FIN_Q_URL.format(code=code), False),
+        ("disc",    DISC_URL.format(code=code), False),
+        ("news",    NEWS_URL.format(code=code), False),
+    ]
+    out = {}
+    for key, url, as_text in spec:
+        try:
+            r = requests.get(url, headers=nhdr(code), timeout=10)
+            out[key] = r.text if as_text else r.json()
+        except Exception as e:
+            out[key] = None
+            out[key + "_err"] = str(e)
+    return out
+
+def write_report_file(code, name, market, supply, raw, price_block):
+    """리포트용 원본 풀데이터 → report-data/{code}.json"""
+    integ = raw.get("integ") or {}
+    payload = {
+        "code": code, "name": name, "market": market,
+        "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "supply_10d": supply,                                  # 외인/연기금 최근10일 (토스)
+        "supply_recent_daily": integ.get("dealTrendInfos"),    # 최근 5일 외인/기관/개인 (원본)
+        "price": price_block,                                  # 현재가·이평·매물대·52주·추이
+        "valuation": integ.get("totalInfos"),                  # PER·추정PER·PBR·EPS·BPS·배당 등 (원본)
+        "consensus": integ.get("consensusInfo"),               # 목표주가·투자의견 (원본)
+        "researches": integ.get("researches"),                 # 증권사 리포트 (원본)
+        "industry_peers": integ.get("industryCompareInfo"),    # 동일업종 비교 (원본, 풀필드)
+        "financials_annual": (raw.get("fin_a") or {}).get("financeInfo"),    # 연간 실적 (원본)
+        "financials_quarter": (raw.get("fin_q") or {}).get("financeInfo"),   # 분기 실적 (원본)
+        "disclosures": raw.get("disc"),                        # 공시 (원본)
+        "news": parse_news(raw["news"]) if raw.get("news") else None,
+        "_errors": {k: v for k, v in raw.items() if k.endswith("_err")},
+    }
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    with open(os.path.join(REPORT_DIR, f"{code}.json"), "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+def enrich_stock(code, name="", market="", supply=None):
+    """원본 풀데이터를 종목별 파일로 저장하고, 화면용(data.json) 요약을 반환."""
+    raw = fetch_all(code)
+    # 일봉 → 가격블록 (한 번만 계산해 양쪽에 사용)
+    price_block = None
+    if raw.get("candles"):
+        try:
+            price_block = compute_price_block(parse_candles(raw["candles"]))
+        except Exception:
+            price_block = None
+    # 리포트용 원본 파일 저장
     try:
-        r = requests.get(CHART_URL.format(code=code, start=start, end=end), headers=nhdr(code), timeout=10)
-        pb = compute_price_block(parse_candles(r.text))
-        if pb:
-            out.update(pb); now_price = pb["now"]
+        write_report_file(code, name, market, supply or {}, raw, price_block)
     except Exception as e:
-        out["_priceErr"] = str(e)
-    # 2) integration → 밸류/컨센서스/리포트/업종
-    try:
-        r = requests.get(INTEG_URL.format(code=code), headers=nhdr(code), timeout=10)
-        out.update(parse_integration(r.json(), now_price))
-    except Exception as e:
-        out["_integErr"] = str(e)
-    # 3) 뉴스
-    try:
-        r = requests.get(NEWS_URL.format(code=code), headers=nhdr(code), timeout=10)
-        out["news"] = parse_news(r.json())
-    except Exception as e:
-        out["_newsErr"] = str(e)
+        print(f"  report 파일 저장 실패 {code}: {e}", flush=True)
+    # 화면용 요약(기존과 동일한 형태)
+    out = {}
+    now_price = None
+    if price_block:
+        out.update(price_block); now_price = price_block["now"]
+    if raw.get("integ"):
+        try:
+            out.update(parse_integration(raw["integ"], now_price))
+        except Exception as e:
+            out["_integErr"] = str(e)
+    if raw.get("news"):
+        try:
+            out["news"] = parse_news(raw["news"])
+        except Exception as e:
+            out["_newsErr"] = str(e)
     return out
 
 def main():
@@ -270,11 +323,14 @@ def main():
         })
     both.sort(key=lambda x: x["f_net"], reverse=True)
 
-    # [신규] 동시 종목에만 분석 데이터 부착
+    # [신규] 동시 종목에만 분석 데이터 부착 + 원본 풀데이터 파일 저장
     print(f"동시 {len(both)}개 분석 데이터 수집…", flush=True)
     for b in both:
         try:
-            b["enrich"] = enrich_stock(b["code"])
+            b["enrich"] = enrich_stock(
+                b["code"], b["name"], b["market"],
+                {"foreign_net_10d": b["f_net"], "foreign_buydays": b["f_buydays"],
+                 "pension_net_10d": b["p_net"], "pension_buydays": b["p_buydays"]})
         except Exception as e:
             b["enrich"] = None
             print(f"  enrich 실패 {b['code']}: {e}", flush=True)
