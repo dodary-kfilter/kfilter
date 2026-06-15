@@ -2,14 +2,30 @@
   "code": "323410",
   "name": "카카오뱅크",
   "market": "KOSPI",
-  "updated": "2026-06-15 05:33",
+  "updated": "2026-06-15 21:49",
   "supply_10d": {
-    "foreign_net_10d": 1816571,
+    "foreign_net_10d": 1856847,
     "foreign_buydays": "8/10",
-    "pension_net_10d": 705761,
+    "pension_net_10d": 652793,
     "pension_buydays": "8/10"
   },
   "supply_recent_daily": [
+    {
+      "itemCode": "323410",
+      "bizdate": "20260615",
+      "foreignerPureBuyQuant": "-8,520",
+      "foreignerHoldRatio": "16.87%",
+      "organPureBuyQuant": "-57,587",
+      "individualPureBuyQuant": "+69,600",
+      "closePrice": "23,800",
+      "compareToPreviousClosePrice": "50",
+      "compareToPreviousPrice": {
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
+      },
+      "accumulatedTradingVolume": "906,869"
+    },
     {
       "itemCode": "323410",
       "bizdate": "20260612",
@@ -73,47 +89,31 @@
         "name": "RISING"
       },
       "accumulatedTradingVolume": "2,472,156"
-    },
-    {
-      "itemCode": "323410",
-      "bizdate": "20260608",
-      "foreignerPureBuyQuant": "+177,205",
-      "foreignerHoldRatio": "16.63%",
-      "organPureBuyQuant": "-52,610",
-      "individualPureBuyQuant": "-123,594",
-      "closePrice": "22,750",
-      "compareToPreviousClosePrice": "-300",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      },
-      "accumulatedTradingVolume": "1,470,650"
     }
   ],
   "price": {
-    "now": 23750,
+    "now": 23800,
     "prevClose": 23750,
-    "changePct": 0.0,
+    "changePct": 0.21,
     "ma": {
-      "ma5": 24010.0,
-      "ma20": 22740.0,
-      "ma60": 23864.2,
-      "ma120": 23789.6,
+      "ma5": 24020.0,
+      "ma20": 22742.5,
+      "ma60": 23865.0,
+      "ma120": 23790.0,
       "aligned": false,
       "vs": {
-        "ma5": -1.08,
-        "ma20": 4.44,
-        "ma60": -0.48,
-        "ma120": -0.17
+        "ma5": -0.92,
+        "ma20": 4.65,
+        "ma60": -0.27,
+        "ma120": 0.04
       }
     },
-    "trend20": 0.64,
+    "trend20": 0.85,
     "pocket": [
       {
         "low": 23345,
         "high": 23728,
-        "volPct": 11.3
+        "volPct": 11.2
       },
       {
         "low": 24875,
@@ -156,7 +156,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "23,700",
+      "value": "23,600",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -166,17 +166,17 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,108,516"
+      "value": "1,430,331"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "26,619백만"
+      "value": "34,272백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "11조 3,316억"
+      "value": "11조 3,555억"
     },
     {
       "code": "foreignRate",
@@ -196,7 +196,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "21.38배",
+      "value": "21.42배",
       "valueDesc": "2026.03."
     },
     {
@@ -208,7 +208,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "18.82배"
+      "value": "18.86배"
     },
     {
       "code": "cnsEps",
@@ -230,7 +230,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "1.94%",
+      "value": "1.93%",
       "valueDesc": "2026.02."
     },
     {
@@ -253,7 +253,7 @@
       "nm": "카카오뱅크",
       "bnm": "교보증권",
       "tit": "1Q26 Review: 지속적인 고객 확대를 통한 성장 모멘텀 유효",
-      "rcnt": "5618",
+      "rcnt": "5657",
       "wdt": "20260507"
     },
     {
@@ -262,7 +262,7 @@
       "nm": "카카오뱅크",
       "bnm": "하나증권",
       "tit": "실적은 예상 부합. 기대 요인은 스테이블코인 관련 모멘텀",
-      "rcnt": "3884",
+      "rcnt": "3908",
       "wdt": "20260507"
     },
     {
@@ -271,7 +271,7 @@
       "nm": "카카오뱅크",
       "bnm": "대신증권",
       "tit": "슈퍼뱅크 상장차익으로 사상 최대 실적 달성",
-      "rcnt": "3901",
+      "rcnt": "3925",
       "wdt": "20260507"
     },
     {
@@ -280,7 +280,7 @@
       "nm": "카카오뱅크",
       "bnm": "신한투자증권",
       "tit": "자본효율성 제고 노력 지속",
-      "rcnt": "3344",
+      "rcnt": "3357",
       "wdt": "20260507"
     },
     {
@@ -289,7 +289,7 @@
       "nm": "카카오뱅크",
       "bnm": "한화투자증권",
       "tit": "성장 동력의 둔화",
-      "rcnt": "5059",
+      "rcnt": "5073",
       "wdt": "20260506"
     }
   ],
@@ -301,17 +301,17 @@
       "reutersCode": "105560",
       "stockName": "KB금융",
       "sosok": "0",
-      "closePrice": "170,800",
-      "compareToPreviousClosePrice": "9,600",
+      "closePrice": "169,600",
+      "compareToPreviousClosePrice": "8,400",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "5.96",
+      "fluctuationsRatio": "5.21",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "60,580,664",
+      "marketValue": "60,155,039",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -338,17 +338,17 @@
       "reutersCode": "055550",
       "stockName": "신한지주",
       "sosok": "0",
-      "closePrice": "106,200",
-      "compareToPreviousClosePrice": "6,600",
+      "closePrice": "105,600",
+      "compareToPreviousClosePrice": "6,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "6.63",
+      "fluctuationsRatio": "6.02",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "50,408,293",
+      "marketValue": "50,123,500",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -375,17 +375,17 @@
       "reutersCode": "086790",
       "stockName": "하나금융지주",
       "sosok": "0",
-      "closePrice": "129,800",
-      "compareToPreviousClosePrice": "8,800",
+      "closePrice": "129,300",
+      "compareToPreviousClosePrice": "8,300",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "7.27",
+      "fluctuationsRatio": "6.86",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "35,612,933",
+      "marketValue": "35,475,749",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -412,17 +412,17 @@
       "reutersCode": "316140",
       "stockName": "우리금융지주",
       "sosok": "0",
-      "closePrice": "32,650",
-      "compareToPreviousClosePrice": "1,500",
+      "closePrice": "32,550",
+      "compareToPreviousClosePrice": "1,400",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "4.82",
+      "fluctuationsRatio": "4.49",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "23,967,591",
+      "marketValue": "23,894,184",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -449,17 +449,17 @@
       "reutersCode": "024110",
       "stockName": "기업은행",
       "sosok": "0",
-      "closePrice": "22,500",
-      "compareToPreviousClosePrice": "700",
+      "closePrice": "22,400",
+      "compareToPreviousClosePrice": "600",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "3.21",
+      "fluctuationsRatio": "2.75",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "17,942,082",
+      "marketValue": "17,862,339",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -486,17 +486,17 @@
       "reutersCode": "138930",
       "stockName": "BNK금융지주",
       "sosok": "0",
-      "closePrice": "18,090",
-      "compareToPreviousClosePrice": "420",
+      "closePrice": "18,020",
+      "compareToPreviousClosePrice": "350",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "2.38",
+      "fluctuationsRatio": "1.98",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,613,816",
+      "marketValue": "5,592,093",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1455,40 +1455,40 @@
   ],
   "news": [
     {
-      "title": "AI로 GDP 2배 성장, 불완전 고용률도 2배…2030년 미국의 역설",
-      "office": "서울경제",
-      "date": "202606151418",
-      "url": "https://n.news.naver.com/mnews/article/011/0004631236"
+      "title": "개인사업자대출 키운 케이뱅크…수익 다변화로 성장판 키운다[케이뱅...",
+      "office": "한경비즈니스",
+      "date": "202606160411",
+      "url": "https://n.news.naver.com/mnews/article/050/0000107358"
     },
     {
-      "title": "미국 AI 규제 시작…앤스로픽 직격탄",
-      "office": "서울경제",
-      "date": "202606151417",
-      "url": "https://n.news.naver.com/mnews/article/011/0004631229"
+      "title": "케이뱅크, 고액연봉자 신용대출 한도 축소·마통 신규 발급 중단",
+      "office": "뉴스1",
+      "date": "202606151829",
+      "url": "https://n.news.naver.com/mnews/article/421/0009005008"
     },
     {
-      "title": "청년미래적금 22일 출시…가입 전 ‘심사·갈아타기’ 절차 확인해야",
-      "office": "조세일보",
-      "date": "202606151204",
-      "url": "https://n.news.naver.com/mnews/article/123/0002384731"
+      "title": "최고 19% 금리 '청년미래적금' 22일부터 신청 접수",
+      "office": "파이낸셜뉴스",
+      "date": "202606151813",
+      "url": "https://n.news.naver.com/mnews/article/014/0005535157"
     },
     {
-      "title": "디캠프·핀테크지원센터, 24일 ‘스타트업 OI #금융권’ 개최…금융사...",
-      "office": "동아일보",
-      "date": "202606151144",
-      "url": "https://n.news.naver.com/mnews/article/020/0003726829"
+      "title": "한국투자증권, 카카오뱅크 앱 통해 적립식 발행어음 서비스 개시",
+      "office": "머니투데이",
+      "date": "202606151716",
+      "url": "https://n.news.naver.com/mnews/article/008/0005372184"
     },
     {
-      "title": "2주만에 5대은행 요구불예금 15조 썰물…증시 저가매수 ‘머니무브’",
-      "office": "헤럴드경제",
-      "date": "202606151123",
-      "url": "https://n.news.naver.com/mnews/article/016/0002656623"
+      "title": "디캠프·한국핀테크지원센터, 스타트업-금융권 협업성과 공유회 연다",
+      "office": "중앙일보",
+      "date": "202606151530",
+      "url": "https://n.news.naver.com/mnews/article/025/0003530550"
     },
     {
-      "title": "카카오뱅크, 외화통장 출시…9개 외화 지원",
-      "office": "전자신문",
-      "date": "202606151116",
-      "url": "https://n.news.naver.com/mnews/article/030/0003437581"
+      "title": "청년미래적금 22일 출시…월 50만원씩 넣으면 최대 2255만원",
+      "office": "디지털데일리",
+      "date": "202606151504",
+      "url": "https://n.news.naver.com/mnews/article/138/0002230926"
     }
   ],
   "_errors": {}
