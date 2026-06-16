@@ -30,6 +30,22 @@ ENRICH_DELAY = 0.4        # enrich: 종목당 간격(초, both만이라 소수)
 CANDLE_DAYS = 220         # 일봉 조회 일수(이평120 + 여유)
 POCKET_BINS = 20          # 매물대 가격대 구간 수
 POCKET_TOP  = 3           # 매물대 상위 N구간
+
+# 내 보유 종목(포트폴리오) — 수급 필터와 무관하게 항상 처리/표시
+#  ptype: stock=일반주 표준 / single_lev=단일종목 레버리지(원종목 리포트 재사용)
+#         index_lev=지수 레버리지(기초 수급·추세) / sector_lev=섹터 레버리지(기초+업황)
+PORTFOLIO = [
+    {"code": "005930", "name": "삼성전자",   "market": "KOSPI",  "ptype": "stock"},
+    {"code": "000660", "name": "SK하이닉스", "market": "KOSPI",  "ptype": "stock"},
+    {"code": "440110", "name": "파두",       "market": "KOSDAQ", "ptype": "stock"},
+    {"code": "402340", "name": "SK스퀘어",   "market": "KOSPI",  "ptype": "stock"},
+    {"code": "009150", "name": "삼성전기",   "market": "KOSPI",  "ptype": "stock"},
+    {"code": "074600", "name": "원익QnC",    "market": "KOSDAQ", "ptype": "stock"},
+    {"code": "823410", "name": "KODEX 삼성전자레버리지",   "market": "KOSPI", "ptype": "single_lev", "underlying": "005930", "under_name": "삼성전자"},
+    {"code": "823420", "name": "KODEX SK하이닉스레버리지", "market": "KOSPI", "ptype": "single_lev", "underlying": "000660", "under_name": "SK하이닉스"},
+    {"code": "122630", "name": "KODEX 레버리지",            "market": "KOSPI", "ptype": "index_lev",  "basis": "코스피200"},
+    {"code": "580023", "name": "키움 레버리지 전력TOP5 ETN", "market": "KOSPI", "ptype": "sector_lev", "basis": "전력기기 섹터"},
+]
 # ===============
 
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -207,6 +223,19 @@ def judge(series):
         return False, 0, 0
     cum = sum(recent); buy = sum(1 for x in recent if x > 0)
     return (cum > 0 and buy / WINDOW >= BUY_RATIO_MIN), cum, buy
+
+def port_supply(code):
+    """포트폴리오 표기용: 외국인·연기금 최근 WINDOW일 누적·매수일·필터통과 여부."""
+    tr = get_trend(code)
+    if not tr:
+        return None
+    f_series, p_series = tr
+    f_ok, f_cum, f_bd = judge(f_series)
+    p_ok, p_cum, p_bd = judge(p_series)
+    return {
+        "foreign_net_10d": int(f_cum), "foreign_buydays": f"{f_bd}/{WINDOW}", "foreign_pass": f_ok,
+        "pension_net_10d": int(p_cum), "pension_buydays": f"{p_bd}/{WINDOW}", "pension_pass": p_ok,
+    }
 
 def toi(x):
     try:
@@ -422,6 +451,31 @@ def main():
             print(f"  enrich 실패 {b['code']}: {e}", flush=True)
         time.sleep(ENRICH_DELAY)
 
+    # [신규] 포트폴리오(보유) 종목 — 필터 무관 항상 처리. 수급은 표기용으로 같이 계산.
+    print(f"포트폴리오 {len(PORTFOLIO)}개 처리…", flush=True)
+    portfolio = []
+    for it in PORTFOLIO:
+        code, name, ptype = it["code"], it["name"], it["ptype"]
+        entry = {"code": code, "name": name, "market": it.get("market", ""), "ptype": ptype}
+        if "basis" in it:
+            entry["basis"] = it["basis"]
+        try:
+            if ptype == "single_lev":
+                # 리포트는 원종목 파일 재사용(중복 스크랩 안 함). 카드 수급은 원종목 기준.
+                entry["underlying"] = it["underlying"]
+                entry["under_name"] = it["under_name"]
+                entry["supply"] = port_supply(it["underlying"])
+            else:
+                # stock / index_lev / sector_lev: 직접 수급 + enrich(원본 리포트 파일 생성)
+                sup = port_supply(code)
+                entry["supply"] = sup
+                entry["enrich"] = enrich_stock(code, name, it.get("market", ""), sup or {})
+                time.sleep(ENRICH_DELAY)
+        except Exception as e:
+            entry["enrich"] = None
+            print(f"  포트 처리 실패 {code}: {e}", flush=True)
+        portfolio.append(entry)
+
     result = {
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "window": WINDOW, "buy_ratio": int(BUY_RATIO_MIN * 100),
@@ -429,10 +483,11 @@ def main():
         "foreign": foreign_pass,
         "pension": pension_pass,
         "both": both,
+        "portfolio": portfolio,
     }
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
-    print(f"완료. 외국인 {len(foreign_pass)} / 연기금 {len(pension_pass)} / 동시 {len(both)} → data.json", flush=True)
+    print(f"완료. 외국인 {len(foreign_pass)} / 연기금 {len(pension_pass)} / 동시 {len(both)} / 포트 {len(portfolio)} → data.json", flush=True)
 
 if __name__ == "__main__":
     main()
