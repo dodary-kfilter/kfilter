@@ -41,7 +41,7 @@ HDR_TOSS  = {"User-Agent": UA, "Accept": "application/json",
 TOSS_URL = ("https://wts-info-api.tossinvest.com/api/v1/stock-infos/trade/trend/"
             "trading-trend?productCode=A{code}&size=60")
 CHART_URL = ("https://m.stock.naver.com/front-api/external/chart/domestic/info"
-             "?symbol={code}&requestType=1&startTime={start}&endTime={end}&timeframe=day")
+             "?symbol={code}&requestType=1&startTime={start}&endTime={end}&timeframe={tf}")
 INTEG_URL = "https://m.stock.naver.com/api/stock/{code}/integration"
 NEWS_URL  = "https://api.stock.naver.com/news/stock/{code}?pageSize=6&page=1"
 FIN_A_URL = "https://m.stock.naver.com/api/stock/{code}/finance/annual"
@@ -208,12 +208,68 @@ def judge(series):
     cum = sum(recent); buy = sum(1 for x in recent if x > 0)
     return (cum > 0 and buy / WINDOW >= BUY_RATIO_MIN), cum, buy
 
+def toi(x):
+    try:
+        return int(float(str(x).replace(",", "").replace("+", "").strip()))
+    except Exception:
+        return 0
+
+INV_FIELDS = [
+    ("netIndividualsBuyVolume", "개인"),
+    ("netForeignerBuyVolume", "외국인"),
+    ("netInstitutionBuyVolume", "기관계"),
+    ("netFinancialInvestmentBuyVolume", "금융투자"),
+    ("netTrustBuyVolume", "투신"),
+    ("netPrivateEquityFundBuyVolume", "사모"),
+    ("netInsuranceBuyVolume", "보험"),
+    ("netBankBuyVolume", "은행"),
+    ("netOtherFinancialInstitutionsBuyVolume", "기타금융"),
+    ("netPensionFundBuyVolume", "연기금"),
+    ("netOtherCorporationBuyVolume", "기타법인"),
+]
+
+def build_supply_detail(body):
+    """토스 일별 투자자별 → 최근 20일 + 누적(5/20/60일) by 투자주체 + 외인보유율 추이."""
+    if not body:
+        return None
+    daily = []
+    for r in body[:20]:
+        rec = {"date": r.get("baseDate"), "close": toi(r.get("close")),
+               "foreignRatio": r.get("foreignerRatio")}
+        for k, lab in INV_FIELDS:
+            rec[lab] = toi(r.get(k))
+        daily.append(rec)
+    def cum(n):
+        return {lab: sum(toi(row.get(k)) for row in body[:n]) for k, lab in INV_FIELDS}
+    fr = [{"date": r.get("baseDate"), "ratio": r.get("foreignerRatio")} for r in body[:20]]
+    return {"recent_daily": daily, "cum_5d": cum(5), "cum_20d": cum(20), "cum_60d": cum(60),
+            "foreign_ratio_trend": fr}
+
+def compute_tf(candles, ma_list, recent_n):
+    """주봉/월봉 등 일반 타임프레임 블록: 이평·정배열·구간내 위치·최근봉."""
+    closes = [float(r[4]) for r in candles]
+    if len(closes) < 2:
+        return None
+    now = closes[-1]
+    mas = {f"ma{w}": (round(mean(closes[-w:]), 1) if len(closes) >= w else None) for w in ma_list}
+    vals = [mas[f"ma{w}"] for w in ma_list]
+    aligned = all(v is not None for v in vals) and all(vals[i] > vals[i + 1] for i in range(len(vals) - 1))
+    hi, lo = max(closes), min(closes)
+    pos = round((now - lo) / (hi - lo) * 100, 1) if hi > lo else None
+    recent = [{"d": r[0], "c": round(float(r[4]))} for r in candles[-recent_n:]]
+    return {"now": round(now), "ma": mas, "aligned": aligned,
+            "rangeHigh": round(hi), "rangeLow": round(lo), "posPct": pos, "recent": recent}
+
 def fetch_all(code):
-    """6개 엔드포인트 원본 응답을 한 번에. 개별 실패 허용(None + _err)."""
+    """원본 응답 한 번에(일/주/월봉 + integration + 실적 + 공시 + 뉴스 + 토스 투자자별). 개별 실패 허용."""
     end = datetime.now().strftime("%Y%m%d")
-    start = (datetime.now() - timedelta(days=CANDLE_DAYS)).strftime("%Y%m%d")
+    start   = (datetime.now() - timedelta(days=CANDLE_DAYS)).strftime("%Y%m%d")
+    start_w = (datetime.now() - timedelta(days=365 * 5)).strftime("%Y%m%d")
+    start_m = (datetime.now() - timedelta(days=365 * 10)).strftime("%Y%m%d")
     spec = [
-        ("candles", CHART_URL.format(code=code, start=start, end=end), True),
+        ("candles",   CHART_URL.format(code=code, start=start,   end=end, tf="day"),   True),
+        ("candles_w", CHART_URL.format(code=code, start=start_w, end=end, tf="week"),  True),
+        ("candles_m", CHART_URL.format(code=code, start=start_m, end=end, tf="month"), True),
         ("integ",   INTEG_URL.format(code=code), False),
         ("fin_a",   FIN_A_URL.format(code=code), False),
         ("fin_q",   FIN_Q_URL.format(code=code), False),
@@ -228,19 +284,29 @@ def fetch_all(code):
         except Exception as e:
             out[key] = None
             out[key + "_err"] = str(e)
+    # 토스 투자자별 상세
+    try:
+        tr = requests.get(TOSS_URL.format(code=code), headers=HDR_TOSS, timeout=10)
+        out["toss"] = tr.json().get("result", {}).get("body", [])
+    except Exception as e:
+        out["toss"] = None
+        out["toss_err"] = str(e)
     return out
 
-def write_report_file(code, name, market, supply, raw, price_block):
+def write_report_file(code, name, market, supply, raw, price_block,
+                      week_block=None, month_block=None, supply_detail=None):
     """리포트용 원본 풀데이터 → report-data/{code}.json"""
     integ = raw.get("integ") or {}
     payload = {
         "code": code, "name": name, "market": market,
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "supply_10d": supply,                                  # 외인/연기금 최근10일 (토스)
-        "supply_recent_daily": integ.get("dealTrendInfos"),    # 최근 5일 외인/기관/개인 (원본)
-        "price": price_block,                                  # 현재가·이평·매물대·52주·추이
+        "supply_detail": supply_detail,                        # 투자자별 세부(개인/외인/금융투자/투신/사모/보험/은행/연기금/기타법인) + 외인보유율 추이
+        "price_daily": price_block,                            # 일봉: 현재가·이평(5/20/60/120)·매물대·52주·추이
+        "price_weekly": week_block,                            # 주봉: 이평·정배열·구간위치·최근봉
+        "price_monthly": month_block,                          # 월봉: 장기 추세·구간위치·최근봉
         "valuation": integ.get("totalInfos"),                  # PER·추정PER·PBR·EPS·BPS·배당 등 (원본)
-        "consensus": integ.get("consensusInfo"),               # 목표주가·투자의견 (원본)
+        "consensus": integ.get("consensusInfo"),               # 목표주가·투자의견·제시일 (원본)
         "researches": integ.get("researches"),                 # 증권사 리포트 (원본)
         "industry_peers": integ.get("industryCompareInfo"),    # 동일업종 비교 (원본, 풀필드)
         "financials_annual": (raw.get("fin_a") or {}).get("financeInfo"),    # 연간 실적 (원본)
@@ -254,21 +320,41 @@ def write_report_file(code, name, market, supply, raw, price_block):
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
 def enrich_stock(code, name="", market="", supply=None):
-    """원본 풀데이터를 종목별 파일로 저장하고, 화면용(data.json) 요약을 반환."""
+    """원본 풀데이터(일/주/월봉 + 투자자별 세부 포함)를 종목별 파일로 저장, 화면용 요약 반환."""
     raw = fetch_all(code)
-    # 일봉 → 가격블록 (한 번만 계산해 양쪽에 사용)
+    # 일봉 가격블록
     price_block = None
     if raw.get("candles"):
         try:
             price_block = compute_price_block(parse_candles(raw["candles"]))
         except Exception:
             price_block = None
-    # 리포트용 원본 파일 저장
+    # 주봉/월봉 블록
+    week_block = month_block = None
     try:
-        write_report_file(code, name, market, supply or {}, raw, price_block)
+        if raw.get("candles_w"):
+            week_block = compute_tf(parse_candles(raw["candles_w"]), [5, 10, 20, 60], 26)
+    except Exception:
+        week_block = None
+    try:
+        if raw.get("candles_m"):
+            month_block = compute_tf(parse_candles(raw["candles_m"]), [6, 12, 24], 24)
+    except Exception:
+        month_block = None
+    # 투자자별 세부 수급
+    supply_detail = None
+    try:
+        if raw.get("toss"):
+            supply_detail = build_supply_detail(raw["toss"])
+    except Exception:
+        supply_detail = None
+    # 리포트 파일 저장
+    try:
+        write_report_file(code, name, market, supply or {}, raw, price_block,
+                          week_block, month_block, supply_detail)
     except Exception as e:
         print(f"  report 파일 저장 실패 {code}: {e}", flush=True)
-    # 화면용 요약(기존과 동일한 형태)
+    # 화면용 요약(기존과 동일)
     out = {}
     now_price = None
     if price_block:
