@@ -11,7 +11,7 @@
   :root{
     --bg:#0a0e14; --panel:#111722; --line:#1e2733;
     --txt:#e6edf3; --dim:#8b98a9;
-    --foreign:#3fb950; --pension:#d29922; --both:#f778ba;
+    --foreign:#3fb950; --pension:#d29922; --both:#f778ba; --port:#58a6ff;
     --kospi:#58a6ff; --kosdaq:#bc8cff; --red:#ef5350;
   }
   *{margin:0;padding:0;box-sizing:border-box}
@@ -44,6 +44,8 @@
   .tab.active[data-k="foreign"]{border-color:var(--foreign)}
   .tab.active[data-k="pension"]{border-color:var(--pension)}
   .tab.active[data-k="both"]{border-color:var(--both)}
+  .tab[data-k="portfolio"] .c{color:var(--port)}
+  .tab.active[data-k="portfolio"]{border-color:var(--port)}
   table{width:100%; border-collapse:collapse; font-size:14px}
   thead th{text-align:left; font-size:11.5px; font-weight:600; color:var(--dim); text-transform:uppercase;
     letter-spacing:.5px; padding:10px 12px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg)}
@@ -54,6 +56,8 @@
   .tag{font-family:'Space Mono',monospace; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:5px; letter-spacing:.5px}
   .tag.KOSPI{color:var(--kospi); background:rgba(88,166,255,.12)}
   .tag.KOSDAQ{color:var(--kosdaq); background:rgba(188,140,255,.12)}
+  .tag.port{color:var(--port); background:rgba(88,166,255,.12)}
+  .psub{color:var(--dim); font-size:11px}
   .name{font-weight:600; white-space:nowrap}
   .tw{overflow-x:auto; -webkit-overflow-scrolling:touch}
   .name a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--line)}
@@ -156,6 +160,7 @@
     <div class="tab active" data-k="foreign" onclick="show('foreign')"><div class="c" id="c-foreign">—</div><div class="l">외국인</div></div>
     <div class="tab" data-k="pension" onclick="show('pension')"><div class="c" id="c-pension">—</div><div class="l">연기금</div></div>
     <div class="tab" data-k="both" onclick="show('both')"><div class="c" id="c-both">—</div><div class="l">동시 (0순위)</div></div>
+    <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">내 종목</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
   <div class="refresh"><button onclick="load()">새로고침</button></div>
@@ -298,10 +303,72 @@ function toggleCard(code){
   const card=document.querySelector('.card[data-code="'+code+'"]');
   if(card) card.classList.toggle('open');
 }
+// ── 내 종목(포트폴리오) 탭 — 보유 종목 카드 ──
+function cardPort(it,i){
+  const t=it.ptype;
+  const badge = t==='single_lev'?'레버 2x' : t==='index_lev'?'지수 2x' : t==='sector_lev'?'섹터 2x' : '일반';
+  const sup=it.supply||{};
+  let supHtml;
+  if(it.supply && sup.foreign_net_10d!=null){
+    const fc=sup.foreign_pass?'var(--foreign)':'#6e7681';
+    const pc=sup.pension_pass?'var(--pension)':'#6e7681';
+    supHtml=`<b style="color:${fc}">외 ${volShort(sup.foreign_net_10d)} ${sup.foreign_buydays||''}</b>`
+          + `<b style="color:${pc}">연 ${volShort(sup.pension_net_10d)} ${sup.pension_buydays||''}</b>`;
+  }else{
+    supHtml='<b style="color:#6e7681">수급 N/A (ETN)</b>';
+  }
+  const sub = t==='single_lev' ? ('→ '+esc(it.under_name)+' 2배') : (it.basis?('기초: '+esc(it.basis)):'');
+  const body = t==='single_lev'
+    ? `<div class="en-empty">${esc(it.under_name)}(${it.underlying}) 2배 레버리지 — 리포트는 원종목을 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+    : renderEnrich(it.enrich);
+  return `<div class="card" data-code="${it.code}">
+    <div class="card-h" onclick="toggleCard('${it.code}')">
+      <span class="rank">${i}</span>
+      <div class="cmid">
+        <span class="cn"><a href="${naverUrl(it.code)}" target="_blank" onclick="event.stopPropagation()">${esc(it.name)}</a>
+          <span class="tag port">${badge}</span></span>
+        <span class="cs">${supHtml}${sub?`<span class="psub">${sub}</span>`:''}</span>
+      </div>
+      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 복사 → Claude에 붙여넣기">프롬프트 복사</button>
+      <span class="chev">⌄</span>
+    </div>
+    <div class="card-b">${body}</div>
+  </div>`;
+}
+function sectionPort(list){
+  const cards=list.map((it,idx)=>cardPort(it,idx+1)).join('');
+  return `<div class="cards">${cards}</div>`;
+}
 
 // ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
 function buildPrompt(it){
-  const url='https://dodary-kfilter.github.io/kfilter/report-data/'+it.code+'.json';
+  const D=(c)=>'https://dodary-kfilter.github.io/kfilter/report-data/'+c+'.json';
+  const url=D(it.code);
+  if(it.ptype==='single_lev'){
+    return `${it.name}(${it.code})는 ${it.under_name}(${it.underlying})를 일일 2배(2X) 추종하는 레버리지 ETF다. 원종목 ${it.under_name}를 정밀 분석하되 레버리지 특성을 반드시 함께 다뤄줘.
+
+원종목 데이터(원본 전체): ${D(it.underlying)}
+
+[원칙] 데이터 숫자는 그대로(해석 필수), 없는 맥락은 검색. 목표가 의존 금지(추세·수급·실적 모멘텀, 컨센은 참고·선행/후행 점검). 손절은 고점 대비 -10~15% 트레일링.
+[구조] 두괄식 결론 박스 먼저. 그 다음 원종목 ${it.under_name}에 대해 ①회사 정체성 ②수급(외국인·연기금 5/20/60일+당일 반전) ③일/주/월봉 추이 ④매물대·지지/저항 ⑤실적→밸류 ⑥컨센서스 ⑦공시 ⑧뉴스·촉매 ⑨종합 의견(주관 견해 포함, 정보공백).
+[레버리지 특성] 마지막에 반드시: 이 ETF는 원종목 일일수익률의 2배 → ①변동성 2배 증폭 ②횡보·박스장 복리감쇠(원종목보다 손실) ③추세장 전용. 손절선은 원종목 기준 -10~15%가 ETF에선 약 2배 속도로 닿으니 더 타이트하게 봐야 함을 명시.`;
+  }
+  if(it.ptype==='index_lev'){
+    return `${it.name}(${it.code})는 ${it.basis} 지수를 일일 2배(2X) 추종하는 레버리지 ETF다. 개별 기업이 아니라 ${it.basis} 지수 자체를 분석해줘.
+
+데이터(수급·가격 원본, ※ETF라 실적/밸류/컨센서스 없음): ${url}
+
+[원칙] 데이터 숫자는 그대로(해석 필수), 없는 맥락은 검색. 목표가 의존 금지. 손절은 고점 대비 -10~15% 트레일링.
+[구조] 두괄식 결론 먼저. ①지수 정체성(${it.basis} 구성·특징, 반도체·대형주 비중) ②수급★(ETF 외국인·기관 투자자별 5/20/60일+당일 반전, 외국인 비중 추이) ③일/주/월봉 추이(정배열·이격·레인지) ④매물대·지지/저항 ⑤지수 환경 검색(매크로·금리·환율·반도체 업황·외국인 코스피 수급 등 ${it.basis} 방향 영향 요인) ⑥레버리지 특성(2배 증폭+복리감쇠, 추세장 전용) ⑦종합 의견(두괄식, 추세추종+손절선 2배 속도라 더 타이트, 시나리오·판별신호, 주관 견해, 정보공백).`;
+  }
+  if(it.ptype==='sector_lev'){
+    return `${it.name}(${it.code})는 ${it.basis}(전력설비 TOP5)를 일일 2배(2X) 추종하는 레버리지 ETN이다. 개별 기업이 아니라 ${it.basis} 업황·추세를 분석해줘.
+
+데이터(가격 원본, ※ETN이라 투자자별 수급·실적·밸류 없음): ${url}
+
+[주의] 이 ETN은 ①투자자별 수급 데이터가 없고 ②자체 가격/기술지표 신뢰도가 낮을 수 있으니, 기술분석보다 섹터 펀더멘털(검색) 중심으로 분석하라.
+[구조] 두괄식 결론 먼저. ①섹터 정체성(${it.basis} 구성종목 HD현대일렉트릭·효성중공업·LS ELECTRIC 등 + 테마: AI 데이터센터 전력수요·전력망 투자) ②섹터 업황·모멘텀 검색(전력설비 수주·실적·정책, 미국 전력망·데이터센터 capex, 대표 종목 최근 주가·수급) ③추세(구성종목/섹터 흐름) ④ETN 특성(레버리지 2배 복리감쇠 + 발행사 신용위험·괴리·롤오버) ⑤종합 의견(두괄식, 섹터 추세·리스크, 추세추종+손절선, 주관 견해, 정보공백—수급·가격 데이터 한계 명시).`;
+  }
   return `${it.name}(${it.code}) 정밀 투자 분석 리포트를 작성해줘.
 
 데이터(원본 전체): ${url}
@@ -327,7 +394,8 @@ function buildPrompt(it){
 }
 function copyPrompt(ev, code){
   ev.stopPropagation();
-  const it=(DATA && DATA.both||[]).find(x=>x.code===code);
+  const pool=[...(DATA&&DATA.portfolio||[]), ...(DATA&&DATA.both||[])];
+  const it=pool.find(x=>x.code===code);
   if(!it) return;
   const text=buildPrompt(it);
   const btn=ev.currentTarget;
@@ -348,6 +416,12 @@ function render(){
   const content=document.getElementById('content');
   if(!DATA){content.innerHTML='<div class="empty">데이터 없음</div>';return;}
   const items=DATA[CUR]||[];
+  if(CUR==='portfolio'){
+    if(items.length===0){content.innerHTML='<div class="empty">포트폴리오 종목이 없습니다.</div>';return;}
+    const tip='<div class="bothtip">내 보유 종목. 수급(외인·연기금)으로 <b>스마트머니가 아직 있는지 / 이탈했는지</b> 확인하고, <b>프롬프트 복사</b>로 동일 포맷 리포트를 받으세요. <span style="color:var(--dim)">초록=필터 통과(매집), 회색=미통과.</span></div>';
+    content.innerHTML = tip + sectionPort(items);
+    return;
+  }
   const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
   if(items.length===0){content.innerHTML='<div class="empty">'+label+' 조건을 통과한 종목이 없습니다.</div>';return;}
   const kospi=items.filter(x=>x.market==='KOSPI');
@@ -370,6 +444,7 @@ async function load(){
     document.getElementById('c-foreign').textContent=DATA.foreign.length;
     document.getElementById('c-pension').textContent=DATA.pension.length;
     document.getElementById('c-both').textContent=DATA.both.length;
+    document.getElementById('c-portfolio').textContent=(DATA.portfolio||[]).length;
     document.getElementById('rule').innerHTML='판정: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수 <b>&gt; 0</b> 그리고 순매수일 <b>'+DATA.buy_ratio+'% 이상</b> · 스캔 <b>'+DATA.scanned+'종목</b>';
     render();
   }catch(e){
