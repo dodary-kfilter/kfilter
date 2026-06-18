@@ -10,7 +10,6 @@
     · 주가위치/추이/이평선(5·20·60·120)/매물대   ← 네이버 일봉
     · 밸류·포워드(PER·추정PER·PBR·EPS·추정EPS·BPS·배당)·컨센서스(목표주가·투자의견)·증권가리포트·업종비교  ← 네이버 integration
     · 최근 뉴스                                   ← 네이버 뉴스 API
-    · 공매도는 Phase 2 (KRX)
 - 결과를 data.json 으로 저장
 실행: python scanner.py
 ---------------------------------------------------------------
@@ -419,6 +418,41 @@ def enrich_stock(code, name="", market="", supply=None):
 
 def main():
     print("스캔 시작:", datetime.now().strftime("%Y-%m-%d %H:%M"), flush=True)
+
+    # [#3 우선 처리] 내 종목(포트폴리오)을 유니버스 스캔보다 '먼저' 돌린다.
+    #   → 뒤의 대량 스캔이 느려지거나 중간에 멈춰도(취소/스로틀) 보유종목 리포트는 항상 최신.
+    #   → 일시적 실패엔 1회 재시도해서 보유종목이 누락되지 않게.
+    print(f"포트폴리오 {len(PORTFOLIO)}개 처리(우선)…", flush=True)
+    portfolio = []
+    for it in PORTFOLIO:
+        code, name, ptype = it["code"], it["name"], it["ptype"]
+        entry = {"code": code, "name": name, "market": it.get("market", ""), "ptype": ptype}
+        if "basis" in it:
+            entry["basis"] = it["basis"]
+        ok = False
+        for attempt in (1, 2):
+            try:
+                if ptype == "single_lev":
+                    # 리포트는 원종목 파일 재사용(중복 스크랩 안 함). 카드 수급은 원종목 기준.
+                    entry["underlying"] = it["underlying"]
+                    entry["under_name"] = it["under_name"]
+                    entry["supply"] = port_supply(it["underlying"])
+                else:
+                    # stock / index_lev / sector_lev: 직접 수급 + enrich(원본 리포트 파일 생성)
+                    sup = port_supply(code)
+                    entry["supply"] = sup
+                    entry["enrich"] = enrich_stock(code, name, it.get("market", ""), sup or {})
+                ok = True
+                break
+            except Exception as e:
+                print(f"  포트 처리 실패 {code} (시도 {attempt}/2): {e}", flush=True)
+                time.sleep(1.0)
+        if not ok and ptype != "single_lev":
+            entry["enrich"] = None
+        time.sleep(ENRICH_DELAY)
+        portfolio.append(entry)
+
+    # [유니버스 스캔] 외국인·연기금 수급 필터
     kept  = [(c, n, "KOSPI")  for c, n in get_list(0, KOSPI_N)]
     kept += [(c, n, "KOSDAQ") for c, n in get_list(1, KOSDAQ_N)]
     print("스캔 대상(보통주):", len(kept), flush=True)
@@ -455,7 +489,7 @@ def main():
         })
     both.sort(key=lambda x: x["f_net"], reverse=True)
 
-    # [신규] 동시 종목에만 분석 데이터 부착 + 원본 풀데이터 파일 저장
+    # [동시(both) 종목에만 분석 데이터 부착 + 원본 풀데이터 파일 저장]
     print(f"동시 {len(both)}개 분석 데이터 수집…", flush=True)
     for b in both:
         try:
@@ -468,30 +502,25 @@ def main():
             print(f"  enrich 실패 {b['code']}: {e}", flush=True)
         time.sleep(ENRICH_DELAY)
 
-    # [신규] 포트폴리오(보유) 종목 — 필터 무관 항상 처리. 수급은 표기용으로 같이 계산.
-    print(f"포트폴리오 {len(PORTFOLIO)}개 처리…", flush=True)
-    portfolio = []
+    # [#2 정리] report-data 는 '현재 0순위(both) + 보유종목'만 유지.
+    #   → 0순위에서 탈락한 종목의 옛 파일은 삭제(스테일 스냅샷 제거). .tmp 잔해도 제거.
+    keep = {b["code"] for b in both}
     for it in PORTFOLIO:
-        code, name, ptype = it["code"], it["name"], it["ptype"]
-        entry = {"code": code, "name": name, "market": it.get("market", ""), "ptype": ptype}
-        if "basis" in it:
-            entry["basis"] = it["basis"]
-        try:
-            if ptype == "single_lev":
-                # 리포트는 원종목 파일 재사용(중복 스크랩 안 함). 카드 수급은 원종목 기준.
-                entry["underlying"] = it["underlying"]
-                entry["under_name"] = it["under_name"]
-                entry["supply"] = port_supply(it["underlying"])
-            else:
-                # stock / index_lev / sector_lev: 직접 수급 + enrich(원본 리포트 파일 생성)
-                sup = port_supply(code)
-                entry["supply"] = sup
-                entry["enrich"] = enrich_stock(code, name, it.get("market", ""), sup or {})
-                time.sleep(ENRICH_DELAY)
-        except Exception as e:
-            entry["enrich"] = None
-            print(f"  포트 처리 실패 {code}: {e}", flush=True)
-        portfolio.append(entry)
+        keep.add(it["underlying"] if it["ptype"] == "single_lev" else it["code"])
+    removed = 0
+    if os.path.isdir(REPORT_DIR):
+        for fn in os.listdir(REPORT_DIR):
+            path = os.path.join(REPORT_DIR, fn)
+            if fn.endswith(".json.tmp"):
+                try: os.remove(path)
+                except Exception: pass
+            elif fn.endswith(".json") and fn[:-5] not in keep:
+                try:
+                    os.remove(path); removed += 1
+                    print(f"  report 정리 삭제(탈락): {fn[:-5]}", flush=True)
+                except Exception as e:
+                    print(f"  report 삭제 실패 {fn}: {e}", flush=True)
+    print(f"report 정리: {removed}개 삭제, 유지 {len(keep)}개", flush=True)
 
     result = {
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
