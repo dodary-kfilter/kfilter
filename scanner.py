@@ -324,29 +324,46 @@ def fetch_all(code):
 
 def write_report_file(code, name, market, supply, raw, price_block,
                       week_block=None, month_block=None, supply_detail=None):
-    """리포트용 원본 풀데이터 → report-data/{code}.json"""
+    """리포트용 원본 풀데이터 → report-data/{code}.json.
+    [방어] 어느 한 필드(밸류/컨센/실적/뉴스 등)가 깨져도 파일 전체 저장은 실패하지 않는다.
+           실패한 필드와 사유는 _errors에 남겨 화면/로그에서 바로 보이게 한다.
+    [원자적] 임시파일에 쓴 뒤 교체 → 부분쓰기로 인한 손상/스테일 방지."""
+    errs = {k: v for k, v in raw.items() if k.endswith("_err")}   # fetch 단계 네트워크 에러
+
+    def g(label, fn):
+        """필드 추출 안전화: 예외 나면 None + _errors에 기록(어느 필드가 왜 깨졌는지 가시화)."""
+        try:
+            return fn()
+        except Exception as e:
+            errs[label] = f"{type(e).__name__}: {e}"
+            return None
+
     integ = raw.get("integ") or {}
     payload = {
         "code": code, "name": name, "market": market,
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "supply_10d": supply,                                  # 외인/연기금 최근10일 (토스)
-        "supply_detail": supply_detail,                        # 투자자별 세부(개인/외인/금융투자/투신/사모/보험/은행/연기금/기타법인) + 외인보유율 추이
-        "price_daily": price_block,                            # 일봉: 현재가·이평(5/20/60/120)·매물대·52주·추이
-        "price_weekly": week_block,                            # 주봉: 이평·정배열·구간위치·최근봉
-        "price_monthly": month_block,                          # 월봉: 장기 추세·구간위치·최근봉
-        "valuation": integ.get("totalInfos"),                  # PER·추정PER·PBR·EPS·BPS·배당 등 (원본)
-        "consensus": integ.get("consensusInfo"),               # 목표주가·투자의견·제시일 (원본)
-        "researches": integ.get("researches"),                 # 증권사 리포트 (원본)
-        "industry_peers": integ.get("industryCompareInfo"),    # 동일업종 비교 (원본, 풀필드)
-        "financials_annual": (raw.get("fin_a") or {}).get("financeInfo"),    # 연간 실적 (원본)
-        "financials_quarter": (raw.get("fin_q") or {}).get("financeInfo"),   # 분기 실적 (원본)
-        "disclosures": raw.get("disc"),                        # 공시 (원본)
-        "news": parse_news(raw["news"]) if raw.get("news") else None,
-        "_errors": {k: v for k, v in raw.items() if k.endswith("_err")},
+        "supply_detail": supply_detail,                        # 투자자별 세부 + 외인보유율 추이
+        "price_daily": price_block,                            # 일봉
+        "price_weekly": week_block,                            # 주봉
+        "price_monthly": month_block,                          # 월봉
+        "valuation":          g("valuation",          lambda: integ.get("totalInfos")),
+        "consensus":          g("consensus",          lambda: integ.get("consensusInfo")),
+        "researches":         g("researches",         lambda: integ.get("researches")),
+        "industry_peers":     g("industry_peers",     lambda: integ.get("industryCompareInfo")),
+        "financials_annual":  g("financials_annual",  lambda: (raw.get("fin_a") or {}).get("financeInfo")),
+        "financials_quarter": g("financials_quarter", lambda: (raw.get("fin_q") or {}).get("financeInfo")),
+        "disclosures":        raw.get("disc"),                 # 공시 (원본)
+        "news":               g("news",               lambda: parse_news(raw["news"]) if raw.get("news") else None),
+        "_errors": errs,
     }
+
     os.makedirs(REPORT_DIR, exist_ok=True)
-    with open(os.path.join(REPORT_DIR, f"{code}.json"), "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+    final = os.path.join(REPORT_DIR, f"{code}.json")
+    tmp = final + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2, default=str)   # default=str: 직렬화 불가 값도 안전
+    os.replace(tmp, final)   # 원자적 교체(부분쓰기 방지)
 
 def enrich_stock(code, name="", market="", supply=None):
     """원본 풀데이터(일/주/월봉 + 투자자별 세부 포함)를 종목별 파일로 저장, 화면용 요약 반환."""
