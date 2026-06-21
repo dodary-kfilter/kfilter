@@ -29,6 +29,7 @@ ENRICH_DELAY = 0.4        # enrich: 종목당 간격(초, both만이라 소수)
 CANDLE_DAYS = 220         # 일봉 조회 일수(이평120 + 여유)
 POCKET_BINS = 20          # 매물대 가격대 구간 수
 POCKET_TOP  = 3           # 매물대 상위 N구간
+HIST_DAYS   = 60          # 수급·외인소진율 일별 이력 보관 일수(토스 size=60 → "외국인 비중 길게")
 
 # 내 보유 종목(포트폴리오) — 수급 필터와 무관하게 항상 처리/표시
 #  ptype: stock=일반주 표준 / single_lev=단일종목 레버리지(원종목 리포트 재사용)
@@ -257,11 +258,11 @@ INV_FIELDS = [
 ]
 
 def build_supply_detail(body):
-    """토스 일별 투자자별 → 최근 20일 + 누적(5/20/60일) by 투자주체 + 외인보유율 추이."""
+    """토스 일별 투자자별 → 최근 HIST_DAYS일 + 누적(5/20/60일) by 투자주체 + 외인보유율 추이."""
     if not body:
         return None
     daily = []
-    for r in body[:20]:
+    for r in body[:HIST_DAYS]:
         rec = {"date": r.get("baseDate"), "close": toi(r.get("close")),
                "foreignRatio": r.get("foreignerRatio")}
         for k, lab in INV_FIELDS:
@@ -269,7 +270,7 @@ def build_supply_detail(body):
         daily.append(rec)
     def cum(n):
         return {lab: sum(toi(row.get(k)) for row in body[:n]) for k, lab in INV_FIELDS}
-    fr = [{"date": r.get("baseDate"), "ratio": r.get("foreignerRatio")} for r in body[:20]]
+    fr = [{"date": r.get("baseDate"), "ratio": r.get("foreignerRatio")} for r in body[:HIST_DAYS]]
     return {"recent_daily": daily, "cum_5d": cum(5), "cum_20d": cum(20), "cum_60d": cum(60),
             "foreign_ratio_trend": fr}
 
