@@ -417,8 +417,31 @@ def enrich_stock(code, name="", market="", supply=None):
             out["_newsErr"] = str(e)
     return out
 
+def latest_trade_date():
+    """기준 종목(삼성전자) 토스 최신 baseDate = 최신 거래일. 실패 시 None."""
+    try:
+        r = requests.get(TOSS_URL.format(code="005930"), headers=HDR_TOSS, timeout=10)
+        body = r.json().get("result", {}).get("body", [])
+        return body[0].get("baseDate") if body else None
+    except Exception:
+        return None
+
+
 def main():
     print("스캔 시작:", datetime.now().strftime("%Y-%m-%d %H:%M"), flush=True)
+
+    # [장 안 열린 날 가드] 예약(cron) 실행 시 새 거래일 데이터가 없으면(주말·공휴일·소스 미갱신) 스캔·저장·커밋 생략.
+    #   수동 실행(workflow_dispatch)·로컬 실행은 건너뛰고 항상 갱신(같은 날 재실행으로 확정 데이터 새로고침 가능).
+    new_date = latest_trade_date()
+    if new_date and os.environ.get("RUN_TRIGGER") == "schedule":
+        try:
+            with open("data.json", encoding="utf-8") as f:
+                prev_date = json.load(f).get("market_date")
+        except Exception:
+            prev_date = None
+        if prev_date and new_date == prev_date:
+            print(f"[스킵] 새 거래일 데이터 없음 (최신 {new_date} == 직전 {prev_date}). 예약 실행 생략.", flush=True)
+            return
 
     # [#3 우선 처리] 내 종목(포트폴리오)을 유니버스 스캔보다 '먼저' 돌린다.
     #   → 뒤의 대량 스캔이 느려지거나 중간에 멈춰도(취소/스로틀) 보유종목 리포트는 항상 최신.
@@ -525,6 +548,7 @@ def main():
 
     result = {
         "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "market_date": new_date,
         "window": WINDOW, "buy_ratio": int(BUY_RATIO_MIN * 100),
         "scanned": len(kept),
         "foreign": foreign_pass,
