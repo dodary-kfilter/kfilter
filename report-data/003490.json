@@ -2,30 +2,46 @@
   "code": "003490",
   "name": "대한항공",
   "market": "KOSPI",
-  "updated": "2026-06-22 04:35",
+  "updated": "2026-06-23 13:50",
   "supply_10d": {
-    "foreign_net_10d": 7559188,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 1587712,
+    "foreign_net_10d": 7211310,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 1462932,
     "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
-        "date": "2026-06-22",
-        "close": 26900,
-        "foreignRatio": 22.6,
-        "개인": 0,
-        "외국인": 211469,
-        "기관계": -112000,
-        "금융투자": 0,
-        "투신": -88000,
-        "사모": 0,
-        "보험": 0,
+        "date": "2026-06-23",
+        "close": 25900,
+        "foreignRatio": 22.59,
+        "개인": 58789,
+        "외국인": -182312,
+        "기관계": 182269,
+        "금융투자": -87810,
+        "투신": 53029,
+        "사모": 4579,
+        "보험": 60933,
         "은행": 0,
         "기타금융": 0,
-        "연기금": -24000,
-        "기타법인": -21000
+        "연기금": 151538,
+        "기타법인": -64654
+      },
+      {
+        "date": "2026-06-22",
+        "close": 27050,
+        "foreignRatio": 22.64,
+        "개인": 270064,
+        "외국인": 345711,
+        "기관계": -627399,
+        "금융투자": -245410,
+        "투신": -103303,
+        "사모": -168806,
+        "보험": -5014,
+        "은행": 0,
+        "기타금융": 1,
+        "연기금": -104867,
+        "기타법인": 8227
       },
       {
         "date": "2026-06-19",
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": 128966,
         "기타법인": 21900
-      },
-      {
-        "date": "2026-03-25",
-        "close": 25400,
-        "foreignRatio": 18.98,
-        "개인": -759415,
-        "외국인": 529886,
-        "기관계": 234929,
-        "금융투자": 195531,
-        "투신": -90974,
-        "사모": 19440,
-        "보험": -7713,
-        "은행": -285,
-        "기타금융": 1,
-        "연기금": 118929,
-        "기타법인": 6710
       }
     ],
     "cum_5d": {
-      "개인": -2418647,
-      "외국인": 2090119,
-      "기관계": 442477,
-      "금융투자": 147211,
-      "투신": -79826,
-      "사모": 15436,
-      "보험": -34037,
+      "개인": -1490505,
+      "외국인": 1516574,
+      "기관계": -120117,
+      "금융투자": -416850,
+      "투신": -80857,
+      "사모": -83045,
+      "보험": 27127,
       "은행": 0,
-      "기타금융": -109,
-      "연기금": 393802,
-      "기타법인": -25468
+      "기타금융": -108,
+      "연기금": 433616,
+      "기타법인": 101282
     },
     "cum_20d": {
-      "개인": -12126073,
-      "외국인": 8318498,
-      "기관계": 3765604,
-      "금융투자": 1050006,
-      "투신": 885106,
-      "사모": 326904,
-      "보험": -21755,
+      "개인": -11269049,
+      "외국인": 7903164,
+      "기관계": 3229339,
+      "금융투자": 376291,
+      "투신": 979760,
+      "사모": 348223,
+      "보험": 36193,
       "은행": -1894,
-      "기타금융": -9641,
-      "연기금": 1536878,
-      "기타법인": 140757
+      "기타금융": -10210,
+      "연기금": 1500976,
+      "기타법인": 142624
     },
     "cum_60d": {
-      "개인": -14973576,
-      "외국인": 13825050,
-      "기관계": 1068992,
-      "금융투자": 1268227,
-      "투신": -998492,
-      "사모": 274169,
-      "보험": -409743,
-      "은행": -117,
+      "개인": -13885308,
+      "외국인": 13247094,
+      "기관계": 500933,
+      "금융투자": 739476,
+      "투신": -869792,
+      "사모": 90502,
+      "보험": -346111,
+      "은행": 168,
       "기타금융": -19394,
-      "연기금": 954342,
-      "기타법인": 250689
+      "연기금": 906084,
+      "기타법인": 208552
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-06-23",
+        "ratio": 22.59
+      },
+      {
         "date": "2026-06-22",
-        "ratio": 22.6
+        "ratio": 22.64
       },
       {
         "date": "2026-06-19",
@@ -1247,41 +1251,37 @@
       {
         "date": "2026-03-26",
         "ratio": 18.92
-      },
-      {
-        "date": "2026-03-25",
-        "ratio": 18.98
       }
     ]
   },
   "price_daily": {
-    "now": 26950,
-    "prevClose": 27950,
-    "changePct": -3.58,
+    "now": 25900,
+    "prevClose": 27050,
+    "changePct": -4.25,
     "ma": {
-      "ma5": 28370.0,
-      "ma20": 26665.0,
-      "ma60": 25506.7,
-      "ma120": 24801.2,
+      "ma5": 27710.0,
+      "ma20": 26625.0,
+      "ma60": 25516.7,
+      "ma120": 24826.7,
       "aligned": true,
       "vs": {
-        "ma5": -5.01,
-        "ma20": 1.07,
-        "ma60": 5.66,
-        "ma120": 8.66
+        "ma5": -6.53,
+        "ma20": -2.72,
+        "ma60": 1.5,
+        "ma120": 4.32
       }
     },
-    "trend20": 1.89,
+    "trend20": -3.36,
     "pocket": [
       {
         "low": 24150,
         "high": 24600,
-        "volPct": 18.1
+        "volPct": 18.0
       },
       {
         "low": 24600,
         "high": 25050,
-        "volPct": 14.0
+        "volPct": 13.9
       },
       {
         "low": 25050,
@@ -1291,17 +1291,17 @@
     ]
   },
   "price_weekly": {
-    "now": 26950,
+    "now": 25900,
     "ma": {
-      "ma5": 26640.0,
-      "ma10": 26250.0,
-      "ma20": 25687.5,
-      "ma60": 23904.2
+      "ma5": 26430.0,
+      "ma10": 26145.0,
+      "ma20": 25635.0,
+      "ma60": 23886.7
     },
     "aligned": true,
     "rangeHigh": 34250,
     "rangeLow": 19350,
-    "posPct": 51.0,
+    "posPct": 44.0,
     "recent": [
       {
         "d": "20260102",
@@ -1404,22 +1404,22 @@
         "c": 27950
       },
       {
-        "d": "20260622",
-        "c": 26950
+        "d": "20260623",
+        "c": 25900
       }
     ]
   },
   "price_monthly": {
-    "now": 26950,
+    "now": 25900,
     "ma": {
-      "ma6": 25541.7,
-      "ma12": 24166.7,
-      "ma24": 23514.6
+      "ma6": 25366.7,
+      "ma12": 24079.2,
+      "ma24": 23470.8
     },
     "aligned": true,
     "rangeHigh": 33700,
     "rangeLow": 12126,
-    "posPct": 68.7,
+    "posPct": 63.8,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 26800
       },
       {
-        "d": "20260622",
-        "c": 26950
+        "d": "20260623",
+        "c": 25900
       }
     ]
   },
@@ -1523,32 +1523,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "27,950"
+      "value": "27,050"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "27,700",
+      "value": "27,400",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "27,950",
+      "value": "27,750",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "26,700",
+      "value": "25,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "2,264,051"
+      "value": "4,141,641"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "61,328백만"
+      "value": "109,876백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "9조 9,235억"
+      "value": "9조 5,369억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "45.10%"
+      "value": "45.29%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1583,12 +1583,12 @@
     {
       "code": "lowPriceOf52Weeks",
       "key": "52주 최저",
-      "value": "20,900"
+      "value": "20,950"
     },
     {
       "code": "per",
       "key": "PER",
-      "value": "16.14배",
+      "value": "15.51배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "41.85배"
+      "value": "40.22배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "0.92배",
+      "value": "0.88배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "2.78%",
+      "value": "2.90%",
       "valueDesc": "2026.03."
     },
     {
@@ -1634,18 +1634,27 @@
   ],
   "consensus": {
     "itemCode": "003490",
-    "createDate": "2026-06-19",
+    "createDate": "2026-06-22",
     "recommMean": "3.92",
     "priceTargetMean": "32,692"
   },
   "researches": [
+    {
+      "id": 93655,
+      "cd": "003490",
+      "nm": "대한항공",
+      "bnm": "하나증권",
+      "tit": "2Q26 Pre: 항공화물의 운임탄력성을 확인하다",
+      "rcnt": "2660",
+      "wdt": "20260623"
+    },
     {
       "id": 93610,
       "cd": "003490",
       "nm": "대한항공",
       "bnm": "iM증권",
       "tit": "명확한 성장 방향성, 기업 가치도 상승할 것",
-      "rcnt": "7502",
+      "rcnt": "9053",
       "wdt": "20260619"
     },
     {
@@ -1654,7 +1663,7 @@
       "nm": "대한항공",
       "bnm": "한화투자증권",
       "tit": "[1Q26 Review] 별도 서프라이즈",
-      "rcnt": "19959",
+      "rcnt": "20155",
       "wdt": "20260414"
     },
     {
@@ -1663,7 +1672,7 @@
       "nm": "대한항공",
       "bnm": "하나증권",
       "tit": "1Q26 Re: 단기 실적보다는 본질에 집중할 때",
-      "rcnt": "11614",
+      "rcnt": "11783",
       "wdt": "20260414"
     },
     {
@@ -1672,16 +1681,7 @@
       "nm": "대한항공",
       "bnm": "유안타증권",
       "tit": "단기 눈높이는 낮추나, 중장기 성장 스토리는 유효",
-      "rcnt": "9758",
-      "wdt": "20260414"
-    },
-    {
-      "id": 91531,
-      "cd": "003490",
-      "nm": "대한항공",
-      "bnm": "미래에셋증권",
-      "tit": "깜짝 실적, 이제는 방어력에 주목",
-      "rcnt": "9392",
+      "rcnt": "9921",
       "wdt": "20260414"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "180640",
       "stockName": "한진칼",
       "sosok": "0",
-      "closePrice": "115,500",
-      "compareToPreviousClosePrice": "-5,600",
+      "closePrice": "109,600",
+      "compareToPreviousClosePrice": "-4,200",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.62",
+      "fluctuationsRatio": "-3.69",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "7,711,043",
+      "marketValue": "7,317,145",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "020560",
       "stockName": "아시아나항공",
       "sosok": "0",
-      "closePrice": "7,160",
+      "closePrice": "6,950",
       "compareToPreviousClosePrice": "-180",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.45",
+      "fluctuationsRatio": "-2.52",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,474,893",
+      "marketValue": "1,431,635",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "089590",
       "stockName": "제주항공",
       "sosok": "0",
-      "closePrice": "4,655",
-      "compareToPreviousClosePrice": "-105",
+      "closePrice": "4,545",
+      "compareToPreviousClosePrice": "-95",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.21",
+      "fluctuationsRatio": "-2.05",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "375,383",
+      "marketValue": "366,513",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "091810",
       "stockName": "트리니티항공",
       "sosok": "0",
-      "closePrice": "753",
-      "compareToPreviousClosePrice": "-49",
+      "closePrice": "737",
+      "compareToPreviousClosePrice": "-15",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-6.11",
+      "fluctuationsRatio": "-1.99",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "310,966",
+      "marketValue": "304,358",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "272450",
       "stockName": "진에어",
       "sosok": "0",
-      "closePrice": "5,790",
-      "compareToPreviousClosePrice": "-260",
+      "closePrice": "5,610",
+      "compareToPreviousClosePrice": "-190",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.30",
+      "fluctuationsRatio": "-3.28",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "302,238",
+      "marketValue": "292,842",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "298690",
       "stockName": "에어부산",
       "sosok": "0",
-      "closePrice": "1,573",
-      "compareToPreviousClosePrice": "-38",
+      "closePrice": "1,541",
+      "compareToPreviousClosePrice": "-23",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.36",
+      "fluctuationsRatio": "-1.47",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "183,474",
+      "marketValue": "179,742",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "43.43",
+            "value": "42.03",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "1.00",
+            "value": "0.96",
             "cx": null
           },
           "202312": {
@@ -2663,7 +2663,7 @@
             "cx": null
           },
           "202606": {
-            "value": "-60.49",
+            "value": "-58.54",
             "cx": "minus"
           },
           "202506": {
@@ -2847,40 +2847,40 @@
   ],
   "news": [
     {
-      "title": "재배분된 슬롯 놀린 항공사들…제주∼김포 좌석난 키웠다",
-      "office": "연합뉴스",
-      "date": "202606221330",
-      "url": "https://n.news.naver.com/mnews/article/001/0016151636"
+      "title": "“제주~김포 항공기 대형화하고, 슬롯 탄력 운영해야”",
+      "office": "KBS",
+      "date": "202606232157",
+      "url": "https://n.news.naver.com/mnews/article/056/0012205096"
     },
     {
-      "title": "[ET특징주] 미·이란 종전 협상 '흔들'… 항공株 약세",
-      "office": "전자신문",
-      "date": "202606221145",
-      "url": "https://n.news.naver.com/mnews/article/030/0003439863"
+      "title": "[주요 단신] “제주~김포 항공기 대형화하고, 슬롯 탄력 운영해야” ...",
+      "office": "KBS",
+      "date": "202606231940",
+      "url": "https://n.news.naver.com/mnews/article/056/0012204945"
     },
     {
-      "title": "미-이란 고위급 회담 교착에 항공주 약세…대한항공 3%↓",
-      "office": "뉴시스",
-      "date": "202606221103",
-      "url": "https://n.news.naver.com/mnews/article/003/0014019777"
+      "title": "인천~LA·시애틀도 ‘짐 없는 환승’ 확대",
+      "office": "서울신문",
+      "date": "202606231749",
+      "url": "https://n.news.naver.com/mnews/article/081/0003655149"
     },
     {
-      "title": "[특징주] 종전 협상 불확실성 재부각에 항공주 약세…대한항공 3%↓",
-      "office": "조선비즈",
-      "date": "202606221004",
-      "url": "https://n.news.naver.com/mnews/article/366/0001173384"
+      "title": "'대한항공·APR·오뚜기' 장관상 수상, 2026 더팩트 ESG 경영대상 시상...",
+      "office": "더팩트",
+      "date": "202606231718",
+      "url": "https://n.news.naver.com/mnews/article/629/0000509968"
     },
     {
-      "title": "또다시 커진 종전 불확실성…항공주 동반 하락",
-      "office": "머니투데이",
-      "date": "202606220926",
-      "url": "https://n.news.naver.com/mnews/article/008/0005375034"
+      "title": "“차질 없는 개항하려면 가덕도신공항에 특화된 일자리 창출이 급선무...",
+      "office": "국제신문",
+      "date": "202606231651",
+      "url": "https://n.news.naver.com/mnews/article/658/0000147516"
     },
     {
-      "title": "[투자자 순매수 TOP5] 외국인, 지난주 2.5조원 순매수…반도체·조선주...",
-      "office": "SBS Biz",
-      "date": "202606220832",
-      "url": "https://n.news.naver.com/mnews/article/374/0000517333"
+      "title": "‘환승 시간 20분 단축’ 대한항공·델타, 미국행 수하물 원격 검색 L...",
+      "office": "매일경제",
+      "date": "202606231621",
+      "url": "https://n.news.naver.com/mnews/article/009/0005697685"
     }
   ],
   "_errors": {}
