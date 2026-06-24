@@ -2,19 +2,35 @@
   "code": "196170",
   "name": "알테오젠",
   "market": "KOSDAQ",
-  "updated": "2026-06-23 13:50",
+  "updated": "2026-06-24 13:22",
   "supply_10d": {
-    "foreign_net_10d": 198528,
+    "foreign_net_10d": 349917,
     "foreign_buydays": "8/10",
-    "pension_net_10d": 55228,
-    "pension_buydays": "7/10"
+    "pension_net_10d": 85145,
+    "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-06-24",
+        "close": 371500,
+        "foreignRatio": 14.92,
+        "개인": -371767,
+        "외국인": 155529,
+        "기관계": 210248,
+        "금융투자": 66884,
+        "투신": 9180,
+        "사모": 104669,
+        "보험": 403,
+        "은행": 0,
+        "기타금융": -22,
+        "연기금": 29134,
+        "기타법인": 4118
+      },
+      {
         "date": "2026-06-23",
         "close": 333000,
-        "foreignRatio": 14.63,
+        "foreignRatio": 14.64,
         "개인": -52935,
         "외국인": 917,
         "기관계": 52715,
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": 27826,
         "기타법인": -1427
-      },
-      {
-        "date": "2026-03-26",
-        "close": 381000,
-        "foreignRatio": 13.79,
-        "개인": 81230,
-        "외국인": -183011,
-        "기관계": 81577,
-        "금융투자": -83504,
-        "투신": 88816,
-        "사모": 37480,
-        "보험": 3694,
-        "은행": 669,
-        "기타금융": -511,
-        "연기금": 34933,
-        "기타법인": 15059
       }
     ],
     "cum_5d": {
-      "개인": -269194,
-      "외국인": 88602,
-      "기관계": 168621,
-      "금융투자": 110427,
-      "투신": -1629,
-      "사모": 38107,
-      "보험": 1529,
+      "개인": -433027,
+      "외국인": 174211,
+      "기관계": 252223,
+      "금융투자": 123342,
+      "투신": 2895,
+      "사모": 89569,
+      "보험": 71,
       "은행": 0,
-      "기타금융": 10,
-      "연기금": 20177,
-      "기타법인": 15390
+      "기타금융": -1,
+      "연기금": 36347,
+      "기타법인": 6644
     },
     "cum_20d": {
-      "개인": -662159,
-      "외국인": 180907,
-      "기관계": 488327,
-      "금융투자": 492500,
-      "투신": -171166,
-      "사모": 101229,
-      "보험": 1223,
+      "개인": -1091508,
+      "외국인": 426556,
+      "기관계": 665398,
+      "금융투자": 506096,
+      "투신": -162528,
+      "사모": 230921,
+      "보험": 1421,
       "은행": -112,
-      "기타금융": 622,
-      "연기금": 64031,
-      "기타법인": 6586
+      "기타금융": 638,
+      "연기금": 88962,
+      "기타법인": 5403
     },
     "cum_60d": {
-      "개인": -824051,
-      "외국인": 162878,
-      "기관계": 641498,
-      "금융투자": 29724,
-      "투신": 77028,
-      "사모": 354893,
-      "보험": 20750,
-      "은행": 2261,
-      "기타금융": 264,
-      "연기금": 156578,
-      "기타법인": 14189
+      "개인": -1277048,
+      "외국인": 501418,
+      "기관계": 770169,
+      "금융투자": 180112,
+      "투신": -2608,
+      "사모": 422082,
+      "보험": 17459,
+      "은행": 1592,
+      "기타금융": 753,
+      "연기금": 150779,
+      "기타법인": 3248
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-06-24",
+        "ratio": 14.92
+      },
+      {
         "date": "2026-06-23",
-        "ratio": 14.63
+        "ratio": 14.64
       },
       {
         "date": "2026-06-22",
@@ -1247,61 +1251,57 @@
       {
         "date": "2026-03-27",
         "ratio": 13.72
-      },
-      {
-        "date": "2026-03-26",
-        "ratio": 13.79
       }
     ]
   },
   "price_daily": {
-    "now": 333000,
-    "prevClose": 350500,
-    "changePct": -4.99,
+    "now": 371500,
+    "prevClose": 333000,
+    "changePct": 11.56,
     "ma": {
-      "ma5": 355900.0,
-      "ma20": 349425.0,
-      "ma60": 358325.0,
-      "ma120": 383250.0,
+      "ma5": 355600.0,
+      "ma20": 349725.0,
+      "ma60": 358166.7,
+      "ma120": 382683.3,
       "aligned": false,
       "vs": {
-        "ma5": -6.43,
-        "ma20": -4.7,
-        "ma60": -7.07,
-        "ma120": -13.11
+        "ma5": 4.47,
+        "ma20": 6.23,
+        "ma60": 3.72,
+        "ma120": -2.92
       }
     },
-    "trend20": -8.64,
+    "trend20": 1.64,
     "pocket": [
       {
         "low": 343400,
         "high": 356875,
-        "volPct": 9.0
+        "volPct": 8.9
       },
       {
         "low": 356875,
         "high": 370350,
-        "volPct": 16.5
+        "volPct": 16.4
       },
       {
         "low": 370350,
         "high": 383825,
-        "volPct": 18.0
+        "volPct": 18.8
       }
     ]
   },
   "price_weekly": {
-    "now": 333000,
+    "now": 371500,
     "ma": {
-      "ma5": 345000.0,
-      "ma10": 353650.0,
-      "ma20": 364500.0,
-      "ma60": 413541.7
+      "ma5": 352700.0,
+      "ma10": 357500.0,
+      "ma20": 366425.0,
+      "ma60": 414183.3
     },
     "aligned": false,
     "rangeHigh": 554000,
     "rangeLow": 31405,
-    "posPct": 57.7,
+    "posPct": 65.1,
     "recent": [
       {
         "d": "20260102",
@@ -1404,22 +1404,22 @@
         "c": 353500
       },
       {
-        "d": "20260623",
-        "c": 333000
+        "d": "20260624",
+        "c": 371500
       }
     ]
   },
   "price_monthly": {
-    "now": 333000,
+    "now": 371500,
     "ma": {
-      "ma6": 372083.3,
-      "ma12": 421166.7,
-      "ma24": 381187.5
+      "ma6": 378500.0,
+      "ma12": 424375.0,
+      "ma24": 382791.7
     },
     "aligned": false,
     "rangeHigh": 533000,
     "rangeLow": 3780,
-    "posPct": 62.2,
+    "posPct": 69.5,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 369000
       },
       {
-        "d": "20260623",
-        "c": 333000
+        "d": "20260624",
+        "c": 371500
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "350,500"
+      "value": "333,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "346,000",
+      "value": "330,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1538,7 +1538,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "363,000",
+      "value": "375,500",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "325,000",
+      "value": "328,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "796,374"
+      "value": "1,404,326"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "275,976백만"
+      "value": "508,514백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "17조 8,443억"
+      "value": "19조 9,073억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "14.63%"
+      "value": "14.64%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "137.89배",
+      "value": "153.83배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "64.74배"
+      "value": "72.22배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "35.64배",
+      "value": "39.76배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "0.11%",
+      "value": "0.10%",
       "valueDesc": "2025.12."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "196170",
-    "createDate": "2026-06-22",
+    "createDate": "2026-06-23",
     "recommMean": "4.00",
     "priceTargetMean": "566,667"
   },
@@ -1645,7 +1645,7 @@
       "nm": "알테오젠",
       "bnm": "대신증권",
       "tit": "특허 리스크 Down, 신규 딜 가능성 Up",
-      "rcnt": "16674",
+      "rcnt": "17188",
       "wdt": "20260602"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "알테오젠",
       "bnm": "대신증권",
       "tit": "검증된 플랫폼, 열려 있는 Upside",
-      "rcnt": "12536",
+      "rcnt": "12692",
       "wdt": "20260520"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "알테오젠",
       "bnm": "신한투자증권",
       "tit": "탑픽인 이유",
-      "rcnt": "15380",
+      "rcnt": "15553",
       "wdt": "20260514"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "알테오젠",
       "bnm": "하나증권",
       "tit": "바이오시밀러 대비 우수성을 입증할 기회",
-      "rcnt": "9209",
+      "rcnt": "9308",
       "wdt": "20260513"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "알테오젠",
       "bnm": "신한투자증권",
       "tit": "이제 특허 이슈 해소만 남았다",
-      "rcnt": "10607",
+      "rcnt": "10677",
       "wdt": "20260511"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "950160",
       "stockName": "코오롱티슈진",
       "sosok": "1",
-      "closePrice": "95,200",
-      "compareToPreviousClosePrice": "-6,400",
+      "closePrice": "101,100",
+      "compareToPreviousClosePrice": "5,900",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-6.30",
+      "fluctuationsRatio": "6.20",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "8,081,730",
+      "marketValue": "8,582,593",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "298380",
       "stockName": "에이비엘바이오",
       "sosok": "1",
-      "closePrice": "92,100",
-      "compareToPreviousClosePrice": "-5,600",
+      "closePrice": "98,800",
+      "compareToPreviousClosePrice": "6,700",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-5.73",
+      "fluctuationsRatio": "7.27",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,156,445",
+      "marketValue": "5,531,561",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "087010",
       "stockName": "펩트론",
       "sosok": "1",
-      "closePrice": "188,500",
-      "compareToPreviousClosePrice": "-16,500",
+      "closePrice": "216,000",
+      "compareToPreviousClosePrice": "27,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-8.05",
+      "fluctuationsRatio": "14.59",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,395,320",
+      "marketValue": "5,036,547",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "347850",
       "stockName": "디앤디파마텍",
       "sosok": "1",
-      "closePrice": "96,100",
-      "compareToPreviousClosePrice": "-11,400",
+      "closePrice": "92,000",
+      "compareToPreviousClosePrice": "-4,100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-10.60",
+      "fluctuationsRatio": "-4.27",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,268,170",
+      "marketValue": "4,086,073",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "145020",
       "stockName": "휴젤",
       "sosok": "1",
-      "closePrice": "242,000",
-      "compareToPreviousClosePrice": "-11,000",
+      "closePrice": "259,500",
+      "compareToPreviousClosePrice": "17,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-4.35",
+      "fluctuationsRatio": "7.23",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,977,575",
+      "marketValue": "3,192,896",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "007390",
       "stockName": "네이처셀",
       "sosok": "1",
-      "closePrice": "25,100",
-      "compareToPreviousClosePrice": "-2,400",
+      "closePrice": "25,900",
+      "compareToPreviousClosePrice": "800",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-8.73",
+      "fluctuationsRatio": "3.19",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,617,319",
+      "marketValue": "1,668,867",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "68.14",
+            "value": "64.74",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "26.98",
+            "value": "25.63",
             "cx": null
           },
           "202312": {
@@ -2776,6 +2776,13 @@
   "disclosures": [
     {
       "itemCode": "196170",
+      "disclosureId": 41109810,
+      "title": "(주)알테오젠 주식선물ㆍ주식옵션 2단계 가격제한폭 확대요건 도달(상승)",
+      "datetime": "2026-06-24T10:13:21",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "196170",
       "disclosureId": 31751417,
       "title": "(주)알테오젠 기업설명회(IR) 개최",
       "datetime": "2026-06-16T06:50:59",
@@ -2836,51 +2843,44 @@
       "title": "(주)알테오젠 주식선물ㆍ주식옵션 2단계 가격제한폭 확대요건 도달(상승)",
       "datetime": "2026-05-13T06:50:34",
       "author": "KOSCOM"
-    },
-    {
-      "itemCode": "196170",
-      "disclosureId": 1639115,
-      "title": "(주)알테오젠 연결재무제표 기준 영업(잠정)실적(공정공시)",
-      "datetime": "2026-05-08T06:50:44",
-      "author": "KOSCOM"
     }
   ],
   "news": [
     {
-      "title": "韓 77개 부스 역대최대…中은 홍보전보다 1대1 미팅 주력 [바이오 USA]",
+      "title": "전날 폭락 딛고 삼성전자 9.83% 급등...코스피 8400선 회복",
+      "office": "이코노미스트",
+      "date": "202606241738",
+      "url": "https://n.news.naver.com/mnews/article/243/0000099583"
+    },
+    {
+      "title": "반도체 줍줍에 8500 턱밑, 안심 이르다…롤러코스피 운명 '이것'에 달...",
+      "office": "머니투데이",
+      "date": "202606241726",
+      "url": "https://n.news.naver.com/mnews/article/008/0005376668"
+    },
+    {
+      "title": "‘34만전자’ 이틀만에 시총 1위 탈환…코스피 8470선 회복[마켓시그...",
       "office": "서울경제",
-      "date": "202606231759",
-      "url": "https://n.news.naver.com/mnews/article/011/0004634147"
+      "date": "202606241658",
+      "url": "https://n.news.naver.com/mnews/article/011/0004634522"
     },
     {
-      "title": "전태연 알테오젠 대표 “올해 역대최대 계약 기대…SC플랫폼 상업화 ...",
+      "title": "[증시 인사이트] 10% 하락 딛고 반등…9000선 향해 달리는 코스피",
+      "office": "SBS Biz",
+      "date": "202606241646",
+      "url": "https://n.news.naver.com/mnews/article/374/0000518018"
+    },
+    {
+      "title": "삼성전자 9.8% 급반등, 시총 1위 복귀…코스피 8470선 회복[시황종합]",
+      "office": "뉴스1",
+      "date": "202606241633",
+      "url": "https://n.news.naver.com/mnews/article/421/0009021756"
+    },
+    {
+      "title": "“코스피 10% 급락이요? 지금이 기회”…美반도체주 급락에도 3% 반등...",
       "office": "매일경제",
-      "date": "202606231757",
-      "url": "https://n.news.naver.com/mnews/article/009/0005697811"
-    },
-    {
-      "title": "코스피 9.99% 급락에도 개인은 11조 베팅…‘삼전닉스’ 금융위기 후 ...",
-      "office": "헤럴드경제",
-      "date": "202606231714",
-      "url": "https://n.news.naver.com/mnews/article/016/0002660487"
-    },
-    {
-      "title": "바이오USA 개막…K-바이오, 기술수출·사업확장 위한 총력전",
-      "office": "디지털타임스",
-      "date": "202606231641",
-      "url": "https://n.news.naver.com/mnews/article/029/0003033256"
-    },
-    {
-      "title": "'검은 화요일' 코스피, 10% 추락 8,203…코스닥 7.9% 급락(종합)",
-      "office": "연합뉴스",
-      "date": "202606231634",
-      "url": "https://n.news.naver.com/mnews/article/001/0016154497"
-    },
-    {
-      "title": "코스피, 910P 폭락 '사상 최대'…코스닥 900선 붕괴(종합)",
-      "office": "뉴시스",
-      "date": "202606231628",
-      "url": "https://n.news.naver.com/mnews/article/003/0014023247"
+      "date": "202606241625",
+      "url": "https://n.news.naver.com/mnews/article/009/0005698226"
     }
   ],
   "_errors": {}
