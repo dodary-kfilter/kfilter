@@ -16,7 +16,9 @@
 """
 import re, ast, time, json, html, os
 from statistics import mean
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+KST = timezone(timedelta(hours=9))           # 한국 표준시(UTC+9)
+def now_kst(): return datetime.now(KST)       # 사이트 표시용 타임스탬프
 import requests
 
 # ===== 설정 =====
@@ -341,7 +343,7 @@ def write_report_file(code, name, market, supply, raw, price_block,
     integ = raw.get("integ") or {}
     payload = {
         "code": code, "name": name, "market": market,
-        "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "updated": now_kst().strftime("%Y-%m-%d %H:%M"),
         "supply_10d": supply,                                  # 외인/연기금 최근10일 (토스)
         "supply_detail": supply_detail,                        # 투자자별 세부 + 외인보유율 추이
         "price_daily": price_block,                            # 일봉
@@ -428,7 +430,7 @@ def latest_trade_date():
 
 
 def main():
-    print("스캔 시작:", datetime.now().strftime("%Y-%m-%d %H:%M"), flush=True)
+    print("스캔 시작:", now_kst().strftime("%Y-%m-%d %H:%M"), flush=True)
 
     # [장 안 열린 날 가드] 예약(cron) 실행 시 새 거래일 데이터가 없으면(주말·공휴일·소스 미갱신) 스캔·저장·커밋 생략.
     #   수동 실행(workflow_dispatch)·로컬 실행은 건너뛰고 항상 갱신(같은 날 재실행으로 확정 데이터 새로고침 가능).
@@ -547,7 +549,7 @@ def main():
     print(f"report 정리: {removed}개 삭제, 유지 {len(keep)}개", flush=True)
 
     result = {
-        "updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "updated": now_kst().strftime("%Y-%m-%d %H:%M"),
         "market_date": new_date,
         "window": WINDOW, "buy_ratio": int(BUY_RATIO_MIN * 100),
         "scanned": len(kept),
