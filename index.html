@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>수급 필터 · 외국인 · 연기금</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -342,7 +345,7 @@ function sectionPort(list){
 
 // ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
 function buildPrompt(it){
-  const D=(c)=>'https://dodary-kfilter.github.io/kfilter/report-data/'+c+'.json';
+  const D=(c)=>'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/report-data/'+c+'.json';
   const url=D(it.code);
 
   // ── 내 종목 = 변화 모드 (이미 아는 종목 → '최근 무엇이 바뀌었나' 중심) ──
@@ -475,8 +478,9 @@ function show(k){CUR=k;document.querySelectorAll('.tab').forEach(t=>t.classList.
 async function load(){
   document.getElementById('content').innerHTML='<div class="loading">데이터를 불러오는 중…</div>';
   try{
-    const res=await fetch('data.json?t='+Date.now());
-    if(!res.ok) throw new Error();
+    let res;
+    try{ res=await fetch('https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw 0; }
+    catch(_){ res=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error(); }
     DATA=await res.json();
     document.getElementById('updated').textContent=DATA.updated;
     document.getElementById('c-foreign').textContent=DATA.foreign.length;
