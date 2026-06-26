@@ -2,30 +2,46 @@
   "code": "099320",
   "name": "쎄트렉아이",
   "market": "KOSDAQ",
-  "updated": "2026-06-25 19:42",
+  "updated": "2026-06-26 17:03",
   "supply_10d": {
-    "foreign_net_10d": 50939,
-    "foreign_buydays": "7/10",
-    "pension_net_10d": 22709,
+    "foreign_net_10d": 172733,
+    "foreign_buydays": "8/10",
+    "pension_net_10d": 4033,
     "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-06-26",
+        "close": 79800,
+        "foreignRatio": 11.69,
+        "개인": -37423,
+        "외국인": 36943,
+        "기관계": 1701,
+        "금융투자": 4641,
+        "투신": -2552,
+        "사모": -1868,
+        "보험": 1361,
+        "은행": 0,
+        "기타금융": -1,
+        "연기금": 120,
+        "기타법인": -1276
+      },
+      {
         "date": "2026-06-25",
         "close": 84900,
-        "foreignRatio": 11.4,
-        "개인": -10882,
-        "외국인": 30185,
-        "기관계": -19200,
-        "금융투자": -5193,
+        "foreignRatio": 11.69,
+        "개인": -11421,
+        "외국인": 30808,
+        "기관계": -19342,
+        "금융투자": -5335,
         "투신": 1100,
         "사모": -1636,
         "보험": -57,
         "은행": 0,
         "기타금융": 0,
         "연기금": -13414,
-        "기타법인": -15
+        "기타법인": 34
       },
       {
         "date": "2026-06-24",
@@ -954,67 +970,55 @@
         "기타금융": 1,
         "연기금": 1480,
         "기타법인": 477
-      },
-      {
-        "date": "2026-03-30",
-        "close": 176400,
-        "foreignRatio": 9.54,
-        "개인": 20664,
-        "외국인": -14823,
-        "기관계": -7341,
-        "금융투자": -3233,
-        "투신": 2839,
-        "사모": -1453,
-        "보험": -504,
-        "은행": 0,
-        "기타금융": 10,
-        "연기금": -5000,
-        "기타법인": 1144
       }
     ],
     "cum_5d": {
-      "개인": -137921,
-      "외국인": 128057,
-      "기관계": 9933,
-      "금융투자": 4866,
-      "투신": -645,
-      "사모": -9234,
-      "보험": 1604,
+      "개인": -146794,
+      "외국인": 145997,
+      "기관계": -2791,
+      "금융투자": 14302,
+      "투신": -11061,
+      "사모": -4922,
+      "보험": 2132,
       "은행": 0,
-      "기타금융": -42,
-      "연기금": 13384,
-      "기타법인": -1538
+      "기타금융": 0,
+      "연기금": -3242,
+      "기타법인": 2060
     },
     "cum_20d": {
-      "개인": -360392,
-      "외국인": 116833,
-      "기관계": 251631,
-      "금융투자": -39989,
-      "투신": 294702,
-      "사모": -21870,
-      "보험": -5655,
+      "개인": -367922,
+      "외국인": 118258,
+      "기관계": 256997,
+      "금융투자": -35640,
+      "투신": 292974,
+      "사모": -23493,
+      "보험": -268,
       "은행": 0,
-      "기타금융": -227,
-      "연기금": 24670,
-      "기타법인": -1408
+      "기타금융": -228,
+      "연기금": 23652,
+      "기타법인": -2612
     },
     "cum_60d": {
-      "개인": 152149,
-      "외국인": 163446,
-      "기관계": -351590,
-      "금융투자": -69413,
-      "투신": -34720,
-      "사모": -100809,
-      "보험": -24897,
+      "개인": 93523,
+      "외국인": 215835,
+      "기관계": -342690,
+      "금융투자": -61681,
+      "투신": -40111,
+      "사모": -101224,
+      "보험": -23032,
       "은행": -752,
-      "기타금융": -1187,
-      "연기금": -119812,
-      "기타법인": 35793
+      "기타금융": -1198,
+      "연기금": -114692,
+      "기타법인": 33422
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-06-26",
+        "ratio": 11.69
+      },
+      {
         "date": "2026-06-25",
-        "ratio": 11.4
+        "ratio": 11.69
       },
       {
         "date": "2026-06-24",
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-03-31",
         "ratio": 9.52
-      },
-      {
-        "date": "2026-03-30",
-        "ratio": 9.54
       }
     ]
   },
   "price_daily": {
-    "now": 84900,
-    "prevClose": 92400,
-    "changePct": -8.12,
+    "now": 79800,
+    "prevClose": 84900,
+    "changePct": -6.01,
     "ma": {
-      "ma5": 95860.0,
-      "ma20": 113365.0,
-      "ma60": 149461.7,
-      "ma120": 154888.3,
+      "ma5": 90400.0,
+      "ma20": 110360.0,
+      "ma60": 147851.7,
+      "ma120": 155021.7,
       "aligned": false,
       "vs": {
-        "ma5": -11.43,
-        "ma20": -25.11,
-        "ma60": -43.2,
-        "ma120": -45.19
+        "ma5": -11.73,
+        "ma20": -27.69,
+        "ma60": -46.03,
+        "ma120": -48.52
       }
     },
-    "trend20": -41.25,
+    "trend20": -42.96,
     "pocket": [
       {
         "low": 172350,
@@ -1291,17 +1291,17 @@
     ]
   },
   "price_weekly": {
-    "now": 84900,
+    "now": 79800,
     "ma": {
-      "ma5": 112580.0,
-      "ma10": 138870.0,
-      "ma20": 159730.0,
-      "ma60": 97994.2
+      "ma5": 111560.0,
+      "ma10": 138360.0,
+      "ma20": 159475.0,
+      "ma60": 97909.2
     },
     "aligned": false,
     "rangeHigh": 196500,
     "rangeLow": 23300,
-    "posPct": 35.6,
+    "posPct": 32.6,
     "recent": [
       {
         "d": "20260102",
@@ -1404,22 +1404,22 @@
         "c": 107100
       },
       {
-        "d": "20260625",
-        "c": 84900
+        "d": "20260626",
+        "c": 79800
       }
     ]
   },
   "price_monthly": {
-    "now": 84900,
+    "now": 79800,
     "ma": {
-      "ma6": 155300.0,
-      "ma12": 106512.5,
-      "ma24": 75029.2
+      "ma6": 154450.0,
+      "ma12": 106087.5,
+      "ma24": 74816.7
     },
     "aligned": true,
     "rangeHigh": 196500,
     "rangeLow": 11438,
-    "posPct": 39.7,
+    "posPct": 36.9,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 133700
       },
       {
-        "d": "20260625",
-        "c": 84900
+        "d": "20260626",
+        "c": 79800
       }
     ]
   },
@@ -1523,32 +1523,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "92,400"
+      "value": "84,900"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "93,800",
+      "value": "83,800",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "93,800",
+      "value": "84,900",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "83,500",
+      "value": "75,900",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "136,511"
+      "value": "146,057"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "11,808백만"
+      "value": "11,632백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "9,298억"
+      "value": "8,739억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "11.40%"
+      "value": "11.69%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "77.39배",
+      "value": "72.74배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "55.13배"
+      "value": "51.82배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "3.77배",
+      "value": "3.54배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "0.12%",
+      "value": "0.13%",
       "valueDesc": "2025.12."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "099320",
-    "createDate": "2026-06-24",
+    "createDate": "2026-06-25",
     "recommMean": "4.00",
     "priceTargetMean": "210,000"
   },
@@ -1645,7 +1645,7 @@
       "nm": "쎄트렉아이",
       "bnm": "한국IR협의회",
       "tit": "[AI] 소형 지구관측 위성 시스템 개발 및 수출 전문기업",
-      "rcnt": "7781",
+      "rcnt": "7821",
       "wdt": "20260410"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "쎄트렉아이",
       "bnm": "대신증권",
       "tit": "전쟁발 수요 확대, SpaceEye-T 성장 기대",
-      "rcnt": "11282",
+      "rcnt": "11317",
       "wdt": "20260324"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "쎄트렉아이",
       "bnm": "대신증권",
       "tit": "지금 사느냐, 나중에 더 비싸게 사느냐의 문제",
-      "rcnt": "11503",
+      "rcnt": "11542",
       "wdt": "20260211"
     }
   ],
@@ -1675,17 +1675,17 @@
       "reutersCode": "012450",
       "stockName": "한화에어로스페이스",
       "sosok": "0",
-      "closePrice": "1,069,000",
-      "compareToPreviousClosePrice": "-25,000",
+      "closePrice": "1,011,000",
+      "compareToPreviousClosePrice": "-58,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.29",
+      "fluctuationsRatio": "-5.43",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "55,121,275",
+      "marketValue": "52,130,598",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1712,17 +1712,17 @@
       "reutersCode": "064350",
       "stockName": "현대로템",
       "sosok": "0",
-      "closePrice": "183,000",
-      "compareToPreviousClosePrice": "-12,500",
+      "closePrice": "169,800",
+      "compareToPreviousClosePrice": "-13,200",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-6.39",
+      "fluctuationsRatio": "-7.21",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "19,973,039",
+      "marketValue": "18,532,361",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1749,17 +1749,17 @@
       "reutersCode": "079550",
       "stockName": "LIG디펜스앤에어로스페이스",
       "sosok": "0",
-      "closePrice": "775,000",
-      "compareToPreviousClosePrice": "-49,000",
+      "closePrice": "735,000",
+      "compareToPreviousClosePrice": "-40,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-5.95",
+      "fluctuationsRatio": "-5.16",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "17,050,000",
+      "marketValue": "16,170,000",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1786,17 +1786,17 @@
       "reutersCode": "272210",
       "stockName": "한화시스템",
       "sosok": "0",
-      "closePrice": "79,000",
-      "compareToPreviousClosePrice": "-3,600",
+      "closePrice": "73,600",
+      "compareToPreviousClosePrice": "-5,400",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.36",
+      "fluctuationsRatio": "-6.84",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "14,924,631",
+      "marketValue": "13,904,467",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1823,17 +1823,17 @@
       "reutersCode": "047810",
       "stockName": "한국항공우주",
       "sosok": "0",
-      "closePrice": "142,200",
-      "compareToPreviousClosePrice": "-900",
+      "closePrice": "141,600",
+      "compareToPreviousClosePrice": "-600",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.63",
+      "fluctuationsRatio": "-0.42",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "13,860,960",
+      "marketValue": "13,802,475",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1860,17 +1860,17 @@
       "reutersCode": "032820",
       "stockName": "우리기술",
       "sosok": "1",
-      "closePrice": "12,200",
-      "compareToPreviousClosePrice": "-500",
+      "closePrice": "11,170",
+      "compareToPreviousClosePrice": "-1,030",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-3.94",
+      "fluctuationsRatio": "-8.44",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,093,583",
+      "marketValue": "1,916,829",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2176,7 +2176,7 @@
             "cx": null
           },
           "202612": {
-            "value": "59.99",
+            "value": "55.12",
             "cx": null
           },
           "202312": {
@@ -2218,7 +2218,7 @@
             "cx": null
           },
           "202612": {
-            "value": "3.86",
+            "value": "3.54",
             "cx": null
           },
           "202312": {
@@ -2645,7 +2645,7 @@
             "cx": null
           },
           "202606": {
-            "value": "219.98",
+            "value": "202.12",
             "cx": null
           },
           "202506": {
@@ -2829,6 +2829,12 @@
   ],
   "news": [
     {
+      "title": "EU·NATO 및 동유럽에 우주 민관사절단 파견…14개 기업 참여",
+      "office": "연합뉴스",
+      "date": "202606261134",
+      "url": "https://n.news.naver.com/mnews/article/001/0016161123"
+    },
+    {
       "title": "'한국형 우주임무보증' 첫발…민간 주도 연구회 출범",
       "office": "이데일리",
       "date": "202606251010",
@@ -2857,12 +2863,6 @@
       "office": "이코노미스트",
       "date": "202606220701",
       "url": "https://n.news.naver.com/mnews/article/243/0000099432"
-    },
-    {
-      "title": "우주청, 우주환경시험시설 지원사업 대상 기관 모집",
-      "office": "지디넷코리아",
-      "date": "202606211305",
-      "url": "https://n.news.naver.com/mnews/article/092/0002427432"
     }
   ],
   "_errors": {}

@@ -2,30 +2,46 @@
   "code": "036570",
   "name": "NC",
   "market": "KOSPI",
-  "updated": "2026-06-25 19:41",
+  "updated": "2026-06-26 17:03",
   "supply_10d": {
-    "foreign_net_10d": 148253,
+    "foreign_net_10d": 128341,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 24772,
+    "pension_net_10d": 19725,
     "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-06-26",
+        "close": 238000,
+        "foreignRatio": 36.58,
+        "개인": -19500,
+        "외국인": 24887,
+        "기관계": -4914,
+        "금융투자": -5961,
+        "투신": 4473,
+        "사모": 2691,
+        "보험": 1551,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": -7668,
+        "기타법인": 52
+      },
+      {
         "date": "2026-06-25",
         "close": 234500,
-        "foreignRatio": 36.37,
-        "개인": -50493,
-        "외국인": 42297,
-        "기관계": 7906,
-        "금융투자": 3265,
-        "투신": -1707,
+        "foreignRatio": 36.58,
+        "개인": -52783,
+        "외국인": 45224,
+        "기관계": 7488,
+        "금융투자": 2899,
+        "투신": -1759,
         "사모": -3622,
         "보험": -646,
         "은행": 0,
         "기타금융": 1,
         "연기금": 10615,
-        "기타법인": 167
+        "기타법인": -14
       },
       {
         "date": "2026-06-24",
@@ -954,67 +970,55 @@
         "기타금융": 1,
         "연기금": 35365,
         "기타법인": -1140
-      },
-      {
-        "date": "2026-03-30",
-        "close": 222000,
-        "foreignRatio": 35.67,
-        "개인": 12999,
-        "외국인": -29218,
-        "기관계": 16001,
-        "금융투자": -882,
-        "투신": 4315,
-        "사모": -1642,
-        "보험": 449,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 13761,
-        "기타법인": 31
       }
     ],
     "cum_5d": {
-      "개인": -64234,
-      "외국인": 39531,
-      "기관계": 26037,
-      "금융투자": -7933,
-      "투신": -3931,
-      "사모": 28200,
-      "보험": -5111,
+      "개인": -46723,
+      "외국인": 39933,
+      "기관계": 8335,
+      "금융투자": -20156,
+      "투신": -227,
+      "사모": 16116,
+      "보험": -954,
       "은행": 0,
-      "기타금융": -1276,
-      "연기금": 16088,
-      "기타법인": -684
+      "기타금융": 1,
+      "연기금": 13555,
+      "기타법인": -726
     },
     "cum_20d": {
-      "개인": -99906,
-      "외국인": 15087,
-      "기관계": 93323,
-      "금융투자": 15756,
-      "투신": -28419,
-      "사모": 7192,
-      "보험": -21203,
+      "개인": -69975,
+      "외국인": 30073,
+      "기관계": 48108,
+      "금융투자": 15237,
+      "투신": -37698,
+      "사모": 1227,
+      "보험": -23401,
       "은행": -1195,
-      "기타금융": -286,
-      "연기금": 121478,
-      "기타법인": -8649
+      "기타금융": -145,
+      "연기금": 94083,
+      "기타법인": -7685
     },
     "cum_60d": {
-      "개인": -853485,
-      "외국인": 229185,
-      "기관계": 650063,
-      "금융투자": -21898,
-      "투신": 49406,
-      "사모": 23290,
-      "보험": 7270,
+      "개인": -888274,
+      "외국인": 286217,
+      "기관계": 628730,
+      "금융투자": -27343,
+      "투신": 49512,
+      "사모": 27623,
+      "보험": 8372,
       "은행": -859,
       "기타금융": -2316,
-      "연기금": 595170,
-      "기타법인": -24925
+      "연기금": 573741,
+      "기타법인": -25085
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-06-26",
+        "ratio": 36.58
+      },
+      {
         "date": "2026-06-25",
-        "ratio": 36.37
+        "ratio": 36.58
       },
       {
         "date": "2026-06-24",
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-03-31",
         "ratio": 35.66
-      },
-      {
-        "date": "2026-03-30",
-        "ratio": 35.67
       }
     ]
   },
   "price_daily": {
-    "now": 234500,
-    "prevClose": 243500,
-    "changePct": -3.7,
+    "now": 238000,
+    "prevClose": 234500,
+    "changePct": 1.49,
     "ma": {
-      "ma5": 251400.0,
-      "ma20": 269725.0,
-      "ma60": 258641.7,
-      "ma120": 240421.7,
+      "ma5": 243600.0,
+      "ma20": 267400.0,
+      "ma60": 258908.3,
+      "ma120": 240700.8,
       "aligned": false,
       "vs": {
-        "ma5": -6.72,
-        "ma20": -13.06,
-        "ma60": -9.33,
-        "ma120": -2.46
+        "ma5": -2.3,
+        "ma20": -10.99,
+        "ma60": -8.08,
+        "ma120": -1.12
       }
     },
-    "trend20": -15.5,
+    "trend20": -16.34,
     "pocket": [
       {
         "low": 187000,
@@ -1281,27 +1281,27 @@
       {
         "low": 209650,
         "high": 217200,
-        "volPct": 15.4
+        "volPct": 15.5
       },
       {
         "low": 224750,
         "high": 232300,
-        "volPct": 10.6
+        "volPct": 9.9
       }
     ]
   },
   "price_weekly": {
-    "now": 234500,
+    "now": 238000,
     "ma": {
-      "ma5": 269100.0,
-      "ma10": 268950.0,
-      "ma20": 248975.0,
-      "ma60": 218210.0
+      "ma5": 269800.0,
+      "ma10": 269300.0,
+      "ma20": 249150.0,
+      "ma60": 218268.3
     },
     "aligned": true,
     "rangeHigh": 839000,
     "rangeLow": 138500,
-    "posPct": 13.7,
+    "posPct": 14.2,
     "recent": [
       {
         "d": "20260102",
@@ -1404,22 +1404,22 @@
         "c": 277000
       },
       {
-        "d": "20260625",
-        "c": 234500
+        "d": "20260626",
+        "c": 238000
       }
     ]
   },
   "price_monthly": {
-    "now": 234500,
+    "now": 238000,
     "ma": {
-      "ma6": 247333.3,
-      "ma12": 227391.7,
-      "ma24": 204925.0
+      "ma6": 247916.7,
+      "ma12": 227683.3,
+      "ma24": 205070.8
     },
     "aligned": true,
     "rangeHigh": 953000,
     "rangeLow": 146300,
-    "posPct": 10.9,
+    "posPct": 11.4,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 289500
       },
       {
-        "d": "20260625",
-        "c": 234500
+        "d": "20260626",
+        "c": 238000
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "243,500"
+      "value": "234,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "240,500",
+      "value": "237,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "248,000",
+      "value": "244,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "233,500",
+      "value": "227,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "192,763"
+      "value": "147,589"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "46,026백만"
+      "value": "34,752백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "5조 521억"
+      "value": "5조 1,275억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "36.37%"
+      "value": "36.58%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "11.04배",
+      "value": "11.20배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "10.86배"
+      "value": "11.03배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "1.29배",
+      "value": "1.31배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "0.49%",
+      "value": "0.48%",
       "valueDesc": "2026.03."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "036570",
-    "createDate": "2026-06-24",
+    "createDate": "2026-06-25",
     "recommMean": "4.00",
     "priceTargetMean": "374,167"
   },
@@ -1645,7 +1645,7 @@
       "nm": "NC",
       "bnm": "한화투자증권",
       "tit": "체질 개선 초입",
-      "rcnt": "10759",
+      "rcnt": "11040",
       "wdt": "20260514"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "NC",
       "bnm": "교보증권",
       "tit": "특기인 MMORPG 성공중에 캐주얼 엔진 장착 ",
-      "rcnt": "7050",
+      "rcnt": "7257",
       "wdt": "20260514"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "NC",
       "bnm": "유안타증권",
       "tit": "높아진 실적 체력",
-      "rcnt": "6343",
+      "rcnt": "6548",
       "wdt": "20260514"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "NC",
       "bnm": "하나증권",
       "tit": "단순 모멘텀이 아닌 구조적 성장 구간. 사야할 때",
-      "rcnt": "6344",
+      "rcnt": "6591",
       "wdt": "20260514"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "NC",
       "bnm": "유진투자증권",
       "tit": "NC IP POWER",
-      "rcnt": "5397",
+      "rcnt": "5594",
       "wdt": "20260514"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "259960",
       "stockName": "크래프톤",
       "sosok": "0",
-      "closePrice": "208,000",
-      "compareToPreviousClosePrice": "-12,000",
+      "closePrice": "204,000",
+      "compareToPreviousClosePrice": "-4,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-5.45",
+      "fluctuationsRatio": "-1.92",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "9,596,669",
+      "marketValue": "9,412,117",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "251270",
       "stockName": "넷마블",
       "sosok": "0",
-      "closePrice": "36,000",
-      "compareToPreviousClosePrice": "-600",
+      "closePrice": "35,150",
+      "compareToPreviousClosePrice": "-850",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.64",
+      "fluctuationsRatio": "-2.36",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,949,644",
+      "marketValue": "2,880,000",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "263750",
       "stockName": "펄어비스",
       "sosok": "1",
-      "closePrice": "35,350",
-      "compareToPreviousClosePrice": "-950",
+      "closePrice": "34,150",
+      "compareToPreviousClosePrice": "-1,200",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.62",
+      "fluctuationsRatio": "-3.39",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,221,532",
+      "marketValue": "2,146,119",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "462870",
       "stockName": "시프트업",
       "sosok": "0",
-      "closePrice": "32,800",
-      "compareToPreviousClosePrice": "-1,150",
+      "closePrice": "31,000",
+      "compareToPreviousClosePrice": "-1,800",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-3.39",
+      "fluctuationsRatio": "-5.49",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,923,862",
+      "marketValue": "1,818,284",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "192080",
       "stockName": "더블유게임즈",
       "sosok": "0",
-      "closePrice": "59,900",
-      "compareToPreviousClosePrice": "-1,700",
+      "closePrice": "60,000",
+      "compareToPreviousClosePrice": "100",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-2.76",
+      "fluctuationsRatio": "0.17",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,268,290",
+      "marketValue": "1,270,408",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "293490",
       "stockName": "카카오게임즈",
       "sosok": "1",
-      "closePrice": "7,650",
-      "compareToPreviousClosePrice": "-750",
+      "closePrice": "6,930",
+      "compareToPreviousClosePrice": "-720",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-8.93",
+      "fluctuationsRatio": "-9.41",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "686,869",
+      "marketValue": "622,223",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "11.28",
+            "value": "10.86",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "1.25",
+            "value": "1.20",
             "cx": null
           },
           "202312": {
@@ -2663,7 +2663,7 @@
             "cx": null
           },
           "202606": {
-            "value": "49.25",
+            "value": "47.43",
             "cx": null
           },
           "202506": {
@@ -2847,6 +2847,30 @@
   ],
   "news": [
     {
+      "title": "'리니지2M', 24일 中 정식 출시 ··· 출시 직후 앱스토어 인기 1위, 2...",
+      "office": "OSEN",
+      "date": "202606261553",
+      "url": "https://n.news.naver.com/mnews/article/109/0005561064"
+    },
+    {
+      "title": "올해 들어 中 판호 6종 획득… 현지 흥행에 K-게임 실적 기대감",
+      "office": "조선비즈",
+      "date": "202606261521",
+      "url": "https://n.news.naver.com/mnews/article/366/0001174721"
+    },
+    {
+      "title": "엔씨, 본사 인력 35% 감소…분사·채용 맞물린 '조직 재배치'",
+      "office": "블로터",
+      "date": "202606261431",
+      "url": "https://n.news.naver.com/mnews/article/293/0000086842"
+    },
+    {
+      "title": "[K게임 3중고]①OTT에 치이고 중국에 뺏기고…사면초가 K게임",
+      "office": "아시아경제",
+      "date": "202606260630",
+      "url": "https://n.news.naver.com/mnews/article/277/0005781639"
+    },
+    {
       "title": "‘내돈내산’ 유튜버 마케팅으로 왕좌 직행?…“순위 조작” vs “단순...",
       "office": "매일경제",
       "date": "202606251938",
@@ -2857,30 +2881,6 @@
       "office": "아시아경제",
       "date": "202606251847",
       "url": "https://n.news.naver.com/mnews/article/277/0005781594"
-    },
-    {
-      "title": "리니지2M 중국 출격 '흥행 청신호'…앱스토어 인기 정상 점령",
-      "office": "데일리e스포츠",
-      "date": "202606251709",
-      "url": "https://n.news.naver.com/mnews/article/347/0000194215"
-    },
-    {
-      "title": "올해 中 진출한 K-게임, 연이어 흥행가도",
-      "office": "디지털타임스",
-      "date": "202606251533",
-      "url": "https://n.news.naver.com/mnews/article/029/0003033724"
-    },
-    {
-      "title": "엔씨 ‘리니지2M’, 중국 정식 출시…앱스토어 인기 1위",
-      "office": "마이데일리",
-      "date": "202606251408",
-      "url": "https://n.news.naver.com/mnews/article/117/0004078341"
-    },
-    {
-      "title": "리니지, '무한 나선: 정복자의 첨탑' 사전예약 진행",
-      "office": "포모스",
-      "date": "202606251228",
-      "url": "https://n.news.naver.com/mnews/article/236/0000255617"
     }
   ],
   "_errors": {}
