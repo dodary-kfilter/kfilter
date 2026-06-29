@@ -2,15 +2,31 @@
   "code": "328130",
   "name": "루닛",
   "market": "KOSDAQ",
-  "updated": "2026-06-26 20:34",
+  "updated": "2026-06-29 18:53",
   "supply_10d": {
-    "foreign_net_10d": 268492,
+    "foreign_net_10d": 242293,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 24405,
-    "pension_buydays": "7/10"
+    "pension_net_10d": 26349,
+    "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-06-29",
+        "close": 12030,
+        "foreignRatio": 12.07,
+        "개인": -117240,
+        "외국인": 14513,
+        "기관계": 101506,
+        "금융투자": 101459,
+        "투신": -144,
+        "사모": -205,
+        "보험": 69,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 327,
+        "기타법인": 449
+      },
       {
         "date": "2026-06-26",
         "close": 9880,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": 0,
         "기타법인": -11
-      },
-      {
-        "date": "2026-03-31",
-        "close": 16345,
-        "foreignRatio": 9.1,
-        "개인": -2717,
-        "외국인": -19411,
-        "기관계": 21544,
-        "금융투자": 22825,
-        "투신": 46,
-        "사모": -1327,
-        "보험": 0,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 0,
-        "기타법인": -311
       }
     ],
     "cum_5d": {
-      "개인": -196173,
-      "외국인": 82753,
-      "기관계": 123995,
-      "금융투자": 108037,
-      "투신": -642,
-      "사모": 4022,
-      "보험": 0,
+      "개인": -317056,
+      "외국인": 114028,
+      "기관계": 213484,
+      "금융투자": 205412,
+      "투신": -871,
+      "사모": 3817,
+      "보험": 69,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 12578,
-      "기타법인": -18867
+      "연기금": 5057,
+      "기타법인": -19756
     },
     "cum_20d": {
-      "개인": 1137946,
-      "외국인": -42959,
-      "기관계": -1139328,
-      "금융투자": 319922,
-      "투신": -1475124,
-      "사모": 17283,
-      "보험": 7767,
+      "개인": 1007253,
+      "외국인": 59100,
+      "기관계": -1119931,
+      "금융투자": 341124,
+      "투신": -1475165,
+      "사모": 17078,
+      "보험": 7836,
       "은행": 0,
       "기타금융": 0,
-      "연기금": -9176,
-      "기타법인": 40796
+      "연기금": -10804,
+      "기타법인": 46099
     },
     "cum_60d": {
-      "개인": 3173606,
-      "외국인": -535172,
-      "기관계": -2787255,
-      "금융투자": -1171864,
-      "투신": -1496983,
-      "사모": -155831,
-      "보험": 7767,
+      "개인": 3059083,
+      "외국인": -501248,
+      "기관계": -2707293,
+      "금융투자": -1093230,
+      "투신": -1497173,
+      "사모": -154709,
+      "보험": 7836,
       "은행": 2650,
       "기타금융": 2999,
-      "연기금": 24007,
-      "기타법인": 105963
+      "연기금": 24334,
+      "기타법인": 106723
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-06-29",
+        "ratio": 12.07
+      },
       {
         "date": "2026-06-26",
         "ratio": 12.07
@@ -1247,41 +1251,37 @@
       {
         "date": "2026-04-01",
         "ratio": 9.5
-      },
-      {
-        "date": "2026-03-31",
-        "ratio": 9.1
       }
     ]
   },
   "price_daily": {
-    "now": 9880,
-    "prevClose": 10640,
-    "changePct": -7.14,
+    "now": 12030,
+    "prevClose": 9880,
+    "changePct": 21.76,
     "ma": {
-      "ma5": 11090.0,
-      "ma20": 13942.0,
-      "ma60": 16820.8,
-      "ma120": 17757.1,
+      "ma5": 11034.0,
+      "ma20": 13705.5,
+      "ma60": 16748.8,
+      "ma120": 17697.8,
       "aligned": false,
       "vs": {
-        "ma5": -10.91,
-        "ma20": -29.13,
-        "ma60": -41.26,
-        "ma120": -44.36
+        "ma5": 9.03,
+        "ma20": -12.23,
+        "ma60": -28.17,
+        "ma120": -32.03
       }
     },
-    "trend20": -40.7,
+    "trend20": -28.22,
     "pocket": [
       {
         "low": 17747,
         "high": 18402,
-        "volPct": 19.1
+        "volPct": 19.3
       },
       {
         "low": 18402,
         "high": 19058,
-        "volPct": 16.0
+        "volPct": 16.1
       },
       {
         "low": 20369,
@@ -1291,22 +1291,18 @@
     ]
   },
   "price_weekly": {
-    "now": 9880,
+    "now": 12030,
     "ma": {
-      "ma5": 13786.0,
-      "ma10": 16441.6,
-      "ma20": 17321.1,
-      "ma60": 19247.3
+      "ma5": 12840.0,
+      "ma10": 15820.0,
+      "ma20": 16961.7,
+      "ma60": 19043.2
     },
     "aligned": false,
     "rangeHigh": 56350,
     "rangeLow": 4525,
-    "posPct": 10.3,
+    "posPct": 14.5,
     "recent": [
-      {
-        "d": "20260102",
-        "c": 20601
-      },
       {
         "d": "20260109",
         "c": 18351
@@ -1406,20 +1402,24 @@
       {
         "d": "20260626",
         "c": 9880
+      },
+      {
+        "d": "20260629",
+        "c": 12030
       }
     ]
   },
   "price_monthly": {
-    "now": 9880,
+    "now": 12030,
     "ma": {
-      "ma6": 16942.3,
-      "ma12": 18197.4,
-      "ma24": 21460.6
+      "ma6": 17300.7,
+      "ma12": 18376.6,
+      "ma24": 21550.2
     },
     "aligned": false,
     "rangeHigh": 46780,
     "rangeLow": 5408,
-    "posPct": 10.8,
+    "posPct": 16.0,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 16760
       },
       {
-        "d": "20260626",
-        "c": 9880
+        "d": "20260629",
+        "c": 12030
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "10,640"
+      "value": "9,880"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "10,680",
+      "value": "9,880",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "10,680",
+      "value": "12,260",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "9,650",
+      "value": "9,740",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,090,802"
+      "value": "980,405"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "10,868백만"
+      "value": "11,216백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "7,356억"
+      "value": "8,957억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "12.04%"
+      "value": "12.07%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1593,7 +1593,7 @@
     {
       "code": "lowPriceOf52WeeksAdjusted",
       "key": "원주가 기준",
-      "value": "10,600"
+      "value": "9,650"
     },
     {
       "code": "per",
@@ -1620,7 +1620,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "4.96배",
+      "value": "6.04배",
       "valueDesc": "2026.03."
     },
     {
@@ -1648,7 +1648,7 @@
       "nm": "루닛",
       "bnm": "미래에셋증권",
       "tit": "더 강해져 돌아왔다",
-      "rcnt": "9481",
+      "rcnt": "9801",
       "wdt": "20260527"
     },
     {
@@ -1657,7 +1657,7 @@
       "nm": "루닛",
       "bnm": "키움증권",
       "tit": "좋은 소식이네",
-      "rcnt": "6267",
+      "rcnt": "6464",
       "wdt": "20260514"
     },
     {
@@ -1666,7 +1666,7 @@
       "nm": "루닛",
       "bnm": "한국IR협의회",
       "tit": "성장의 증명, 이제는 수익성을 보여줄 차례",
-      "rcnt": "7828",
+      "rcnt": "7932",
       "wdt": "20260410"
     },
     {
@@ -1675,7 +1675,7 @@
       "nm": "루닛",
       "bnm": "키움증권",
       "tit": "마지막 남은 코인 사용, 진짜 배수의 진",
-      "rcnt": "8028",
+      "rcnt": "8129",
       "wdt": "20260209"
     }
   ],
@@ -1687,17 +1687,17 @@
       "reutersCode": "458870",
       "stockName": "씨어스",
       "sosok": "1",
-      "closePrice": "32,200",
-      "compareToPreviousClosePrice": "-850",
+      "closePrice": "37,700",
+      "compareToPreviousClosePrice": "5,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-2.57",
+      "fluctuationsRatio": "17.08",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,225,523",
+      "marketValue": "1,434,852",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1724,17 +1724,17 @@
       "reutersCode": "394800",
       "stockName": "쓰리빌리언",
       "sosok": "1",
-      "closePrice": "5,640",
-      "compareToPreviousClosePrice": "-310",
+      "closePrice": "6,400",
+      "compareToPreviousClosePrice": "760",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-5.21",
+      "fluctuationsRatio": "13.48",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "179,479",
+      "marketValue": "203,664",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1761,17 +1761,17 @@
       "reutersCode": "071200",
       "stockName": "인피니트헬스케어",
       "sosok": "1",
-      "closePrice": "6,200",
-      "compareToPreviousClosePrice": "-50",
+      "closePrice": "6,640",
+      "compareToPreviousClosePrice": "440",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-0.80",
+      "fluctuationsRatio": "7.10",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "151,258",
+      "marketValue": "161,992",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1798,17 +1798,17 @@
       "reutersCode": "032620",
       "stockName": "GC메디아이",
       "sosok": "1",
-      "closePrice": "2,680",
-      "compareToPreviousClosePrice": "-120",
+      "closePrice": "2,985",
+      "compareToPreviousClosePrice": "305",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-4.29",
+      "fluctuationsRatio": "11.38",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "139,888",
+      "marketValue": "155,808",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1831,58 +1831,21 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "322510",
-      "reutersCode": "322510",
-      "stockName": "제이엘케이",
-      "sosok": "1",
-      "closePrice": "4,465",
-      "compareToPreviousClosePrice": "-130",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      },
-      "fluctuationsRatio": "-2.83",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "114,866",
-      "nav": "N/A",
-      "threeMonthEarningRate": "N/A",
-      "stockExchangeType": {
-        "code": "KQ",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스닥",
-        "nameEng": "KOSDAQ",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSDAQ"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/322510"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
       "itemCode": "380550",
       "reutersCode": "380550",
       "stockName": "뉴로핏",
       "sosok": "1",
-      "closePrice": "9,340",
-      "compareToPreviousClosePrice": "-700",
+      "closePrice": "10,850",
+      "compareToPreviousClosePrice": "1,510",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-6.97",
+      "fluctuationsRatio": "16.17",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "113,937",
+      "marketValue": "132,357",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1901,6 +1864,43 @@
         "name": "KOSDAQ"
       },
       "endUrl": "https://m.stock.naver.com/domestic/stock/380550"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
+      "itemCode": "322510",
+      "reutersCode": "322510",
+      "stockName": "제이엘케이",
+      "sosok": "1",
+      "closePrice": "4,745",
+      "compareToPreviousClosePrice": "280",
+      "compareToPreviousPrice": {
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
+      },
+      "fluctuationsRatio": "6.27",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "122,069",
+      "nav": "N/A",
+      "threeMonthEarningRate": "N/A",
+      "stockExchangeType": {
+        "code": "KQ",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스닥",
+        "nameEng": "KOSDAQ",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSDAQ"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/322510"
     }
   ],
   "financials_annual": {
@@ -2188,7 +2188,7 @@
             "cx": "minus"
           },
           "202612": {
-            "value": "-15.02",
+            "value": "-13.95",
             "cx": "minus"
           },
           "202312": {
@@ -2230,7 +2230,7 @@
             "cx": null
           },
           "202612": {
-            "value": "2.61",
+            "value": "2.42",
             "cx": null
           },
           "202312": {
@@ -2841,6 +2841,18 @@
   ],
   "news": [
     {
+      "title": "'FDA 허가부터 3상 톱라인까지'…하반기 눈여겨볼 K바이오 빅이벤트는...",
+      "office": "이데일리",
+      "date": "202606290832",
+      "url": "https://n.news.naver.com/mnews/article/018/0006317607"
+    },
+    {
+      "title": "[AI헬스케어]AI전략위, 디지털 헬스케어 법안 통합 추진…4년 표류 마...",
+      "office": "이데일리",
+      "date": "202606281757",
+      "url": "https://n.news.naver.com/mnews/article/018/0006317286"
+    },
+    {
       "title": "\"지역병원 6곳에 AI 공급\"…루닛, 국책사업 참여",
       "office": "뉴시스",
       "date": "202606181030",
@@ -2863,18 +2875,6 @@
       "office": "서울경제",
       "date": "202606081335",
       "url": "https://n.news.naver.com/mnews/article/011/0004628752"
-    },
-    {
-      "title": "무늬만 AI 바이오 지고 원천 엔진만 살아남는다",
-      "office": "이데일리",
-      "date": "202606030812",
-      "url": "https://n.news.naver.com/mnews/article/018/0006296413"
-    },
-    {
-      "title": "\"판독 편차 줄인다\"…루닛-라이카, 폐암 바이오마커 AI 솔루션",
-      "office": "뉴스1",
-      "date": "202605271020",
-      "url": "https://n.news.naver.com/mnews/article/421/0008968080"
     }
   ],
   "_errors": {}
