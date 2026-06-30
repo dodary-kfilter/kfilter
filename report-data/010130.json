@@ -2,30 +2,46 @@
   "code": "010130",
   "name": "고려아연",
   "market": "KOSPI",
-  "updated": "2026-06-29 18:54",
+  "updated": "2026-07-01 02:33",
   "supply_10d": {
-    "foreign_net_10d": 12757,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 4551,
+    "foreign_net_10d": 3567,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 6253,
     "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-06-30",
+        "close": 1080000,
+        "foreignRatio": 28.14,
+        "개인": 3766,
+        "외국인": -7503,
+        "기관계": 3067,
+        "금융투자": 609,
+        "투신": -426,
+        "사모": -329,
+        "보험": 126,
+        "은행": 46,
+        "기타금융": 30,
+        "연기금": 3011,
+        "기타법인": 668
+      },
+      {
         "date": "2026-06-29",
         "close": 1125000,
-        "foreignRatio": 28.19,
-        "개인": -2728,
-        "외국인": -3315,
-        "기관계": 6129,
-        "금융투자": 2190,
+        "foreignRatio": 28.17,
+        "개인": -3623,
+        "외국인": -2823,
+        "기관계": 6533,
+        "금융투자": 2536,
         "투신": -275,
         "사모": 465,
         "보험": 258,
         "은행": 0,
-        "기타금융": 92,
+        "기타금융": 150,
         "연기금": 3399,
-        "기타법인": 52
+        "기타법인": 54
       },
       {
         "date": "2026-06-26",
@@ -954,67 +970,55 @@
         "기타금융": -8,
         "연기금": -1867,
         "기타법인": -319
-      },
-      {
-        "date": "2026-04-01",
-        "close": 1517000,
-        "foreignRatio": 9.48,
-        "개인": -8965,
-        "외국인": -994,
-        "기관계": 10173,
-        "금융투자": 8546,
-        "투신": 238,
-        "사모": -1442,
-        "보험": -388,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 3219,
-        "기타법인": -298
       }
     ],
     "cum_5d": {
-      "개인": -6435,
-      "외국인": 7844,
-      "기관계": -1599,
-      "금융투자": -4647,
-      "투신": -185,
-      "사모": -941,
-      "보험": -671,
-      "은행": -191,
-      "기타금융": 417,
-      "연기금": 4619,
-      "기타법인": 225
+      "개인": -2777,
+      "외국인": -7359,
+      "기관계": 9497,
+      "금융투자": -2663,
+      "투신": -342,
+      "사모": 409,
+      "보험": -497,
+      "은행": -128,
+      "기타금융": 505,
+      "연기금": 12213,
+      "기타법인": 707
     },
     "cum_20d": {
-      "개인": -3596,
-      "외국인": 36847,
-      "기관계": -32529,
-      "금융투자": -84,
-      "투신": -5000,
-      "사모": -7228,
-      "보험": -6598,
-      "은행": -173,
-      "기타금융": 2082,
-      "연기금": -15528,
-      "기타법인": -760
+      "개인": 6656,
+      "외국인": 21332,
+      "기관계": -28053,
+      "금융투자": -497,
+      "투신": -4854,
+      "사모": -6551,
+      "보험": -6081,
+      "은행": -127,
+      "기타금융": 2158,
+      "연기금": -12101,
+      "기타법인": -36
     },
     "cum_60d": {
-      "개인": 134883,
-      "외국인": -510170,
-      "기관계": -46231,
-      "금융투자": 15408,
-      "투신": -7193,
-      "사모": -17755,
-      "보험": -19339,
-      "은행": -305,
-      "기타금융": 2494,
-      "연기금": -19541,
-      "기타법인": 421744
+      "개인": 146719,
+      "외국인": -516187,
+      "기관계": -52933,
+      "금융투자": 7817,
+      "투신": -7857,
+      "사모": -16642,
+      "보험": -18825,
+      "은행": -259,
+      "기타금융": 2582,
+      "연기금": -19749,
+      "기타법인": 422712
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-06-30",
+        "ratio": 28.14
+      },
+      {
         "date": "2026-06-29",
-        "ratio": 28.19
+        "ratio": 28.17
       },
       {
         "date": "2026-06-26",
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-04-02",
         "ratio": 9.51
-      },
-      {
-        "date": "2026-04-01",
-        "ratio": 9.48
       }
     ]
   },
   "price_daily": {
-    "now": 1125000,
-    "prevClose": 1056000,
-    "changePct": 6.53,
+    "now": 1080000,
+    "prevClose": 1125000,
+    "changePct": -4.0,
     "ma": {
-      "ma5": 1094600.0,
-      "ma20": 1200900.0,
-      "ma60": 1429550.0,
-      "ma120": 1522683.3,
+      "ma5": 1093800.0,
+      "ma20": 1186150.0,
+      "ma60": 1422266.7,
+      "ma120": 1520716.7,
       "aligned": false,
       "vs": {
-        "ma5": 2.78,
-        "ma20": -6.32,
-        "ma60": -21.3,
-        "ma120": -26.12
+        "ma5": -1.26,
+        "ma20": -8.95,
+        "ma60": -24.06,
+        "ma120": -28.98
       }
     },
-    "trend20": -18.06,
+    "trend20": -21.45,
     "pocket": [
       {
         "low": 1320750,
@@ -1291,17 +1291,17 @@
     ]
   },
   "price_weekly": {
-    "now": 1125000,
+    "now": 1080000,
     "ma": {
-      "ma5": 1167800.0,
-      "ma10": 1320600.0,
-      "ma20": 1486750.0,
-      "ma60": 1208933.3
+      "ma5": 1158800.0,
+      "ma10": 1316100.0,
+      "ma20": 1484500.0,
+      "ma60": 1208183.3
     },
     "aligned": false,
     "rangeHigh": 2030000,
     "rangeLow": 426500,
-    "posPct": 43.6,
+    "posPct": 40.8,
     "recent": [
       {
         "d": "20260109",
@@ -1404,22 +1404,22 @@
         "c": 1056000
       },
       {
-        "d": "20260629",
-        "c": 1125000
+        "d": "20260630",
+        "c": 1080000
       }
     ]
   },
   "price_monthly": {
-    "now": 1125000,
+    "now": 1080000,
     "ma": {
-      "ma6": 1568833.3,
-      "ma12": 1303833.3,
-      "ma24": 1051250.0
+      "ma6": 1561333.3,
+      "ma12": 1300083.3,
+      "ma24": 1049375.0
     },
     "aligned": true,
     "rangeHigh": 2030000,
     "rangeLow": 335000,
-    "posPct": 46.6,
+    "posPct": 44.0,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 1373000
       },
       {
-        "d": "20260629",
-        "c": 1125000
+        "d": "20260630",
+        "c": 1080000
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "1,056,000"
+      "value": "1,125,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "1,056,000",
+      "value": "1,125,000",
       "compareToPreviousPrice": {
         "code": "3",
         "text": "보합",
@@ -1538,7 +1538,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "1,133,000",
+      "value": "1,140,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "1,043,000",
+      "value": "1,072,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "23,462"
+      "value": "26,410"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "25,816백만"
+      "value": "28,714백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "23조 4,821억"
+      "value": "22조 5,428억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "28.19%"
+      "value": "28.17%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "23.46배",
+      "value": "22.52배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,17 +1600,17 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "18.42배"
+      "value": "17.04배"
     },
     {
       "code": "cnsEps",
       "key": "추정EPS",
-      "value": "61,067원"
+      "value": "63,362원"
     },
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "2.05배",
+      "value": "1.96배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "1.78%",
+      "value": "1.85%",
       "valueDesc": "2025.12."
     },
     {
@@ -1634,9 +1634,9 @@
   ],
   "consensus": {
     "itemCode": "010130",
-    "createDate": "2026-06-26",
+    "createDate": "2026-06-29",
     "recommMean": "4.00",
-    "priceTargetMean": "1,841,250"
+    "priceTargetMean": "1,791,600"
   },
   "researches": [
     {
@@ -1645,7 +1645,7 @@
       "nm": "고려아연",
       "bnm": "신한투자증권",
       "tit": "1Q 호실적 달성. 앞으로 남은 과제는?",
-      "rcnt": "7947",
+      "rcnt": "8082",
       "wdt": "20260508"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "고려아연",
       "bnm": "iM증권",
       "tit": "단기 모멘텀 둔화에도 여전히 긍정적",
-      "rcnt": "4659",
+      "rcnt": "4732",
       "wdt": "20260508"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "고려아연",
       "bnm": "신한투자증권",
       "tit": "일회성 호실적이 아닌, 구조적 레벨업 구간",
-      "rcnt": "7234",
+      "rcnt": "7305",
       "wdt": "20260421"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "고려아연",
       "bnm": "신한투자증권",
       "tit": "4Q보다 좋을 1Q, 2025년보다 나을 2026년",
-      "rcnt": "9636",
+      "rcnt": "9675",
       "wdt": "20260211"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "고려아연",
       "bnm": "iM증권",
       "tit": "견고해지는 전략적 위상 > 단기 모멘텀 둔화",
-      "rcnt": "5875",
+      "rcnt": "5910",
       "wdt": "20260211"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "103140",
       "stockName": "풍산",
       "sosok": "0",
-      "closePrice": "67,800",
-      "compareToPreviousClosePrice": "4,600",
+      "closePrice": "64,400",
+      "compareToPreviousClosePrice": "-3,400",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "7.28",
+      "fluctuationsRatio": "-5.01",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,900,046",
+      "marketValue": "1,804,763",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1726,58 +1726,21 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "006110",
-      "reutersCode": "006110",
-      "stockName": "삼아알미늄",
-      "sosok": "0",
-      "closePrice": "44,150",
-      "compareToPreviousClosePrice": "6,250",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      },
-      "fluctuationsRatio": "16.49",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "667,700",
-      "nav": "N/A",
-      "threeMonthEarningRate": "N/A",
-      "stockExchangeType": {
-        "code": "KS",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스피",
-        "nameEng": "KOSPI",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSPI"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/006110"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
       "itemCode": "295310",
       "reutersCode": "295310",
       "stockName": "에이치브이엠",
       "sosok": "1",
-      "closePrice": "54,900",
-      "compareToPreviousClosePrice": "3,600",
+      "closePrice": "57,900",
+      "compareToPreviousClosePrice": "3,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "7.02",
+      "fluctuationsRatio": "5.46",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "661,357",
+      "marketValue": "697,497",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1800,21 +1763,58 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
+      "itemCode": "006110",
+      "reutersCode": "006110",
+      "stockName": "삼아알미늄",
+      "sosok": "0",
+      "closePrice": "41,750",
+      "compareToPreviousClosePrice": "-2,400",
+      "compareToPreviousPrice": {
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
+      },
+      "fluctuationsRatio": "-5.44",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "631,404",
+      "nav": "N/A",
+      "threeMonthEarningRate": "N/A",
+      "stockExchangeType": {
+        "code": "KS",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스피",
+        "nameEng": "KOSPI",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSPI"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/006110"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
       "itemCode": "005810",
       "reutersCode": "005810",
       "stockName": "풍산홀딩스",
       "sosok": "0",
-      "closePrice": "34,950",
-      "compareToPreviousClosePrice": "450",
+      "closePrice": "34,450",
+      "compareToPreviousClosePrice": "-500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "1.30",
+      "fluctuationsRatio": "-1.43",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "503,884",
+      "marketValue": "496,675",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "058430",
       "stockName": "포스코스틸리온",
       "sosok": "0",
-      "closePrice": "5,240",
-      "compareToPreviousClosePrice": "245",
+      "closePrice": "5,150",
+      "compareToPreviousClosePrice": "-90",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "4.90",
+      "fluctuationsRatio": "-1.72",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "314,400",
+      "marketValue": "309,000",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "009160",
       "stockName": "SIMPAC",
       "sosok": "0",
-      "closePrice": "3,970",
-      "compareToPreviousClosePrice": "100",
+      "closePrice": "4,550",
+      "compareToPreviousClosePrice": "580",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "2.58",
+      "fluctuationsRatio": "14.61",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "259,522",
+      "marketValue": "297,437",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1942,7 +1942,7 @@
             "cx": null
           },
           "202612": {
-            "value": "229,621",
+            "value": "231,372",
             "cx": null
           },
           "202312": {
@@ -1963,7 +1963,7 @@
             "cx": null
           },
           "202612": {
-            "value": "22,569",
+            "value": "23,003",
             "cx": null
           },
           "202312": {
@@ -1984,7 +1984,7 @@
             "cx": null
           },
           "202612": {
-            "value": "12,683",
+            "value": "13,155",
             "cx": null
           },
           "202312": {
@@ -2047,7 +2047,7 @@
             "cx": null
           },
           "202612": {
-            "value": "9.83",
+            "value": "9.94",
             "cx": null
           },
           "202312": {
@@ -2068,7 +2068,7 @@
             "cx": null
           },
           "202612": {
-            "value": "5.52",
+            "value": "5.68",
             "cx": null
           },
           "202312": {
@@ -2089,7 +2089,7 @@
             "cx": null
           },
           "202612": {
-            "value": "10.72",
+            "value": "11.12",
             "cx": null
           },
           "202312": {
@@ -2173,7 +2173,7 @@
             "cx": null
           },
           "202612": {
-            "value": "61,068",
+            "value": "63,362",
             "cx": null
           },
           "202312": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "17.29",
+            "value": "17.76",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "1.68",
+            "value": "1.79",
             "cx": null
           },
           "202312": {
@@ -2257,7 +2257,7 @@
             "cx": null
           },
           "202612": {
-            "value": "23,000",
+            "value": "22,500",
             "cx": null
           },
           "202312": {
@@ -2315,7 +2315,7 @@
             "cx": null
           },
           "202606": {
-            "value": "57,105",
+            "value": "57,462",
             "cx": null
           },
           "202506": {
@@ -2344,7 +2344,7 @@
             "cx": null
           },
           "202606": {
-            "value": "5,482",
+            "value": "5,603",
             "cx": null
           },
           "202506": {
@@ -2460,7 +2460,7 @@
             "cx": null
           },
           "202606": {
-            "value": "9.60",
+            "value": "9.75",
             "cx": null
           },
           "202506": {
@@ -2489,7 +2489,7 @@
             "cx": null
           },
           "202606": {
-            "value": "5.54",
+            "value": "5.51",
             "cx": null
           },
           "202506": {
@@ -2634,7 +2634,7 @@
             "cx": null
           },
           "202606": {
-            "value": "15,847",
+            "value": "16,975",
             "cx": null
           },
           "202506": {
@@ -2663,7 +2663,7 @@
             "cx": null
           },
           "202606": {
-            "value": "66.64",
+            "value": "66.27",
             "cx": null
           },
           "202506": {
@@ -2776,6 +2776,20 @@
   "disclosures": [
     {
       "itemCode": "010130",
+      "disclosureId": 49744230,
+      "title": "고려아연(주) (정정)신규시설투자등(자율공시)",
+      "datetime": "2026-06-30T18:05:39",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "010130",
+      "disclosureId": 49569674,
+      "title": "고려아연(주) 지속가능경영보고서 등 관련사항(자율공시)",
+      "datetime": "2026-06-30T15:39:15",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "010130",
       "disclosureId": 41682067,
       "title": "고려아연(주) (정정)회계처리기준 위반에 따른 임원의 해임권고 조치",
       "datetime": "2026-06-24T06:53:15",
@@ -2829,23 +2843,27 @@
       "title": "고려아연(주) 중간(분기)배당락 기준가격 안내",
       "datetime": "2026-05-19T06:50:59",
       "author": "KOSCOM"
-    },
-    {
-      "itemCode": "010130",
-      "disclosureId": 1640225,
-      "title": "고려아연(주) (정정)타인에대한채무보증결정",
-      "datetime": "2026-05-12T06:51:35",
-      "author": "KOSCOM"
-    },
-    {
-      "itemCode": "010130",
-      "disclosureId": 1638600,
-      "title": "고려아연(주) 주식선물 2단계 가격제한폭 확대요건 도달(하락)",
-      "datetime": "2026-05-07T06:50:52",
-      "author": "KOSCOM"
     }
   ],
   "news": [
+    {
+      "title": "[미리보는 이데일리 신문]낙인이 된 개인파산, 취업길 막혀 재파산",
+      "office": "이데일리",
+      "date": "202606302149",
+      "url": "https://n.news.naver.com/mnews/article/018/0006319398"
+    },
+    {
+      "title": "고려아연 노조, 홈플러스와 MBK 저지 공동연대",
+      "office": "스포츠동아",
+      "date": "202606301857",
+      "url": "https://n.news.naver.com/mnews/article/382/0001280951"
+    },
+    {
+      "title": "대기업 오너일가 ‘주식담보대출’, 삼성가 빼면 1년 새 오히려 증가",
+      "office": "디지털타임스",
+      "date": "202606301344",
+      "url": "https://n.news.naver.com/mnews/article/029/0003034430"
+    },
     {
       "title": "고려아연, 호주 총리·주수상 잇따라 면담…\"최적의 파트너\" 호평",
       "office": "동행미디어 시대",
@@ -2863,24 +2881,6 @@
       "office": "뉴시스",
       "date": "202606291719",
       "url": "https://n.news.naver.com/mnews/article/003/0014035279"
-    },
-    {
-      "title": "인천경제청, 경제자유구역 성과평가 ‘전국 1위’…8년 연속 S등급 획...",
-      "office": "경기일보",
-      "date": "202606291634",
-      "url": "https://n.news.naver.com/mnews/article/666/0000113165"
-    },
-    {
-      "title": "홈플러스 이번 주 회생 기로…수정안 냈지만 '2000억 조달'은 여전히 ...",
-      "office": "전자신문",
-      "date": "202606291431",
-      "url": "https://n.news.naver.com/mnews/article/030/0003442353"
-    },
-    {
-      "title": "20년된 토종PE 경영진은…내부 승계 48% vs 창업자 그대로 44% [PE 2.0]①",
-      "office": "아시아경제",
-      "date": "202606290732",
-      "url": "https://n.news.naver.com/mnews/article/277/0005782419"
     }
   ],
   "_errors": {}

@@ -2,30 +2,46 @@
   "code": "263750",
   "name": "펄어비스",
   "market": "KOSDAQ",
-  "updated": "2026-06-29 18:52",
+  "updated": "2026-07-01 02:32",
   "supply_10d": {
-    "foreign_net_10d": 450400,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 12348,
+    "foreign_net_10d": 417585,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 6565,
     "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-06-30",
+        "close": 36200,
+        "foreignRatio": 7.88,
+        "개인": 12842,
+        "외국인": -27072,
+        "기관계": 11786,
+        "금융투자": 16380,
+        "투신": 2259,
+        "사모": -834,
+        "보험": 16,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": -6035,
+        "기타법인": 844
+      },
+      {
         "date": "2026-06-29",
         "close": 36850,
-        "foreignRatio": 7.89,
-        "개인": -114389,
-        "외국인": 31671,
-        "기관계": 82094,
-        "금융투자": 81296,
+        "foreignRatio": 7.9,
+        "개인": -157401,
+        "외국인": 74159,
+        "기관계": 82873,
+        "금융투자": 82075,
         "투신": -286,
         "사모": -3238,
         "보험": 10,
         "은행": 0,
         "기타금융": 0,
         "연기금": 4312,
-        "기타법인": -2078
+        "기타법인": -2179
       },
       {
         "date": "2026-06-26",
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": -26592,
         "기타법인": 23580
-      },
-      {
-        "date": "2026-04-01",
-        "close": 72000,
-        "foreignRatio": 5.81,
-        "개인": -1021479,
-        "외국인": 866265,
-        "기관계": 162443,
-        "금융투자": 79207,
-        "투신": 87141,
-        "사모": -8863,
-        "보험": 3855,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 1103,
-        "기타법인": -6765
       }
     ],
     "cum_5d": {
-      "개인": -729809,
-      "외국인": 459853,
-      "기관계": 263261,
-      "금융투자": 247407,
-      "투신": 866,
-      "사모": 6987,
-      "보험": 10,
+      "개인": -503817,
+      "외국인": 294976,
+      "기관계": 202191,
+      "금융투자": 193710,
+      "투신": 2965,
+      "사모": 6430,
+      "보험": 26,
       "은행": 0,
-      "기타금융": 0,
-      "연기금": 7991,
-      "기타법인": 4045
+      "기타금융": -1,
+      "연기금": -939,
+      "기타법인": 2566
     },
     "cum_20d": {
-      "개인": -1065179,
-      "외국인": 434317,
-      "기관계": 635819,
-      "금융투자": 717732,
-      "투신": -107113,
-      "사모": 29492,
-      "보험": -2086,
+      "개인": -925220,
+      "외국인": 320005,
+      "기관계": 608937,
+      "금융투자": 669993,
+      "투신": -91195,
+      "사모": 40031,
+      "보험": -2051,
       "은행": 0,
-      "기타금융": -699,
-      "연기금": -1507,
-      "기타법인": 22756
+      "기타금융": 1,
+      "연기금": -7842,
+      "기타법인": 23473
     },
     "cum_60d": {
-      "개인": -753932,
-      "외국인": 1462996,
-      "기관계": -785437,
-      "금융투자": -126859,
-      "투신": -35747,
-      "사모": -335104,
-      "보험": -49242,
+      "개인": 237377,
+      "외국인": 612147,
+      "기관계": -935315,
+      "금융투자": -188907,
+      "투신": -120629,
+      "사모": -327075,
+      "보험": -53081,
       "은행": -1501,
       "기타금융": -8910,
-      "연기금": -228074,
-      "기타법인": 154984
+      "연기금": -235212,
+      "기타법인": 162492
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-06-30",
+        "ratio": 7.88
+      },
+      {
         "date": "2026-06-29",
-        "ratio": 7.89
+        "ratio": 7.9
       },
       {
         "date": "2026-06-26",
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-04-02",
         "ratio": 5.57
-      },
-      {
-        "date": "2026-04-01",
-        "ratio": 5.81
       }
     ]
   },
   "price_daily": {
-    "now": 36850,
-    "prevClose": 34150,
-    "changePct": 7.91,
+    "now": 36200,
+    "prevClose": 36850,
+    "changePct": -1.76,
     "ma": {
-      "ma5": 35800.0,
-      "ma20": 39232.5,
-      "ma60": 49205.8,
-      "ma120": 49996.7,
+      "ma5": 35770.0,
+      "ma20": 38862.5,
+      "ma60": 48609.2,
+      "ma120": 49986.7,
       "aligned": false,
       "vs": {
-        "ma5": 2.93,
-        "ma20": -6.07,
-        "ma60": -25.11,
-        "ma120": -26.3
+        "ma5": 1.2,
+        "ma20": -6.85,
+        "ma60": -25.53,
+        "ma120": -27.58
       }
     },
-    "trend20": -15.58,
+    "trend20": -16.97,
     "pocket": [
       {
         "low": 39828,
@@ -1291,17 +1291,17 @@
     ]
   },
   "price_weekly": {
-    "now": 36850,
+    "now": 36200,
     "ma": {
-      "ma5": 38420.0,
-      "ma10": 44040.0,
-      "ma20": 50070.0,
-      "ma60": 42337.5
+      "ma5": 38290.0,
+      "ma10": 43975.0,
+      "ma20": 50037.5,
+      "ma60": 42326.7
     },
     "aligned": false,
     "rangeHigh": 138300,
     "rangeLow": 27150,
-    "posPct": 8.7,
+    "posPct": 8.1,
     "recent": [
       {
         "d": "20260109",
@@ -1404,22 +1404,22 @@
         "c": 34150
       },
       {
-        "d": "20260629",
-        "c": 36850
+        "d": "20260630",
+        "c": 36200
       }
     ]
   },
   "price_monthly": {
-    "now": 36850,
+    "now": 36200,
     "ma": {
-      "ma6": 53200.0,
-      "ma12": 44545.8,
-      "ma24": 40143.8
+      "ma6": 53091.7,
+      "ma12": 44491.7,
+      "ma24": 40116.7
     },
     "aligned": true,
     "rangeHigh": 138300,
     "rangeLow": 22740,
-    "posPct": 12.2,
+    "posPct": 11.6,
     "recent": [
       {
         "d": "20240731",
@@ -1514,8 +1514,8 @@
         "c": 43650
       },
       {
-        "d": "20260629",
-        "c": 36850
+        "d": "20260630",
+        "c": 36200
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "34,150"
+      "value": "36,850"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "33,500",
+      "value": "36,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1538,7 +1538,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "36,950",
+      "value": "38,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "33,300",
+      "value": "36,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "560,219"
+      "value": "496,428"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "20,187백만"
+      "value": "18,312백만"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "2조 3,158억"
+      "value": "2조 2,749억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "7.89%"
+      "value": "7.90%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "15.88배",
+      "value": "15.60배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "6.40배"
+      "value": "6.29배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "2.35배",
+      "value": "2.31배",
       "valueDesc": "2026.03."
     },
     {
@@ -1632,18 +1632,27 @@
   ],
   "consensus": {
     "itemCode": "263750",
-    "createDate": "2026-06-26",
+    "createDate": "2026-06-29",
     "recommMean": "3.88",
     "priceTargetMean": "73,125"
   },
   "researches": [
+    {
+      "id": 93784,
+      "cd": "263750",
+      "nm": "펄어비스",
+      "bnm": "유안타증권",
+      "tit": "흥행 이후를 증명할 시간",
+      "rcnt": "2583",
+      "wdt": "20260630"
+    },
     {
       "id": 92867,
       "cd": "263750",
       "nm": "펄어비스",
       "bnm": "유진투자증권",
       "tit": "26일만에 500만장 판매가 의미하는 바",
-      "rcnt": "12340",
+      "rcnt": "12558",
       "wdt": "20260513"
     },
     {
@@ -1652,7 +1661,7 @@
       "nm": "펄어비스",
       "bnm": "한화투자증권",
       "tit": "이벤트 정점은 지났지만, 프리미엄 밸류는 남을 것",
-      "rcnt": "7909",
+      "rcnt": "8097",
       "wdt": "20260513"
     },
     {
@@ -1661,7 +1670,7 @@
       "nm": "펄어비스",
       "bnm": "DS투자증권",
       "tit": "화려한 역전",
-      "rcnt": "6555",
+      "rcnt": "6726",
       "wdt": "20260513"
     },
     {
@@ -1670,17 +1679,8 @@
       "nm": "펄어비스",
       "bnm": "신한투자증권",
       "tit": "새로운 역사를 썼다",
-      "rcnt": "10110",
+      "rcnt": "10273",
       "wdt": "20260429"
-    },
-    {
-      "id": 91121,
-      "cd": "263750",
-      "nm": "펄어비스",
-      "bnm": "DS투자증권",
-      "tit": "조롱을 환호로 바꿨다+ 붉은사막 플레이 후기",
-      "rcnt": "21919",
-      "wdt": "20260330"
     }
   ],
   "industry_peers": [
@@ -1691,17 +1691,17 @@
       "reutersCode": "259960",
       "stockName": "크래프톤",
       "sosok": "0",
-      "closePrice": "223,500",
-      "compareToPreviousClosePrice": "19,500",
+      "closePrice": "236,000",
+      "compareToPreviousClosePrice": "12,500",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "9.56",
+      "fluctuationsRatio": "5.59",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "10,311,805",
+      "marketValue": "10,888,528",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1728,17 +1728,17 @@
       "reutersCode": "036570",
       "stockName": "NC",
       "sosok": "0",
-      "closePrice": "259,000",
-      "compareToPreviousClosePrice": "21,000",
+      "closePrice": "257,500",
+      "compareToPreviousClosePrice": "-1,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "8.82",
+      "fluctuationsRatio": "-0.58",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,579,901",
+      "marketValue": "5,547,585",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1765,17 +1765,17 @@
       "reutersCode": "251270",
       "stockName": "넷마블",
       "sosok": "0",
-      "closePrice": "37,900",
-      "compareToPreviousClosePrice": "2,750",
+      "closePrice": "37,350",
+      "compareToPreviousClosePrice": "-550",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "7.82",
+      "fluctuationsRatio": "-1.45",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "3,105,320",
+      "marketValue": "3,060,256",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1802,17 +1802,17 @@
       "reutersCode": "462870",
       "stockName": "시프트업",
       "sosok": "0",
-      "closePrice": "32,800",
-      "compareToPreviousClosePrice": "1,800",
+      "closePrice": "32,900",
+      "compareToPreviousClosePrice": "100",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "5.81",
+      "fluctuationsRatio": "0.30",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,923,862",
+      "marketValue": "1,929,727",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1839,17 +1839,17 @@
       "reutersCode": "192080",
       "stockName": "더블유게임즈",
       "sosok": "0",
-      "closePrice": "63,500",
-      "compareToPreviousClosePrice": "3,500",
+      "closePrice": "63,700",
+      "compareToPreviousClosePrice": "200",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "5.83",
+      "fluctuationsRatio": "0.31",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,344,515",
+      "marketValue": "1,348,749",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1876,17 +1876,17 @@
       "reutersCode": "293490",
       "stockName": "카카오게임즈",
       "sosok": "1",
-      "closePrice": "7,780",
-      "compareToPreviousClosePrice": "850",
+      "closePrice": "7,760",
+      "compareToPreviousClosePrice": "-20",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "12.27",
+      "fluctuationsRatio": "-0.26",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "698,542",
+      "marketValue": "696,746",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2192,7 +2192,7 @@
             "cx": "minus"
           },
           "202612": {
-            "value": "5.93",
+            "value": "6.40",
             "cx": null
           },
           "202312": {
@@ -2213,7 +2213,7 @@
             "cx": null
           },
           "202612": {
-            "value": "19,286",
+            "value": "19,295",
             "cx": null
           },
           "202312": {
@@ -2234,7 +2234,7 @@
             "cx": null
           },
           "202612": {
-            "value": "1.77",
+            "value": "1.91",
             "cx": null
           },
           "202312": {
@@ -2661,7 +2661,7 @@
             "cx": null
           },
           "202606": {
-            "value": "19.26",
+            "value": "20.79",
             "cx": null
           },
           "202506": {
@@ -2774,6 +2774,13 @@
   "disclosures": [
     {
       "itemCode": "263750",
+      "disclosureId": 49656892,
+      "title": "주식회사 펄어비스 지속가능경영보고서 등 관련사항(자율공시)",
+      "datetime": "2026-06-30T16:57:20",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "263750",
       "disclosureId": 43968319,
       "title": "주식회사 펄어비스 기업설명회(IR) 개최",
       "datetime": "2026-06-25T06:52:32",
@@ -2834,16 +2841,33 @@
       "title": "주식회사 펄어비스 연결재무제표 기준 영업(잠정)실적(공정공시)",
       "datetime": "2026-05-12T06:51:29",
       "author": "KOSCOM"
-    },
-    {
-      "itemCode": "263750",
-      "disclosureId": 1640205,
-      "title": "주식회사 펄어비스 기업설명회(IR) 개최",
-      "datetime": "2026-05-12T06:51:24",
-      "author": "KOSCOM"
     }
   ],
   "news": [
+    {
+      "title": "펄어비스 붉은사막, ‘CEDEC 2026’ 특별 초청 강연",
+      "office": "국민일보",
+      "date": "202606301613",
+      "url": "https://n.news.naver.com/mnews/article/005/0001858046"
+    },
+    {
+      "title": "붉은사막, 일본 게임 개발자 콘퍼런스 'CEDEC'서 강연",
+      "office": "포모스",
+      "date": "202606301111",
+      "url": "https://n.news.naver.com/mnews/article/236/0000255704"
+    },
+    {
+      "title": "온기 퍼지는 코스닥…개미는 손실 메우려면 아직 멀었다[개미와글와글...",
+      "office": "매일신문",
+      "date": "202606301030",
+      "url": "https://n.news.naver.com/mnews/article/088/0001016819"
+    },
+    {
+      "title": "[이 시각 시황] 반도체·AI 인프라 관련 업종 강세",
+      "office": "SBS Biz",
+      "date": "202606300941",
+      "url": "https://n.news.naver.com/mnews/article/374/0000518975"
+    },
     {
       "title": "[콘텐츠 인사이트] 게임사 배당·소각 러시, 신뢰와 부담 사이",
       "office": "블로터",
@@ -2855,30 +2879,6 @@
       "office": "지디넷코리아",
       "date": "202606291234",
       "url": "https://n.news.naver.com/mnews/article/092/0002428414"
-    },
-    {
-      "title": "'자체 엔진+운영 노하우'…'붉은사막' 장기 흥행 기반 마련",
-      "office": "뉴스1",
-      "date": "202606291106",
-      "url": "https://n.news.naver.com/mnews/article/421/0009028911"
-    },
-    {
-      "title": "경영진 교체한 카카오게임즈, 흑자전환 시동",
-      "office": "한국경제",
-      "date": "202606281725",
-      "url": "https://n.news.naver.com/mnews/article/015/0005303585"
-    },
-    {
-      "title": "“중소 게임사 고사 막자”…민관, AI 지원·투자펀드 동시 가동",
-      "office": "서울경제",
-      "date": "202606271601",
-      "url": "https://n.news.naver.com/mnews/article/011/0004635579"
-    },
-    {
-      "title": "게임사 시총 1년 새 반토막[K게임 3중고]",
-      "office": "아시아경제",
-      "date": "202606261137",
-      "url": "https://n.news.naver.com/mnews/article/277/0005781910"
     }
   ],
   "_errors": {}
