@@ -2,15 +2,31 @@
   "code": "483650",
   "name": "달바글로벌",
   "market": "KOSPI",
-  "updated": "2026-07-01 20:35",
+  "updated": "2026-07-03 01:44",
   "supply_10d": {
-    "foreign_net_10d": 193766,
+    "foreign_net_10d": 212173,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 37549,
+    "pension_net_10d": 45192,
     "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-07-02",
+        "close": 227000,
+        "foreignRatio": 38.96,
+        "개인": 20754,
+        "외국인": 41687,
+        "기관계": -58964,
+        "금융투자": 10091,
+        "투신": 12988,
+        "사모": -84866,
+        "보험": -1189,
+        "은행": 162,
+        "기타금융": -3809,
+        "연기금": 7659,
+        "기타법인": -8433
+      },
       {
         "date": "2026-07-01",
         "close": 241500,
@@ -954,64 +970,52 @@
         "기타금융": -9,
         "연기금": -2157,
         "기타법인": 66
-      },
-      {
-        "date": "2026-04-03",
-        "close": 147500,
-        "foreignRatio": 27.16,
-        "개인": 937,
-        "외국인": -4181,
-        "기관계": -131,
-        "금융투자": 1249,
-        "투신": -54,
-        "사모": -986,
-        "보험": -13,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": -327,
-        "기타법인": 3354
       }
     ],
     "cum_5d": {
-      "개인": -80160,
-      "외국인": 80154,
-      "기관계": 57375,
-      "금융투자": -51,
-      "투신": 14704,
-      "사모": 8652,
-      "보험": 2932,
-      "은행": -48,
-      "기타금융": -200,
-      "연기금": 31386,
-      "기타법인": -56964
+      "개인": -49037,
+      "외국인": 53779,
+      "기관계": 46713,
+      "금융투자": 10405,
+      "투신": 25356,
+      "사모": -21267,
+      "보험": 1586,
+      "은행": 271,
+      "기타금융": -3992,
+      "연기금": 34354,
+      "기타법인": -54566
     },
     "cum_20d": {
-      "개인": -129309,
-      "외국인": 3153,
-      "기관계": 360340,
-      "금융투자": -10879,
-      "투신": 209552,
-      "사모": 106311,
-      "보험": 29144,
-      "은행": -211,
-      "기타금융": -7054,
-      "연기금": 33477,
-      "기타법인": -233181
+      "개인": -115861,
+      "외국인": 46372,
+      "기관계": 292882,
+      "금융투자": 1213,
+      "투신": 221928,
+      "사모": 14862,
+      "보험": 28039,
+      "은행": -49,
+      "기타금융": -9419,
+      "연기금": 36308,
+      "기타법인": -224389
     },
     "cum_60d": {
-      "개인": -1083857,
-      "외국인": 1393393,
-      "기관계": 367370,
-      "금융투자": 50221,
-      "투신": 430286,
-      "사모": 302931,
-      "보험": 42903,
-      "은행": 85,
-      "기타금융": -705369,
-      "연기금": 246313,
-      "기타법인": -670942
+      "개인": -1064040,
+      "외국인": 1439261,
+      "기관계": 308537,
+      "금융투자": 59063,
+      "투신": 443328,
+      "사모": 219051,
+      "보험": 41727,
+      "은행": 247,
+      "기타금융": -709178,
+      "연기금": 254299,
+      "기타법인": -682729
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-07-02",
+        "ratio": 38.96
+      },
       {
         "date": "2026-07-01",
         "ratio": 38.69
@@ -1247,61 +1251,57 @@
       {
         "date": "2026-04-06",
         "ratio": 27.32
-      },
-      {
-        "date": "2026-04-03",
-        "ratio": 27.16
       }
     ]
   },
   "price_daily": {
-    "now": 241500,
-    "prevClose": 231500,
-    "changePct": 4.32,
+    "now": 227000,
+    "prevClose": 241500,
+    "changePct": -6.0,
     "ma": {
-      "ma5": 235100.0,
-      "ma20": 210065.0,
-      "ma60": 208901.7,
-      "ma120": 181725.8,
+      "ma5": 234100.0,
+      "ma20": 211510.0,
+      "ma60": 210226.7,
+      "ma120": 182370.0,
       "aligned": true,
       "vs": {
-        "ma5": 2.72,
-        "ma20": 14.96,
-        "ma60": 15.6,
-        "ma120": 32.89
+        "ma5": -3.03,
+        "ma20": 7.32,
+        "ma60": 7.98,
+        "ma120": 24.47
       }
     },
-    "trend20": 28.87,
+    "trend20": 14.59,
     "pocket": [
       {
         "low": 148820,
         "high": 155360,
-        "volPct": 8.4
+        "volPct": 8.3
       },
       {
         "low": 155360,
         "high": 161900,
-        "volPct": 11.7
+        "volPct": 11.6
       },
       {
         "low": 168440,
         "high": 174980,
-        "volPct": 11.0
+        "volPct": 10.8
       }
     ]
   },
   "price_weekly": {
-    "now": 241500,
+    "now": 227000,
     "ma": {
-      "ma5": 216120.0,
-      "ma10": 217110.0,
-      "ma20": 194595.0,
+      "ma5": 213220.0,
+      "ma10": 215660.0,
+      "ma20": 193870.0,
       "ma60": null
     },
     "aligned": false,
-    "rangeHigh": 241500,
+    "rangeHigh": 241000,
     "rangeLow": 120500,
-    "posPct": 100.0,
+    "posPct": 88.4,
     "recent": [
       {
         "d": "20260109",
@@ -1404,22 +1404,22 @@
         "c": 237500
       },
       {
-        "d": "20260701",
-        "c": 241500
+        "d": "20260702",
+        "c": 227000
       }
     ]
   },
   "price_monthly": {
-    "now": 241500,
+    "now": 227000,
     "ma": {
-      "ma6": 201250.0,
-      "ma12": 178600.0,
+      "ma6": 198833.3,
+      "ma12": 177391.7,
       "ma24": null
     },
     "aligned": false,
-    "rangeHigh": 241500,
+    "rangeHigh": 231500,
     "rangeLow": 135000,
-    "posPct": 100.0,
+    "posPct": 95.3,
     "recent": [
       {
         "d": "20250530",
@@ -1478,8 +1478,8 @@
         "c": 231500
       },
       {
-        "d": "20260701",
-        "c": 241500
+        "d": "20260702",
+        "c": 227000
       }
     ]
   },
@@ -1487,22 +1487,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "231,500"
+      "value": "241,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "232,000",
+      "value": "241,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "244,500",
+      "value": "258,500",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1512,7 +1512,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "214,500",
+      "value": "220,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1522,22 +1522,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "239,116"
+      "value": "529,652"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "55,183백만"
+      "value": "1,275억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "3조 150억"
+      "value": "2조 8,340억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "38.48%"
+      "value": "38.69%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1552,7 +1552,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "32.53배",
+      "value": "30.57배",
       "valueDesc": "2026.03."
     },
     {
@@ -1564,7 +1564,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "23.45배"
+      "value": "22.05배"
     },
     {
       "code": "cnsEps",
@@ -1574,7 +1574,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "12.94배",
+      "value": "12.16배",
       "valueDesc": "2026.03."
     },
     {
@@ -1586,7 +1586,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "1.09%",
+      "value": "1.16%",
       "valueDesc": "2026.04."
     },
     {
@@ -1598,18 +1598,27 @@
   ],
   "consensus": {
     "itemCode": "483650",
-    "createDate": "2026-06-30",
+    "createDate": "2026-07-01",
     "recommMean": "4.00",
     "priceTargetMean": "293,182"
   },
   "researches": [
+    {
+      "id": 93841,
+      "cd": "483650",
+      "nm": "달바글로벌",
+      "bnm": "교보증권",
+      "tit": "글로벌로 전진",
+      "rcnt": "2063",
+      "wdt": "20260702"
+    },
     {
       "id": 93790,
       "cd": "483650",
       "nm": "달바글로벌",
       "bnm": "하나증권",
       "tit": "달바글로벌: 멀티 브랜드 대기업을 향해 나아가는 중",
-      "rcnt": "4451",
+      "rcnt": "4993",
       "wdt": "20260630"
     },
     {
@@ -1618,7 +1627,7 @@
       "nm": "달바글로벌",
       "bnm": "한화투자증권",
       "tit": "탐방 노트",
-      "rcnt": "5662",
+      "rcnt": "5935",
       "wdt": "20260629"
     },
     {
@@ -1627,7 +1636,7 @@
       "nm": "달바글로벌",
       "bnm": "유안타증권",
       "tit": "Corporate Day 후기: 확장과 다변화",
-      "rcnt": "8048",
+      "rcnt": "8124",
       "wdt": "20260526"
     },
     {
@@ -1636,17 +1645,8 @@
       "nm": "달바글로벌",
       "bnm": "유진투자증권",
       "tit": "1Q26 Review: 대장 따라간다",
-      "rcnt": "5807",
+      "rcnt": "5860",
       "wdt": "20260514"
-    },
-    {
-      "id": 92849,
-      "cd": "483650",
-      "nm": "달바글로벌",
-      "bnm": "교보증권",
-      "tit": "OPM 시장기대치 상회",
-      "rcnt": "4223",
-      "wdt": "20260513"
     }
   ],
   "industry_peers": [
@@ -1657,17 +1657,17 @@
       "reutersCode": "278470",
       "stockName": "에이피알",
       "sosok": "0",
-      "closePrice": "408,000",
-      "compareToPreviousClosePrice": "22,500",
+      "closePrice": "402,000",
+      "compareToPreviousClosePrice": "-6,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "5.84",
+      "fluctuationsRatio": "-1.47",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "15,274,767",
+      "marketValue": "15,050,138",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1694,17 +1694,17 @@
       "reutersCode": "090430",
       "stockName": "아모레퍼시픽",
       "sosok": "0",
-      "closePrice": "113,600",
-      "compareToPreviousClosePrice": "7,900",
+      "closePrice": "119,400",
+      "compareToPreviousClosePrice": "5,800",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "7.47",
+      "fluctuationsRatio": "5.11",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "6,644,777",
+      "marketValue": "6,984,035",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1731,17 +1731,17 @@
       "reutersCode": "051900",
       "stockName": "LG생활건강",
       "sosok": "0",
-      "closePrice": "236,000",
-      "compareToPreviousClosePrice": "6,500",
+      "closePrice": "245,000",
+      "compareToPreviousClosePrice": "9,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "2.83",
+      "fluctuationsRatio": "3.81",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "3,534,223",
+      "marketValue": "3,669,003",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1768,17 +1768,17 @@
       "reutersCode": "161890",
       "stockName": "한국콜마",
       "sosok": "0",
-      "closePrice": "106,800",
-      "compareToPreviousClosePrice": "7,300",
+      "closePrice": "113,700",
+      "compareToPreviousClosePrice": "6,900",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "7.34",
+      "fluctuationsRatio": "6.46",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,521,022",
+      "marketValue": "2,683,897",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1805,17 +1805,17 @@
       "reutersCode": "192820",
       "stockName": "코스맥스",
       "sosok": "0",
-      "closePrice": "165,300",
-      "compareToPreviousClosePrice": "10,400",
+      "closePrice": "167,300",
+      "compareToPreviousClosePrice": "2,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "6.71",
+      "fluctuationsRatio": "1.21",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,876,073",
+      "marketValue": "1,898,772",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1842,17 +1842,17 @@
       "reutersCode": "002790",
       "stockName": "아모레퍼시픽홀딩스",
       "sosok": "0",
-      "closePrice": "23,050",
-      "compareToPreviousClosePrice": "1,250",
+      "closePrice": "24,150",
+      "compareToPreviousClosePrice": "1,100",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "5.73",
+      "fluctuationsRatio": "4.77",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,762,361",
+      "marketValue": "1,846,465",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2158,7 +2158,7 @@
             "cx": null
           },
           "202612": {
-            "value": "22.48",
+            "value": "23.45",
             "cx": null
           },
           "202312": {
@@ -2200,7 +2200,7 @@
             "cx": null
           },
           "202612": {
-            "value": "9.92",
+            "value": "10.35",
             "cx": null
           },
           "202312": {
@@ -2627,7 +2627,7 @@
             "cx": null
           },
           "202606": {
-            "value": "86.40",
+            "value": "90.13",
             "cx": null
           },
           "202506": {
@@ -2811,40 +2811,40 @@
   ],
   "news": [
     {
-      "title": "1000억 브랜드 줄줄이 탄생…K뷰티 판 키운 'ODM 매직'",
-      "office": "한국경제",
-      "date": "202607011757",
-      "url": "https://n.news.naver.com/mnews/article/015/0005305213"
+      "title": "반성연 '주식 보상' 3주 만에 블록딜…세금 목적에도 커진 설명 부담",
+      "office": "더팩트",
+      "date": "202607030001",
+      "url": "https://n.news.naver.com/mnews/article/629/0000512830"
     },
     {
-      "title": "수출 1000억 달러 힘보탠 K-뷰티…화장품주 동반 강세[핫종목]",
-      "office": "뉴스1",
-      "date": "202607011628",
-      "url": "https://n.news.naver.com/mnews/article/421/0009035490"
-    },
-    {
-      "title": "몸집 커지는 K-식품·뷰티, 정보보호 투자 성적은",
-      "office": "디지털데일리",
-      "date": "202607011445",
-      "url": "https://n.news.naver.com/mnews/article/138/0002232765"
-    },
-    {
-      "title": "달바글로벌, 멀티 브랜드 화장품 대기업을 향한 발걸음-하나",
+      "title": "찬바람 불었던 상반기 IPO 시장…공모가 하회도 속출",
       "office": "이데일리",
-      "date": "202606300750",
-      "url": "https://n.news.naver.com/mnews/article/018/0006318474"
+      "date": "202607021819",
+      "url": "https://n.news.naver.com/mnews/article/018/0006321136"
     },
     {
-      "title": "\"달바글로벌, 글로벌 확장 효과 본격화…다제품·다채널 전환 진입\" [...",
-      "office": "뉴스1",
-      "date": "202606300630",
-      "url": "https://n.news.naver.com/mnews/article/421/0009030521"
+      "title": "국민연금 2분기에 랠리 소외주 사들였다",
+      "office": "매일경제",
+      "date": "202607021748",
+      "url": "https://n.news.naver.com/mnews/article/009/0005702053"
     },
     {
-      "title": "\"뷰티는 제조업 아닌 플랫폼\"…8090년생 CEO로 '세대 교체'",
+      "title": "[이 시각 시황] 코스피 8,000선 붕괴…매도 사이드카 발동",
+      "office": "SBS Biz",
+      "date": "202607020939",
+      "url": "https://n.news.naver.com/mnews/article/374/0000519519"
+    },
+    {
+      "title": "한국콜마 10% 급등…사상 최대 수출에 K뷰티주 '방긋' [종목+]",
       "office": "한국경제",
-      "date": "202606291826",
-      "url": "https://n.news.naver.com/mnews/article/015/0005304197"
+      "date": "202607020937",
+      "url": "https://n.news.naver.com/mnews/article/015/0005305417"
+    },
+    {
+      "title": "달바글로벌, 북미·유럽 성장세 지속…목표가↑-교보",
+      "office": "이데일리",
+      "date": "202607020843",
+      "url": "https://n.news.naver.com/mnews/article/018/0006320492"
     }
   ],
   "_errors": {}
