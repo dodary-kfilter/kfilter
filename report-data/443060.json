@@ -2,15 +2,31 @@
   "code": "443060",
   "name": "HD현대마린솔루션",
   "market": "KOSPI",
-  "updated": "2026-07-03 01:44",
+  "updated": "2026-07-04 01:18",
   "supply_10d": {
-    "foreign_net_10d": 281059,
+    "foreign_net_10d": 217123,
     "foreign_buydays": "8/10",
-    "pension_net_10d": 33148,
+    "pension_net_10d": 34258,
     "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-07-03",
+        "close": 216000,
+        "foreignRatio": 29.24,
+        "개인": 2357,
+        "외국인": 21364,
+        "기관계": -4256,
+        "금융투자": 7992,
+        "투신": -14495,
+        "사모": -83,
+        "보험": 499,
+        "은행": 0,
+        "기타금융": -1,
+        "연기금": 1832,
+        "기타법인": -19685
+      },
       {
         "date": "2026-07-02",
         "close": 217500,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": -1341,
         "기타법인": -190
-      },
-      {
-        "date": "2026-04-06",
-        "close": 173900,
-        "foreignRatio": 30.14,
-        "개인": 14246,
-        "외국인": -16933,
-        "기관계": 985,
-        "금융투자": 1030,
-        "투신": -594,
-        "사모": 1710,
-        "보험": -61,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": -1100,
-        "기타법인": 1655
       }
     ],
     "cum_5d": {
-      "개인": -35323,
-      "외국인": 24020,
-      "기관계": 85032,
-      "금융투자": 35125,
-      "투신": 16018,
-      "사모": 3008,
-      "보험": -441,
+      "개인": 9974,
+      "외국인": -3650,
+      "기관계": 75155,
+      "금융투자": 57549,
+      "투신": -518,
+      "사모": 1220,
+      "보험": -2310,
       "은행": -3,
       "기타금융": -1,
-      "연기금": 31326,
-      "기타법인": -73002
+      "연기금": 19218,
+      "기타법인": -81603
     },
     "cum_20d": {
-      "개인": -639344,
-      "외국인": 66540,
-      "기관계": 504765,
-      "금융투자": -20823,
-      "투신": 466323,
-      "사모": -9642,
-      "보험": 18832,
+      "개인": -616875,
+      "외국인": 112102,
+      "기관계": 455449,
+      "금융투자": -14480,
+      "투신": 426435,
+      "사모": -11654,
+      "보험": 15689,
       "은행": -203,
-      "기타금융": -98,
-      "연기금": 50376,
-      "기타법인": 68881
+      "기타금융": -99,
+      "연기금": 39761,
+      "기타법인": 49708
     },
     "cum_60d": {
-      "개인": -640952,
-      "외국인": -456081,
-      "기관계": 1003916,
-      "금융투자": 11567,
-      "투신": 524811,
-      "사모": 81404,
-      "보험": 61034,
+      "개인": -652841,
+      "외국인": -417784,
+      "기관계": 998675,
+      "금융투자": 18529,
+      "투신": 510910,
+      "사모": 79611,
+      "보험": 61594,
       "은행": -34,
-      "기타금융": -18,
-      "연기금": 325152,
-      "기타법인": 90401
+      "기타금융": -19,
+      "연기금": 328084,
+      "기타법인": 69061
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-07-03",
+        "ratio": 29.24
+      },
       {
         "date": "2026-07-02",
         "ratio": 29.19
@@ -1247,61 +1251,57 @@
       {
         "date": "2026-04-07",
         "ratio": 30.13
-      },
-      {
-        "date": "2026-04-06",
-        "ratio": 30.14
       }
     ]
   },
   "price_daily": {
-    "now": 217500,
-    "prevClose": 226000,
-    "changePct": -3.76,
+    "now": 216000,
+    "prevClose": 217500,
+    "changePct": -0.69,
     "ma": {
-      "ma5": 221500.0,
-      "ma20": 227475.0,
-      "ma60": 226308.3,
-      "ma120": 203179.2,
+      "ma5": 221400.0,
+      "ma20": 227175.0,
+      "ma60": 227010.0,
+      "ma120": 203357.5,
       "aligned": false,
       "vs": {
-        "ma5": -1.81,
-        "ma20": -4.39,
-        "ma60": -3.89,
-        "ma120": 7.05
+        "ma5": -2.44,
+        "ma20": -4.92,
+        "ma60": -4.85,
+        "ma120": 6.22
       }
     },
-    "trend20": -1.14,
+    "trend20": -2.7,
     "pocket": [
       {
         "low": 183380,
         "high": 189450,
-        "volPct": 20.9
+        "volPct": 21.9
       },
       {
         "low": 219800,
         "high": 225870,
-        "volPct": 9.4
+        "volPct": 9.9
       },
       {
         "low": 225870,
         "high": 231940,
-        "volPct": 10.8
+        "volPct": 11.3
       }
     ]
   },
   "price_weekly": {
-    "now": 217500,
+    "now": 216000,
     "ma": {
-      "ma5": 225700.0,
-      "ma10": 231950.0,
-      "ma20": 209855.0,
-      "ma60": 202308.3
+      "ma5": 225400.0,
+      "ma10": 231800.0,
+      "ma20": 209780.0,
+      "ma60": 202283.3
     },
     "aligned": false,
     "rangeHigh": 265500,
     "rangeLow": 102900,
-    "posPct": 70.5,
+    "posPct": 69.6,
     "recent": [
       {
         "d": "20260109",
@@ -1404,22 +1404,22 @@
         "c": 216500
       },
       {
-        "d": "20260702",
-        "c": 217500
+        "d": "20260703",
+        "c": 216000
       }
     ]
   },
   "price_monthly": {
-    "now": 217500,
+    "now": 216000,
     "ma": {
-      "ma6": 215900.0,
-      "ma12": 210158.3,
-      "ma24": 180625.0
+      "ma6": 215650.0,
+      "ma12": 210033.3,
+      "ma24": 180562.5
     },
     "aligned": true,
     "rangeHigh": 265500,
     "rangeLow": 103700,
-    "posPct": 70.3,
+    "posPct": 69.4,
     "recent": [
       {
         "d": "20240830",
@@ -1514,8 +1514,8 @@
         "c": 224500
       },
       {
-        "d": "20260702",
-        "c": 217500
+        "d": "20260703",
+        "c": 216000
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "226,000"
+      "value": "217,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "224,500",
+      "value": "217,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "228,000",
+      "value": "224,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "215,500",
+      "value": "210,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "140,342"
+      "value": "153,763"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "309억"
+      "value": "332억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "9조 7,513억"
+      "value": "9조 6,840억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "29.14%"
+      "value": "29.19%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "32.03배",
+      "value": "31.81배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "26.84배"
+      "value": "26.65배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "11.51배",
+      "value": "11.43배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "1.82%",
+      "value": "1.83%",
       "valueDesc": "2026.02."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "443060",
-    "createDate": "2026-07-01",
+    "createDate": "2026-07-02",
     "recommMean": "4.00",
     "priceTargetMean": "332,000"
   },
@@ -1645,7 +1645,7 @@
       "nm": "HD현대마린솔루션",
       "bnm": "유안타증권",
       "tit": "Everllence 인수에서 드러나는 AM의 가치",
-      "rcnt": "3260",
+      "rcnt": "3481",
       "wdt": "20260629"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "HD현대마린솔루션",
       "bnm": "미래에셋증권",
       "tit": "FDC 사업역량 부각 기대",
-      "rcnt": "8110",
+      "rcnt": "8170",
       "wdt": "20260610"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "HD현대마린솔루션",
       "bnm": "대신증권",
       "tit": "금상첨화",
-      "rcnt": "6704",
+      "rcnt": "6733",
       "wdt": "20260430"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "HD현대마린솔루션",
       "bnm": "SK증권",
       "tit": "1Q26 NDR 후기: 데이터센터로 더 커진다",
-      "rcnt": "4916",
+      "rcnt": "4942",
       "wdt": "20260430"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "HD현대마린솔루션",
       "bnm": "하나증권",
       "tit": "데이터센터까지 확대되는 사업 영역",
-      "rcnt": "5432",
+      "rcnt": "5453",
       "wdt": "20260427"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "329180",
       "stockName": "HD현대중공업",
       "sosok": "0",
-      "closePrice": "590,000",
-      "compareToPreviousClosePrice": "-25,000",
+      "closePrice": "577,000",
+      "compareToPreviousClosePrice": "-13,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.07",
+      "fluctuationsRatio": "-2.20",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "61,927,122",
+      "marketValue": "60,562,626",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "042660",
       "stockName": "한화오션",
       "sosok": "0",
-      "closePrice": "104,500",
-      "compareToPreviousClosePrice": "1,200",
+      "closePrice": "106,900",
+      "compareToPreviousClosePrice": "2,400",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "1.16",
+      "fluctuationsRatio": "2.30",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "32,020,199",
+      "marketValue": "32,755,591",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "009540",
       "stockName": "HD한국조선해양",
       "sosok": "0",
-      "closePrice": "362,500",
-      "compareToPreviousClosePrice": "4,000",
+      "closePrice": "359,500",
+      "compareToPreviousClosePrice": "-3,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "1.12",
+      "fluctuationsRatio": "-0.83",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "25,655,254",
+      "marketValue": "25,442,935",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "010140",
       "stockName": "삼성중공업",
       "sosok": "0",
-      "closePrice": "22,950",
-      "compareToPreviousClosePrice": "-800",
+      "closePrice": "23,500",
+      "compareToPreviousClosePrice": "550",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-3.37",
+      "fluctuationsRatio": "2.40",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "20,196,000",
+      "marketValue": "20,680,000",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "267250",
       "stockName": "HD현대",
       "sosok": "0",
-      "closePrice": "207,500",
-      "compareToPreviousClosePrice": "-2,500",
+      "closePrice": "206,500",
+      "compareToPreviousClosePrice": "-1,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.19",
+      "fluctuationsRatio": "-0.48",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "16,391,065",
+      "marketValue": "16,312,072",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "082740",
       "stockName": "한화엔진",
       "sosok": "0",
-      "closePrice": "52,300",
-      "compareToPreviousClosePrice": "-2,700",
+      "closePrice": "52,200",
+      "compareToPreviousClosePrice": "-100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.91",
+      "fluctuationsRatio": "-0.19",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,364,285",
+      "marketValue": "4,355,940",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "27.89",
+            "value": "26.84",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "10.38",
+            "value": "9.99",
             "cx": null
           },
           "202312": {
@@ -2663,7 +2663,7 @@
             "cx": null
           },
           "202606": {
-            "value": "115.10",
+            "value": "110.77",
             "cx": null
           },
           "202506": {
