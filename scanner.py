@@ -73,7 +73,7 @@ PORTFOLIO = [
     {"code": "TSMX", "name": "TSMC 2배 (TSMX)", "market": "US", "ptype": "us",
      "us_target": "TSMC", "us_ticker": "TSM", "basis": "TSMC(TSM)"},
     {"code": "ACE500CC", "name": "ACE 미국500데일리타겟커버드콜", "market": "US", "ptype": "us",
-     "us_target": "S&P500", "us_ticker": "^GSPC", "basis": "S&P500 지수"},
+     "us_target": "S&P500", "us_ticker": "^GSPC", "basis": "S&P500 지수", "us_kind": "index"},
 ]
 # ===============
 
@@ -547,6 +547,10 @@ def main():
             entry["basis"] = it["basis"]
         if ref:
             entry["ref"] = ref   # 프론트가 리포트 데이터를 ref 종목에서 읽도록
+            # 본주 이름도 담아 프롬프트 제목을 본주로 통일 (삼전레버→'삼성전자')
+            ref_name = next((x["name"] for x in PORTFOLIO if x["code"] == ref), "")
+            if ref_name:
+                entry["ref_name"] = ref_name
         ok = False
         for attempt in (1, 2):
             try:
@@ -554,6 +558,7 @@ def main():
                     # 미국 종목: 수급 원천 없음 → 스캐너 미수집. 카드 메타만 담고 리포트는 웹 검색 기반.
                     entry["us_target"] = it.get("us_target", "")
                     entry["us_ticker"] = it.get("us_ticker", "")
+                    entry["us_kind"] = it.get("us_kind", "stock")   # index면 지수처럼 분석
                     entry["supply"] = None
                     ok = True
                     break
