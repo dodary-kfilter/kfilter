@@ -56,6 +56,16 @@ PORTFOLIO = [
     {"code": "122630", "name": "KODEX 레버리지",            "market": "KOSPI", "ptype": "index", "basis": "코스피200"},
     # 코스피200 커버드콜 → 코스피200(122630) 데이터 재사용
     {"code": "498400", "name": "KODEX 200타겟위클리커버드콜", "market": "KOSPI", "ptype": "index", "basis": "코스피200", "ref": "122630"},
+    # 섹터 레버(ETN) → 구성종목 5개 수급을 묶어 '섹터 총괄' 분석. 데이터는 전용파일(sector_power) 1개.
+    {"code": "760026", "name": "키움 레버리지 전력TOP5 ETN", "market": "KOSPI", "ptype": "sector",
+     "basis": "전력설비 TOP5", "sector_key": "sector_power",
+     "members": [
+         {"code": "298040", "name": "효성중공업"},
+         {"code": "267260", "name": "HD현대일렉트릭"},
+         {"code": "010120", "name": "LS ELECTRIC"},
+         {"code": "006260", "name": "LS"},
+         {"code": "001440", "name": "대한전선"},
+     ]},
 ]
 # ===============
 
@@ -376,6 +386,68 @@ def write_report_file(code, name, market, supply, raw, price_block,
         json.dump(payload, f, ensure_ascii=False, indent=2, default=str)   # default=str: 직렬화 불가 값도 안전
     os.replace(tmp, final)   # 원자적 교체(부분쓰기 방지)
 
+def enrich_sector(sector_key, sector_name, members):
+    """섹터 구성종목 여러 개의 수급·상세를 긁어 전용파일 1개(report-data/{sector_key}.json)로 합친다.
+    반환: 화면 카드용 요약(구성종목 수급 합산 + 통과 여부)."""
+    import json as _json
+    comps = []
+    agg_f_cum = agg_p_cum = 0            # 외국인·연기금 누적 합산(섹터 총괄 표기용)
+    for m in members:
+        c, nm = m["code"], m["name"]
+        one = {"code": c, "name": nm}
+        try:
+            sup = port_supply(c)          # 최근 WINDOW일 누적·매수일·통과여부
+            one["supply"] = sup
+            if sup:
+                agg_f_cum += sup.get("foreign_net_10d", 0)
+                agg_p_cum += sup.get("pension_net_10d", 0)
+        except Exception as e:
+            print(f"  섹터 구성종목 수급 실패 {c}: {e}", flush=True)
+            one["supply"] = None
+        # 상세(일별 수급·가격) 수집 — 총괄 분석용 원본
+        try:
+            raw = fetch_all(c)
+            detail = {}
+            if raw.get("candles"):
+                try:
+                    detail["price"] = compute_price_block(parse_candles(raw["candles"]))
+                except Exception:
+                    pass
+            if raw.get("toss"):
+                try:
+                    detail["supply_detail"] = build_supply_detail(raw["toss"])
+                except Exception:
+                    pass
+            one["detail"] = detail
+        except Exception as e:
+            print(f"  섹터 구성종목 상세 실패 {c}: {e}", flush=True)
+            one["detail"] = {}
+        comps.append(one)
+        time.sleep(0.3)                   # 토스 API 부담 완화
+
+    payload = {
+        "sector_key": sector_key,
+        "sector_name": sector_name,
+        "generated_at": now_kst().strftime("%Y-%m-%d %H:%M"),
+        "members": comps,
+        "aggregate": {"foreign_net_sum": int(agg_f_cum), "pension_net_sum": int(agg_p_cum)},
+    }
+    try:
+        os.makedirs(REPORT_DIR, exist_ok=True)
+        with open(os.path.join(REPORT_DIR, f"{sector_key}.json"), "w", encoding="utf-8") as f:
+            _json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
+    except Exception as e:
+        print(f"  섹터 파일 저장 실패 {sector_key}: {e}", flush=True)
+    # 화면 카드용: 섹터 합산 수급을 supply 형태로 반환(통과여부는 합산 기준)
+    return {
+        "foreign_net_10d": int(agg_f_cum), "foreign_buydays": "",
+        "foreign_pass": agg_f_cum > 0,
+        "pension_net_10d": int(agg_p_cum), "pension_buydays": "",
+        "pension_pass": agg_p_cum > 0,
+        "sector_members": [{"code": c["code"], "name": c["name"]} for c in comps],
+    }
+
+
 def enrich_stock(code, name="", market="", supply=None):
     """원본 풀데이터(일/주/월봉 + 투자자별 세부 포함)를 종목별 파일로 저장, 화면용 요약 반환."""
     raw = fetch_all(code)
@@ -470,7 +542,11 @@ def main():
         ok = False
         for attempt in (1, 2):
             try:
-                if ref:
+                if ptype == "sector":
+                    # 섹터 ETN → 구성종목 여러 개 수급을 묶어 전용파일 1개로. 카드엔 합산 수급.
+                    entry["sector_key"] = it["sector_key"]
+                    entry["supply"] = enrich_sector(it["sector_key"], it.get("basis", name), it["members"])
+                elif ref:
                     # 파생 → 기초자산 재사용: 수급은 ref 종목 기준. 리포트 파일은 ref가 본체로서 생성함(중복 스크랩 안 함).
                     entry["supply"] = port_supply(ref)
                 else:
@@ -483,7 +559,7 @@ def main():
             except Exception as e:
                 print(f"  포트 처리 실패 {code} (시도 {attempt}/2): {e}", flush=True)
                 time.sleep(1.0)
-        if not ok and not ref:
+        if not ok and not ref and ptype != "sector":
             entry["enrich"] = None
         time.sleep(ENRICH_DELAY)
         portfolio.append(entry)
@@ -542,8 +618,11 @@ def main():
     #   → 0순위에서 탈락한 종목의 옛 파일은 삭제(스테일 스냅샷 제거). .tmp 잔해도 제거.
     keep = {b["code"] for b in both}
     for it in PORTFOLIO:
-        # 파생(ref 있음)은 기초자산 파일을 유지, 본체는 자기 파일을 유지
-        keep.add(it.get("ref") or it["code"])
+        if it["ptype"] == "sector":
+            keep.add(it["sector_key"])           # 섹터 전용파일 보호
+        else:
+            # 파생(ref 있음)은 기초자산 파일을 유지, 본체는 자기 파일을 유지
+            keep.add(it.get("ref") or it["code"])
     removed = 0
     if os.path.isdir(REPORT_DIR):
         for fn in os.listdir(REPORT_DIR):

@@ -310,19 +310,25 @@ function toggleCard(code){
 function cardPort(it,i){
   const t=it.ptype;
   const isRef=!!it.ref;                 // 파생(기초자산 재사용) 여부
-  const badge = it.basis?'지수' : (isRef?'파생':'일반');
+  const isSector=(t==='sector');
+  const badge = isSector?'섹터' : it.basis?'지수' : (isRef?'파생':'일반');
   const sup=it.supply||{};
   let supHtml;
   if(it.supply && sup.foreign_net_10d!=null){
     const fc=sup.foreign_pass?'var(--foreign)':'#6e7681';
     const pc=sup.pension_pass?'var(--pension)':'#6e7681';
-    supHtml=`<b style="color:${fc}">외 ${volShort(sup.foreign_net_10d)} ${sup.foreign_buydays||''}</b>`
-          + `<b style="color:${pc}">연 ${volShort(sup.pension_net_10d)} ${sup.pension_buydays||''}</b>`;
+    const flabel=isSector?'외합':'외', plabel=isSector?'연합':'연';
+    supHtml=`<b style="color:${fc}">${flabel} ${volShort(sup.foreign_net_10d)} ${sup.foreign_buydays||''}</b>`
+          + `<b style="color:${pc}">${plabel} ${volShort(sup.pension_net_10d)} ${sup.pension_buydays||''}</b>`;
   }else{
     supHtml='<b style="color:#6e7681">수급 N/A</b>';
   }
-  const sub = it.basis ? ('기초: '+esc(it.basis)) : (isRef ? ('→ 기초자산 분석') : '');
-  const body = isRef
+  const sub = isSector ? ('구성 '+((it.supply&&it.supply.sector_members)||[]).map(m=>esc(m.name)).join('·'))
+            : it.basis ? ('기초: '+esc(it.basis))
+            : (isRef ? ('→ 기초자산 분석') : '');
+  const body = isSector
+    ? `<div class="en-empty">${esc(it.basis||'섹터')} 구성종목 ${(((it.supply&&it.supply.sector_members)||[]).length)}종목의 수급·추이·뉴스를 총괄 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+    : isRef
     ? `<div class="en-empty">기초자산(${it.ref})으로 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
     : renderEnrich(it.enrich);
   return `<div class="card" data-code="${it.code}">
@@ -390,16 +396,20 @@ function buildPrompt(it){
 3. 현황 한 줄 — 수급 누적·이평·손절선.
 4. 주시 신호 + 주관 한 줄.`;
   }
-  if(it.ptype==='sector_lev'){
-    return `${it.name}(${it.code}) — 보유 종목 '변화 점검'. ${it.basis}(전력설비 TOP5)를 일일 2배(2X) 추종하는 레버리지 ETN이다(투자자별 수급·실적·밸류 없음, 자체 가격 신뢰도 낮을 수 있음). ${it.basis} 섹터의 '최근 변화'에 집중해줘.
+  if(it.ptype==='sector'){
+    const surl=D(it.sector_key);
+    const members=((it.supply&&it.supply.sector_members)||[]).map(m=>esc(m.name)+'('+m.code+')').join(', ');
+    return `${it.name}(${it.code}) — 보유 종목 '변화 점검'. 기초자산은 ${it.basis} 섹터이고, 실제 분석은 구성종목 ${members}를 묶어 '섹터 총괄'로 해줘. (ETN 자체 수급·실적은 무시, 구성종목 수급·추이·뉴스가 핵심)
 
-데이터(가격만): ${url}
+구성종목 통합 데이터(5종목 수급·가격 원본): ${surl}
 
-[원칙] 기술지표보다 섹터 펀더멘털·뉴스 중심. 숫자는 정밀하게, '어제→오늘' 방향.
+[원칙] 개별 종목 5개를 따로따로 리포트하지 말고, 섹터 하나로 묶어 총괄 판단. 숫자 정밀(반올림 금지), '어제→오늘' 방향.
 [구조]
-1. ★ 최근 변화(델타) — 가격·거래량 최근 변화, 오늘·최근 신규 공시/뉴스, ${it.basis}(전력설비) 섹터 최근 모멘텀(검색: 수주·정책·대표종목 HD현대일렉트릭·효성중공업·LS ELECTRIC 주가).
-2. 변화의 의미 — 보유 논리(섹터 추세) 유효성.
-3. 주시 신호 + 주관 한 줄. (ETN 발행사 신용위험·복리감쇠 유의, 데이터 한계 명시)`;
+1. ★ 섹터 수급 총괄 — 구성종목들의 외국인·연기금 수급을 합산·비교(어느 종목이 섹터를 끌고 가나), 최근 5일 흐름, 매수 강도 가속/둔화/전환. 특정 종목만 튀는지 or 섹터 전반인지.
+2. ★ 섹터 추세·추이 — 구성종목 주가의 5/20/60일선 흐름을 묶어 섹터 방향(상승/횡보/하락) 판단. 거래량 이상치.
+3. 섹터 뉴스·모멘텀 — 전력설비 섹터 최근 재료(수주·정책·전력망 투자·데이터센터 수요 등)를 검색으로 보충, 구성종목별 개별 뉴스도 짧게.
+4. 종합 판단 — 섹터 전체가 지금 강한가 약한가, 보유 논리(섹터 추세) 유효성. 주시 신호 + 주관 한 줄.
+[유의] 레버리지 2배 ETN → 변동성 2배·복리감쇠·발행사 신용위험. 데이터 한계(구성종목 비중 미반영) 명시.`;
   }
 
   // ── 동시(수급 종목) = 분석 모드 (처음 보는 후보 → 풀 9섹션 분석) ──
