@@ -309,7 +309,8 @@ function toggleCard(code){
 // ── 내 종목(포트폴리오) 탭 — 보유 종목 카드 ──
 function cardPort(it,i){
   const t=it.ptype;
-  const badge = t==='single_lev'?'레버 2x' : t==='index_lev'?'지수 2x' : t==='sector_lev'?'섹터 2x' : '일반';
+  const isRef=!!it.ref;                 // 파생(기초자산 재사용) 여부
+  const badge = it.basis?'지수' : (isRef?'파생':'일반');
   const sup=it.supply||{};
   let supHtml;
   if(it.supply && sup.foreign_net_10d!=null){
@@ -318,11 +319,11 @@ function cardPort(it,i){
     supHtml=`<b style="color:${fc}">외 ${volShort(sup.foreign_net_10d)} ${sup.foreign_buydays||''}</b>`
           + `<b style="color:${pc}">연 ${volShort(sup.pension_net_10d)} ${sup.pension_buydays||''}</b>`;
   }else{
-    supHtml='<b style="color:#6e7681">수급 N/A (ETN)</b>';
+    supHtml='<b style="color:#6e7681">수급 N/A</b>';
   }
-  const sub = t==='single_lev' ? ('→ '+esc(it.under_name)+' 2배') : (it.basis?('기초: '+esc(it.basis)):'');
-  const body = t==='single_lev'
-    ? `<div class="en-empty">${esc(it.under_name)}(${it.underlying}) 2배 레버리지 — 리포트는 원종목을 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+  const sub = it.basis ? ('기초: '+esc(it.basis)) : (isRef ? ('→ 기초자산 분석') : '');
+  const body = isRef
+    ? `<div class="en-empty">기초자산(${it.ref})으로 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
     : renderEnrich(it.enrich);
   return `<div class="card" data-code="${it.code}">
     <div class="card-h" onclick="toggleCard('${it.code}')">
@@ -346,7 +347,12 @@ function sectionPort(list){
 // ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
 function buildPrompt(it){
   const D=(c)=>'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/report-data/'+c+'.json';
-  const url=D(it.code);
+
+  // ── 파생(레버·커버드콜) → 기초자산으로 치환 ──
+  //   ref가 있으면 데이터·분석 대상을 기초자산 코드로 바꿔서, 기초자산과 100% 동일한 프롬프트를 만든다.
+  //   (삼전레버 = 삼성전자, 200위클리커버드콜 = 코스피200(KODEX레버))
+  const analCode = it.ref || it.code;   // 실제 분석/데이터 대상 코드
+  const url=D(analCode);
 
   // ── 내 종목 = 변화 모드 (이미 아는 종목 → '최근 무엇이 바뀌었나' 중심) ──
   if(it.ptype==='stock'){
@@ -372,30 +378,17 @@ function buildPrompt(it){
 
 ※ 변화에 집중해 간결하게. 안 바뀐 걸 길게 설명하지 마라.`;
   }
-  if(it.ptype==='single_lev'){
-    return `${it.name}(${it.code}) — 보유 종목 '변화 점검'. ${it.under_name}(${it.underlying})를 일일 2배(2X) 추종하는 레버리지 ETF다. 사업 설명은 빼고 원종목 ${it.under_name}의 '최근 변화'에 집중해줘.
-
-원종목 데이터(원본 전체): ${D(it.underlying)}
-
-[원칙] 숫자 정밀(반올림 금지), 최근 5거래일 일별, 모든 항목 '어제→오늘' 방향. 안 변하는 회사 설명은 1~2줄. 목표가 의존 금지, 손절 고점 대비 -10~15% 트레일링.
-[구조]
-1. ★ 최근 변화(델타) — 원종목 ${it.under_name}의 수급(외국인·연기금·사모 오늘+5일 일별, 강도 가속/둔화/전환, 외인소진율 추이)·가격(5/20/60일선 거리, 이평 이탈/회복, 거래량)·손절선 거리·신규 공시/뉴스·패턴 이탈(첫 외국인 순매도 등).
-2. 변화의 의미 — 보유 논리(추세·수급) 강화/균열, 보유 근거 유효성.
-3. 현황 한 줄 — 수급 누적·이평·손절선·밸류·직전 실적.
-4. 주시 신호 + 주관 한 줄.
-[레버리지] 이 ETF는 원종목 일일수익률의 2배 → 변동성 2배·횡보장 복리감쇠·추세장 전용. 손절선은 ETF 기준 약 2배 속도로 닿으니 더 타이트하게 봐야 함.`;
-  }
-  if(it.ptype==='index_lev'){
-    return `${it.name}(${it.code}) — 보유 종목 '변화 점검'. ${it.basis} 지수를 일일 2배(2X) 추종하는 레버리지 ETF다(ETF라 실적/밸류/컨센서스 없음). ${it.basis} 지수의 '최근 변화'에 집중해줘.
+  if(it.ptype==='index'){
+    return `${it.name}(${it.code}) — 보유 종목 '변화 점검'. 기초자산은 ${it.basis} 지수다(지수라 개별 실적/밸류/컨센서스 없음). ${it.basis} 지수의 '최근 변화'에 집중해줘.
 
 데이터(수급·가격 원본): ${url}
 
 [원칙] 숫자 정밀(반올림 금지), 최근 5거래일 일별, '어제→오늘' 방향. 목표가 의존 금지, 손절 고점 대비 -10~15% 트레일링.
 [구조]
-1. ★ 최근 변화(델타) — ETF의 수급(외국인·기관 투자자별 오늘+5일 일별, 강도 가속/둔화, 외국인 비중 추이)·가격(5/20/60일선 거리, 이평 이탈/회복, 거래량)·손절선 거리·패턴 이탈(첫 외국인 순매도 등).
+1. ★ 최근 변화(델타) — 지수 추종 상품의 수급(외국인·기관 투자자별 오늘+5일 일별, 강도 가속/둔화, 외국인 비중 추이)·가격(5/20/60일선 거리, 이평 이탈/회복, 거래량)·손절선 거리·패턴 이탈(첫 외국인 순매도 등).
 2. 변화의 의미 — ${it.basis} 방향에 영향 주는 최근 요인(매크로·금리·환율·반도체 업황·외국인 코스피 수급)을 검색으로 짧게, 보유 논리 유효성.
 3. 현황 한 줄 — 수급 누적·이평·손절선.
-4. 주시 신호 + 주관 한 줄. (레버리지 2배·복리감쇠 유의)`;
+4. 주시 신호 + 주관 한 줄.`;
   }
   if(it.ptype==='sector_lev'){
     return `${it.name}(${it.code}) — 보유 종목 '변화 점검'. ${it.basis}(전력설비 TOP5)를 일일 2배(2X) 추종하는 레버리지 ETN이다(투자자별 수급·실적·밸류 없음, 자체 가격 신뢰도 낮을 수 있음). ${it.basis} 섹터의 '최근 변화'에 집중해줘.

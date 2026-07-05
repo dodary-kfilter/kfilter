@@ -36,6 +36,12 @@ HIST_DAYS   = 60          # 수급·외인소진율 일별 이력 보관 일수(
 # 내 보유 종목(포트폴리오) — 수급 필터와 무관하게 항상 처리/표시
 #  ptype: stock=일반주 표준 / single_lev=단일종목 레버리지(원종목 리포트 재사용)
 #         index_lev=지수 레버리지(기초 수급·추세) / sector_lev=섹터 레버리지(기초+업황)
+# [설계] 파생(레버·커버드콜)은 전부 '기초자산으로 치환'해 분석한다.
+#   ref: 이 종목이 재사용할 '기초자산' 코드. ref가 있으면 수급·리포트를 ref 종목 것으로 씀
+#        (자기 코드로는 스크랩 안 함). ref가 없으면 자기 자신이 본체.
+#   ptype: 프롬프트 문구 선택용. stock=개별주 / index=지수(코스피200 등)
+#   → 삼전·닉스 레버는 본주와 100% 동일(ref만 지정, ptype=stock).
+#   → 200위클리커버드콜은 코스피200 데이터(122630) 재사용(카드는 별도, 데이터 1개).
 PORTFOLIO = [
     {"code": "005930", "name": "삼성전자",   "market": "KOSPI",  "ptype": "stock"},
     {"code": "000660", "name": "SK하이닉스", "market": "KOSPI",  "ptype": "stock"},
@@ -43,10 +49,13 @@ PORTFOLIO = [
     {"code": "402340", "name": "SK스퀘어",   "market": "KOSPI",  "ptype": "stock"},
     {"code": "009150", "name": "삼성전기",   "market": "KOSPI",  "ptype": "stock"},
     {"code": "074600", "name": "원익QnC",    "market": "KOSDAQ", "ptype": "stock"},
-    {"code": "823410", "name": "KODEX 삼성전자레버리지",   "market": "KOSPI", "ptype": "single_lev", "underlying": "005930", "under_name": "삼성전자"},
-    {"code": "823420", "name": "KODEX SK하이닉스레버리지", "market": "KOSPI", "ptype": "single_lev", "underlying": "000660", "under_name": "SK하이닉스"},
-    {"code": "122630", "name": "KODEX 레버리지",            "market": "KOSPI", "ptype": "index_lev",  "basis": "코스피200"},
-    {"code": "580023", "name": "키움 레버리지 전력TOP5 ETN", "market": "KOSPI", "ptype": "sector_lev", "basis": "전력기기 섹터"},
+    # 단일종목 레버 → 본주와 100% 동일(본주 수급·본주 리포트 재사용)
+    {"code": "0193W0", "name": "KODEX 삼성전자단일종목레버리지",   "market": "KOSPI", "ptype": "stock", "ref": "005930"},
+    {"code": "0193T0", "name": "KODEX SK하이닉스단일종목레버리지", "market": "KOSPI", "ptype": "stock", "ref": "000660"},
+    # 지수 레버(코스피200) → 자기가 본체
+    {"code": "122630", "name": "KODEX 레버리지",            "market": "KOSPI", "ptype": "index", "basis": "코스피200"},
+    # 코스피200 커버드콜 → 코스피200(122630) 데이터 재사용
+    {"code": "498400", "name": "KODEX 200타겟위클리커버드콜", "market": "KOSPI", "ptype": "index", "basis": "코스피200", "ref": "122630"},
 ]
 # ===============
 
@@ -452,19 +461,20 @@ def main():
     portfolio = []
     for it in PORTFOLIO:
         code, name, ptype = it["code"], it["name"], it["ptype"]
+        ref = it.get("ref")   # 재사용 대상(기초자산) 코드. 없으면 자기가 본체.
         entry = {"code": code, "name": name, "market": it.get("market", ""), "ptype": ptype}
         if "basis" in it:
             entry["basis"] = it["basis"]
+        if ref:
+            entry["ref"] = ref   # 프론트가 리포트 데이터를 ref 종목에서 읽도록
         ok = False
         for attempt in (1, 2):
             try:
-                if ptype == "single_lev":
-                    # 리포트는 원종목 파일 재사용(중복 스크랩 안 함). 카드 수급은 원종목 기준.
-                    entry["underlying"] = it["underlying"]
-                    entry["under_name"] = it["under_name"]
-                    entry["supply"] = port_supply(it["underlying"])
+                if ref:
+                    # 파생 → 기초자산 재사용: 수급은 ref 종목 기준. 리포트 파일은 ref가 본체로서 생성함(중복 스크랩 안 함).
+                    entry["supply"] = port_supply(ref)
                 else:
-                    # stock / index_lev / sector_lev: 직접 수급 + enrich(원본 리포트 파일 생성)
+                    # 본체(개별주·지수): 직접 수급 + enrich(원본 리포트 파일 생성)
                     sup = port_supply(code)
                     entry["supply"] = sup
                     entry["enrich"] = enrich_stock(code, name, it.get("market", ""), sup or {})
@@ -473,7 +483,7 @@ def main():
             except Exception as e:
                 print(f"  포트 처리 실패 {code} (시도 {attempt}/2): {e}", flush=True)
                 time.sleep(1.0)
-        if not ok and ptype != "single_lev":
+        if not ok and not ref:
             entry["enrich"] = None
         time.sleep(ENRICH_DELAY)
         portfolio.append(entry)
@@ -532,7 +542,8 @@ def main():
     #   → 0순위에서 탈락한 종목의 옛 파일은 삭제(스테일 스냅샷 제거). .tmp 잔해도 제거.
     keep = {b["code"] for b in both}
     for it in PORTFOLIO:
-        keep.add(it["underlying"] if it["ptype"] == "single_lev" else it["code"])
+        # 파생(ref 있음)은 기초자산 파일을 유지, 본체는 자기 파일을 유지
+        keep.add(it.get("ref") or it["code"])
     removed = 0
     if os.path.isdir(REPORT_DIR):
         for fn in os.listdir(REPORT_DIR):
