@@ -66,6 +66,14 @@ PORTFOLIO = [
          {"code": "006260", "name": "LS"},
          {"code": "001440", "name": "대한전선"},
      ]},
+    # 미국 종목 → 수급 데이터 원천 없음. 스캐너 미수집(카드만), 리포트는 본주를 웹 검색으로 분석.
+    #   us_target: 분석 대상 본주(레버리지의 기초자산). us_ticker: 검색용 티커.
+    {"code": "MVLL", "name": "마벨 2배 롱 (MVLL)", "market": "US", "ptype": "us",
+     "us_target": "Marvell", "us_ticker": "MRVL", "basis": "Marvell(MRVL)"},
+    {"code": "TSMX", "name": "TSMC 2배 (TSMX)", "market": "US", "ptype": "us",
+     "us_target": "TSMC", "us_ticker": "TSM", "basis": "TSMC(TSM)"},
+    {"code": "ACE500CC", "name": "ACE 미국500데일리타겟커버드콜", "market": "US", "ptype": "us",
+     "us_target": "S&P500", "us_ticker": "^GSPC", "basis": "S&P500 지수"},
 ]
 # ===============
 
@@ -542,6 +550,13 @@ def main():
         ok = False
         for attempt in (1, 2):
             try:
+                if ptype == "us":
+                    # 미국 종목: 수급 원천 없음 → 스캐너 미수집. 카드 메타만 담고 리포트는 웹 검색 기반.
+                    entry["us_target"] = it.get("us_target", "")
+                    entry["us_ticker"] = it.get("us_ticker", "")
+                    entry["supply"] = None
+                    ok = True
+                    break
                 if ptype == "sector":
                     # 섹터 ETN → 구성종목 여러 개 수급을 묶어 전용파일 1개로. 카드엔 합산 수급.
                     entry["sector_key"] = it["sector_key"]
@@ -618,6 +633,8 @@ def main():
     #   → 0순위에서 탈락한 종목의 옛 파일은 삭제(스테일 스냅샷 제거). .tmp 잔해도 제거.
     keep = {b["code"] for b in both}
     for it in PORTFOLIO:
+        if it["ptype"] == "us":
+            continue                              # 미국: 데이터 파일 없음 → keep 불필요
         if it["ptype"] == "sector":
             keep.add(it["sector_key"])           # 섹터 전용파일 보호
         else:

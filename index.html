@@ -311,10 +311,13 @@ function cardPort(it,i){
   const t=it.ptype;
   const isRef=!!it.ref;                 // 파생(기초자산 재사용) 여부
   const isSector=(t==='sector');
-  const badge = isSector?'섹터' : it.basis?'지수' : (isRef?'파생':'일반');
+  const isUS=(t==='us');
+  const badge = isUS?'미국' : isSector?'섹터' : it.basis?'지수' : (isRef?'파생':'일반');
   const sup=it.supply||{};
   let supHtml;
-  if(it.supply && sup.foreign_net_10d!=null){
+  if(isUS){
+    supHtml='<b style="color:#6e7681">수급 N/A (미국)</b>';
+  }else if(it.supply && sup.foreign_net_10d!=null){
     const fc=sup.foreign_pass?'var(--foreign)':'#6e7681';
     const pc=sup.pension_pass?'var(--pension)':'#6e7681';
     const flabel=isSector?'외합':'외', plabel=isSector?'연합':'연';
@@ -323,10 +326,13 @@ function cardPort(it,i){
   }else{
     supHtml='<b style="color:#6e7681">수급 N/A</b>';
   }
-  const sub = isSector ? ('구성 '+((it.supply&&it.supply.sector_members)||[]).map(m=>esc(m.name)).join('·'))
+  const sub = isUS ? ('→ '+esc(it.us_target||'')+' 분석')
+            : isSector ? ('구성 '+((it.supply&&it.supply.sector_members)||[]).map(m=>esc(m.name)).join('·'))
             : it.basis ? ('기초: '+esc(it.basis))
             : (isRef ? ('→ 기초자산 분석') : '');
-  const body = isSector
+  const body = isUS
+    ? `<div class="en-empty">미국 종목 — ${esc(it.us_target||'')}(${esc(it.us_ticker||'')})을 웹 검색으로 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+    : isSector
     ? `<div class="en-empty">${esc(it.basis||'섹터')} 구성종목 ${(((it.supply&&it.supply.sector_members)||[]).length)}종목의 수급·추이·뉴스를 총괄 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
     : isRef
     ? `<div class="en-empty">기초자산(${it.ref})으로 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
@@ -395,6 +401,20 @@ function buildPrompt(it){
 2. 변화의 의미 — ${it.basis} 방향에 영향 주는 최근 요인(매크로·금리·환율·반도체 업황·외국인 코스피 수급)을 검색으로 짧게, 보유 논리 유효성.
 3. 현황 한 줄 — 수급 누적·이평·손절선.
 4. 주시 신호 + 주관 한 줄.`;
+  }
+  if(it.ptype==='us'){
+    const tgt=esc(it.us_target||''), tk=esc(it.us_ticker||'');
+    return `${it.name} — 보유 종목 '변화 점검'. 실제 분석 대상은 기초자산 ${tgt}(${tk})다. (미국 종목이라 국내식 투자자별 수급 데이터는 없음 → 웹 검색으로 취득 가능한 정보만 활용)
+
+[데이터] 별도 파일 없음. ${tgt} 관련 최신 정보를 웹 검색으로 직접 확보해줘 (최신 주가·등락, 실적·가이던스, 애널리스트 목표주가·투자의견, 최근 뉴스·촉매).
+
+[원칙] 이미 아는 종목이니 회사·사업 재탕은 최소화, '최근 무엇이 바뀌었나'에 집중. 미국은 수급 대신 가격·실적·뉴스 흐름 중심. 확인 안 되는 수치는 추정으로 채우지 말고 '확인 불가' 명시. 목표가 의존 금지, 손절 고점 대비 -10~15% 트레일링(레버리지는 2배 속도 유의).
+[구조]
+1. ★ 최근 변화(델타) — ${tgt}의 최근 주가 흐름(며칠간 등락, 이평 배열, 신고가/조정), 거래 특이사항, 오늘·최근 신규 뉴스·촉매. 다음 실적 발표일과 시장 기대.
+2. 변화의 의미 — 보유 논리(성장 스토리·업황) 강화/균열 여부. 보유 근거 유효성.
+3. 현황 한 줄 — 밸류(PER 등)·최근 실적·목표주가 컨센서스를 각 한 줄(검색 기반, 확인된 것만).
+4. 주시 신호 + 주관 한 줄 — 다음에 뭘 보면 판단이 바뀌나(실적·가이던스·업황 지표). 레버리지 2배·복리감쇠 유의.
+[유의] 데이터 한계(실시간 아님·수급 없음) 명시. 검색으로 확인된 사실 위주로.`;
   }
   if(it.ptype==='sector'){
     const surl=D(it.sector_key);
