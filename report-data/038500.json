@@ -2,15 +2,31 @@
   "code": "038500",
   "name": "삼표시멘트",
   "market": "KOSDAQ",
-  "updated": "2026-07-09 21:49",
+  "updated": "2026-07-10 21:33",
   "supply_10d": {
-    "foreign_net_10d": 379345,
+    "foreign_net_10d": 194783,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 29538,
-    "pension_buydays": "8/10"
+    "pension_net_10d": 28898,
+    "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-07-10",
+        "close": 8260,
+        "foreignRatio": 4.1,
+        "개인": -173069,
+        "외국인": 149837,
+        "기관계": 25990,
+        "금융투자": 25954,
+        "투신": 49,
+        "사모": 0,
+        "보험": -13,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 20
+      },
       {
         "date": "2026-07-09",
         "close": 7710,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": 0,
         "기타법인": 2970
-      },
-      {
-        "date": "2026-04-13",
-        "close": 16800,
-        "foreignRatio": 1.32,
-        "개인": 82777,
-        "외국인": -101647,
-        "기관계": 16190,
-        "금융투자": 16425,
-        "투신": 6,
-        "사모": -241,
-        "보험": 0,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 0,
-        "기타법인": -8281
       }
     ],
     "cum_5d": {
-      "개인": -563881,
-      "외국인": 479639,
-      "기관계": 87454,
-      "금융투자": 84444,
-      "투신": -5980,
+      "개인": -540117,
+      "외국인": 432392,
+      "기관계": 113284,
+      "금융투자": 112237,
+      "투신": -5930,
       "사모": -63,
-      "보험": 53,
+      "보험": 40,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 9000,
-      "기타법인": -3423
+      "연기금": 7000,
+      "기타법인": -3463
     },
     "cum_20d": {
-      "개인": -1926934,
-      "외국인": 1238420,
-      "기관계": 699914,
-      "금융투자": 111520,
-      "투신": 451832,
-      "사모": -30380,
-      "보험": 2716,
+      "개인": -1793552,
+      "외국인": 1623939,
+      "기관계": 229321,
+      "금융투자": 173950,
+      "투신": -49090,
+      "사모": -29934,
+      "보험": 100,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 164226,
-      "기타법인": -10821
+      "연기금": 134295,
+      "기타법인": -4787
     },
     "cum_60d": {
-      "개인": -5355499,
-      "외국인": 3024069,
-      "기관계": 2422540,
-      "금융투자": 256982,
-      "투신": 1922149,
-      "사모": -33773,
-      "보험": 2716,
+      "개인": -5611345,
+      "외국인": 3275553,
+      "기관계": 2432340,
+      "금융투자": 266511,
+      "투신": 1922192,
+      "사모": -33532,
+      "보험": 2703,
       "은행": 0,
       "기타금융": 3,
       "연기금": 274463,
-      "기타법인": -91526
+      "기타법인": -83225
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-07-10",
+        "ratio": 4.1
+      },
       {
         "date": "2026-07-09",
         "ratio": 3.96
@@ -1247,61 +1251,57 @@
       {
         "date": "2026-04-14",
         "ratio": 1.2
-      },
-      {
-        "date": "2026-04-13",
-        "ratio": 1.32
       }
     ]
   },
   "price_daily": {
-    "now": 7710,
-    "prevClose": 7770,
-    "changePct": -0.77,
+    "now": 8260,
+    "prevClose": 7710,
+    "changePct": 7.13,
     "ma": {
-      "ma5": 8104.0,
-      "ma20": 9259.0,
-      "ma60": 12500.8,
-      "ma120": 13028.2,
+      "ma5": 8072.0,
+      "ma20": 9095.5,
+      "ma60": 12358.5,
+      "ma120": 13059.1,
       "aligned": false,
       "vs": {
-        "ma5": -4.86,
-        "ma20": -16.73,
-        "ma60": -38.32,
-        "ma120": -40.82
+        "ma5": 2.33,
+        "ma20": -9.19,
+        "ma60": -33.16,
+        "ma120": -36.75
       }
     },
-    "trend20": -34.05,
+    "trend20": -28.36,
     "pocket": [
       {
-        "low": 4747,
-        "high": 5606,
+        "low": 4770,
+        "high": 5627,
         "volPct": 24.5
       },
       {
-        "low": 16766,
-        "high": 17624,
+        "low": 16771,
+        "high": 17628,
         "volPct": 14.5
       },
       {
-        "low": 19342,
+        "low": 19343,
         "high": 20200,
         "volPct": 10.0
       }
     ]
   },
   "price_weekly": {
-    "now": 7710,
+    "now": 8260,
     "ma": {
-      "ma5": 9120.0,
-      "ma10": 11037.0,
-      "ma20": 13744.0,
-      "ma60": 7661.0
+      "ma5": 9230.0,
+      "ma10": 11092.0,
+      "ma20": 13771.5,
+      "ma60": 7670.2
     },
     "aligned": false,
     "rangeHigh": 19650,
     "rangeLow": 2870,
-    "posPct": 28.8,
+    "posPct": 32.1,
     "recent": [
       {
         "d": "20260116",
@@ -1404,22 +1404,22 @@
         "c": 8420
       },
       {
-        "d": "20260709",
-        "c": 7710
+        "d": "20260710",
+        "c": 8260
       }
     ]
   },
   "price_monthly": {
-    "now": 7710,
+    "now": 8260,
     "ma": {
-      "ma6": 12993.3,
-      "ma12": 8660.0,
-      "ma24": 5889.6
+      "ma6": 13085.0,
+      "ma12": 8705.8,
+      "ma24": 5912.5
     },
     "aligned": true,
     "rangeHigh": 17350,
     "rangeLow": 2500,
-    "posPct": 35.1,
+    "posPct": 38.8,
     "recent": [
       {
         "d": "20240830",
@@ -1514,8 +1514,8 @@
         "c": 8810
       },
       {
-        "d": "20260709",
-        "c": 7710
+        "d": "20260710",
+        "c": 8260
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "7,770"
+      "value": "7,710"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "7,600",
+      "value": "7,730",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "7,980",
+      "value": "8,370",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,32 +1548,32 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "7,560",
+      "value": "7,730",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "607,730"
+      "value": "650,389"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "47억"
+      "value": "53.2억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "8,320억"
+      "value": "8,914억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "3.85%"
+      "value": "3.96%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "16.91배",
+      "value": "18.11배",
       "valueDesc": "2026.03."
     },
     {
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "1.07배",
+      "value": "1.14배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "1.57%",
+      "value": "1.47%",
       "valueDesc": "2025.12."
     },
     {
@@ -1642,17 +1642,17 @@
       "reutersCode": "002380",
       "stockName": "KCC",
       "sosok": "0",
-      "closePrice": "444,500",
-      "compareToPreviousClosePrice": "-3,000",
+      "closePrice": "453,500",
+      "compareToPreviousClosePrice": "9,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-0.67",
+      "fluctuationsRatio": "2.02",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "3,819,542",
+      "marketValue": "3,896,878",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1679,17 +1679,17 @@
       "reutersCode": "300720",
       "stockName": "한일시멘트",
       "sosok": "0",
-      "closePrice": "14,660",
-      "compareToPreviousClosePrice": "190",
+      "closePrice": "14,790",
+      "compareToPreviousClosePrice": "130",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "1.31",
+      "fluctuationsRatio": "0.89",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,078,172",
+      "marketValue": "1,087,733",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1716,17 +1716,17 @@
       "reutersCode": "003300",
       "stockName": "한일홀딩스",
       "sosok": "0",
-      "closePrice": "16,790",
-      "compareToPreviousClosePrice": "-980",
+      "closePrice": "17,000",
+      "compareToPreviousClosePrice": "210",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-5.51",
+      "fluctuationsRatio": "1.25",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "517,659",
+      "marketValue": "524,134",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1753,17 +1753,17 @@
       "reutersCode": "002030",
       "stockName": "아세아",
       "sosok": "0",
-      "closePrice": "197,900",
-      "compareToPreviousClosePrice": "9,400",
+      "closePrice": "178,600",
+      "compareToPreviousClosePrice": "-19,300",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "4.99",
+      "fluctuationsRatio": "-9.75",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "407,446",
+      "marketValue": "367,710",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1790,17 +1790,17 @@
       "reutersCode": "344820",
       "stockName": "KCC글라스",
       "sosok": "0",
-      "closePrice": "21,700",
-      "compareToPreviousClosePrice": "-600",
+      "closePrice": "22,050",
+      "compareToPreviousClosePrice": "350",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-2.69",
+      "fluctuationsRatio": "1.61",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "346,560",
+      "marketValue": "352,149",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1827,17 +1827,17 @@
       "reutersCode": "183190",
       "stockName": "아세아시멘트",
       "sosok": "0",
-      "closePrice": "9,220",
-      "compareToPreviousClosePrice": "-150",
+      "closePrice": "9,350",
+      "compareToPreviousClosePrice": "130",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-1.60",
+      "fluctuationsRatio": "1.41",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "331,719",
+      "marketValue": "336,396",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2796,6 +2796,12 @@
   ],
   "news": [
     {
+      "title": "옥의 티 까지 막아주는 GS 등 강원 기업들, 미세먼지 차단, 특별한 사...",
+      "office": "헤럴드경제",
+      "date": "202607100902",
+      "url": "https://n.news.naver.com/mnews/article/016/0002668441"
+    },
+    {
       "title": "서울에 '79층' 스카이라인…삼표, 메가 프로젝트 타고 반등할까",
       "office": "동행미디어 시대",
       "date": "202607081426",
@@ -2824,12 +2830,6 @@
       "office": "동아일보",
       "date": "202607012035",
       "url": "https://n.news.naver.com/mnews/article/020/0003730853"
-    },
-    {
-      "title": "'시멘트의 날' 기념행사 개최 \"친환경 전환에 주력\"",
-      "office": "이데일리",
-      "date": "202607011704",
-      "url": "https://n.news.naver.com/mnews/article/018/0006320211"
     }
   ],
   "_errors": {}
