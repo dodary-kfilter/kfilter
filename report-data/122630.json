@@ -2,9 +2,9 @@
   "code": "122630",
   "name": "KODEX 레버리지",
   "market": "KOSPI",
-  "updated": "2026-07-10 21:20",
+  "updated": "2026-07-13 21:27",
   "supply_10d": {
-    "foreign_net_10d": 150304,
+    "foreign_net_10d": 84379,
     "foreign_buydays": "6/10",
     "foreign_pass": false,
     "pension_net_10d": 0,
@@ -14,9 +14,25 @@
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-07-13",
+        "close": 121900,
+        "foreignRatio": 0.0,
+        "개인": 3241371,
+        "외국인": -127240,
+        "기관계": -3131696,
+        "금융투자": -3049652,
+        "투신": -68833,
+        "사모": -15081,
+        "보험": -12596,
+        "은행": 14466,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 11381
+      },
+      {
         "date": "2026-07-10",
         "close": 150695,
-        "foreignRatio": 0.84,
+        "foreignRatio": 0.22,
         "개인": -1054576,
         "외국인": -109528,
         "기관계": 1112156,
@@ -956,67 +972,55 @@
         "기타금융": -5295,
         "연기금": 0,
         "기타법인": 9948
-      },
-      {
-        "date": "2026-04-14",
-        "close": 94185,
-        "foreignRatio": 0.38,
-        "개인": -1908804,
-        "외국인": 13900,
-        "기관계": 1949057,
-        "금융투자": 2072658,
-        "투신": -111381,
-        "사모": 9225,
-        "보험": 3465,
-        "은행": -24910,
-        "기타금융": 0,
-        "연기금": 0,
-        "기타법인": -44347
       }
     ],
     "cum_5d": {
-      "개인": 1398744,
-      "외국인": 136224,
-      "기관계": -1682131,
-      "금융투자": -1796793,
-      "투신": 48846,
-      "사모": 8476,
-      "보험": 32870,
-      "은행": 24470,
+      "개인": 4482770,
+      "외국인": 185525,
+      "기관계": -4833080,
+      "금융투자": -4856157,
+      "투신": -16903,
+      "사모": -6021,
+      "보험": 6914,
+      "은행": 39087,
       "기타금융": 0,
       "연기금": 0,
-      "기타법인": 145620
+      "기타법인": 156848
     },
     "cum_20d": {
-      "개인": 988034,
-      "외국인": 401911,
-      "기관계": -1473585,
-      "금융투자": -410042,
-      "투신": -1076110,
-      "사모": -48724,
-      "보험": 35931,
-      "은행": 21785,
+      "개인": 4757855,
+      "외국인": 8298,
+      "기관계": -4872125,
+      "금융투자": -3617126,
+      "투신": -1258326,
+      "사모": -63698,
+      "보험": 23889,
+      "은행": 39561,
       "기타금융": 4050,
       "연기금": -475,
-      "기타법인": 98017
+      "기타법인": 118312
     },
     "cum_60d": {
-      "개인": -10810904,
-      "외국인": 1027265,
-      "기관계": 10978206,
-      "금융투자": 11640456,
-      "투신": -565637,
-      "사모": -78780,
-      "보험": 33506,
-      "은행": -42293,
+      "개인": -5660729,
+      "외국인": 886125,
+      "기관계": 5897453,
+      "금융투자": 6518146,
+      "투신": -523089,
+      "사모": -103086,
+      "보험": 17445,
+      "은행": -2917,
       "기타금융": -6531,
       "연기금": -2515,
-      "기타법인": -1148806
+      "기타법인": -1093078
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-07-13",
+        "ratio": 0.0
+      },
+      {
         "date": "2026-07-10",
-        "ratio": 0.84
+        "ratio": 0.22
       },
       {
         "date": "2026-07-09",
@@ -1249,66 +1253,58 @@
       {
         "date": "2026-04-15",
         "ratio": 0.0
-      },
-      {
-        "date": "2026-04-14",
-        "ratio": 0.38
       }
     ]
   },
   "price_daily": {
-    "now": 150695,
-    "prevClose": 144420,
-    "changePct": 4.34,
+    "now": 121900,
+    "prevClose": 150695,
+    "changePct": -19.11,
     "ma": {
-      "ma5": 154628.0,
-      "ma20": 193301.5,
-      "ma60": 166063.3,
-      "ma120": 123229.1,
+      "ma5": 143682.0,
+      "ma20": 189245.0,
+      "ma60": 166525.2,
+      "ma120": 123738.2,
       "aligned": false,
       "vs": {
-        "ma5": -2.54,
-        "ma20": -22.04,
-        "ma60": -9.25,
-        "ma120": 22.29
+        "ma5": -15.16,
+        "ma20": -35.59,
+        "ma60": -26.8,
+        "ma120": -1.49
       }
     },
-    "trend20": -17.37,
+    "trend20": -39.96,
     "pocket": [
       {
         "low": 41080,
         "high": 50976,
-        "volPct": 13.2
+        "volPct": 11.3
       },
       {
         "low": 70768,
         "high": 80664,
-        "volPct": 18.6
+        "volPct": 18.8
       },
       {
         "low": 80664,
         "high": 90560,
-        "volPct": 11.0
+        "volPct": 11.1
       }
     ]
   },
   "price_weekly": {
-    "now": 150695,
+    "now": 121900,
     "ma": {
-      "ma5": 189489.0,
-      "ma10": 182177.0,
-      "ma20": 137862.8,
-      "ma60": 71696.8
+      "ma5": 177395.0,
+      "ma10": 178997.5,
+      "ma20": 138393.8,
+      "ma60": 73460.1
     },
-    "aligned": true,
+    "aligned": false,
     "rangeHigh": 235130,
     "rangeLow": 11840,
-    "posPct": 62.2,
+    "posPct": 49.3,
     "recent": [
-      {
-        "d": "20260116",
-        "c": 64310
-      },
       {
         "d": "20260123",
         "c": 68410
@@ -1408,20 +1404,24 @@
       {
         "d": "20260710",
         "c": 150695
+      },
+      {
+        "d": "20260713",
+        "c": 121900
       }
     ]
   },
   "price_monthly": {
-    "now": 150695,
+    "now": 121900,
     "ma": {
-      "ma6": 141786.7,
-      "ma12": 92862.1,
-      "ma24": 55050.4
+      "ma6": 136987.5,
+      "ma12": 90462.5,
+      "ma24": 53850.6
     },
     "aligned": true,
     "rangeHigh": 204400,
     "rangeLow": 8720,
-    "posPct": 72.6,
+    "posPct": 57.8,
     "recent": [
       {
         "d": "20240830",
@@ -1516,8 +1516,8 @@
         "c": 202385
       },
       {
-        "d": "20260710",
-        "c": 150695
+        "d": "20260713",
+        "c": 121900
       }
     ]
   },
@@ -1525,22 +1525,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "144,420"
+      "value": "150,695"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "155,500",
+      "value": "148,880",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "160,440",
+      "value": "153,330",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1550,22 +1550,22 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "149,025",
+      "value": "120,090",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "10,881,988"
+      "value": "19,293,360"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1조 6,871억"
+      "value": "2조 5,426억"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1580,7 +1580,7 @@
     {
       "code": "oneMonthEarnRate",
       "key": "최근 1개월 수익률",
-      "value": "-22.31%",
+      "value": "-9.82%",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1590,7 +1590,7 @@
     {
       "code": "threeMonthEarnRate",
       "key": "최근 3개월 수익률",
-      "value": "+64.51%",
+      "value": "+66.24%",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1600,7 +1600,7 @@
     {
       "code": "sixMonthEarnRate",
       "key": "최근 6개월 수익률",
-      "value": "+149.11%",
+      "value": "+159.93%",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1610,7 +1610,7 @@
     {
       "code": "oneYearEarnRate",
       "key": "최근 1년 수익률",
-      "value": "+503.26%",
+      "value": "+512.71%",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1620,7 +1620,7 @@
     {
       "code": "nav",
       "key": "NAV",
-      "value": "151,398.56"
+      "value": "121,368.42"
     },
     {
       "code": "fundPay",
@@ -1648,17 +1648,17 @@
       "reutersCode": "069500",
       "stockName": "KODEX 200",
       "sosok": "0",
-      "closePrice": "120,605",
-      "compareToPreviousClosePrice": "2,905",
+      "closePrice": "108,820",
+      "compareToPreviousClosePrice": "-11,785",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "2.47",
+      "fluctuationsRatio": "-9.77",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "26,207,466",
+      "marketValue": "23,793,493",
       "nav": "0",
       "threeMonthEarningRate": "0",
       "stockExchangeType": {
@@ -1685,17 +1685,17 @@
       "reutersCode": "360750",
       "stockName": "TIGER 미국S&P500",
       "sosok": "0",
-      "closePrice": "28,085",
-      "compareToPreviousClosePrice": "10",
+      "closePrice": "28,235",
+      "compareToPreviousClosePrice": "150",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "0.04",
+      "fluctuationsRatio": "0.53",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "20,090,604",
+      "marketValue": "20,282,612",
       "nav": "0",
       "threeMonthEarningRate": "0",
       "stockExchangeType": {
@@ -1722,17 +1722,17 @@
       "reutersCode": "133690",
       "stockName": "TIGER 미국나스닥100",
       "sosok": "0",
-      "closePrice": "196,920",
-      "compareToPreviousClosePrice": "640",
+      "closePrice": "196,095",
+      "compareToPreviousClosePrice": "-825",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.33",
+      "fluctuationsRatio": "-0.42",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "11,636,002",
+      "marketValue": "11,604,902",
       "nav": "0",
       "threeMonthEarningRate": "0",
       "stockExchangeType": {
@@ -1755,21 +1755,58 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "102110",
-      "reutersCode": "102110",
-      "stockName": "TIGER 200",
+      "itemCode": "379800",
+      "reutersCode": "379800",
+      "stockName": "KODEX 미국S&P500",
       "sosok": "0",
-      "closePrice": "120,650",
-      "compareToPreviousClosePrice": "2,770",
+      "closePrice": "25,680",
+      "compareToPreviousClosePrice": "80",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "2.35",
+      "fluctuationsRatio": "0.31",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "10,846,435",
+      "marketValue": "10,117,920",
+      "nav": "0",
+      "threeMonthEarningRate": "0",
+      "stockExchangeType": {
+        "code": "KS",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스피",
+        "nameEng": "KOSPI",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSPI"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/379800"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
+      "itemCode": "102110",
+      "reutersCode": "102110",
+      "stockName": "TIGER 200",
+      "sosok": "0",
+      "closePrice": "108,805",
+      "compareToPreviousClosePrice": "-11,845",
+      "compareToPreviousPrice": {
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
+      },
+      "fluctuationsRatio": "-9.82",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "9,797,890",
       "nav": "0",
       "threeMonthEarningRate": "0",
       "stockExchangeType": {
@@ -1796,17 +1833,17 @@
       "reutersCode": "396500",
       "stockName": "TIGER 반도체TOP10",
       "sosok": "0",
-      "closePrice": "41,930",
-      "compareToPreviousClosePrice": "1,760",
+      "closePrice": "36,575",
+      "compareToPreviousClosePrice": "-5,355",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "4.38",
+      "fluctuationsRatio": "-12.77",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "10,629,255",
+      "marketValue": "9,213,242",
       "nav": "0",
       "threeMonthEarningRate": "0",
       "stockExchangeType": {
@@ -1825,43 +1862,6 @@
         "name": "KOSPI"
       },
       "endUrl": "https://m.stock.naver.com/domestic/stock/396500"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
-      "itemCode": "379800",
-      "reutersCode": "379800",
-      "stockName": "KODEX 미국S&P500",
-      "sosok": "0",
-      "closePrice": "25,600",
-      "compareToPreviousClosePrice": "15",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      },
-      "fluctuationsRatio": "0.06",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "10,069,760",
-      "nav": "0",
-      "threeMonthEarningRate": "0",
-      "stockExchangeType": {
-        "code": "KS",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스피",
-        "nameEng": "KOSPI",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSPI"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/379800"
     }
   ],
   "financials_annual": null,
@@ -1940,6 +1940,12 @@
   ],
   "news": [
     {
+      "title": "코스피 9% 폭락...개미 '하닉 레버리지' 6천억 순매수",
+      "office": "SBS Biz",
+      "date": "202607131641",
+      "url": "https://n.news.naver.com/mnews/article/374/0000521424"
+    },
+    {
       "title": "개미들 레버리지 베팅 변심…삼성전자서 하이닉스로 몰려",
       "office": "서울경제",
       "date": "202607081758",
@@ -1968,12 +1974,6 @@
       "office": "비즈워치",
       "date": "202607030730",
       "url": "https://n.news.naver.com/mnews/article/648/0000048589"
-    },
-    {
-      "title": "[레버리지 ETF 나비효과]① 시총 37조로 4년 만에 10배 '폭증'",
-      "office": "블로터",
-      "date": "202606301133",
-      "url": "https://n.news.naver.com/mnews/article/293/0000086983"
     }
   ],
   "_errors": {}
