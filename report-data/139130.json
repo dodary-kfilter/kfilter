@@ -2,19 +2,35 @@
   "code": "139130",
   "name": "iM금융지주",
   "market": "KOSPI",
-  "updated": "2026-07-13 21:39",
+  "updated": "2026-07-14 20:36",
   "supply_10d": {
-    "foreign_net_10d": 319794,
+    "foreign_net_10d": 231537,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 107525,
+    "pension_net_10d": 217513,
     "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-07-14",
+        "close": 18170,
+        "foreignRatio": 46.87,
+        "개인": -119413,
+        "외국인": -131563,
+        "기관계": 253942,
+        "금융투자": 83841,
+        "투신": 478,
+        "사모": 4822,
+        "보험": 37685,
+        "은행": -7738,
+        "기타금융": 0,
+        "연기금": 134854,
+        "기타법인": -2741
+      },
+      {
         "date": "2026-07-13",
         "close": 18220,
-        "foreignRatio": 46.29,
+        "foreignRatio": 46.96,
         "개인": -73815,
         "외국인": 12663,
         "기관계": 62323,
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": -34394,
         "기타법인": -1219
-      },
-      {
-        "date": "2026-04-15",
-        "close": 18260,
-        "foreignRatio": 44.01,
-        "개인": 12488,
-        "외국인": -28957,
-        "기관계": 16251,
-        "금융투자": 136285,
-        "투신": -70714,
-        "사모": -46445,
-        "보험": -5884,
-        "은행": -6,
-        "기타금융": 0,
-        "연기금": 3015,
-        "기타법인": 174
       }
     ],
     "cum_5d": {
-      "개인": -426488,
-      "외국인": 89454,
-      "기관계": 249543,
-      "금융투자": -91300,
-      "투신": 205455,
-      "사모": 81341,
-      "보험": 5056,
-      "은행": -15,
+      "개인": -319364,
+      "외국인": -195676,
+      "기관계": 420143,
+      "금융투자": -18450,
+      "투신": 155409,
+      "사모": 78556,
+      "보험": 35941,
+      "은행": -7738,
       "기타금융": 6823,
-      "연기금": 42183,
-      "기타법인": 88145
+      "연기금": 169602,
+      "기타법인": 95251
     },
     "cum_20d": {
-      "개인": -652866,
-      "외국인": 1484005,
-      "기관계": -814569,
-      "금융투자": -147713,
-      "투신": -432415,
-      "사모": -121961,
-      "보험": -36076,
-      "은행": -37,
-      "기타금융": 5443,
-      "연기금": -81810,
-      "기타법인": -20516
+      "개인": -761176,
+      "외국인": 736321,
+      "기관계": -2398,
+      "금융투자": -122274,
+      "투신": 117224,
+      "사모": -60539,
+      "보험": 1852,
+      "은행": -7766,
+      "기타금융": 5815,
+      "연기금": 63290,
+      "기타법인": 25127
     },
     "cum_60d": {
-      "개인": -2843354,
-      "외국인": 3777605,
-      "기관계": -977620,
-      "금융투자": 77841,
-      "투신": -598207,
-      "사모": 1405,
-      "보험": -196359,
-      "은행": 4286,
+      "개인": -2975255,
+      "외국인": 3674999,
+      "기관계": -739929,
+      "금융투자": 25397,
+      "투신": -527015,
+      "사모": 52672,
+      "보험": -152790,
+      "은행": -3446,
       "기타금융": 3362,
-      "연기금": -269948,
-      "기타법인": 38578
+      "연기금": -138109,
+      "기타법인": 35663
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-07-14",
+        "ratio": 46.87
+      },
+      {
         "date": "2026-07-13",
-        "ratio": 46.29
+        "ratio": 46.96
       },
       {
         "date": "2026-07-10",
@@ -1247,36 +1251,32 @@
       {
         "date": "2026-04-16",
         "ratio": 44.02
-      },
-      {
-        "date": "2026-04-15",
-        "ratio": 44.01
       }
     ]
   },
   "price_daily": {
-    "now": 18220,
-    "prevClose": 17850,
-    "changePct": 2.07,
+    "now": 18170,
+    "prevClose": 18220,
+    "changePct": -0.27,
     "ma": {
-      "ma5": 18036.0,
-      "ma20": 17209.0,
-      "ma60": 18011.8,
-      "ma120": 17533.2,
+      "ma5": 17928.0,
+      "ma20": 17212.0,
+      "ma60": 18010.3,
+      "ma120": 17565.8,
       "aligned": false,
       "vs": {
-        "ma5": 1.02,
-        "ma20": 5.87,
-        "ma60": 1.16,
-        "ma120": 3.92
+        "ma5": 1.35,
+        "ma20": 5.57,
+        "ma60": 0.89,
+        "ma120": 3.44
       }
     },
-    "trend20": 0.61,
+    "trend20": 0.33,
     "pocket": [
       {
         "low": 16952,
         "high": 17344,
-        "volPct": 13.9
+        "volPct": 13.8
       },
       {
         "low": 17735,
@@ -1286,22 +1286,22 @@
       {
         "low": 18910,
         "high": 19301,
-        "volPct": 10.9
+        "volPct": 10.8
       }
     ]
   },
   "price_weekly": {
-    "now": 18220,
+    "now": 18170,
     "ma": {
-      "ma5": 17314.0,
-      "ma10": 17638.0,
-      "ma20": 17786.5,
-      "ma60": 15521.2
+      "ma5": 17304.0,
+      "ma10": 17633.0,
+      "ma20": 17784.0,
+      "ma60": 15520.3
     },
     "aligned": false,
     "rangeHigh": 21650,
     "rangeLow": 6730,
-    "posPct": 77.0,
+    "posPct": 76.7,
     "recent": [
       {
         "d": "20260123",
@@ -1404,22 +1404,22 @@
         "c": 17850
       },
       {
-        "d": "20260713",
-        "c": 18220
+        "d": "20260714",
+        "c": 18170
       }
     ]
   },
   "price_monthly": {
-    "now": 18220,
+    "now": 18170,
     "ma": {
-      "ma6": 17761.7,
-      "ma12": 16051.7,
-      "ma24": 12902.5
+      "ma6": 17753.3,
+      "ma12": 16047.5,
+      "ma24": 12900.4
     },
     "aligned": true,
     "rangeHigh": 19100,
     "rangeLow": 4590,
-    "posPct": 93.9,
+    "posPct": 93.6,
     "recent": [
       {
         "d": "20240830",
@@ -1514,8 +1514,8 @@
         "c": 16810
       },
       {
-        "d": "20260713",
-        "c": 18220
+        "d": "20260714",
+        "c": 18170
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "17,850"
+      "value": "18,220"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "18,080",
+      "value": "18,680",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1538,7 +1538,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "18,750",
+      "value": "18,980",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "17,670",
+      "value": "18,140",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "499,964"
+      "value": "738,772"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "91.4억"
+      "value": "136억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "2조 9,266억"
+      "value": "2조 8,775억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "46.29%"
+      "value": "46.96%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "6.68배",
+      "value": "6.66배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,12 +1600,12 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "5.89배"
+      "value": "5.88배"
     },
     {
       "code": "cnsEps",
       "key": "추정EPS",
-      "value": "3,091원"
+      "value": "3,088원"
     },
     {
       "code": "pbr",
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "3.84%",
+      "value": "3.85%",
       "valueDesc": "2026.02."
     },
     {
@@ -1634,9 +1634,9 @@
   ],
   "consensus": {
     "itemCode": "139130",
-    "createDate": "2026-07-10",
+    "createDate": "2026-07-13",
     "recommMean": "3.94",
-    "priceTargetMean": "23,980"
+    "priceTargetMean": "23,913"
   },
   "researches": [
     {
@@ -1645,7 +1645,7 @@
       "nm": "iM금융지주",
       "bnm": "하나증권",
       "tit": "아쉬울 2분기 실적. 자사주 확대와 외국인 수급은 긍정적",
-      "rcnt": "1785",
+      "rcnt": "3054",
       "wdt": "20260713"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "iM금융지주",
       "bnm": "한화투자증권",
       "tit": "증권사 수수료의 대폭 증가가 고무적",
-      "rcnt": "4159",
+      "rcnt": "4177",
       "wdt": "20260430"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "iM금융지주",
       "bnm": "교보증권",
       "tit": "1Q26Review: 수익 개선과 비과세 배당 추진 주가에 긍정적",
-      "rcnt": "3492",
+      "rcnt": "3508",
       "wdt": "20260429"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "iM금융지주",
       "bnm": "하나증권",
       "tit": "CET 1 비율 12.3% 상회를 향해",
-      "rcnt": "3119",
+      "rcnt": "3129",
       "wdt": "20260429"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "iM금융지주",
       "bnm": "미래에셋증권",
       "tit": "선제적인 성장에도 자본비율 방어",
-      "rcnt": "2914",
+      "rcnt": "2924",
       "wdt": "20260429"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "105560",
       "stockName": "KB금융",
       "sosok": "0",
-      "closePrice": "186,200",
-      "compareToPreviousClosePrice": "1,800",
+      "closePrice": "180,000",
+      "compareToPreviousClosePrice": "-6,200",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.98",
+      "fluctuationsRatio": "-3.33",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "66,042,856",
+      "marketValue": "63,843,792",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "055550",
       "stockName": "신한지주",
       "sosok": "0",
-      "closePrice": "108,600",
-      "compareToPreviousClosePrice": "-600",
+      "closePrice": "106,500",
+      "compareToPreviousClosePrice": "-2,100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.55",
+      "fluctuationsRatio": "-1.93",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "51,547,463",
+      "marketValue": "50,550,689",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "086790",
       "stockName": "하나금융지주",
       "sosok": "0",
-      "closePrice": "132,600",
-      "compareToPreviousClosePrice": "4,100",
+      "closePrice": "134,000",
+      "compareToPreviousClosePrice": "1,400",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "3.19",
+      "fluctuationsRatio": "1.06",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "36,381,163",
+      "marketValue": "36,765,278",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "316140",
       "stockName": "우리금융지주",
       "sosok": "0",
-      "closePrice": "31,200",
-      "compareToPreviousClosePrice": "-250",
+      "closePrice": "30,700",
+      "compareToPreviousClosePrice": "-500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.79",
+      "fluctuationsRatio": "-1.60",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "22,716,398",
+      "marketValue": "22,352,353",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "024110",
       "stockName": "기업은행",
       "sosok": "0",
-      "closePrice": "21,150",
-      "compareToPreviousClosePrice": "-100",
+      "closePrice": "21,100",
+      "compareToPreviousClosePrice": "-50",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.47",
+      "fluctuationsRatio": "-0.24",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "16,865,557",
+      "marketValue": "16,825,685",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "323410",
       "stockName": "카카오뱅크",
       "sosok": "0",
-      "closePrice": "23,300",
-      "compareToPreviousClosePrice": "400",
+      "closePrice": "23,100",
+      "compareToPreviousClosePrice": "-200",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "1.75",
+      "fluctuationsRatio": "-0.86",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "11,116,906",
+      "marketValue": "11,021,482",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1963,7 +1963,7 @@
             "cx": null
           },
           "202612": {
-            "value": "6,607",
+            "value": "6,584",
             "cx": null
           },
           "202312": {
@@ -1984,7 +1984,7 @@
             "cx": null
           },
           "202612": {
-            "value": "5,093",
+            "value": "5,095",
             "cx": null
           },
           "202312": {
@@ -2089,7 +2089,7 @@
             "cx": null
           },
           "202612": {
-            "value": "7.77",
+            "value": "7.76",
             "cx": null
           },
           "202312": {
@@ -2173,7 +2173,7 @@
             "cx": null
           },
           "202612": {
-            "value": "3,091",
+            "value": "3,088",
             "cx": null
           },
           "202312": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "5.78",
+            "value": "5.90",
             "cx": null
           },
           "202312": {
@@ -2215,7 +2215,7 @@
             "cx": null
           },
           "202612": {
-            "value": "40,837",
+            "value": "40,823",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "0.44",
+            "value": "0.45",
             "cx": null
           },
           "202312": {
@@ -2344,7 +2344,7 @@
             "cx": null
           },
           "202606": {
-            "value": "2,101",
+            "value": "2,068",
             "cx": null
           },
           "202506": {
@@ -2373,7 +2373,7 @@
             "cx": null
           },
           "202606": {
-            "value": "1,580",
+            "value": "1,549",
             "cx": null
           },
           "202506": {
@@ -2634,7 +2634,7 @@
             "cx": null
           },
           "202606": {
-            "value": "959",
+            "value": "932",
             "cx": null
           },
           "202506": {
@@ -2847,40 +2847,40 @@
   ],
   "news": [
     {
-      "title": "iM뱅크, 하반기 경영전략회의 개최…'퍼스트 무버' 실행력 강화",
-      "office": "이데일리",
-      "date": "202607132115",
-      "url": "https://n.news.naver.com/mnews/article/018/0006329446"
+      "title": "우리-SC제일銀도 모기지보험 중단…대출절벽 현실화",
+      "office": "동아일보",
+      "date": "202607141856",
+      "url": "https://n.news.naver.com/mnews/article/020/0003733873"
     },
     {
-      "title": "신용한도 줄이고 모기지보험 제한…지방銀도 줄줄이 '대출 빗장'",
+      "title": "'주가 얼마나 낮길래'…지주 합병까지 거론된 지방금융지주",
+      "office": "머니투데이",
+      "date": "202607141713",
+      "url": "https://n.news.naver.com/mnews/article/008/0005385992"
+    },
+    {
+      "title": "우리은행, 16일부터 모기지보험 막고 영업점 대출한도 3분의 1로",
       "office": "한국경제",
-      "date": "202607131817",
-      "url": "https://n.news.naver.com/mnews/article/015/0005309481"
+      "date": "202607141637",
+      "url": "https://n.news.naver.com/mnews/article/015/0005309832"
     },
     {
-      "title": "새마을금고, 공공자금 영토 확장…진격 채비 마친 지자체금고 보니",
-      "office": "블로터",
-      "date": "202607131122",
-      "url": "https://n.news.naver.com/mnews/article/293/0000087559"
+      "title": "얼라인, JB·BNK금융 합병 제안…‘234조 최대 지방금융지주’ 나오나",
+      "office": "이데일리",
+      "date": "202607141502",
+      "url": "https://n.news.naver.com/mnews/article/018/0006330060"
     },
     {
-      "title": "BNK·iM·JB금융, 지역산업 여신·투자 탄력…ESG 업그레이드 버전",
-      "office": "블로터",
-      "date": "202607131114",
-      "url": "https://n.news.naver.com/mnews/article/293/0000087556"
+      "title": "‘외국인 관광객 300만’ 부산, 스타트업과 글로벌 영토 확장",
+      "office": "헤럴드경제",
+      "date": "202607141112",
+      "url": "https://n.news.naver.com/mnews/article/016/0002669957"
     },
     {
-      "title": "오늘의 메모[7월 14일]",
-      "office": "서울경제",
-      "date": "202607131100",
-      "url": "https://n.news.naver.com/mnews/article/011/0004640945"
-    },
-    {
-      "title": "차기 KB금융 회장은? 양종희 회장 우세 속 '외풍' 변수",
-      "office": "한경비즈니스",
-      "date": "202607131022",
-      "url": "https://n.news.naver.com/mnews/article/050/0000108468"
+      "title": "대부업으로 출발한 OK금융, 저축銀·보험사 품고 종합금융으로",
+      "office": "조선비즈",
+      "date": "202607141001",
+      "url": "https://n.news.naver.com/mnews/article/366/0001178945"
     }
   ],
   "_errors": {}
