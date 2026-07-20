@@ -2,15 +2,31 @@
   "code": "375500",
   "name": "DL이앤씨",
   "market": "KOSPI",
-  "updated": "2026-07-16 20:42",
+  "updated": "2026-07-20 21:26",
   "supply_10d": {
-    "foreign_net_10d": 351563,
+    "foreign_net_10d": 346105,
     "foreign_buydays": "10/10",
-    "pension_net_10d": 78419,
+    "pension_net_10d": 62231,
     "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-07-20",
+        "close": 57900,
+        "foreignRatio": 23.81,
+        "개인": -46381,
+        "외국인": 34126,
+        "기관계": 12167,
+        "금융투자": 10096,
+        "투신": -1494,
+        "사모": -518,
+        "보험": -175,
+        "은행": 0,
+        "기타금융": -317,
+        "연기금": 4575,
+        "기타법인": -3
+      },
       {
         "date": "2026-07-16",
         "close": 60200,
@@ -954,64 +970,52 @@
         "기타금융": -55,
         "연기금": 19648,
         "기타법인": -11532
-      },
-      {
-        "date": "2026-04-20",
-        "close": 95500,
-        "foreignRatio": 15.71,
-        "개인": 86140,
-        "외국인": -29882,
-        "기관계": -54214,
-        "금융투자": 11945,
-        "투신": -54828,
-        "사모": -28568,
-        "보험": -3975,
-        "은행": 0,
-        "기타금융": -533,
-        "연기금": 21745,
-        "기타법인": -3287
       }
     ],
     "cum_5d": {
-      "개인": -181420,
-      "외국인": 178444,
-      "기관계": 3184,
-      "금융투자": 20737,
-      "투신": -33845,
-      "사모": -637,
-      "보험": 1331,
+      "개인": -199834,
+      "외국인": 151071,
+      "기관계": 49086,
+      "금융투자": 34440,
+      "투신": -10848,
+      "사모": -1154,
+      "보험": 1148,
       "은행": 0,
-      "기타금융": 0,
-      "연기금": 15598,
-      "기타법인": -522
+      "기타금융": -317,
+      "연기금": 25817,
+      "기타법인": -657
     },
     "cum_20d": {
-      "개인": -1449940,
-      "외국인": 1475105,
-      "기관계": -8626,
-      "금융투자": 176586,
-      "투신": -100811,
-      "사모": -25694,
-      "보험": -67211,
+      "개인": -1294103,
+      "외국인": 1334444,
+      "기관계": -23701,
+      "금융투자": 180706,
+      "투신": -95444,
+      "사모": -9365,
+      "보험": -64616,
       "은행": -17,
-      "기타금융": -13700,
-      "연기금": 22221,
-      "기타법인": -13875
+      "기타금융": -10768,
+      "연기금": -24197,
+      "기타법인": -14816
     },
     "cum_60d": {
-      "개인": -2229146,
-      "외국인": 2994818,
-      "기관계": -680610,
-      "금융투자": 117742,
-      "투신": -415514,
-      "사모": -321944,
-      "보험": -182209,
+      "개인": -2361667,
+      "외국인": 3058826,
+      "기관계": -614229,
+      "금융투자": 115893,
+      "투신": -362180,
+      "사모": -293894,
+      "보험": -178409,
       "은행": -2363,
-      "기타금융": -12637,
-      "연기금": 136315,
-      "기타법인": -91310
+      "기타금융": -12421,
+      "연기금": 119145,
+      "기타법인": -88026
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-07-20",
+        "ratio": 23.81
+      },
       {
         "date": "2026-07-16",
         "ratio": 23.69
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-04-21",
         "ratio": 16.62
-      },
-      {
-        "date": "2026-04-20",
-        "ratio": 15.71
       }
     ]
   },
   "price_daily": {
-    "now": 60200,
-    "prevClose": 62000,
-    "changePct": -2.9,
+    "now": 57900,
+    "prevClose": 60200,
+    "changePct": -3.82,
     "ma": {
-      "ma5": 61060.0,
-      "ma20": 63675.0,
-      "ma60": 77441.7,
-      "ma120": 68085.0,
+      "ma5": 59980.0,
+      "ma20": 62875.0,
+      "ma60": 76815.0,
+      "ma120": 68201.2,
       "aligned": false,
       "vs": {
-        "ma5": -1.41,
-        "ma20": -5.46,
-        "ma60": -22.26,
-        "ma120": -11.58
+        "ma5": -3.47,
+        "ma20": -7.91,
+        "ma60": -24.62,
+        "ma120": -15.1
       }
     },
-    "trend20": -23.99,
+    "trend20": -21.65,
     "pocket": [
       {
         "low": 64640,
@@ -1281,7 +1281,7 @@
       {
         "low": 93035,
         "high": 96190,
-        "volPct": 12.5
+        "volPct": 12.6
       },
       {
         "low": 96190,
@@ -1291,22 +1291,18 @@
     ]
   },
   "price_weekly": {
-    "now": 60200,
+    "now": 57900,
     "ma": {
-      "ma5": 64280.0,
-      "ma10": 70620.0,
-      "ma20": 74742.5,
-      "ma60": 54567.5
+      "ma5": 61080.0,
+      "ma10": 68380.0,
+      "ma20": 75347.5,
+      "ma60": 54727.5
     },
     "aligned": false,
     "rangeHigh": 99000,
     "rangeLow": 29350,
-    "posPct": 44.3,
+    "posPct": 41.0,
     "recent": [
-      {
-        "d": "20260123",
-        "c": 45100
-      },
       {
         "d": "20260130",
         "c": 44400
@@ -1406,20 +1402,24 @@
       {
         "d": "20260716",
         "c": 60200
+      },
+      {
+        "d": "20260720",
+        "c": 57900
       }
     ]
   },
   "price_monthly": {
-    "now": 60200,
+    "now": 57900,
     "ma": {
-      "ma6": 69616.7,
-      "ma12": 55870.8,
-      "ma24": 47254.2
+      "ma6": 69233.3,
+      "ma12": 55679.2,
+      "ma24": 47158.3
     },
     "aligned": true,
     "rangeHigh": 99000,
     "rangeLow": 29750,
-    "posPct": 44.0,
+    "posPct": 40.6,
     "recent": [
       {
         "d": "20240830",
@@ -1514,8 +1514,8 @@
         "c": 64100
       },
       {
-        "d": "20260716",
-        "c": 60200
+        "d": "20260720",
+        "c": 57900
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "62,000"
+      "value": "60,200"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "61,300",
+      "value": "59,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1538,17 +1538,17 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "62,100",
+      "value": "59,800",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "59,200",
+      "value": "57,100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "199,426"
+      "value": "257,729"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "120억"
+      "value": "150억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "2조 3,294억"
+      "value": "2조 2,404억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "23.66%"
+      "value": "23.69%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "5.17배",
+      "value": "4.97배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,17 +1600,17 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "5.87배"
+      "value": "5.48배"
     },
     {
       "code": "cnsEps",
       "key": "추정EPS",
-      "value": "10,262원"
+      "value": "10,575원"
     },
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "0.47배",
+      "value": "0.45배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "1.48%",
+      "value": "1.54%",
       "valueDesc": "2026.03."
     },
     {
@@ -1634,9 +1634,9 @@
   ],
   "consensus": {
     "itemCode": "375500",
-    "createDate": "2026-07-15",
+    "createDate": "2026-07-16",
     "recommMean": "4.00",
-    "priceTargetMean": "108,529"
+    "priceTargetMean": "105,176"
   },
   "researches": [
     {
@@ -1645,7 +1645,7 @@
       "nm": "DL이앤씨",
       "bnm": "교보증권",
       "tit": "2Q26 Preview: 건축주택과 SMR 기대",
-      "rcnt": "3226",
+      "rcnt": "4547",
       "wdt": "20260715"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "DL이앤씨",
       "bnm": "유진투자증권",
       "tit": "컨센서스 상회 전망, 무르익어 가는 SMR",
-      "rcnt": "2326",
+      "rcnt": "3693",
       "wdt": "20260715"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "DL이앤씨",
       "bnm": "IBK투자증권",
       "tit": "2Q26 Preview: 플랜트 수주가 필요",
-      "rcnt": "1664",
+      "rcnt": "2382",
       "wdt": "20260715"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "DL이앤씨",
       "bnm": "키움증권",
       "tit": "기우를 떨쳐내면 보이는 높은 주가 업사이드",
-      "rcnt": "2047",
+      "rcnt": "2614",
       "wdt": "20260714"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "DL이앤씨",
       "bnm": "신한투자증권",
       "tit": "수익성은 확보, 이제 외형을 챙길 시점",
-      "rcnt": "2182",
+      "rcnt": "2606",
       "wdt": "20260713"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "000720",
       "stockName": "현대건설",
       "sosok": "0",
-      "closePrice": "99,000",
-      "compareToPreviousClosePrice": "-2,400",
+      "closePrice": "91,000",
+      "compareToPreviousClosePrice": "-8,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.37",
+      "fluctuationsRatio": "-8.08",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "11,024,220",
+      "marketValue": "10,133,374",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "028050",
       "stockName": "삼성E&A",
       "sosok": "0",
-      "closePrice": "40,850",
-      "compareToPreviousClosePrice": "-1,700",
+      "closePrice": "39,200",
+      "compareToPreviousClosePrice": "-1,650",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.00",
+      "fluctuationsRatio": "-4.04",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "8,006,600",
+      "marketValue": "7,683,200",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "047040",
       "stockName": "대우건설",
       "sosok": "0",
-      "closePrice": "15,150",
-      "compareToPreviousClosePrice": "-1,090",
+      "closePrice": "14,540",
+      "compareToPreviousClosePrice": "-610",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-6.71",
+      "fluctuationsRatio": "-4.03",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "6,225,250",
+      "marketValue": "5,974,597",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "006360",
       "stockName": "GS건설",
       "sosok": "0",
-      "closePrice": "27,300",
-      "compareToPreviousClosePrice": "-1,450",
+      "closePrice": "26,050",
+      "compareToPreviousClosePrice": "-1,250",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-5.04",
+      "fluctuationsRatio": "-4.58",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,336,374",
+      "marketValue": "2,229,397",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1837,58 +1837,21 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "097230",
-      "reutersCode": "097230",
-      "stockName": "HJ중공업",
-      "sosok": "0",
-      "closePrice": "15,560",
-      "compareToPreviousClosePrice": "-260",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      },
-      "fluctuationsRatio": "-1.64",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "1,404,995",
-      "nav": "N/A",
-      "threeMonthEarningRate": "N/A",
-      "stockExchangeType": {
-        "code": "KS",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스피",
-        "nameEng": "KOSPI",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSPI"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/097230"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
       "itemCode": "060370",
       "reutersCode": "060370",
       "stockName": "LS마린솔루션",
       "sosok": "1",
-      "closePrice": "26,800",
-      "compareToPreviousClosePrice": "-800",
+      "closePrice": "26,300",
+      "compareToPreviousClosePrice": "-500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.90",
+      "fluctuationsRatio": "-1.87",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,400,001",
+      "marketValue": "1,373,881",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1907,6 +1870,43 @@
         "name": "KOSDAQ"
       },
       "endUrl": "https://m.stock.naver.com/domestic/stock/060370"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
+      "itemCode": "097230",
+      "reutersCode": "097230",
+      "stockName": "HJ중공업",
+      "sosok": "0",
+      "closePrice": "14,300",
+      "compareToPreviousClosePrice": "-1,260",
+      "compareToPreviousPrice": {
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
+      },
+      "fluctuationsRatio": "-8.10",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "1,291,223",
+      "nav": "N/A",
+      "threeMonthEarningRate": "N/A",
+      "stockExchangeType": {
+        "code": "KS",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스피",
+        "nameEng": "KOSPI",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSPI"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/097230"
     }
   ],
   "financials_annual": {
@@ -1942,7 +1942,7 @@
             "cx": null
           },
           "202612": {
-            "value": "69,492",
+            "value": "69,526",
             "cx": null
           },
           "202312": {
@@ -1963,7 +1963,7 @@
             "cx": null
           },
           "202612": {
-            "value": "5,219",
+            "value": "5,260",
             "cx": null
           },
           "202312": {
@@ -1984,7 +1984,7 @@
             "cx": null
           },
           "202612": {
-            "value": "4,411",
+            "value": "4,546",
             "cx": null
           },
           "202312": {
@@ -2047,7 +2047,7 @@
             "cx": null
           },
           "202612": {
-            "value": "7.51",
+            "value": "7.56",
             "cx": null
           },
           "202312": {
@@ -2068,7 +2068,7 @@
             "cx": null
           },
           "202612": {
-            "value": "6.35",
+            "value": "6.54",
             "cx": null
           },
           "202312": {
@@ -2089,7 +2089,7 @@
             "cx": null
           },
           "202612": {
-            "value": "8.10",
+            "value": "8.33",
             "cx": null
           },
           "202312": {
@@ -2173,7 +2173,7 @@
             "cx": null
           },
           "202612": {
-            "value": "10,262",
+            "value": "10,575",
             "cx": null
           },
           "202312": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "6.04",
+            "value": "5.69",
             "cx": null
           },
           "202312": {
@@ -2215,7 +2215,7 @@
             "cx": null
           },
           "202612": {
-            "value": "135,439",
+            "value": "135,826",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "0.46",
+            "value": "0.44",
             "cx": null
           },
           "202312": {
@@ -2315,7 +2315,7 @@
             "cx": null
           },
           "202606": {
-            "value": "17,308",
+            "value": "17,279",
             "cx": null
           },
           "202506": {
@@ -2344,7 +2344,7 @@
             "cx": null
           },
           "202606": {
-            "value": "1,222",
+            "value": "1,227",
             "cx": null
           },
           "202506": {
@@ -2460,7 +2460,7 @@
             "cx": null
           },
           "202606": {
-            "value": "7.06",
+            "value": "7.10",
             "cx": null
           },
           "202506": {
@@ -2489,7 +2489,7 @@
             "cx": null
           },
           "202606": {
-            "value": "6.30",
+            "value": "6.31",
             "cx": null
           },
           "202506": {
@@ -2634,7 +2634,7 @@
             "cx": null
           },
           "202606": {
-            "value": "2,520",
+            "value": "2,600",
             "cx": null
           },
           "202506": {
@@ -2847,40 +2847,40 @@
   ],
   "news": [
     {
-      "title": "체열 감지 밴드 차고, IoT로 체온 모니터링...끓는 현장에 건설업계 폭...",
-      "office": "한국일보",
-      "date": "202607161500",
-      "url": "https://n.news.naver.com/mnews/article/469/0000942645"
+      "title": "근간부터 알짜까지 과감한 자산 정리…석화 고부가 스페셜티 중심 사...",
+      "office": "서울경제",
+      "date": "202607201732",
+      "url": "https://n.news.naver.com/mnews/article/011/0004643208"
     },
     {
-      "title": "미국·이란 재충돌에 기대 꺾인 건설주…믿을 건 수주뿐",
-      "office": "매일신문",
-      "date": "202607161017",
-      "url": "https://n.news.naver.com/mnews/article/088/0001019337"
+      "title": "삼성·대우 웃고 현대·GS 주춤⋯건설사 2분기 실적 '희비'",
+      "office": "아이뉴스24",
+      "date": "202607201644",
+      "url": "https://n.news.naver.com/mnews/article/031/0001043341"
     },
     {
-      "title": "[정비사업 스케치] GS건설, 1.8조 '목동 12단지' 4파전 깰까",
-      "office": "블로터",
-      "date": "202607160948",
-      "url": "https://n.news.naver.com/mnews/article/293/0000087696"
+      "title": "수도권 규제지역 확대에 ‘비규제지역’ 풍선효과… 남양주·병점·부...",
+      "office": "헤럴드경제",
+      "date": "202607201310",
+      "url": "https://n.news.naver.com/mnews/article/016/0002672318"
     },
     {
-      "title": "[정비사업 스케치]성수2지구 재입찰, 조합 '공사비 증액 카드' 통할까",
-      "office": "블로터",
-      "date": "202607160937",
-      "url": "https://n.news.naver.com/mnews/article/293/0000087691"
+      "title": "DL이앤씨, ‘e편한세상 분당 퍼스트빌리지’ 신혼희망타운 청약 접수...",
+      "office": "매일경제",
+      "date": "202607201111",
+      "url": "https://n.news.naver.com/mnews/article/009/0005709441"
     },
     {
-      "title": "DL, 에너지 사업 분야 가치사슬 강화",
-      "office": "서울신문",
-      "date": "202607160506",
-      "url": "https://n.news.naver.com/mnews/article/081/0003661685"
+      "title": "‘래미안’·‘디에이치’는 시작일 뿐…하이엔드 모이는 방배동",
+      "office": "데일리안",
+      "date": "202607200743",
+      "url": "https://n.news.naver.com/mnews/article/119/0003112697"
     },
     {
-      "title": "서울은 희소…경기는 대단지 청약장",
-      "office": "매경이코노미",
-      "date": "202607152101",
-      "url": "https://n.news.naver.com/mnews/article/024/0000106897"
+      "title": "'안전투자' 밝힐 의무 없는 건설사 ESG보고서…내년엔?",
+      "office": "비즈워치",
+      "date": "202607200700",
+      "url": "https://n.news.naver.com/mnews/article/648/0000049010"
     }
   ],
   "_errors": {}
