@@ -48,7 +48,6 @@ PORTFOLIO = [
     {"code": "440110", "name": "파두",       "market": "KOSDAQ", "ptype": "stock"},
     {"code": "402340", "name": "SK스퀘어",   "market": "KOSPI",  "ptype": "stock"},
     {"code": "009150", "name": "삼성전기",   "market": "KOSPI",  "ptype": "stock"},
-    {"code": "074600", "name": "원익QnC",    "market": "KOSDAQ", "ptype": "stock"},
     # 단일종목 레버 → 본주와 100% 동일(본주 수급·본주 리포트 재사용)
     {"code": "0193W0", "name": "KODEX 삼성전자단일종목레버리지",   "market": "KOSPI", "ptype": "stock", "ref": "005930"},
     {"code": "0193T0", "name": "KODEX SK하이닉스단일종목레버리지", "market": "KOSPI", "ptype": "stock", "ref": "000660"},
@@ -70,8 +69,10 @@ PORTFOLIO = [
     #   us_target: 분석 대상 본주(레버리지의 기초자산). us_ticker: 검색용 티커.
     {"code": "MVLL", "name": "마벨 2배 롱 (MVLL)", "market": "US", "ptype": "us",
      "us_target": "Marvell", "us_ticker": "MRVL", "basis": "Marvell(MRVL)"},
-    {"code": "TSMX", "name": "TSMC 2배 (TSMX)", "market": "US", "ptype": "us",
-     "us_target": "TSMC", "us_ticker": "TSM", "basis": "TSMC(TSM)"},
+    {"code": "MUU", "name": "마이크론 2배 (MUU)", "market": "US", "ptype": "us",
+     "us_target": "Micron Technology", "us_ticker": "MU", "basis": "Micron(MU)"},
+    {"code": "SNXX", "name": "샌디스크 2배 (SNXX)", "market": "US", "ptype": "us",
+     "us_target": "SanDisk", "us_ticker": "SNDK", "basis": "SanDisk(SNDK)"},
     {"code": "ACE500CC", "name": "ACE 미국500데일리타겟커버드콜", "market": "US", "ptype": "us",
      "us_target": "S&P500", "us_ticker": "^GSPC", "basis": "S&P500 지수", "us_kind": "index"},
 ]
