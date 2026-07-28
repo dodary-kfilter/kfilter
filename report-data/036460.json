@@ -2,30 +2,46 @@
   "code": "036460",
   "name": "한국가스공사",
   "market": "KOSPI",
-  "updated": "2026-07-27 16:00",
+  "updated": "2026-07-28 16:22",
   "supply_10d": {
-    "foreign_net_10d": 384870,
+    "foreign_net_10d": 404532,
     "foreign_buydays": "8/10",
-    "pension_net_10d": 38046,
-    "pension_buydays": "8/10"
+    "pension_net_10d": 55492,
+    "pension_buydays": "9/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-07-28",
+        "close": 34050,
+        "foreignRatio": 12.06,
+        "개인": -44433,
+        "외국인": 20178,
+        "기관계": 24536,
+        "금융투자": 12724,
+        "투신": 7769,
+        "사모": 258,
+        "보험": -269,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 4054,
+        "기타법인": -105
+      },
+      {
         "date": "2026-07-27",
         "close": 35100,
         "foreignRatio": 12.04,
-        "개인": -32754,
-        "외국인": 30937,
-        "기관계": 1888,
-        "금융투자": -4821,
+        "개인": -39414,
+        "외국인": 36635,
+        "기관계": 3142,
+        "금융투자": -3567,
         "투신": 872,
         "사모": 204,
         "보험": 237,
         "은행": 0,
         "기타금융": 0,
         "연기금": 5396,
-        "기타법인": -70
+        "기타법인": -72
       },
       {
         "date": "2026-07-24",
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": 12864,
         "기타법인": 1726
-      },
-      {
-        "date": "2026-04-28",
-        "close": 39050,
-        "foreignRatio": 10.36,
-        "개인": -119331,
-        "외국인": 112242,
-        "기관계": 21234,
-        "금융투자": 15324,
-        "투신": -1147,
-        "사모": -260,
-        "보험": -400,
-        "은행": 0,
-        "기타금융": -3,
-        "연기금": 7720,
-        "기타법인": -9930
       }
     ],
     "cum_5d": {
-      "개인": -423361,
-      "외국인": 377650,
-      "기관계": 51384,
-      "금융투자": -12025,
-      "투신": 3350,
-      "사모": 28591,
-      "보험": -5464,
+      "개인": -423511,
+      "외국인": 340648,
+      "기관계": 90143,
+      "금융투자": 17990,
+      "투신": 9949,
+      "사모": 27762,
+      "보험": -6411,
       "은행": 0,
-      "기타금융": -1,
-      "연기금": 36933,
-      "기타법인": -3836
+      "기타금융": 0,
+      "연기금": 40853,
+      "기타법인": -4002
     },
     "cum_20d": {
-      "개인": -834451,
-      "외국인": 590617,
-      "기관계": 255313,
-      "금융투자": 162521,
-      "투신": 25812,
-      "사모": 71654,
-      "보험": -16689,
+      "개인": -850151,
+      "외국인": 581399,
+      "기관계": 280996,
+      "금융투자": 157680,
+      "투신": 32715,
+      "사모": 70127,
+      "보험": -17107,
       "은행": 0,
       "기타금융": -1,
-      "연기금": 12016,
-      "기타법인": -7432
+      "연기금": 37582,
+      "기타법인": -7921
     },
     "cum_60d": {
-      "개인": -1604620,
-      "외국인": 1653671,
-      "기관계": -12109,
-      "금융투자": -3189,
-      "투신": -255949,
-      "사모": -18893,
-      "보험": -47484,
+      "개인": -1536382,
+      "외국인": 1567305,
+      "기관계": -7553,
+      "금융투자": -4535,
+      "투신": -247033,
+      "사모": -18375,
+      "보험": -47353,
       "은행": 0,
-      "기타금융": -380,
-      "연기금": 313786,
-      "기타법인": -29696
+      "기타금융": -377,
+      "연기금": 310120,
+      "기타법인": -19873
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-07-28",
+        "ratio": 12.06
+      },
       {
         "date": "2026-07-27",
         "ratio": 12.04
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-04-29",
         "ratio": 10.28
-      },
-      {
-        "date": "2026-04-28",
-        "ratio": 10.36
       }
     ]
   },
   "price_daily": {
-    "now": 35100,
-    "prevClose": 34950,
-    "changePct": 0.43,
+    "now": 34050,
+    "prevClose": 35100,
+    "changePct": -2.99,
     "ma": {
-      "ma5": 33820.0,
-      "ma20": 32940.0,
-      "ma60": 35029.2,
-      "ma120": 36603.3,
+      "ma5": 34180.0,
+      "ma20": 33007.5,
+      "ma60": 34945.8,
+      "ma120": 36554.6,
       "aligned": false,
       "vs": {
-        "ma5": 3.78,
-        "ma20": 6.56,
-        "ma60": 0.2,
-        "ma120": -4.11
+        "ma5": -0.38,
+        "ma20": 3.16,
+        "ma60": -2.56,
+        "ma120": -6.85
       }
     },
-    "trend20": 10.03,
+    "trend20": 4.13,
     "pocket": [
       {
         "low": 35870,
@@ -1279,9 +1279,9 @@
         "volPct": 16.1
       },
       {
-        "low": 40040,
-        "high": 40735,
-        "volPct": 9.3
+        "low": 36565,
+        "high": 37260,
+        "volPct": 8.8
       },
       {
         "low": 40735,
@@ -1291,17 +1291,17 @@
     ]
   },
   "price_weekly": {
-    "now": 35100,
+    "now": 34050,
     "ma": {
-      "ma5": 33720.0,
-      "ma10": 34120.0,
-      "ma20": 35662.5,
-      "ma60": 39061.7
+      "ma5": 33510.0,
+      "ma10": 34015.0,
+      "ma20": 35610.0,
+      "ma60": 39044.2
     },
     "aligned": false,
     "rangeHigh": 61900,
     "rangeLow": 22900,
-    "posPct": 31.3,
+    "posPct": 28.6,
     "recent": [
       {
         "d": "20260206",
@@ -1404,22 +1404,22 @@
         "c": 34950
       },
       {
-        "d": "20260727",
-        "c": 35100
+        "d": "20260728",
+        "c": 34050
       }
     ]
   },
   "price_monthly": {
-    "now": 35100,
+    "now": 34050,
     "ma": {
-      "ma6": 36300.0,
-      "ma12": 38258.3,
-      "ma24": 39416.7
+      "ma6": 36125.0,
+      "ma12": 38170.8,
+      "ma24": 39372.9
     },
     "aligned": false,
     "rangeHigh": 64200,
     "rangeLow": 21500,
-    "posPct": 31.9,
+    "posPct": 29.4,
     "recent": [
       {
         "d": "20240830",
@@ -1514,8 +1514,8 @@
         "c": 31950
       },
       {
-        "d": "20260727",
-        "c": 35100
+        "d": "20260728",
+        "c": 34050
       }
     ]
   },
@@ -1523,32 +1523,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "34,950"
+      "value": "35,100"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "34,950",
+      "value": "35,000",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "35,700",
+      "value": "35,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "34,750",
+      "value": "33,750",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "127,000"
+      "value": "171,945"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "44.7억"
+      "value": "58.8억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "3조 2,402억"
+      "value": "3조 1,433억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "40.01%"
+      "value": "40.14%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "10.31배",
+      "value": "10.01배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "3.26배"
+      "value": "3.16배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "0.27배",
+      "value": "0.26배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "3.29%",
+      "value": "3.39%",
       "valueDesc": "2025.12."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "036460",
-    "createDate": "2026-07-24",
+    "createDate": "2026-07-27",
     "recommMean": "3.88",
     "priceTargetMean": "48,750"
   },
@@ -1645,7 +1645,7 @@
       "nm": "한국가스공사",
       "bnm": "하나증권",
       "tit": "하반기 자원개발 실적 극대화 가능",
-      "rcnt": "6150",
+      "rcnt": "6203",
       "wdt": "20260514"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "한국가스공사",
       "bnm": "대신증권",
       "tit": "영업실적 개선. 미수금 회수는 중장기적 접근 필요",
-      "rcnt": "3878",
+      "rcnt": "3914",
       "wdt": "20260514"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "한국가스공사",
       "bnm": "유진투자증권",
       "tit": "소리 없이 강하다",
-      "rcnt": "4210",
+      "rcnt": "4244",
       "wdt": "20260514"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "한국가스공사",
       "bnm": "한화투자증권",
       "tit": "배당이 아쉬우니",
-      "rcnt": "13112",
+      "rcnt": "13138",
       "wdt": "20260305"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "한국가스공사",
       "bnm": "하나증권",
       "tit": "올해도 피할 수 없었던 해외사업 손상차손",
-      "rcnt": "10749",
+      "rcnt": "10771",
       "wdt": "20260227"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "018670",
       "stockName": "SK가스",
       "sosok": "0",
-      "closePrice": "242,500",
-      "compareToPreviousClosePrice": "-13,000",
+      "closePrice": "229,000",
+      "compareToPreviousClosePrice": "-13,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-5.09",
+      "fluctuationsRatio": "-5.57",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,244,881",
+      "marketValue": "2,119,908",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "017940",
       "stockName": "E1",
       "sosok": "0",
-      "closePrice": "89,900",
-      "compareToPreviousClosePrice": "-4,700",
+      "closePrice": "87,000",
+      "compareToPreviousClosePrice": "-2,900",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.97",
+      "fluctuationsRatio": "-3.23",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "616,714",
+      "marketValue": "596,820",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "004690",
       "stockName": "삼천리",
       "sosok": "0",
-      "closePrice": "118,000",
-      "compareToPreviousClosePrice": "-1,200",
+      "closePrice": "114,900",
+      "compareToPreviousClosePrice": "-3,100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.01",
+      "fluctuationsRatio": "-2.63",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "427,959",
+      "marketValue": "416,716",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "015360",
       "stockName": "INVENI",
       "sosok": "0",
-      "closePrice": "14,370",
-      "compareToPreviousClosePrice": "-20",
+      "closePrice": "13,900",
+      "compareToPreviousClosePrice": "-470",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.14",
+      "fluctuationsRatio": "-3.27",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "391,582",
+      "marketValue": "378,775",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "017390",
       "stockName": "서울가스",
       "sosok": "0",
-      "closePrice": "54,600",
-      "compareToPreviousClosePrice": "-900",
+      "closePrice": "53,300",
+      "compareToPreviousClosePrice": "-1,300",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.62",
+      "fluctuationsRatio": "-2.38",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "270,270",
+      "marketValue": "263,835",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "117580",
       "stockName": "대성에너지",
       "sosok": "0",
-      "closePrice": "7,020",
-      "compareToPreviousClosePrice": "-320",
+      "closePrice": "6,690",
+      "compareToPreviousClosePrice": "-330",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.36",
+      "fluctuationsRatio": "-4.70",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "193,050",
+      "marketValue": "183,975",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "3.25",
+            "value": "3.26",
             "cx": null
           },
           "202312": {
@@ -2847,40 +2847,40 @@
   ],
   "news": [
     {
-      "title": "강원도 ‘액체수소 인수기지’ 핵심기술 개발 추진",
-      "office": "매일경제",
-      "date": "202607271552",
-      "url": "https://n.news.naver.com/mnews/article/009/0005712796"
+      "title": "에너지 공기업 수장 38%가 非전문가",
+      "office": "조선비즈",
+      "date": "202607281612",
+      "url": "https://n.news.naver.com/mnews/article/366/0001182528"
     },
     {
-      "title": "가스公 노조, '홍의락 사장 반대' 닷새만에 '상생'으로 선회",
-      "office": "아시아경제",
-      "date": "202607271452",
-      "url": "https://n.news.naver.com/mnews/article/277/0005795128"
+      "title": "강원도 제2청사 개청 3주년…영동·남부권 핵심 사업 추진",
+      "office": "KBS",
+      "date": "202607281100",
+      "url": "https://n.news.naver.com/mnews/article/056/0012226421"
     },
     {
-      "title": "2038년 천연가스 수요 4100만톤…올해부터 연평균 0.94% 하락",
+      "title": "SK이노 E＆S, 호주 초경질유 도입",
+      "office": "서울신문",
+      "date": "202607280504",
+      "url": "https://n.news.naver.com/mnews/article/081/0003665182"
+    },
+    {
+      "title": "강원도 제2청사 개청 3주년…영동·남부권 핵심 사업 추진",
+      "office": "KBS",
+      "date": "202607272211",
+      "url": "https://n.news.naver.com/mnews/article/056/0012226117"
+    },
+    {
+      "title": "강원 삼척, 미래 에너지, 액체수소 기지 R&D 착수..정부지원",
       "office": "헤럴드경제",
-      "date": "202607271113",
-      "url": "https://n.news.naver.com/mnews/article/016/0002675537"
+      "date": "202607272144",
+      "url": "https://n.news.naver.com/mnews/article/016/0002675825"
     },
     {
-      "title": "2038년까지 천연가스 저장용량 887만t·주배관 5910㎞ 확충",
-      "office": "데일리안",
-      "date": "202607270901",
-      "url": "https://n.news.naver.com/mnews/article/119/0003115050"
-    },
-    {
-      "title": "EU ‘러 LNG 제재, 韓 예외’에… 李 “경제 큰 도움”",
-      "office": "세계일보",
-      "date": "202607261842",
-      "url": "https://n.news.naver.com/mnews/article/022/0004145986"
-    },
-    {
-      "title": "1분기 어닝서프라이즈 가스공사 2분기에도 이어질 듯",
-      "office": "뉴시스",
-      "date": "202607260800",
-      "url": "https://n.news.naver.com/mnews/article/003/0014088129"
+      "title": "중동산 줄이고 미국산 늘린다… LNG 공급선 다변화 박차",
+      "office": "서울신문",
+      "date": "202607271834",
+      "url": "https://n.news.naver.com/mnews/article/081/0003665087"
     }
   ],
   "_errors": {}
