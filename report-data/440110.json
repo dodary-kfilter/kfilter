@@ -2,25 +2,41 @@
   "code": "440110",
   "name": "파두",
   "market": "KOSDAQ",
-  "updated": "2026-07-28 16:07",
+  "updated": "2026-07-29 10:05",
   "supply_10d": {
-    "foreign_net_10d": -32904,
-    "foreign_buydays": "3/10",
+    "foreign_net_10d": 101178,
+    "foreign_buydays": "4/10",
     "foreign_pass": false,
-    "pension_net_10d": 9737,
-    "pension_buydays": "7/10",
-    "pension_pass": true
+    "pension_net_10d": -215,
+    "pension_buydays": "6/10",
+    "pension_pass": false
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-07-29",
+        "close": 54300,
+        "foreignRatio": 28.05,
+        "개인": 0,
+        "외국인": 40604,
+        "기관계": -4000,
+        "금융투자": 0,
+        "투신": -3000,
+        "사모": 0,
+        "보험": -1000,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": -13000
+      },
+      {
         "date": "2026-07-28",
         "close": 56300,
-        "foreignRatio": 27.35,
-        "개인": -322740,
+        "foreignRatio": 28.05,
+        "개인": -322775,
         "외국인": 449192,
-        "기관계": -118117,
-        "금융투자": 5651,
+        "기관계": -118082,
+        "금융투자": 5686,
         "투신": -92635,
         "사모": -29710,
         "보험": 77,
@@ -956,67 +972,55 @@
         "기타금융": 0,
         "연기금": -23728,
         "기타법인": -89711
-      },
-      {
-        "date": "2026-04-29",
-        "close": 81500,
-        "foreignRatio": 12.83,
-        "개인": -113211,
-        "외국인": 205103,
-        "기관계": -64855,
-        "금융투자": 15051,
-        "투신": -59301,
-        "사모": -8278,
-        "보험": -7116,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": -5211,
-        "기타법인": -8842
       }
     ],
     "cum_5d": {
-      "개인": -228359,
-      "외국인": 487350,
-      "기관계": -258290,
-      "금융투자": -10787,
-      "투신": -149534,
-      "사모": -57031,
-      "보험": -20542,
+      "개인": -314266,
+      "외국인": 582002,
+      "기관계": -216065,
+      "금융투자": 1805,
+      "투신": -138319,
+      "사모": -39236,
+      "보험": -19919,
       "은행": 0,
       "기타금융": -2500,
       "연기금": -17896,
-      "기타법인": -10300
+      "기타법인": -27222
     },
     "cum_20d": {
-      "개인": -622273,
-      "외국인": 497191,
-      "기관계": 45674,
-      "금융투자": 28186,
-      "투신": 206243,
-      "사모": -43341,
-      "보험": 34143,
+      "개인": -596828,
+      "외국인": 497038,
+      "기관계": 60851,
+      "금융투자": 22829,
+      "투신": 204864,
+      "사모": -60849,
+      "보험": 33119,
       "은행": 0,
-      "기타금융": -41769,
-      "연기금": -137788,
-      "기타법인": 46982
+      "기타금융": -31769,
+      "연기금": -107343,
+      "기타법인": 36331
     },
     "cum_60d": {
-      "개인": -3762390,
-      "외국인": 8018713,
-      "기관계": -4005301,
-      "금융투자": -569525,
-      "투신": -521252,
-      "사모": -2670121,
-      "보험": 5520,
+      "개인": -3649214,
+      "외국인": 7854214,
+      "기관계": -3944411,
+      "금융투자": -584541,
+      "투신": -464951,
+      "사모": -2661843,
+      "보험": 11636,
       "은행": 180,
       "기타금융": -92480,
-      "연기금": -157623,
-      "기타법인": -242855
+      "연기금": -152412,
+      "기타법인": -247013
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-07-29",
+        "ratio": 28.05
+      },
+      {
         "date": "2026-07-28",
-        "ratio": 27.35
+        "ratio": 28.05
       },
       {
         "date": "2026-07-27",
@@ -1249,31 +1253,27 @@
       {
         "date": "2026-04-30",
         "ratio": 13.57
-      },
-      {
-        "date": "2026-04-29",
-        "ratio": 12.83
       }
     ]
   },
   "price_daily": {
-    "now": 56300,
-    "prevClose": 64900,
-    "changePct": -13.25,
+    "now": 54300,
+    "prevClose": 56300,
+    "changePct": -3.55,
     "ma": {
-      "ma5": 65960.0,
-      "ma20": 72640.0,
-      "ma60": 91431.7,
-      "ma120": 73161.7,
+      "ma5": 62740.0,
+      "ma20": 70980.0,
+      "ma60": 90978.3,
+      "ma120": 73437.1,
       "aligned": false,
       "vs": {
-        "ma5": -14.65,
-        "ma20": -22.49,
-        "ma60": -38.42,
-        "ma120": -23.05
+        "ma5": -13.45,
+        "ma20": -23.5,
+        "ma60": -40.32,
+        "ma120": -26.06
       }
     },
-    "trend20": -34.31,
+    "trend20": -37.94,
     "pocket": [
       {
         "low": 42660,
@@ -1283,7 +1283,7 @@
       {
         "low": 53365,
         "high": 58718,
-        "volPct": 12.5
+        "volPct": 12.6
       },
       {
         "low": 58718,
@@ -1293,17 +1293,17 @@
     ]
   },
   "price_weekly": {
-    "now": 56300,
+    "now": 54300,
     "ma": {
-      "ma5": 69520.0,
-      "ma10": 85490.0,
-      "ma20": 79940.0,
-      "ma60": 42978.8
+      "ma5": 69120.0,
+      "ma10": 85290.0,
+      "ma20": 79840.0,
+      "ma60": 42945.5
     },
     "aligned": false,
     "rangeHigh": 128300,
     "rangeLow": 9630,
-    "posPct": 39.3,
+    "posPct": 37.6,
     "recent": [
       {
         "d": "20260206",
@@ -1406,22 +1406,22 @@
         "c": 64500
       },
       {
-        "d": "20260728",
-        "c": 56300
+        "d": "20260729",
+        "c": 54300
       }
     ]
   },
   "price_monthly": {
-    "now": 56300,
+    "now": 54300,
     "ma": {
-      "ma6": 73225.0,
-      "ma12": 47597.5,
-      "ma24": 30847.5
+      "ma6": 72891.7,
+      "ma12": 47430.8,
+      "ma24": 30764.2
     },
     "aligned": true,
     "rangeHigh": 112100,
     "rangeLow": 10320,
-    "posPct": 45.2,
+    "posPct": 43.2,
     "recent": [
       {
         "d": "20240830",
@@ -1516,8 +1516,8 @@
         "c": 87500
       },
       {
-        "d": "20260728",
-        "c": 56300
+        "d": "20260729",
+        "c": 54300
       }
     ]
   },
@@ -1525,32 +1525,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "64,900"
+      "value": "56,300"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "60,800",
+      "value": "56,600",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "61,100",
+      "value": "57,200",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "55,100",
+      "value": "53,100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1560,22 +1560,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,074,954"
+      "value": "187,403"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "618억"
+      "value": "103억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "2조 8,207억"
+      "value": "2조 7,205억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "27.35%"
+      "value": "28.05%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1612,7 +1612,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "84.28배",
+      "value": "81.29배",
       "valueDesc": "2026.03."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "440110",
-    "createDate": "2026-07-27",
+    "createDate": "2026-07-28",
     "recommMean": "4.00",
     "priceTargetMean": "130,000"
   },
@@ -1645,7 +1645,7 @@
       "nm": "파두",
       "bnm": "신한투자증권",
       "tit": "의심을 거둘 때",
-      "rcnt": "7460",
+      "rcnt": "7668",
       "wdt": "20260716"
     }
   ],
@@ -1657,17 +1657,17 @@
       "reutersCode": "005930",
       "stockName": "삼성전자",
       "sosok": "0",
-      "closePrice": "220,000",
-      "compareToPreviousClosePrice": "-34,000",
+      "closePrice": "228,500",
+      "compareToPreviousClosePrice": "8,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-13.39",
+      "fluctuationsRatio": "3.86",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,286,181,293",
+      "marketValue": "1,335,874,661",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1694,17 +1694,17 @@
       "reutersCode": "000660",
       "stockName": "SK하이닉스",
       "sosok": "0",
-      "closePrice": "1,550,000",
-      "compareToPreviousClosePrice": "-266,000",
+      "closePrice": "1,547,000",
+      "compareToPreviousClosePrice": "-3,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-14.65",
+      "fluctuationsRatio": "-0.19",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,104,688,665",
+      "marketValue": "1,130,071,688",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1731,17 +1731,17 @@
       "reutersCode": "402340",
       "stockName": "SK스퀘어",
       "sosok": "0",
-      "closePrice": "925,000",
-      "compareToPreviousClosePrice": "-171,000",
+      "closePrice": "936,000",
+      "compareToPreviousClosePrice": "11,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-15.60",
+      "fluctuationsRatio": "1.19",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "122,061,507",
+      "marketValue": "123,513,049",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1768,17 +1768,17 @@
       "reutersCode": "042700",
       "stockName": "한미반도체",
       "sosok": "0",
-      "closePrice": "179,500",
-      "compareToPreviousClosePrice": "-25,000",
+      "closePrice": "174,600",
+      "compareToPreviousClosePrice": "-4,900",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-12.22",
+      "fluctuationsRatio": "-2.73",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "17,108,539",
+      "marketValue": "16,641,510",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1805,17 +1805,17 @@
       "reutersCode": "036930",
       "stockName": "주성엔지니어링",
       "sosok": "1",
-      "closePrice": "128,800",
-      "compareToPreviousClosePrice": "-21,100",
+      "closePrice": "123,600",
+      "compareToPreviousClosePrice": "-5,200",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-14.08",
+      "fluctuationsRatio": "-4.04",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,986,768",
+      "marketValue": "5,745,066",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1842,17 +1842,17 @@
       "reutersCode": "007660",
       "stockName": "이수페타시스",
       "sosok": "0",
-      "closePrice": "71,400",
-      "compareToPreviousClosePrice": "-14,400",
+      "closePrice": "71,500",
+      "compareToPreviousClosePrice": "100",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-16.78",
+      "fluctuationsRatio": "0.14",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,241,418",
+      "marketValue": "5,248,759",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2158,7 +2158,7 @@
             "cx": "minus"
           },
           "202612": {
-            "value": "35.72",
+            "value": "30.99",
             "cx": null
           },
           "202312": {
@@ -2200,7 +2200,7 @@
             "cx": null
           },
           "202612": {
-            "value": "29.46",
+            "value": "25.56",
             "cx": null
           },
           "202312": {
@@ -2740,6 +2740,13 @@
   "disclosures": [
     {
       "itemCode": "440110",
+      "disclosureId": 81102295,
+      "title": "(주)파두 추가상장(주식매수선택권행사)",
+      "datetime": "2026-07-28T06:52:29",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "440110",
       "disclosureId": 72835968,
       "title": "(주)파두 연결재무제표 기준 영업(잠정)실적(공정공시)",
       "datetime": "2026-07-20T06:50:19",
@@ -2799,13 +2806,6 @@
       "disclosureId": 35452645,
       "title": "(주)파두 (정정)단일판매ㆍ공급계약체결",
       "datetime": "2026-06-18T06:51:46",
-      "author": "KOSCOM"
-    },
-    {
-      "itemCode": "440110",
-      "disclosureId": 30742569,
-      "title": "(주)파두 (정정)단일판매ㆍ공급계약체결",
-      "datetime": "2026-06-15T06:51:58",
       "author": "KOSCOM"
     }
   ],
