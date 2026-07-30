@@ -2,30 +2,46 @@
   "code": "000100",
   "name": "유한양행",
   "market": "KOSPI",
-  "updated": "2026-07-29 10:20",
+  "updated": "2026-07-30 21:03",
   "supply_10d": {
-    "foreign_net_10d": 97043,
+    "foreign_net_10d": 76589,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 34044,
-    "pension_buydays": "7/10"
+    "pension_net_10d": 117473,
+    "pension_buydays": "9/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
-        "date": "2026-07-29",
-        "close": 74700,
-        "foreignRatio": 19.68,
-        "개인": 0,
-        "외국인": 16556,
-        "기관계": 0,
-        "금융투자": 0,
-        "투신": 0,
-        "사모": 0,
-        "보험": 0,
+        "date": "2026-07-30",
+        "close": 74000,
+        "foreignRatio": 19.87,
+        "개인": -127795,
+        "외국인": 55048,
+        "기관계": 73938,
+        "금융투자": 712,
+        "투신": 1236,
+        "사모": 4593,
+        "보험": 3121,
         "은행": 0,
         "기타금융": 0,
-        "연기금": 0,
-        "기타법인": 3000
+        "연기금": 64276,
+        "기타법인": -646
+      },
+      {
+        "date": "2026-07-29",
+        "close": 70300,
+        "foreignRatio": 19.8,
+        "개인": -108527,
+        "외국인": 37646,
+        "기관계": 70986,
+        "금융투자": 46243,
+        "투신": 73,
+        "사모": 4643,
+        "보험": 1704,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 18323,
+        "기타법인": 116
       },
       {
         "date": "2026-07-28",
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": -4388,
         "기타법인": 6976
-      },
-      {
-        "date": "2026-04-30",
-        "close": 91600,
-        "foreignRatio": 18.59,
-        "개인": 138892,
-        "외국인": -126900,
-        "기관계": -13328,
-        "금융투자": 2313,
-        "투신": 591,
-        "사모": 1162,
-        "보험": 4,
-        "은행": 0,
-        "기타금융": -186,
-        "연기금": -17212,
-        "기타법인": 1472
       }
     ],
     "cum_5d": {
-      "개인": 82206,
-      "외국인": -125468,
-      "기관계": 61527,
-      "금융투자": 4792,
-      "투신": 22072,
-      "사모": 4522,
-      "보험": -313,
+      "개인": -134645,
+      "외국인": -66669,
+      "기관계": 202999,
+      "금융투자": 52990,
+      "투신": 23560,
+      "사모": 13935,
+      "보험": 4350,
       "은행": 0,
-      "기타금융": 0,
-      "연기금": 30454,
-      "기타법인": 1090
+      "기타금융": 1,
+      "연기금": 108163,
+      "기타법인": -118
     },
     "cum_20d": {
-      "개인": -238459,
-      "외국인": 80265,
-      "기관계": 146237,
-      "금융투자": 123650,
-      "투신": 19776,
-      "사모": -4732,
-      "보험": 3507,
+      "개인": -501790,
+      "외국인": 150346,
+      "기관계": 314896,
+      "금융투자": 168238,
+      "투신": 20277,
+      "사모": 2989,
+      "보험": 7811,
       "은행": 0,
-      "기타금융": 4,
-      "연기금": 4032,
-      "기타법인": 29889
+      "기타금융": 3,
+      "연기금": 115578,
+      "기타법인": 35499
     },
     "cum_60d": {
-      "개인": 295486,
-      "외국인": -202597,
-      "기관계": -197862,
-      "금융투자": -64719,
-      "투신": 29234,
-      "사모": -25743,
-      "보험": -28782,
+      "개인": -79728,
+      "외국인": 441,
+      "기관계": -39610,
+      "금융투자": -20077,
+      "투신": 29952,
+      "사모": -17669,
+      "보험": -23961,
       "은행": -1321,
-      "기타금융": -1062,
-      "연기금": -105469,
-      "기타법인": 118761
+      "기타금융": -876,
+      "연기금": -5658,
+      "기타법인": 113759
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-07-30",
+        "ratio": 19.87
+      },
+      {
         "date": "2026-07-29",
-        "ratio": 19.68
+        "ratio": 19.8
       },
       {
         "date": "2026-07-28",
@@ -1247,61 +1251,57 @@
       {
         "date": "2026-05-04",
         "ratio": 18.32
-      },
-      {
-        "date": "2026-04-30",
-        "ratio": 18.59
       }
     ]
   },
   "price_daily": {
-    "now": 74400,
-    "prevClose": 70700,
-    "changePct": 5.23,
+    "now": 74000,
+    "prevClose": 70300,
+    "changePct": 5.26,
     "ma": {
-      "ma5": 72680.0,
-      "ma20": 70170.0,
-      "ma60": 77093.3,
-      "ma120": 88740.8,
+      "ma5": 72380.0,
+      "ma20": 70140.0,
+      "ma60": 76731.7,
+      "ma120": 88423.3,
       "aligned": false,
       "vs": {
-        "ma5": 2.37,
-        "ma20": 6.03,
-        "ma60": -3.49,
-        "ma120": -16.16
+        "ma5": 2.24,
+        "ma20": 5.5,
+        "ma60": -3.56,
+        "ma120": -16.31
       }
     },
-    "trend20": 5.98,
+    "trend20": 4.96,
     "pocket": [
       {
-        "low": 106240,
-        "high": 108730,
-        "volPct": 9.9
+        "low": 68890,
+        "high": 71380,
+        "volPct": 9.8
       },
       {
         "low": 108730,
         "high": 111220,
-        "volPct": 9.9
+        "volPct": 9.8
       },
       {
         "low": 111220,
         "high": 113710,
-        "volPct": 10.6
+        "volPct": 10.4
       }
     ]
   },
   "price_weekly": {
-    "now": 74400,
+    "now": 74000,
     "ma": {
-      "ma5": 71800.0,
-      "ma10": 74120.0,
-      "ma20": 83620.0,
-      "ma60": 103585.0
+      "ma5": 71720.0,
+      "ma10": 74080.0,
+      "ma20": 83600.0,
+      "ma60": 103578.3
     },
     "aligned": false,
     "rangeHigh": 161300,
     "rangeLow": 48332,
-    "posPct": 23.1,
+    "posPct": 22.7,
     "recent": [
       {
         "d": "20260206",
@@ -1404,22 +1404,22 @@
         "c": 74900
       },
       {
-        "d": "20260729",
-        "c": 74400
+        "d": "20260730",
+        "c": 74000
       }
     ]
   },
   "price_monthly": {
-    "now": 74400,
+    "now": 74000,
     "ma": {
-      "ma6": 87700.0,
-      "ma12": 101600.0,
-      "ma24": 111562.5
+      "ma6": 87633.3,
+      "ma12": 101566.7,
+      "ma24": 111545.8
     },
     "aligned": false,
     "rangeHigh": 142600,
     "rangeLow": 25729,
-    "posPct": 41.6,
+    "posPct": 41.3,
     "recent": [
       {
         "d": "20240830",
@@ -1514,8 +1514,8 @@
         "c": 70200
       },
       {
-        "d": "20260729",
-        "c": 74400
+        "d": "20260730",
+        "c": 74000
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "70,700"
+      "value": "70,300"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "70,300",
+      "value": "70,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1538,7 +1538,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "75,000",
+      "value": "74,400",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "69,700",
+      "value": "68,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "211,370"
+      "value": "530,257"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "154억"
+      "value": "386억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "5조 9,258억"
+      "value": "5조 8,939억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "19.68%"
+      "value": "19.80%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "28.43배",
+      "value": "28.28배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "39.22배"
+      "value": "39.01배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "2.43배",
+      "value": "2.42배",
       "valueDesc": "2026.03."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "000100",
-    "createDate": "2026-07-28",
+    "createDate": "2026-07-29",
     "recommMean": "4.00",
     "priceTargetMean": "127,083"
   },
@@ -1645,7 +1645,7 @@
       "nm": "유한양행",
       "bnm": "교보증권",
       "tit": "아직은 쉬어가는 중",
-      "rcnt": "14275",
+      "rcnt": "14414",
       "wdt": "20260507"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "유한양행",
       "bnm": "신한투자증권",
       "tit": "좀 더 지켜봐야 할 때",
-      "rcnt": "9894",
+      "rcnt": "9966",
       "wdt": "20260506"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "유한양행",
       "bnm": "키움증권",
       "tit": "유럽 마일스톤 이연으로 하회 전망",
-      "rcnt": "10861",
+      "rcnt": "10915",
       "wdt": "20260420"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "유한양행",
       "bnm": "iM증권",
       "tit": "인내는 쓰나 그 열매는 달다",
-      "rcnt": "10496",
+      "rcnt": "10543",
       "wdt": "20260415"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "유한양행",
       "bnm": "교보증권",
       "tit": "유럽 마일스톤의 이연",
-      "rcnt": "14206",
+      "rcnt": "14240",
       "wdt": "20260304"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "207940",
       "stockName": "삼성바이오로직스",
       "sosok": "0",
-      "closePrice": "1,530,000",
-      "compareToPreviousClosePrice": "-19,000",
+      "closePrice": "1,527,000",
+      "compareToPreviousClosePrice": "48,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-1.23",
+      "fluctuationsRatio": "3.25",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "70,825,155",
+      "marketValue": "70,686,282",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "068270",
       "stockName": "셀트리온",
       "sosok": "0",
-      "closePrice": "186,900",
-      "compareToPreviousClosePrice": "9,500",
+      "closePrice": "190,000",
+      "compareToPreviousClosePrice": "10,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "5.36",
+      "fluctuationsRatio": "5.56",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "43,464,287",
+      "marketValue": "44,185,204",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "0126Z0",
       "stockName": "삼성에피스홀딩스",
       "sosok": "0",
-      "closePrice": "358,500",
-      "compareToPreviousClosePrice": "-8,500",
+      "closePrice": "349,000",
+      "compareToPreviousClosePrice": "-3,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.32",
+      "fluctuationsRatio": "-0.99",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "8,920,573",
+      "marketValue": "8,684,184",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "326030",
       "stockName": "SK바이오팜",
       "sosok": "0",
-      "closePrice": "79,500",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "77,600",
+      "compareToPreviousClosePrice": "2,000",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "2.65",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "6,225,903",
+      "marketValue": "6,077,108",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "128940",
       "stockName": "한미약품",
       "sosok": "0",
-      "closePrice": "316,000",
-      "compareToPreviousClosePrice": "-58,500",
+      "closePrice": "311,500",
+      "compareToPreviousClosePrice": "-10,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-15.62",
+      "fluctuationsRatio": "-3.26",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,048,273",
+      "marketValue": "3,990,623",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1874,21 +1874,21 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "141080",
-      "reutersCode": "141080",
-      "stockName": "리가켐바이오",
+      "itemCode": "000250",
+      "reutersCode": "000250",
+      "stockName": "삼천당제약",
       "sosok": "1",
-      "closePrice": "85,900",
-      "compareToPreviousClosePrice": "-4,700",
+      "closePrice": "129,900",
+      "compareToPreviousClosePrice": "3,400",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-5.19",
+      "fluctuationsRatio": "2.69",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "3,179,968",
+      "marketValue": "3,047,125",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1906,7 +1906,7 @@
         "nationName": "대한민국",
         "name": "KOSDAQ"
       },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/141080"
+      "endUrl": "https://m.stock.naver.com/domestic/stock/000250"
     }
   ],
   "financials_annual": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "37.27",
+            "value": "37.06",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "2.01",
+            "value": "2.00",
             "cx": null
           },
           "202312": {
@@ -2776,6 +2776,20 @@
   "disclosures": [
     {
       "itemCode": "000100",
+      "disclosureId": 85049912,
+      "title": "(주)유한양행 영업(잠정)실적(공정공시)",
+      "datetime": "2026-07-30T14:10:17",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "000100",
+      "disclosureId": 82407923,
+      "title": "(주)유한양행 기업설명회(IR) 개최(안내공시)",
+      "datetime": "2026-07-29T06:51:48",
+      "author": "KOSCOM"
+    },
+    {
+      "itemCode": "000100",
       "disclosureId": 76893316,
       "title": "(주)유한양행 주식 소각 결정",
       "datetime": "2026-07-23T06:53:52",
@@ -2829,58 +2843,44 @@
       "title": "(주)유한양행 단일판매ㆍ공급계약체결",
       "datetime": "2026-05-20T06:50:21",
       "author": "KOSCOM"
-    },
-    {
-      "itemCode": "000100",
-      "disclosureId": 1641189,
-      "title": "(주)유한양행 기타 경영사항(자율공시)",
-      "datetime": "2026-05-14T06:50:29",
-      "author": "KOSCOM"
-    },
-    {
-      "itemCode": "000100",
-      "disclosureId": 1639867,
-      "title": "(주)유한양행 (정정)유상증자결정(종속회사의 주요경영사항)",
-      "datetime": "2026-05-11T06:54:06",
-      "author": "KOSCOM"
     }
   ],
   "news": [
     {
-      "title": "유한양행, 마그비 통합 광고…올해 매출 300억원 목표",
-      "office": "전자신문",
-      "date": "202607290942",
-      "url": "https://n.news.naver.com/mnews/article/030/0003452057"
+      "title": "유한양행 '렉라자' 효과로 분기 역대 최대 실적",
+      "office": "SBS Biz",
+      "date": "202607301822",
+      "url": "https://n.news.naver.com/mnews/article/374/0000524737"
     },
     {
-      "title": "佛 사노피, 27兆 ‘듀피젠트’ 후속 신약 접었다…아토피 치료제 경쟁...",
-      "office": "조선비즈",
-      "date": "202607290602",
-      "url": "https://n.news.naver.com/mnews/article/366/0001182638"
+      "title": "급락장 승자는 공매도 투자자… 두산퓨얼셀 일주일 수익률만 45%",
+      "office": "파이낸셜뉴스",
+      "date": "202607301807",
+      "url": "https://n.news.naver.com/mnews/article/014/0005555327"
     },
     {
-      "title": "영업익 117%↑ 한미, 다른 곳은…5대 제약사 희비 가른 ‘이것’",
-      "office": "중앙일보",
-      "date": "202607281754",
-      "url": "https://n.news.naver.com/mnews/article/025/0003540738"
+      "title": "‘렉라자’ 성과 본격화…유한양행, 2분기 실적 역대 최대",
+      "office": "서울경제",
+      "date": "202607301752",
+      "url": "https://n.news.naver.com/mnews/article/011/0004647008"
     },
     {
-      "title": "휴이노, 유한양행 ‘메모 큐’ 영업 박차로 연매출 150억 돌파 기대",
-      "office": "이데일리",
-      "date": "202607280822",
-      "url": "https://n.news.naver.com/mnews/article/018/0006337933"
+      "title": "유한양행, 2분기 영업이익 669억…전년比 34%↑",
+      "office": "아시아경제",
+      "date": "202607301733",
+      "url": "https://n.news.naver.com/mnews/article/277/0005796984"
     },
     {
-      "title": "“이름 올리기만 하면 수천억이 저절로”…8월 MSCI 편입 유력 종목은",
-      "office": "매일경제",
-      "date": "202607271653",
-      "url": "https://n.news.naver.com/mnews/article/009/0005712849"
+      "title": "유한양행 역대 최대 분기 실적...\"렉라자 유럽 상업화\"",
+      "office": "한국경제TV",
+      "date": "202607301724",
+      "url": "https://n.news.naver.com/mnews/article/215/0001260585"
     },
     {
-      "title": "[Why] 유한양행은 왜 지금 4300억 자사주를 전량 소각했나…주주환원...",
-      "office": "조선비즈",
-      "date": "202607270602",
-      "url": "https://n.news.naver.com/mnews/article/366/0001182037"
+      "title": "'동물약'으로 넓히는 신약 기술 활용처…추가 사업화 기회 되려면",
+      "office": "머니투데이",
+      "date": "202607301653",
+      "url": "https://n.news.naver.com/mnews/article/008/0005393549"
     }
   ],
   "_errors": {}
