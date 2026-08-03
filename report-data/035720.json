@@ -2,15 +2,31 @@
   "code": "035720",
   "name": "카카오",
   "market": "KOSPI",
-  "updated": "2026-08-02 18:49",
+  "updated": "2026-08-03 14:14",
   "supply_10d": {
-    "foreign_net_10d": 1583125,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 271715,
+    "foreign_net_10d": 1982531,
+    "foreign_buydays": "9/10",
+    "pension_net_10d": 272602,
     "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-03",
+        "close": 37050,
+        "foreignRatio": 28.94,
+        "개인": 0,
+        "외국인": 194499,
+        "기관계": -29000,
+        "금융투자": 0,
+        "투신": -19000,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": -10000,
+        "기타법인": 16000
+      },
       {
         "date": "2026-07-31",
         "close": 37400,
@@ -954,64 +970,52 @@
         "기타금융": -2440,
         "연기금": -75319,
         "기타법인": 27660
-      },
-      {
-        "date": "2026-05-06",
-        "close": 46300,
-        "foreignRatio": 28.93,
-        "개인": 535857,
-        "외국인": -209227,
-        "기관계": -381089,
-        "금융투자": -168765,
-        "투신": -39981,
-        "사모": -17887,
-        "보험": -34481,
-        "은행": -4676,
-        "기타금융": -7498,
-        "연기금": -107801,
-        "기타법인": 49813
       }
     ],
     "cum_5d": {
-      "개인": -2068406,
-      "외국인": 1381622,
-      "기관계": 703514,
-      "금융투자": 393687,
-      "투신": 20995,
-      "사모": 111060,
-      "보험": 29147,
+      "개인": -1911228,
+      "외국인": 1555157,
+      "기관계": 541711,
+      "금융투자": 276801,
+      "투신": 1892,
+      "사모": 77079,
+      "보험": 16747,
       "은행": -5,
       "기타금융": 276,
-      "연기금": 148354,
-      "기타법인": -13624
+      "연기금": 168921,
+      "기타법인": -899
     },
     "cum_20d": {
-      "개인": -4692117,
-      "외국인": 2867297,
-      "기관계": 1849427,
-      "금융투자": 1318381,
-      "투신": 198404,
-      "사모": 35684,
-      "보험": 24857,
-      "은행": -349,
-      "기타금융": -2020,
-      "연기금": 274470,
-      "기타법인": -22418
+      "개인": -4582135,
+      "외국인": 3070248,
+      "기관계": 1723718,
+      "금융투자": 1184811,
+      "투신": 118935,
+      "사모": 45516,
+      "보험": 22376,
+      "은행": -200,
+      "기타금융": -2022,
+      "연기금": 354302,
+      "기타법인": -35496
     },
     "cum_60d": {
-      "개인": 3542168,
-      "외국인": -1724456,
-      "기관계": -1853931,
-      "금융투자": 1281783,
-      "투신": 363273,
-      "사모": -279879,
-      "보험": -494012,
-      "은행": -5806,
-      "기타금융": -50886,
-      "연기금": -2668404,
-      "기타법인": -114773
+      "개인": 3006311,
+      "외국인": -1320730,
+      "기관계": -1501842,
+      "금융투자": 1450548,
+      "투신": 384254,
+      "사모": -261992,
+      "보험": -459531,
+      "은행": -1130,
+      "기타금융": -43388,
+      "연기금": -2570603,
+      "기타법인": -148586
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-03",
+        "ratio": 28.94
+      },
       {
         "date": "2026-07-31",
         "ratio": 28.94
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-05-07",
         "ratio": 28.59
-      },
-      {
-        "date": "2026-05-06",
-        "ratio": 28.93
       }
     ]
   },
   "price_daily": {
-    "now": 37400,
-    "prevClose": 36150,
-    "changePct": 3.46,
+    "now": 37050,
+    "prevClose": 37400,
+    "changePct": -0.94,
     "ma": {
       "ma5": 36310.0,
-      "ma20": 35515.0,
-      "ma60": 38618.3,
-      "ma120": 45028.3,
+      "ma20": 35592.5,
+      "ma60": 38464.2,
+      "ma120": 44843.8,
       "aligned": false,
       "vs": {
-        "ma5": 3.0,
-        "ma20": 5.31,
-        "ma60": -3.15,
-        "ma120": -16.94
+        "ma5": 2.04,
+        "ma20": 4.09,
+        "ma60": -3.68,
+        "ma120": -17.38
       }
     },
-    "trend20": 6.1,
+    "trend20": 4.37,
     "pocket": [
       {
         "low": 34682,
@@ -1281,32 +1281,28 @@
       {
         "low": 57670,
         "high": 59202,
-        "volPct": 13.1
+        "volPct": 13.0
       },
       {
         "low": 60735,
         "high": 62268,
-        "volPct": 12.1
+        "volPct": 12.0
       }
     ]
   },
   "price_weekly": {
-    "now": 37400,
+    "now": 37050,
     "ma": {
-      "ma5": 36070.0,
-      "ma10": 37495.0,
-      "ma20": 42192.5,
-      "ma60": 53920.8
+      "ma5": 36380.0,
+      "ma10": 37005.0,
+      "ma20": 41545.0,
+      "ma60": 53680.0
     },
     "aligned": false,
     "rangeHigh": 156500,
     "rangeLow": 33150,
-    "posPct": 3.4,
+    "posPct": 3.2,
     "recent": [
-      {
-        "d": "20260206",
-        "c": 56200
-      },
       {
         "d": "20260213",
         "c": 57400
@@ -1406,25 +1402,25 @@
       {
         "d": "20260731",
         "c": 37400
+      },
+      {
+        "d": "20260803",
+        "c": 37050
       }
     ]
   },
   "price_monthly": {
-    "now": 37400,
+    "now": 37050,
     "ma": {
-      "ma6": 44883.3,
-      "ma12": 53058.3,
-      "ma24": 47702.1
+      "ma6": 40675.0,
+      "ma12": 50937.5,
+      "ma24": 47695.8
     },
     "aligned": false,
     "rangeHigh": 163000,
     "rangeLow": 15334,
-    "posPct": 14.9,
+    "posPct": 14.7,
     "recent": [
-      {
-        "d": "20240830",
-        "c": 37200
-      },
       {
         "d": "20240930",
         "c": 36150
@@ -1516,6 +1512,10 @@
       {
         "d": "20260731",
         "c": 37400
+      },
+      {
+        "d": "20260803",
+        "c": 37050
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "36,150"
+      "value": "37,400"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "37,050",
+      "value": "36,650",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "37,600",
+      "value": "37,500",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "35,750",
+      "value": "35,900",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,22 +1558,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "3,018,884"
+      "value": "1,401,487"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1,114억"
+      "value": "515억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "16조 5,675억"
+      "value": "16조 4,124억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "28.83%"
+      "value": "28.94%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "33.66배",
+      "value": "33.35배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "24.04배"
+      "value": "23.81배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "1.43배",
+      "value": "1.42배",
       "valueDesc": "2026.03."
     },
     {
@@ -1634,7 +1634,7 @@
   ],
   "consensus": {
     "itemCode": "035720",
-    "createDate": "2026-07-30",
+    "createDate": "2026-07-31",
     "recommMean": "4.00",
     "priceTargetMean": "63,063"
   },
@@ -1645,7 +1645,7 @@
       "nm": "카카오",
       "bnm": "교보증권",
       "tit": "카나나 서비스의 가능성 증명 필요",
-      "rcnt": "11620",
+      "rcnt": "11808",
       "wdt": "20260714"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "카카오",
       "bnm": "신한투자증권",
       "tit": "본업 양호하나 AI 수익화 검증 필요",
-      "rcnt": "10664",
+      "rcnt": "10798",
       "wdt": "20260710"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "카카오",
       "bnm": "한화투자증권",
       "tit": "하반기 강력한 트리거 필요",
-      "rcnt": "10714",
+      "rcnt": "10823",
       "wdt": "20260707"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "카카오",
       "bnm": "미래에셋증권",
       "tit": "증명이 필요한 시기",
-      "rcnt": "34466",
+      "rcnt": "34559",
       "wdt": "20260522"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "카카오",
       "bnm": "삼성증권",
       "tit": "자회사 매각으로 수익성 개선",
-      "rcnt": "28700",
+      "rcnt": "28793",
       "wdt": "20260514"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "035420",
       "stockName": "NAVER",
       "sosok": "0",
-      "closePrice": "208,000",
-      "compareToPreviousClosePrice": "13,300",
+      "closePrice": "207,500",
+      "compareToPreviousClosePrice": "-500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "6.83",
+      "fluctuationsRatio": "-0.24",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "32,644,402",
+      "marketValue": "32,565,930",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "067160",
       "stockName": "SOOP",
       "sosok": "1",
-      "closePrice": "48,000",
-      "compareToPreviousClosePrice": "-250",
+      "closePrice": "42,000",
+      "compareToPreviousClosePrice": "-6,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.52",
+      "fluctuationsRatio": "-12.50",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "551,748",
+      "marketValue": "482,780",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "376300",
       "stockName": "디어유",
       "sosok": "1",
-      "closePrice": "19,840",
-      "compareToPreviousClosePrice": "790",
+      "closePrice": "20,250",
+      "compareToPreviousClosePrice": "410",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "4.15",
+      "fluctuationsRatio": "2.07",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "470,969",
+      "marketValue": "480,702",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1800,58 +1800,21 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "020120",
-      "reutersCode": "020120",
-      "stockName": "키다리스튜디오",
-      "sosok": "0",
-      "closePrice": "3,495",
-      "compareToPreviousClosePrice": "185",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      },
-      "fluctuationsRatio": "5.59",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "129,537",
-      "nav": "N/A",
-      "threeMonthEarningRate": "N/A",
-      "stockExchangeType": {
-        "code": "KS",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스피",
-        "nameEng": "KOSPI",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSPI"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/020120"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
       "itemCode": "408920",
       "reutersCode": "408920",
       "stockName": "메쎄이상",
       "sosok": "1",
-      "closePrice": "2,940",
-      "compareToPreviousClosePrice": "20",
+      "closePrice": "3,045",
+      "compareToPreviousClosePrice": "105",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "0.68",
+      "fluctuationsRatio": "3.57",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "127,103",
+      "marketValue": "131,642",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1874,21 +1837,58 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
+      "itemCode": "020120",
+      "reutersCode": "020120",
+      "stockName": "키다리스튜디오",
+      "sosok": "0",
+      "closePrice": "3,465",
+      "compareToPreviousClosePrice": "-30",
+      "compareToPreviousPrice": {
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
+      },
+      "fluctuationsRatio": "-0.86",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "128,425",
+      "nav": "N/A",
+      "threeMonthEarningRate": "N/A",
+      "stockExchangeType": {
+        "code": "KS",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스피",
+        "nameEng": "KOSPI",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSPI"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/020120"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
       "itemCode": "300080",
       "reutersCode": "300080",
       "stockName": "플리토",
       "sosok": "1",
-      "closePrice": "7,350",
-      "compareToPreviousClosePrice": "400",
+      "closePrice": "7,570",
+      "compareToPreviousClosePrice": "220",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "5.76",
+      "fluctuationsRatio": "2.99",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "121,315",
+      "marketValue": "124,946",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2847,40 +2847,40 @@
   ],
   "news": [
     {
-      "title": "빅테크 'AI 수익 증명' 시험대… 투자 늘린 네카오 주가 주목",
-      "office": "파이낸셜뉴스",
-      "date": "202608021826",
-      "url": "https://n.news.naver.com/mnews/article/014/0005556087"
+      "title": "'AI 고속도로' 깐다…삼성SDS 주도 국가AI컴퓨팅센터 착공",
+      "office": "전자신문",
+      "date": "202608031411",
+      "url": "https://n.news.naver.com/mnews/article/030/0003453669"
     },
     {
-      "title": "카톡 이어 티맵도 '숏폼' 시작",
-      "office": "한국경제",
-      "date": "202608021824",
-      "url": "https://n.news.naver.com/mnews/article/015/0005316461"
+      "title": "간편결제도 양극화?…2분기 페이코·쿠팡페이 '주춤'",
+      "office": "SBS Biz",
+      "date": "202608031405",
+      "url": "https://n.news.naver.com/mnews/article/374/0000525248"
     },
     {
-      "title": "카카오 강남 자율주행택시, 석달만에 결제 1천건 돌파",
-      "office": "한국경제",
-      "date": "202608021823",
-      "url": "https://n.news.naver.com/mnews/article/015/0005316458"
-    },
-    {
-      "title": "\"빨리 탈출하자\" 개미가 던진 8조 외국인이 받아냈다…코스피, 반등세...",
-      "office": "아시아경제",
-      "date": "202608021626",
-      "url": "https://n.news.naver.com/mnews/article/277/0005797706"
-    },
-    {
-      "title": "무더위에도 쉬지 않는 스타트업 투자 유치…우주 기업 '메가딜' 관심",
+      "title": "하나투어 AI, KT '마이케이티' 탑재…여행 상담부터 추천까지",
       "office": "머니투데이",
-      "date": "202608021530",
-      "url": "https://n.news.naver.com/mnews/article/008/0005394453"
+      "date": "202608031346",
+      "url": "https://n.news.naver.com/mnews/article/008/0005394800"
     },
     {
-      "title": "“한국판 테더 잡아라”…네이버·카카오, ‘원화 코인’ 패권전쟁[크...",
-      "office": "헤럴드경제",
-      "date": "202608021446",
-      "url": "https://n.news.naver.com/mnews/article/016/0002678365"
+      "title": "대구 삼성 라이온즈 파크 10주년...10살 라이언이 뜬다",
+      "office": "파이낸셜뉴스",
+      "date": "202608031323",
+      "url": "https://n.news.naver.com/mnews/article/014/0005556395"
+    },
+    {
+      "title": "핵클, 카카오페이증권에 데이터 기반 그로스 플랫폼 구축",
+      "office": "한국경제",
+      "date": "202608031153",
+      "url": "https://n.news.naver.com/mnews/article/015/0005316657"
+    },
+    {
+      "title": "[테크스냅] 카카오모빌리티, AI 인재 육성 'AI 주니어랩 6기' 성료",
+      "office": "연합뉴스",
+      "date": "202608031124",
+      "url": "https://n.news.naver.com/mnews/article/001/0016230402"
     }
   ],
   "_errors": {}
