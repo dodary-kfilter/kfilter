@@ -2,30 +2,46 @@
   "code": "103140",
   "name": "풍산",
   "market": "KOSPI",
-  "updated": "2026-08-04 19:15",
+  "updated": "2026-08-05 08:57",
   "supply_10d": {
-    "foreign_net_10d": 168684,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 38387,
+    "foreign_net_10d": 140201,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 38617,
     "pension_buydays": "9/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-08-05",
+        "close": 70500,
+        "foreignRatio": 13.81,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
+      {
         "date": "2026-08-04",
         "close": 70500,
-        "foreignRatio": 13.73,
-        "개인": -17207,
-        "외국인": 7563,
-        "기관계": 9699,
-        "금융투자": 1012,
+        "foreignRatio": 13.81,
+        "개인": -18609,
+        "외국인": 9981,
+        "기관계": 8754,
+        "금융투자": 67,
         "투신": 1729,
         "사모": -1147,
         "보험": 1010,
         "은행": 0,
         "기타금융": -1,
         "연기금": 7096,
-        "기타법인": 148
+        "기타법인": 84
       },
       {
         "date": "2026-08-03",
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": -7482,
         "기타법인": -91
-      },
-      {
-        "date": "2026-05-08",
-        "close": 95000,
-        "foreignRatio": 10.62,
-        "개인": -11848,
-        "외국인": 9852,
-        "기관계": 2211,
-        "금융투자": 6804,
-        "투신": -91,
-        "사모": -279,
-        "보험": -283,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": -3940,
-        "기타법인": -1927
       }
     ],
     "cum_5d": {
-      "개인": -203150,
-      "외국인": 122007,
-      "기관계": 63635,
-      "금융투자": 4421,
-      "투신": 30610,
-      "사모": -7536,
-      "보험": 3,
+      "개인": -167695,
+      "외국인": 101630,
+      "기관계": 49932,
+      "금융투자": -1749,
+      "투신": 31065,
+      "사모": -6359,
+      "보험": -473,
       "은행": 0,
-      "기타금융": 1,
-      "연기금": 36136,
-      "기타법인": 17782
+      "기타금융": -1,
+      "연기금": 27449,
+      "기타법인": 16449
     },
     "cum_20d": {
-      "개인": -400737,
-      "외국인": 172208,
-      "기관계": 215109,
-      "금융투자": 18718,
-      "투신": 130264,
-      "사모": 22297,
-      "보험": -1270,
+      "개인": -397931,
+      "외국인": 187794,
+      "기관계": 193500,
+      "금융투자": 3155,
+      "투신": 126114,
+      "사모": 21302,
+      "보험": -1258,
       "은행": 0,
-      "기타금융": 11,
-      "연기금": 45089,
-      "기타법인": 14451
+      "기타금융": 9,
+      "연기금": 44178,
+      "기타법인": 17779
     },
     "cum_60d": {
-      "개인": -695893,
-      "외국인": 983714,
-      "기관계": -247786,
-      "금융투자": -130143,
-      "투신": 40091,
-      "사모": 39249,
-      "보험": -21250,
+      "개인": -685447,
+      "외국인": 976280,
+      "기관계": -250942,
+      "금융투자": -137892,
+      "투신": 40182,
+      "사모": 39528,
+      "보험": -20967,
       "은행": -110,
       "기타금융": 28,
-      "연기금": -175651,
-      "기타법인": -48169
+      "연기금": -171711,
+      "기타법인": -46306
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-08-05",
+        "ratio": 13.81
+      },
+      {
         "date": "2026-08-04",
-        "ratio": 13.73
+        "ratio": 13.81
       },
       {
         "date": "2026-08-03",
@@ -1247,10 +1251,6 @@
       {
         "date": "2026-05-11",
         "ratio": 10.8
-      },
-      {
-        "date": "2026-05-08",
-        "ratio": 10.62
       }
     ]
   },
@@ -1523,12 +1523,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "67,900"
+      "value": "70,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "69,000",
+      "value": "71,100",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1538,7 +1538,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "70,800",
+      "value": "72,500",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,22 +1548,22 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "67,300",
+      "value": "70,500",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "173,842"
+      "value": "19,226"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "121억"
+      "value": "13.8억"
     },
     {
       "code": "marketValue",
@@ -1573,7 +1573,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "13.73%"
+      "value": "13.81%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1600,12 +1600,12 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "6.90배"
+      "value": "6.71배"
     },
     {
       "code": "cnsEps",
       "key": "추정EPS",
-      "value": "10,215원"
+      "value": "10,506원"
     },
     {
       "code": "pbr",
@@ -1634,9 +1634,9 @@
   ],
   "consensus": {
     "itemCode": "103140",
-    "createDate": "2026-08-03",
+    "createDate": "2026-08-04",
     "recommMean": "4.00",
-    "priceTargetMean": "111,392"
+    "priceTargetMean": "108,000"
   },
   "researches": [
     {
@@ -1645,7 +1645,7 @@
       "nm": "풍산",
       "bnm": "한화투자증권",
       "tit": "2Q26 Review: 실적 서프라이즈 기록, 예상 외의 강한 메탈게인 지속",
-      "rcnt": "4794",
+      "rcnt": "5688",
       "wdt": "20260803"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "풍산",
       "bnm": "하나증권",
       "tit": "2Q26 어닝서프라이즈, 올해 연간 실적 큰 폭 개선 전망",
-      "rcnt": "3021",
+      "rcnt": "3633",
       "wdt": "20260803"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "풍산",
       "bnm": "iM증권",
       "tit": "좋은 실적, 상대적으로 부진한 주가",
-      "rcnt": "2309",
+      "rcnt": "2437",
       "wdt": "20260803"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "풍산",
       "bnm": "신한투자증권",
       "tit": "신동에서 방산으로 바통 터치 기대",
-      "rcnt": "2296",
+      "rcnt": "2414",
       "wdt": "20260803"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "풍산",
       "bnm": "한화투자증권",
       "tit": "2Q26 Preview: 메탈 게인으로 지킨 2분기, 방산 회복은 확인 필요",
-      "rcnt": "5820",
+      "rcnt": "5834",
       "wdt": "20260721"
     }
   ],
@@ -1694,13 +1694,13 @@
       "stockName": "고려아연",
       "sosok": "0",
       "closePrice": "1,044,000",
-      "compareToPreviousClosePrice": "24,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.35",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "21,791,379",
@@ -1731,13 +1731,13 @@
       "stockName": "삼아알미늄",
       "sosok": "0",
       "closePrice": "39,150",
-      "compareToPreviousClosePrice": "4,350",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "12.50",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "592,083",
@@ -1768,13 +1768,13 @@
       "stockName": "에이치브이엠",
       "sosok": "1",
       "closePrice": "45,500",
-      "compareToPreviousClosePrice": "6,400",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "16.37",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "548,119",
@@ -1805,13 +1805,13 @@
       "stockName": "풍산홀딩스",
       "sosok": "0",
       "closePrice": "35,450",
-      "compareToPreviousClosePrice": "850",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.46",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "511,093",
@@ -1842,13 +1842,13 @@
       "stockName": "SIMPAC",
       "sosok": "0",
       "closePrice": "4,645",
-      "compareToPreviousClosePrice": "80",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "1.75",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "303,648",
@@ -1879,13 +1879,13 @@
       "stockName": "포스코스틸리온",
       "sosok": "0",
       "closePrice": "4,480",
-      "compareToPreviousClosePrice": "215",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "5.04",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "268,800",
@@ -1942,7 +1942,7 @@
             "cx": null
           },
           "202612": {
-            "value": "61,298",
+            "value": "61,447",
             "cx": null
           },
           "202312": {
@@ -1963,7 +1963,7 @@
             "cx": null
           },
           "202612": {
-            "value": "4,094",
+            "value": "4,232",
             "cx": null
           },
           "202312": {
@@ -1984,7 +1984,7 @@
             "cx": null
           },
           "202612": {
-            "value": "2,863",
+            "value": "2,944",
             "cx": null
           },
           "202312": {
@@ -2047,7 +2047,7 @@
             "cx": null
           },
           "202612": {
-            "value": "6.68",
+            "value": "6.89",
             "cx": null
           },
           "202312": {
@@ -2068,7 +2068,7 @@
             "cx": null
           },
           "202612": {
-            "value": "4.67",
+            "value": "4.79",
             "cx": null
           },
           "202312": {
@@ -2089,7 +2089,7 @@
             "cx": null
           },
           "202612": {
-            "value": "11.83",
+            "value": "12.16",
             "cx": null
           },
           "202312": {
@@ -2173,7 +2173,7 @@
             "cx": null
           },
           "202612": {
-            "value": "10,215",
+            "value": "10,506",
             "cx": null
           },
           "202312": {
@@ -2194,7 +2194,7 @@
             "cx": null
           },
           "202612": {
-            "value": "6.65",
+            "value": "6.71",
             "cx": null
           },
           "202312": {
@@ -2215,7 +2215,7 @@
             "cx": null
           },
           "202612": {
-            "value": "92,976",
+            "value": "93,206",
             "cx": null
           },
           "202312": {
@@ -2236,7 +2236,7 @@
             "cx": null
           },
           "202612": {
-            "value": "0.73",
+            "value": "0.76",
             "cx": null
           },
           "202312": {
@@ -2257,7 +2257,7 @@
             "cx": null
           },
           "202612": {
-            "value": "2,154",
+            "value": "2,192",
             "cx": null
           },
           "202312": {
@@ -2773,6 +2773,102 @@
       }
     ]
   },
+  "financials_confirmed": {
+    "quarter": [
+      {
+        "date": "2026-03-01",
+        "sales": 1270895673810.0,
+        "operatingProfit": 90173037100.0,
+        "netIncome": 78000220300.0,
+        "eps": 2783.309,
+        "roe": 0.03358,
+        "debtRatio": 102.194,
+        "dps": null,
+        "opm": 7.1
+      },
+      {
+        "date": "2025-12-01",
+        "sales": 1424511147150.0,
+        "operatingProfit": 91537022070.0,
+        "netIncome": 8827677650.0,
+        "eps": 315.001,
+        "roe": 0.00388,
+        "debtRatio": 88.379,
+        "dps": 1700,
+        "opm": 6.43
+      },
+      {
+        "date": "2025-09-01",
+        "sales": 1174161019640.0,
+        "operatingProfit": 42582649580.0,
+        "netIncome": 32578155780.0,
+        "eps": 1162.498,
+        "roe": 0.0146,
+        "debtRatio": 88.004,
+        "dps": null,
+        "opm": 3.63
+      },
+      {
+        "date": "2025-06-01",
+        "sales": 1293963022370.0,
+        "operatingProfit": 93593429510.0,
+        "netIncome": 64199650880.0,
+        "eps": 2290.858,
+        "roe": 0.02935,
+        "debtRatio": 88.63,
+        "dps": null,
+        "opm": 7.23
+      }
+    ],
+    "annual": [
+      {
+        "date": "2025-12-01",
+        "sales": 5048580386630.0,
+        "operatingProfit": 297427463130.0,
+        "netIncome": 147164434310.0,
+        "eps": 5251.319,
+        "roe": 0.06544,
+        "debtRatio": 88.379,
+        "dps": 1700,
+        "opm": 5.89
+      },
+      {
+        "date": "2024-12-01",
+        "sales": 4554411454630.0,
+        "operatingProfit": 323768893080.0,
+        "netIncome": 236045982790.0,
+        "eps": 8422.91,
+        "roe": 0.11334,
+        "debtRatio": 86.267,
+        "dps": 2600,
+        "opm": 7.11
+      },
+      {
+        "date": "2023-12-01",
+        "sales": 4125263947250.0,
+        "operatingProfit": 228636480720.0,
+        "netIncome": 156440326540.0,
+        "eps": 5582.314,
+        "roe": 0.08221,
+        "debtRatio": 86.201,
+        "dps": 1200,
+        "opm": 5.54
+      },
+      {
+        "date": "2022-12-01",
+        "sales": 4372982501220.0,
+        "operatingProfit": 231619553410.0,
+        "netIncome": 175261942560.0,
+        "eps": 6249.623,
+        "roe": 0.09941,
+        "debtRatio": 84.303,
+        "dps": 1000,
+        "opm": 5.3
+      }
+    ],
+    "source": "daum(확정치)",
+    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
+  },
   "disclosures": [
     {
       "itemCode": "103140",
@@ -2868,17 +2964,17 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -295156,
-      "외국인": 811506,
-      "기관계": -462895,
-      "금융투자": -148861,
-      "투신": -90173,
-      "사모": 16952,
-      "보험": -19980,
+      "개인": -287516,
+      "외국인": 788486,
+      "기관계": -444442,
+      "금융투자": -141047,
+      "투신": -85932,
+      "사모": 18226,
+      "보험": -19709,
       "은행": -110,
-      "기타금융": 17,
-      "연기금": -220740,
-      "기타법인": -62620
+      "기타금융": 19,
+      "연기금": -215889,
+      "기타법인": -64085
     },
     "pattern": {
       "외국인": "꾸준매집",
@@ -2888,54 +2984,54 @@
       "사모": "당일이탈",
       "금융투자": "반전(복원중)"
     },
-    "foreign_avg_price": 75364,
+    "foreign_avg_price": 75154,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": -6.5,
-    "foreign_buy_qty": 1337035,
+    "foreign_avg_vs_now_pct": -6.2,
+    "foreign_buy_qty": 1329601,
     "foreign_sell_qty": 353321,
-    "foreign_net_qty": 983714,
-    "foreign_net_ratio_pct": 73.6,
+    "foreign_net_qty": 976280,
+    "foreign_net_ratio_pct": 73.4,
     "close_range": {
       "low": 57700,
-      "high": 95000
+      "high": 93200
     },
-    "foreign_ratio_delta_60d": 3.11,
+    "foreign_ratio_delta_60d": 3.01,
     "foreign_ratio_max": 13.94,
-    "foreign_ratio_min": 10.62,
+    "foreign_ratio_min": 10.71,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
     "pbr": 0.82,
-    "roe_pct": 11.83,
-    "roe_used_pct": 11.83,
+    "roe_pct": 12.16,
+    "roe_used_pct": 12.16,
     "roe_capped": false,
     "roe_basis": "2026.12.(E)",
     "roe_actual_pct": 6.54,
     "roe_actual_basis": "2025.12.",
-    "roe_est_pct": 11.83,
+    "roe_est_pct": 12.16,
     "base": {
       "coe": 0.08,
       "g": 0.03,
-      "theo_pbr": 1.77,
-      "premium_pct": -53.6
+      "theo_pbr": 1.83,
+      "premium_pct": -55.2
     },
     "g5": {
       "coe": 0.08,
       "g": 0.05,
-      "theo_pbr": 2.28,
-      "premium_pct": -64.0
+      "theo_pbr": 2.39,
+      "premium_pct": -65.6
     },
     "coe9": {
       "coe": 0.09,
       "g": 0.03,
-      "theo_pbr": 1.47,
-      "premium_pct": -44.3
+      "theo_pbr": 1.53,
+      "premium_pct": -46.3
     },
     "theo_band": {
-      "low": 1.47,
-      "high": 2.28
+      "low": 1.53,
+      "high": 2.39
     },
-    "band_pos": -44.2,
+    "band_pos": -46.4,
     "verdict": "저평가"
   },
   "volume_stats": {
@@ -2946,6 +3042,12 @@
     "today_vs_60": 0.85
   },
   "news": [
+    {
+      "title": "구리는 탄탄한 풍산, 방산은 글쎄…\"매각도 불확실\"[클릭e종목]",
+      "office": "아시아경제",
+      "date": "202608050700",
+      "url": "https://n.news.naver.com/mnews/article/277/0005798925"
+    },
     {
       "title": "풍산, 방산 '주춤' vs 신동 '호조' 어닝 서프라이즈...목표가 조정? [주...",
       "office": "조세일보",
@@ -2975,12 +3077,6 @@
       "office": "중앙일보",
       "date": "202607311510",
       "url": "https://n.news.naver.com/mnews/article/025/0003541552"
-    },
-    {
-      "title": "실적 호조에 불붙은 풍산 주가, 19% 급등",
-      "office": "한경비즈니스",
-      "date": "202607311441",
-      "url": "https://n.news.naver.com/mnews/article/050/0000109181"
     }
   ],
   "_errors": {}
