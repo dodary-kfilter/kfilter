@@ -90,6 +90,12 @@ CHART_URL = ("https://m.stock.naver.com/front-api/external/chart/domestic/info"
              "?symbol={code}&requestType=1&startTime={start}&endTime={end}&timeframe={tf}")
 INTEG_URL = "https://m.stock.naver.com/api/stock/{code}/integration"
 NEWS_URL  = "https://api.stock.naver.com/news/stock/{code}?pageSize=6&page=1"
+# 다음 재무(확정치 전용) — 네이버는 최신 분기를 컨센으로 채우므로 확정치는 여기서 받는다
+DAUM_FIN_URL = "https://finance.daum.net/api/quote/A{code}/financials"
+HDR_DAUM = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36",
+    "Referer": "https://finance.daum.net/",
+}
 FIN_A_URL = "https://m.stock.naver.com/api/stock/{code}/finance/annual"
 FIN_Q_URL = "https://m.stock.naver.com/api/stock/{code}/finance/quarter"
 DISC_URL  = "https://m.stock.naver.com/api/stock/{code}/disclosure?pageSize=10&page=1"
@@ -289,6 +295,40 @@ INV_FIELDS = [
 
 # ───────────────────── v3 파생 계산 (리포트 정확도용) ─────────────────────
 EARN_PAT = re.compile(r"영업\s*\(?잠정\)?\s*실적|잠정실적|매출액또는손익구조")
+
+def _daum_fin(d):
+    """다음 financials 응답을 정리. 확정치만 들어있고 미공시 분기는 없다.
+    반환: {"quarter":[{date,sales,operatingProfit,netIncome,eps,roe,debtRatio,dps,opm}...], "annual":[...], "source":"daum"}
+    """
+    if not d:
+        return None
+    def rows(lst):
+        out = []
+        for r in (lst or []):
+            try:
+                sales = r.get("sales")
+                op = r.get("operatingProfit")
+                out.append({
+                    "date": r.get("date"),
+                    "sales": sales,
+                    "operatingProfit": op,
+                    "netIncome": r.get("netIncome"),
+                    "eps": r.get("eps"),
+                    "roe": r.get("roe"),
+                    "debtRatio": r.get("debtRatio"),
+                    "dps": r.get("dividendPerShare"),
+                    # 영업이익률(%) — 마진 추이 판단용
+                    "opm": (round(op / sales * 100, 2) if (sales and op is not None) else None),
+                })
+            except Exception:
+                continue
+        return out
+    q, y = rows(d.get("QUARTER")), rows(d.get("YEAR"))
+    if not q and not y:
+        return None
+    return {"quarter": q, "annual": y, "source": "daum(확정치)",
+            "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."}
+
 
 def detect_earnings_alert(disc, fin_q):
     """[핵심] 공시에 '잠정실적'이 떴는데 financials_quarter는 아직 컨센(isConsensus=Y)인
@@ -520,6 +560,13 @@ def fetch_all(code):
         except Exception as e:
             out[key] = None
             out[key + "_err"] = str(e)
+    # 다음 재무(확정치) — 컨센 오염 없는 실적. 실패해도 무시(네이버 것으로 폴백)
+    try:
+        dr = requests.get(DAUM_FIN_URL.format(code=code), headers=HDR_DAUM, timeout=10)
+        out["daum_fin"] = (dr.json() or {}).get("data") or {}
+    except Exception as e:
+        out["daum_fin"] = None
+        out["daum_fin_err"] = str(e)
     # 토스 투자자별 상세
     try:
         tr = requests.get(TOSS_URL.format(code=code), headers=HDR_TOSS, timeout=10)
@@ -560,6 +607,9 @@ def write_report_file(code, name, market, supply, raw, price_block,
         "industry_peers":     g("industry_peers",     lambda: integ.get("industryCompareInfo")),
         "financials_annual":  g("financials_annual",  lambda: (raw.get("fin_a") or {}).get("financeInfo")),
         "financials_quarter": g("financials_quarter", lambda: (raw.get("fin_q") or {}).get("financeInfo")),
+        # ★확정 재무(다음) — 네이버는 최신 분기를 컨센(isConsensus=Y)으로 채우므로 실적 판단은 이걸 기준으로.
+        #   미공시 분기는 아예 없다(= 아직 확정 안 됨). 공시에 「영업(잠정)실적」이 있는데 여기 없으면 DART 원문 확인.
+        "financials_confirmed": g("financials_confirmed", lambda: _daum_fin(raw.get("daum_fin"))),
         "disclosures":        raw.get("disc"),                 # 공시 (원본)
         # ── v3 파생 필드 ─────────────────────────────────────────────
         "earnings_alert":     g("earnings_alert", lambda: detect_earnings_alert(

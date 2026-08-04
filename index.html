@@ -76,7 +76,7 @@
   .mkt-head.kosdaq{color:var(--kosdaq); border-bottom:1px solid rgba(188,140,255,.25)}
   .mkt-head:first-child{margin-top:4px}
   .loading,.empty{text-align:center; color:var(--dim); padding:50px 0; font-size:14px}
-  .refresh{margin-top:24px; text-align:center}
+  .refresh{margin-top:24px; display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap}
   .refresh button{font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:600; color:var(--txt);
     background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 22px; cursor:pointer; transition:all .15s}
   .refresh button:hover{border-color:var(--foreign); color:var(--foreign)}
@@ -100,6 +100,13 @@
   .copybtn.copied{color:var(--foreign); border-color:var(--foreign); background:rgba(63,185,80,.14)}
   .bothtip{font-size:12px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
     border-left:3px solid var(--both); border-radius:8px; padding:10px 12px; margin:8px 0 4px}
+  .refresh button.screenbtn{font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:700; color:#fff;
+    background:linear-gradient(135deg,#58a6ff,#a371f7); border:none; border-radius:8px;
+    padding:10px 22px; cursor:pointer; white-space:nowrap;
+    box-shadow:0 2px 10px rgba(88,166,255,.28); transition:all .15s}
+  .refresh button.screenbtn:hover{transform:translateY(-1px); box-shadow:0 4px 14px rgba(88,166,255,.42); color:#fff; border:none}
+  .refresh button.screenbtn:active{transform:translateY(0)}
+  .refresh button.screenbtn.copied{background:linear-gradient(135deg,#3fb950,#2ea043)}
   .bothtip b{color:var(--both)}
   .chev{color:var(--dim); transition:transform .2s; flex:none; font-size:13px}
   .card.open .chev{transform:rotate(180deg)}
@@ -148,7 +155,7 @@
   .nw-t{display:block; font-size:12.5px; line-height:1.45}
   .nw-m{display:block; font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); margin-top:2px}
 
-  @media(max-width:560px){.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}
+  @media(max-width:560px){.refresh{flex-direction:column; gap:8px}.refresh button{width:100%; max-width:320px}.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}
     .pk-r{width:104px} .vg{gap:6px 10px} .copybtn{padding:6px 8px; font-size:10.5px}}
 </style>
 </head>
@@ -166,7 +173,10 @@
     <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">내 종목</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
-  <div class="refresh"><button onclick="load()">새로고침</button></div>
+  <div class="refresh">
+    <button onclick="hardReload()">새로고침</button>
+    <button id="screenbtn" class="screenbtn" onclick="copyScreen(event)">일괄 스크리닝 프롬프트</button>
+  </div>
   <div class="foot">명단: 네이버 금융 시총순 · 수급: 토스증권 투자자별 매매동향</div>
 </div>
 <script>
@@ -289,7 +299,7 @@ function cardBoth(it,i){
           <b style="color:var(--foreign)">외 ${volShort(it.f_net)} ${it.f_buydays}</b>
           <b style="color:var(--pension)">연 ${volShort(it.p_net)} ${it.p_buydays}</b></span>
       </div>
-      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 복사 → Claude에 붙여넣기">프롬프트 복사</button>
+      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
       <span class="chev">⌄</span>
     </div>
     <div class="card-b">${renderEnrich(it.enrich)}</div>
@@ -331,11 +341,11 @@ function cardPort(it,i){
             : it.basis ? ('기초: '+esc(it.basis))
             : (isRef ? ('→ 기초자산 분석') : '');
   const body = isUS
-    ? `<div class="en-empty">미국 종목 — ${esc(it.us_target||'')}(${esc(it.us_ticker||'')})을 웹 검색으로 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+    ? `<div class="en-empty">미국 종목 — ${esc(it.us_target||'')}(${esc(it.us_ticker||'')})을 웹 검색으로 분석합니다. ‘프롬프트’ 버튼을 누르세요.</div>`
     : isSector
-    ? `<div class="en-empty">${esc(it.basis||'섹터')} 구성종목 ${(((it.supply&&it.supply.sector_members)||[]).length)}종목의 수급·추이·뉴스를 총괄 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+    ? `<div class="en-empty">${esc(it.basis||'섹터')} 구성종목 ${(((it.supply&&it.supply.sector_members)||[]).length)}종목의 수급·추이·뉴스를 총괄 분석합니다. ‘프롬프트’ 버튼을 누르세요.</div>`
     : isRef
-    ? `<div class="en-empty">기초자산(${it.ref})으로 분석합니다. ‘프롬프트 복사’를 누르세요.</div>`
+    ? `<div class="en-empty">기초자산(${it.ref})으로 분석합니다. ‘프롬프트’ 버튼을 누르세요.</div>`
     : renderEnrich(it.enrich);
   return `<div class="card" data-code="${it.code}">
     <div class="card-h" onclick="toggleCard('${it.code}')">
@@ -345,7 +355,7 @@ function cardPort(it,i){
           <span class="tag port">${badge}</span></span>
         <span class="cs">${supHtml}${sub?`<span class="psub">${sub}</span>`:''}</span>
       </div>
-      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 복사 → Claude에 붙여넣기">프롬프트 복사</button>
+      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
       <span class="chev">⌄</span>
     </div>
     <div class="card-b">${body}</div>
@@ -357,57 +367,131 @@ function sectionPort(list){
 }
 
 // ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
+function buildScreenPrompt(){
+  const n = (DATA && DATA.both) ? DATA.both.length : 0;
+  const upd = (DATA && DATA.updated) ? DATA.updated : '';
+  return `0순위 종목 일괄 스크리닝 — 오늘 매수하기 좋은 순서를 뽑아줘.
+
+[대상] 아래 JSON의 both 배열 = 외국인·연기금이 동시에 순매수한 종목 ${n}개 (스캔 기준 ${upd})
+https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json
+
+[데이터 사용법 — 중요]
+- 위 data.json 하나만 읽어라. 개별 report-data 파일은 열지 마라(느리고 불필요).
+- both 배열 각 항목에 이미 다 들어있다:
+  · 수급 — f_net(외국인 순매수 주식수), f_buydays(매수일/거래일, 예 "9/10"), p_net·p_buydays(연기금)
+  · 가격 — enrich.now, changePct, ma(5/20/60/120 + vs 이격률%, aligned 정배열여부), trend20(20일 추이%), pocket(매물대 구간별 거래량 비중)
+  · 위치 — pos52w(high/low/pct, pct는 52주 레인지 내 현재 위치 %)
+  · 밸류 — valuation(per, fwdPer 추정PER, pbr, eps, fwdEps, bps, divYield 배당률, foreignRate 외국인비중, marketCap)
+  · 컨센 — consensus(target 목표가, upsidePct 상승여력, opinion 투자의견, date 제시일)
+  · 참고 — reports(증권사 리포트 5건: firm/title/date), peers(동종업계 등락률), news(뉴스 6건)
+
+[실시간 보충 — 캐스케이드]
+- 위 파일은 스캔 시점 스냅샷이다. 값이 지금과 다를 수 있으니, 매수로 분류할 상위 후보만 실시간 확인하고 충돌 시 실시간을 우선하라. 파일 값은 "N월 N일 기준"으로 명시.
+- web_fetch 금지(캐시된 구버전). bash_tool + curl만. 추정 금지, 미확인은 "확인 불가".
+- 다음 (Referer: https://finance.daum.net/ 필수, 없으면 403). quote(단수)≠quotes(복수), 혼동 시 500.
+  · 시세·밸류·재무·외인비중 한 번에 — /api/quotes/A{코드}?summary=false&changeStatistics=true
+    (marketStatus·52주고저·per·pbr·eps·bps·dps·sales·operatingProfit·netIncome·debtRatio·foreignRatio·sectorPer·marketWarning 전부 포함. ★여기 있는 건 다른 데서 또 받지 마라)
+  · 필요 시에만 — /api/quote/A{코드}/days?perPage=500(일봉 2년, 이평·매물대 직접 계산) · /api/investor/days?symbolCode=A{코드}(수급 60일)
+  · 차단(시도 금지) — 네이버 전 도메인, data.krx.co.kr, investing.com, stockplus.com
+- ★marketStatus가 PRE_MARKET이면 tradePrice는 전일 종가이고 등락률 0이다. 오늘 등락으로 오독하지 마라.
+  PRE_MARKET일 때 /days 첫 행은 더미(accTradeVolume=0)이므로 계산에서 제거하라.
+- ★분기 실적은 다음 financials(확정치) 기준. kfilter(네이버) 재무는 최신 분기를 컨센으로 채우므로,
+  「영업(잠정)실적」 공시가 있는데 다음 financials에 그 분기가 없으면 DART 원문으로 확인하라
+  (dsaf001/main.do?rcpNo= → dcmNo 추출 → report/viewer.do, cp949).
+- 전 종목 개별 뉴스 검색은 하지 마라(느림). data.json의 news·reports로 1차 판단하고, 매수 상위 3종목의 촉매가 불분명할 때만 짧게 보충.
+
+[판단 기준 — 이 넷을 종합]
+1. 수급의 질 — 순매수 규모(시총 대비)와 매수일 비율(9/10처럼 높을수록 꾸준한 매집). 외국인·연기금이 동시에 왜 들어왔는지 규명하라. 테마·촉매가 있는지, 일회성인지 구조적인지. 원인 불명이면 추정하지 말고 "원인 미상"으로 명시.
+2. 가격 위치 — 이평 정배열·이격률(과열이면 추격 부담), trend20 방향, 매물대 대비 위치(위에 두꺼운 매물대가 있으면 저항), pos52w.pct(하단권이면 회복 여지 / 상단권이면 신고가 질을 따져라 — 실적·전망 기반인지 테마·하이프인지).
+3. 밸류 — per vs fwdPer(추정이 낮으면 이익 성장), pbr, 배당률, 동종(peers) 대비. 상승여력(upsidePct)과 컨센 제시일(date)의 신선도. 상위 후보는 다음 quotes의 sectorPer로 ★업종 평균 대비 할인/프리미엄을 확인하고, marketWarning·isAdministrativeIssue가 켜져 있으면 즉시 감점하라.
+4. 촉매의 실체 — news·reports가 구조적 변화인지 일회성 재료인지. 커버리지가 없으면(reports 비어있음) 그것도 리스크로 반영.
+
+[출력 형식]
+■ 매수 (좋은 순서대로, 이유 있는 것만)
+1. 종목명(코드) · 현재가 · 등락
+   수급: (규모·매수일·누가 왜 사는지 한 줄)
+   가격: (이평·이격·매물대·52주 위치 한 줄)
+   밸류: (PER/추정PER·상승여력·동종 대비 한 줄)
+   → 왜 지금 매수인가: 2~3줄. 핵심 근거와 그 의미.
+   리스크: 한 줄
+2. ...
+
+■ 중립
+- 종목명 — 왜 지금은 아닌지 한 줄
+
+■ 매도·회피
+- 종목명 — 이유 한 줄
+
+■ 총평
+오늘 0순위 종목군의 공통 특징(섹터 쏠림, 수급 성격, 시장 국면) 2~3줄. 지금 시장에서 이런 조합이 나온 게 무슨 의미인지.
+
+[원칙]
+- 사실→원인→함의 3단. 숫자를 나열하지 말고 반드시 판단으로 끝맺어라.
+- 매수/중립/매도를 헤지 없이 배정하라. "지켜보자" 식 회피 금지(애매하면 중립으로 두고 왜인지 설명).
+- 확인 안 된 것은 추정하지 말고 "확인 불가"로 명시.
+- 전체 분량은 화면 2~3장 이내. 매수 후보는 자세히, 중립·매도는 한 줄로 간결하게.`;
+}
 function buildPrompt(it){
   const D=(c)=>'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/report-data/'+c+'.json';
 
   // ── 공통: 데이터 취득·우선순위 규칙 (국내 / 미국) ──
-  // ── v3: 파생 필드 활용 + 실적 교차검증 (오독 방지) ──
-  const RULE_DATA = `[수급 파일 파생 필드 — 반드시 먼저 읽어라]
-- earnings_alert : mismatch=true 면 ★잠정실적이 이미 공시됐는데 financials_quarter는 아직 컨센(isConsensus=Y)이다.
-  이 경우 파일의 분기 숫자를 쓰면 안 된다. DART 원문(dsaf001/main.do → report/viewer.do, cp949)에서 실제 수치를 확인해 쓰고,
-  파일 컨센과의 괴리를 %로 명시하라. (풍산 +50.9%, 파두 +89.2%, 현대건설 +23.5% 오독 사례)
-- supply_derived : cum_21_60d(21~60일 역산) / pattern(꾸준매집·반전·U자형·일관매도) /
-  foreign_avg_price(외국인 평균단가 역산, 현재가 대비 %) / foreign_ratio_delta_60d / foreign_ratio_is_60d_high.
-  ※ foreign_avg_price가 null이면 foreign_avg_note 사유를 그대로 인용하고 추정하지 마라.
-- valuation_derived : 이론 PBR 밴드(theo_band)와 현재 PBR의 위치(band_pos), verdict.
-  ※ verdict가 "PBR 무효(자본훼손)"면 PBR로 판단하지 말고 포워드 PER·PEG로 가라.
-  ※ "밴드 내"면 ROE 지속가능성이 판단을 가르는 것이니 그 논점을 본문에 명시하라.
-- volume_stats : ratio_20_60(에너지) / today_vs_60(당일 배수).
-  ※ 얇은 거래량 급등은 '에너지 부족'이 아니라 '매물 소진'일 수 있다. 직전 며칠 투매 여부·시가갭·저가 이탈폭을 같이 봐라.`;
+  const RULE_KR = `[데이터 취득 규칙 — 캐스케이드]
+★ 1차에서 다 뽑는다. 1차가 안 주는 것만 2차로 간다. 소스를 왕복하지 마라.
+★ web_fetch 금지(캐시된 구버전 반환). 전부 bash_tool + curl.
+★ 추정 금지. 조회 실패·미확인은 "확인 불가"로 명시.
 
-  const RULE_JUDGE = `[판단 규율 — 전문 투자자 기준]
-- 너는 예언자가 아니다. 틀려도 된다. 대신 회피하지 마라. 헤지된 결론은 틀리지도 않지만 아무 값도 없다.
-- ★결론에 아래 3줄을 반드시 넣어라.
-    확신도 : 강한 매수 / 매수 / 중립 / 매도 / 강한 매도
-    비중   : 포트 대비 N~M% (변동성·MDD 감안)
-    시간축 : N개월
-- ★중립은 아래 두 경우에만 허용한다.
-    ① 밸류와 수급이 정면으로 상충  ② 가격을 계산할 수 없는 국면(일간 변동성 연율 100% 초과 등)
-  아래는 전부 회피이므로 금지: "N일 뒤 실적을 봐야" / "강점과 리스크가 상쇄" / "확인 불가가 많다" / "변동성이 크다".
-  변동성은 판단 유보 사유가 아니라 비중 조절 사유다.
-- 시나리오 확률은 주 시나리오 50~65%. 최고 확률이 45% 미만이면 판단을 안 한 것이니 다시 짜라.
-- 반대 시나리오는 결론을 희석하는 게 아니라 조건을 정의하는 것이다.
-  ❌ "다만 ~할 수도 있다"  ⭕ "X가 확인되면 이 판단은 틀린 것이고, 그때 나갈 자리는 Y원이다"
-- 밸류는 "비싸다/싸다"가 아니라 ★이론값 대비 몇 %인지로 말하라. 고ROE 종목은 PBR 절대값이 높아도 쌀 수 있다.
-- 보유 종목도 동일 기준. 평균단가는 판정에 넣지 마라. 신규 진입 관점과 기존 보유 관점을 분리해 쓰라.
-- 성장주를 trailing PER/PBR로 판단하지 마라. 포워드·PEG 병행. 터미널 멀티플은 PEG 기준(적정 PER ≒ 성장률%).
-- 지수가 ±10% 이상 움직인 날의 개별 등락률은 무의미하다. 반드시 월간 상대강도와 같이 봐라.`;
+■ 1차 — 다음 (헤더 Referer: https://finance.daum.net/ 필수, 없으면 403)
+  ※ quote(단수) ≠ quotes(복수). 시계열·재무는 단수. 혼동 시 500.
+  ① /api/quotes/A{코드}?summary=false&changeStatistics=true
+     → 시세(OHLC·거래량·거래대금) / marketStatus(PRE_MARKET·TRADING·CLOSING) / 52주·50일 고저
+       / marketCap·listedShareCount / per·pbr·eps·bps·dps
+       / sales·operatingProfit·preTaxProfit·netIncome·debtRatio(최근분기)
+       / foreignRatio·foreignOwnShares / wicsSectorName·sectorPer
+       / stockState.marketWarning·isTradingSuspended·isAdministrativeIssue / companySummary
+     ★여기 있는 건 다른 데서 또 받지 마라.
+  ② /api/quote/A{코드}/days?perPage=500&page=1 → 일봉 2년(OHLCV)
+     → 이평·MDD·변동성·매물대·거래량배수·주봉·월봉을 전부 여기서 직접 계산하라.
+  ③ /api/investor/days?symbolCode=A{코드}&perPage=60&page=1 → 외국인·기관 순매수 60일 + 외인비중 추이
+  ④ /api/quote/A{코드}/financials → 분기·연간 확정 재무 (구조: data.QUARTER / data.YEAR)
+  ⑤ /api/disclosures?symbolCode=A{코드}&perPage=20&page=1 → 공시
+  기타: /api/quote/A{코드}/times(분봉) · /api/quotesv4?codes=A..,A..(멀티 비교)
+        /api/market_index/days?market=KOSPI|KOSDAQ(지수+개인/외인/기관) · /api/quotes/sectors(업종)
+        /api/global/today · /api/global/exchanges (Referer: .../global)
 
-  const RULE_KR = `[데이터 취득 규칙]
-- 두 종류를 합쳐 쓴다. ① 아래 링크의 수급 파일(스캐너 스냅샷) = 수급·재무·컨센·매물대 등 누적 데이터. ② 실시간 시세 = 현재가·등락률·거래량.
-- ★ 충돌 시 실시간이 우선한다. 수급 파일의 가격은 스캔 시점 값이므로, 실시간과 다르면 실시간을 쓰고 파일 값은 "N월 N일 기준"으로 명시해 구분하라.
-- 실시간 취득은 bash_tool + curl로. web_fetch는 캐시된 구버전을 반환하므로 쓰지 마라.
-  · 국내 종목 1순위 — 다음: finance.daum.net/api/quotes/A{코드}?summary=false&changeStatistics=true (헤더 Referer: https://finance.daum.net/ 필수, 없으면 403)
-  · 교차검증 — 토스: wts-info-api.tossinvest.com/api/v2/stock-prices?codes=A{코드} (Referer: https://www.tossinvest.com/). tradingEnd로 장 마감 여부 확인
-  · 지수·수급 — 다음: finance.daum.net/api/market_index/days?page=1&perPage=N&market=KOSPI|KOSDAQ&pagination=true
-  · 해외지수·SOX·환율·유가 — 다음: /api/global/today, /api/global/exchanges (Referer: https://finance.daum.net/global)
-  · 차단됨(시도 금지) — 네이버 전 도메인, data.krx.co.kr, investing.com
-- 하나의 값은 두 소스로 교차검증. 특히 등락률. 데이터 시각(장중/확정종가)을 반드시 확인해 명시.
-- 조회 실패·미확인 항목은 추정으로 채우지 말고 "확인 불가"로 명시하라.`;
+■ 2차 — 1차가 안 주는 것만
+  · 컨센서스·목표주가·투자의견·증권사 리포트·뉴스 → 아래 수급 파일(kfilter JSON)
+  · 공시 본문 → DART 2단계: dsaf001/main.do?rcpNo={rcpNo} 로 dcmNo 추출 → report/viewer.do (cp949 디코딩)
+  · 배당·분배금 이력 → 야후 ?events=div
+
+■ 수급 파일 vs 실시간
+  · 수급 파일(kfilter JSON)은 스캔 시점 스냅샷이다. 값이 실시간과 다르면 실시간을 쓰고,
+    파일 값은 "N월 N일 기준"으로 명시해 구분하라.
+  · ★kfilter(네이버) financials는 최신 분기를 컨센으로 채운다. 다음 financials는 확정치만 준다.
+    → 분기 실적은 다음 기준. 공시에 「영업(잠정)실적」이 있는데 다음 financials에 그 분기가 없으면 DART 원문 필수.
+
+■ 교차검증 — 두 가지만
+  1) 국내 등락률: 다음 changeRate ↔ 다음 /days 2행 역산
+  2) 미국 등락률: 야후 금지(부호까지 틀림). 나스닥 API 또는 다음 global
+  1차 안에서 필드가 일관되면 추가 검증 불필요.
+
+■ 차단(시도 금지): 네이버 전 도메인 / data.krx.co.kr / investing.com / stockplus.com / MarketWatch / WSJ / FRED
+
+■ 알려진 오류
+  1. 다음 prevClosingPrice는 마감 후 다음 세션 기준가로 굴러간다 → 등락은 changePrice/changeRate 사용.
+  2. ★marketStatus가 PRE_MARKET이면 tradePrice는 전일 종가이고 등락률은 0이다. 오늘 등락으로 오독하지 마라.
+  3. ★PRE_MARKET일 때 /days 첫 행은 오늘 날짜 더미행(종가=전일값 복사, accTradeVolume=0)이다.
+     → 이평·변동성·MDD·거래량배수 계산 시 accTradeVolume==0인 행을 제거하고,
+       등락률 역산은 days[1] ÷ days[2]로 하라.
+  4. 다음 investor/days에 개인 필드가 없다 → 개인 수급은 market_index/days에서.
+  5. 외국인 소진율은 장내 순매수 외 경로(블록딜·시간외 등)로도 변한다. foreignStraightPurchaseVolume은 장내만 잡는다.
+
+■ 필수 확인
+  · marketStatus를 확인하고 "N월 N일 장마감/장중/장전"을 명시하라.
+  · PRE_MARKET이면 /days의 더미행을 제거하고 계산했는지 확인하라.`;
 
   const RULE_US = `[데이터 취득 규칙]
 - 실시간 취득은 bash_tool + curl로. web_fetch는 캐시된 구버전을 반환하므로 쓰지 마라.
-  · 미국 개별종목·ETF 1순위 — 나스닥: api.nasdaq.com/api/quote/{TICKER}/info?assetclass=stocks (ETF는 assetclass=etf)
+  · 미국 종목 1순위 — 나스닥: api.nasdaq.com/api/quote/{TICKER}/info?assetclass=stocks|etf|index (종목=stocks, ETF=etf, 지수=index)
   · 프리/애프터 — api.nasdaq.com/api/quote/{TICKER}/extended-trading?assetclass=stocks&markettype=pre|after (lastUpdateInfo로 갱신시각 확인 필수)
   · 교차검증 — 야후: query1.finance.yahoo.com/v8/finance/chart/{TICKER}
   · 지수(S&P·다우·나스닥)·환율 — 다음: finance.daum.net/api/global/today (Referer: https://finance.daum.net/global)
@@ -432,10 +516,6 @@ function buildPrompt(it){
 
 ${RULE_KR}
 
-${RULE_DATA}
-
-${RULE_JUDGE}
-
 [원칙]
 - 사실→원인→함의 3단으로 써라. 숫자·상태를 던지지 말고 반드시 ①왜 그런가(원인·맥락) ②매매상 무슨 뜻인가(함의)를 붙여라. 나열·단순기술 금지. 원인을 못 찾으면 '확인 불가'로 명시하고 추정으로 채우지 마라.
 - 숫자는 정밀하게(반올림 뭉개기 금지, 예: 외인 +1,208,880). 수급은 최근 5거래일 일별로 분해하고 '어제→오늘' 방향(가속/둔화/전환) 표기.
@@ -445,15 +525,13 @@ ${RULE_JUDGE}
 
 [구조]
 1. ★ 펀더멘털 변화 — 본체. 각 항목을 판단·평가로 끝맺어라.
-   · 실적: 최근 분기·연간 매출·영업이익·마진·이익의 질(영업외 괴리)에서 바뀐 점, 컨센 리비전(상향/하향). → 왜 바뀌었나(검색), 이익 체력이 강해졌나 약해졌나.
-   · 밸류: PER·PBR이 실적 변화·주가 변동으로 어떻게 재조정됐나, 동종 대비 위치. → 싸졌나 비싸졌나, 하방이 지지되나.
+   · 실적: 수급 파일의 financials_confirmed(다음 확정치, quarter/annual에 sales·operatingProfit·opm·netIncome·eps·roe·debtRatio)로 분기 흐름을 보고 매출·영업이익·마진(OPM)·ROE·부채비율의 방향과 변곡점을 짚어라. 이익의 질(영업이익 vs 순이익 괴리=영업외 요인)도. → 왜 바뀌었나(검색), 이익 체력이 강해졌나 약해졌나.
+   · 밸류: per·pbr·eps·bps·dps를 ★업종 평균(sectorPer)과 직접 비교하라. 업종 대비 할인/프리미엄이 몇 %인지, 그 이유가 실적 부진인지 시장 무관심인지 판정. 배당수익률(dps/주가)과 debtRatio로 하방 지지 여부도.
    · 업황·경쟁: 섹터 사이클·전방수요·경쟁 구도·정책에서 최근 바뀐 것(검색). → 이 회사에 유리한가 불리한가.
-2. ★ 수급 변화 — 외국인·연기금·사모 등 오늘+최근 5일 일별, 강도 가속/둔화/전환, 매수일 연속·중단, 외인소진율 추이. 누가 왜 사고 파는지 해석(단순 나열 금지). ⚠️ 패턴 이탈(첫 외국인 순매도, 누적과 반대로 꺾인 당일 수급 등)이 있으면 콕 짚고, 없으면 "수급 유지"로 짧게.
-3. 가격·기술 변화 — 5/20/60일선 거리(%), 이평 이탈/회복 며칠째, 거래량 이상치. 펀더멘털·수급 변화와 정합적인가 어긋나는가 판단.
-4. ★ 결론 — 아래 3줄로 시작하라.
-   확신도 : 강한 매수 / 매수 / 중립 / 매도 / 강한 매도
-   비중   : 포트 대비 N~M% (기존 보유 대비 확대/유지/축소)
-   시간축 : N개월
+   · ⚠️ stockState.marketWarning·isAdministrativeIssue·isTradingSuspended가 켜져 있으면 반드시 짚고 실질 영향(신용거래 제한·거래정지 가능성)까지.
+2. ★ 수급 변화 — investor/days 60일 일별로 보라. 외국인·기관 순매수의 5/20/60일 누적을 비교해 '최근 집중'인지 '꾸준한 매집'인지 구분하고, 강도가 가속/둔화/전환 중인지 판정. ★외국인 비중(foreignRatio) 추이를 최장 구간으로 봐서 구조적 매집인지 단기 트레이딩인지 판정하라(20일 단기 창만 보고 판단 금지). 누가 왜 사고 파는지 해석하고, 원인 불명이면 "원인 미상"으로 명시. ⚠️ 패턴 이탈(첫 외국인 순매도, 누적과 반대로 꺾인 당일 수급)이 있으면 콕, 없으면 "수급 유지"로 짧게.
+3. 가격·기술 변화 — days 2년치로 직접 계산하라: 5/20/60/120일선 거리(%)와 배열, 이평 이탈/회복 며칠째, 거래량 배수(최근 vs 20일 평균), 2년 레인지 내 위치, 고점 대비 낙폭(MDD), 매물대(거래량 집중 구간) 대비 현재가 위치. 주봉·월봉으로 리샘플해 큰 추세도 확인. → 펀더멘털·수급 변화와 정합적인가 어긋나는가 판단.
+4. ★ 결론 — 매수 / 매도 / 중립 중 하나를 명확히 골라라. 헤지 금지, "지켜보자" 식 회피 금지(판단이 안 서면 '중립'을 고르고 왜인지 설명).
    · 근거 3줄 이내
    · 이 판단이 틀릴 수 있는 지점(반대 시나리오) 짧게
    · 무엇이 확인되면 판단이 뒤집히는가(트리거)
@@ -467,13 +545,9 @@ ${RULE_JUDGE}
 
 ${RULE_KR}
 
-${RULE_DATA}
-
-${RULE_JUDGE}
-
 [원칙] 사실→원인→함의 3단. 숫자에 반드시 원인과 함의를 붙여라(나열 금지). 숫자 정밀(반올림 금지), 최근 5거래일 일별, '어제→오늘' 방향. 매크로·수급 배경은 웹 검색으로 적극 보충. 포지션 보유 여부는 고려하지 마라.
 [구조]
-1. ★ 최근 변화 — ${it.basis}의 수급(외국인·기관 일별, 강도 가속/둔화, 외국인 비중 추이)·가격(5/20/60일선 거리, 이평 이탈/회복, 거래량)·패턴 이탈. 각 수치가 무슨 뜻인지 해석.
+1. ★ 최근 변화 — market_index/days로 ${it.basis}의 ★개인·외국인·기관 순매수를 함께 보라(개인 수급은 여기서만 나온다). 외국인·기관 매수 + 개인 매도 = 건강한 구조, 반대면 위험 신호. 가격은 5/20/60/120일선 거리·이평 이탈/회복·거래량 배수. 각 수치가 무슨 뜻인지 해석.
 2. ★ 원인·배경 — ${it.basis}를 움직인 요인(연준·금리·환율·반도체 업황·외국인 코스피 수급·수출지표)을 검색으로 확인. 이 요인이 일회성인가 지속적인가 판정.
 3. 현황 — 수급 누적·이평 배열·추세 위치.
 4. ★ 결론 — 매수 / 매도 / 중립 중 하나를 명확히 골라라. 헤지 금지, 회피 금지(판단이 안 서면 '중립'을 고르고 왜인지 설명).
@@ -489,8 +563,6 @@ ${RULE_JUDGE}
 [데이터] 국내식 투자자별 수급 데이터는 없음. 지수 수준·등락은 아래 규칙대로 직접 취득하고, 매크로 이벤트·밸류·컨센서스는 웹 검색으로 보충해줘.
 
 ${RULE_US}
-
-${RULE_JUDGE}
 
 [원칙] 사실→원인→함의 3단. 지수라 개별 실적/밸류/컨센서스 없음 → 지수 흐름·매크로 중심. 나열 금지, 모든 수치에 판단. 확인 안 되는 수치는 추정 금지 '확인 불가' 명시. 포지션 보유 여부는 고려하지 마라.
 [구조]
@@ -508,8 +580,6 @@ ${RULE_JUDGE}
 [데이터] 국내식 투자자별 수급 데이터는 없음. 주가·등락은 아래 규칙대로 직접 취득하고, 분기 실적·가이던스·목표주가·리비전·뉴스·촉매·동종 밸류·전방 업황은 웹 검색으로 보충해줘.
 
 ${RULE_US}
-
-${RULE_JUDGE}
 
 [원칙] 사실→원인→함의 3단. 숫자에 반드시 원인과 함의를 붙여라(나열 금지). 회사 정체성·사업·역사는 1~2줄 이하. 확인 안 되는 수치는 추정 금지 '확인 불가' 명시. 목표가 의존 금지. 포지션 보유 여부는 고려하지 마라.
 [구조]
@@ -531,14 +601,10 @@ ${RULE_JUDGE}
 
 ${RULE_KR}
 
-${RULE_DATA}
-
-${RULE_JUDGE}
-
 [원칙] 사실→원인→함의 3단. 숫자에 반드시 원인·함의를 붙여라(나열 금지). 숫자 정밀, '어제→오늘' 방향. 섹터 재료·수주·정책은 웹 검색으로 적극 보충. 포지션 보유 여부는 고려하지 마라.
 [구조]
 1. ★ 섹터 수급 총괄 — 구성종목 외국인·연기금 수급 합산·비교(어느 종목이 섹터를 끌고 가나), 최근 5일 흐름, 강도 가속/둔화/전환. 특정 종목만 튀는지 섹터 전반인지 → 그 의미 판단.
-2. ★ 섹터 추세 — 구성종목 주가 흐름을 묶어 섹터 방향(상승/횡보/하락) 판단. 거래량 이상치. 수급과 정합적인가 어긋나는가.
+2. ★ 섹터 추세 — 구성종목 주가 흐름을 묶어 섹터 방향(상승/횡보/하락) 판단. 거래량 이상치. 수급과 정합적인가 어긋나는가. 필요시 다음 quotesv4?codes=A298040,A267260,A010120,A006260,A001440 로 5종목 시세·밸류를 한 번에 받아 비교하라(개별 호출 왕복 금지).
 3. ★ 섹터 모멘텀 — 최근 재료(수주·정책·전력망 투자·데이터센터 전력수요·변압기/전선 사이클)를 검색으로 확인. 구조적 성장인가 일회성 테마인가 판정.
 4. ★ 결론 — 섹터 전체 기준 매수 / 매도 / 중립 중 하나를 명확히 골라라. 헤지 금지, 회피 금지.
    · 근거 3줄 이내
@@ -556,10 +622,6 @@ ${RULE_JUDGE}
 
 ${RULE_KR}
 
-${RULE_DATA}
-
-${RULE_JUDGE}
-
 [원칙]
 - 사실→원인→함의 3단으로 써라. 모든 숫자·상태에 ①왜 그런가(원인·맥락) ②매매상 무슨 뜻인가(함의)를 반드시 붙여라. 나열·단순기술 금지. 원인을 못 찾으면 '확인 불가'로 명시하고 추정으로 채우지 마라.
 - 데이터 숫자는 그대로 쓰고 지어내지 마라. 정밀하게(반올림 뭉개기 금지), 수급은 최근 5거래일 일별로 분해.
@@ -570,17 +632,14 @@ ${RULE_JUDGE}
 
 [구조] 두괄식 — '핵심 결론' 박스 먼저(현 상황 한 줄 정의 + 매수/매도/중립 + 강점·리스크·판별 포인트). 그 다음 9개 섹션:
 1. 회사 정체성 — 무슨 사업·제품으로 돈을 버는지, 점유율·기술 해자·고객사·경쟁 구도(검색). 대체 불가능성이 있는지 판단.
-2. 수급 ★핵심 — 외국인·연기금 매집 강도·지속성(5/20/60일 누적 비교로 '최근 집중'/'꾸준' 구분), 외인소진율 추이, 사모·투신·금융투자·기타법인 특징점, 당일 수급이 누적과 반대로 꺾였는지(분배·반전). → 왜 사는지(테마·촉매) 규명하고 지속 가능한 매집인지 판정.
-3. 추이 — 일/주/월봉 각각(정배열·이격·레인지 위치), 큰 추세 vs 단기 과열 판단. 신고가면 버블(테마/과열)인지 실체(실적/전망)인지 분해.
-4. 매물대 + 지지/저항 — 거래량 집중 구간으로 라인 도출, 현재가~매물대 '매물 공백' 리스크 명시.
-5. 실적 → 밸류 — 실적 먼저(연간·분기 매출·영업이익·마진·순이익·ROE·부채비율), 변화 원인 검색, 영업이익-순이익 괴리(영업외) 시 이익의 질 지적. 이어 밸류(PER·추정PER·PBR·배당) 동종 정량 비교 → 방향과 크기(magnitude)까지 판단, 하방 지지 여부.
+2. 수급 ★핵심 — investor/days 60일 일별로 분석하라. 외국인·연기금 매집 강도와 지속성을 5/20/60일 누적 비교로 '최근 집중'/'꾸준한 매집' 구분. ★외국인 비중(foreignRatio)은 가용한 최장 구간으로 봐서 구조적 매집인지 단기 트레이딩인지 판정하라(20일 단기 창만 보고 박스·노이즈로 단정 금지. 2~3일 순매도는 60일 매집 추세 안의 트리밍일 수 있다). 개인 수급은 investor/days에 없으니 필요하면 market_index/days에서. 방향성 해석: 외국인·기관 매수 + 개인 매도 = 건강한 구조 / 반대면 위험 신호. → ★왜 사는지(테마·원인·촉매)를 검색으로 규명하고, 외국인과 연기금이 같은 이유인지·선행 매집인지·촉매가 가역적인지 일회성인지까지 판정. 원인 미상이면 추정 말고 "원인 미상"으로 명시.
+3. 추이 — days 2년치로 직접 계산: 일봉 정배열·이격률, 주봉·월봉 리샘플로 큰 추세, 2년 레인지 내 위치, 고점 대비 낙폭(MDD), 변동성. 큰 추세 vs 단기 과열 판단. ★신고가면 저점 원인과 고점 원인을 분리해 분석하라 — 테마·하이프인지 실적·전망 기반인지, 거래량이 동반됐는지(허수 아닌 실수급인지). "부담스럽다"는 게으른 결론 금지.
+4. 매물대 + 지지/저항 — days 거래량 집중 구간으로 라인 도출, 현재가~매물대 '매물 공백' 리스크 명시. 거래량 배수(최근 vs 20일 평균)로 실수급 동반 여부도 확인.
+5. 실적 → 밸류 — 실적 먼저: 수급 파일의 ★financials_confirmed(다음 확정치)를 기준으로 최근 분기·연간 매출·영업이익·OPM·순이익·ROE·부채비율의 흐름과 변곡점. (financials_quarter는 네이버 것으로 최신 분기가 컨센일 수 있으니 실적 판단에 쓰지 마라. earnings_alert.mismatch가 true면 컨센 오염 상태다.) 변화 원인 검색. 영업이익-순이익 괴리 시 이익의 질 지적. ★공시에 「영업(잠정)실적」이 있는데 financials_confirmed에 그 분기가 없으면(=아직 확정 반영 전) DART 원문으로 실제 숫자를 확인하라. earnings_alert 필드가 이 상태를 미리 알려준다. 이어 밸류: per·pbr·eps·bps·dps를 ★업종 평균(sectorPer)과 직접 비교해 할인/프리미엄 몇 %인지, 그 이유가 실적인지 시장 무관심인지. 배당수익률·debtRatio로 하방 지지 여부.
 6. 컨센서스 — 목표주가·투자의견·제시일(신선도)·상향이력·커버리지 두께, 선행/후행.
-7. 공시 — 노이즈 제외, 의미 있는 것만. 시장경보(투자주의/경고/위험) 시 조건·실질 영향(레버리지 제한·거래정지)까지.
+7. 공시 — 노이즈 제외, 의미 있는 것만. ⚠️ stockState.marketWarning·isAdministrativeIssue·isTradingSuspended·isLowLiquidity를 확인하고, 켜져 있으면 조건·실질 영향(신용거래 제한·거래정지 가능성)까지. 「영업(잠정)실적」·유상증자·CB·전환청구 등 수급/실적에 직결되는 공시는 반드시 짚어라.
 8. 뉴스·촉매 — 펀더멘털 vs 투기적·일회성 구분, 당일 시황 대비 상대 강도(검색).
-9. ★ 종합 투자 의견 — 아래 3줄로 시작하라.
-   확신도 : 강한 매수 / 매수 / 중립 / 매도 / 강한 매도
-   비중   : 포트 대비 N~M%
-   시간축 : N개월
+9. ★ 종합 투자 의견 — 매수 / 매도 / 중립 중 하나를 명확히 골라라. 헤지 금지, "지켜보자" 식 회피 금지(판단이 안 서면 '중립'을 고르고 왜인지 설명).
    · 근거를 우선순위대로
    · 시나리오 + 확률
    · 이 판단이 틀릴 수 있는 지점(반대 시나리오)
@@ -606,6 +665,21 @@ function fallbackCopy(text, done){
   try{ document.execCommand('copy'); }catch(e){}
   document.body.removeChild(ta); done();
 }
+function hardReload(){
+  // 캐시 무시 재접속: 주소에 현재 시각을 붙여 브라우저가 index.html을 새로 받게 한다
+  const u = location.origin + location.pathname + '?t=' + Date.now();
+  location.replace(u);
+}
+function copyScreen(ev){
+  ev.stopPropagation();
+  const text=buildScreenPrompt();
+  const btn=ev.currentTarget;
+  const done=()=>{ const o=btn.innerHTML; btn.innerHTML='복사됨 ✓'; btn.classList.add('copied');
+    setTimeout(()=>{btn.innerHTML=o; btn.classList.remove('copied');},1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  }else{ fallbackCopy(text,done); }
+}
 
 function render(){
   const content=document.getElementById('content');
@@ -613,7 +687,7 @@ function render(){
   const items=DATA[CUR]||[];
   if(CUR==='portfolio'){
     if(items.length===0){content.innerHTML='<div class="empty">포트폴리오 종목이 없습니다.</div>';return;}
-    const tip='<div class="bothtip">내 보유 종목. 수급(외인·연기금)으로 <b>스마트머니가 아직 있는지 / 이탈했는지</b> 확인하고, <b>프롬프트 복사</b>로 동일 포맷 리포트를 받으세요. <span style="color:var(--dim)">초록=필터 통과(매집), 회색=미통과.</span></div>';
+    const tip='<div class="bothtip">내 보유 종목. 수급(외인·연기금)으로 <b>스마트머니가 아직 있는지 / 이탈했는지</b> 확인하고, <b>프롬프트</b>로 동일 포맷 리포트를 받으세요. <span style="color:var(--dim)">초록=필터 통과(매집), 회색=미통과.</span></div>';
     content.innerHTML = tip + sectionPort(items);
     return;
   }
@@ -622,13 +696,17 @@ function render(){
   const kospi=items.filter(x=>x.market==='KOSPI');
   const kosdaq=items.filter(x=>x.market==='KOSDAQ');
   if(CUR==='both'){
-    const tip='<div class="bothtip"><b>프롬프트 복사</b> → Claude에 붙여넣으면 그 종목 원본 데이터(수급·주가·실적·밸류·컨센서스·공시·뉴스)를 링크로 읽어 분석 리포트를 만들어줍니다. 부족한 건 Claude가 검색으로 보충합니다.</div>';
+    const tip='<div class="bothtip"><b>프롬프트</b> → Claude에 붙여넣으면 그 종목 원본 데이터(수급·주가·실적·밸류·컨센서스·공시·뉴스)를 링크로 읽어 분석 리포트를 만들어줍니다. 아래 <b>일괄 스크리닝</b>은 전 종목을 한 번에 분석해 매수 우선순위로 정리합니다.</div>';
     content.innerHTML = tip + sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
   }else{
     content.innerHTML = sectionSingle('KOSPI', kospi, 'kospi') + sectionSingle('KOSDAQ', kosdaq, 'kosdaq');
   }
 }
 function show(k){CUR=k;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));render();}
+// 재접속 직후 주소창의 캐시버스팅 파라미터를 지워 깔끔하게 유지
+if(location.search.indexOf('t=')>-1 || location.search.indexOf('v=')>-1){
+  try{ history.replaceState(null,'',location.origin+location.pathname); }catch(e){}
+}
 async function load(){
   document.getElementById('content').innerHTML='<div class="loading">데이터를 불러오는 중…</div>';
   try{
