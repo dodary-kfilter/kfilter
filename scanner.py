@@ -287,6 +287,183 @@ INV_FIELDS = [
     ("netOtherCorporationBuyVolume", "기타법인"),
 ]
 
+# ───────────────────── v3 파생 계산 (리포트 정확도용) ─────────────────────
+EARN_PAT = re.compile(r"영업\s*\(?잠정\)?\s*실적|잠정실적|매출액또는손익구조")
+
+def detect_earnings_alert(disc, fin_q):
+    """[핵심] 공시에 '잠정실적'이 떴는데 financials_quarter는 아직 컨센(isConsensus=Y)인
+    상태를 탐지한다. 이걸 놓치면 컨센을 실적으로 오독한다(풍산 +50.9%, 파두 +89.2% 사례).
+    반환: {disclosed: bool, items: [...], consensus_cols: [...], mismatch: bool}
+    """
+    out = {"disclosed": False, "items": [], "consensus_cols": [], "mismatch": False}
+    try:
+        for d in (disc or []):
+            t = d.get("title") or ""
+            if EARN_PAT.search(t):
+                out["items"].append({"title": t, "datetime": d.get("datetime")})
+        out["disclosed"] = bool(out["items"])
+        for c in ((fin_q or {}).get("trTitleList") or []):
+            if c.get("isConsensus") == "Y":
+                out["consensus_cols"].append(c.get("title"))
+        out["mismatch"] = out["disclosed"] and bool(out["consensus_cols"])
+    except Exception as e:
+        out["_err"] = f"{type(e).__name__}: {e}"
+    return out
+
+def enhance_supply(sd):
+    """수급 파생지표. 21~60일 역산 / 매집 패턴 / 외국인 평균단가 / 소진율 정합성."""
+    if not sd:
+        return None
+    try:
+        c5, c20, c60 = sd.get("cum_5d") or {}, sd.get("cum_20d") or {}, sd.get("cum_60d") or {}
+        c2160 = {k: (c60.get(k, 0) - c20.get(k, 0)) for k in c60}
+
+        def pattern(lab):
+            a, b, c = c5.get(lab, 0), c20.get(lab, 0), c60.get(lab, 0)
+            d = c2160.get(lab, 0)
+            if a > 0 and b > 0 and c > 0 and d > 0: return "꾸준매집"
+            if b > 0 and c < 0:                     return "반전(복원중)"
+            if a > 0 and b < 0 and c > 0:           return "U자형"
+            if a < 0 and b < 0 and c < 0:           return "일관매도"
+            if a < 0 and b > 0:                     return "당일이탈"
+            return "혼조"
+
+        daily = sd.get("recent_daily") or []
+        # 외국인 평균단가 역산(일별 종가 가중) — '저가매집'인지 '고가에 물린 것'인지 판별
+        bq = ba = sq = sa = 0
+        for r in daily:
+            q, p = r.get("외국인", 0), r.get("close", 0)
+            if not p: continue
+            if q > 0: bq += q; ba += q * p
+            elif q < 0: sq += -q; sa += -q * p
+        net = bq - sq
+        cur = daily[0].get("close") if daily else None
+        closes = [r.get("close") for r in daily if r.get("close")]
+        lo_c, hi_c = (min(closes), max(closes)) if closes else (None, None)
+        # [가드] 순매수가 총매수 대비 너무 작으면 가중평균이 폭발한다(카카오 2.6% 사례).
+        #        결과가 기간 종가 범위를 벗어나도 무효 처리한다.
+        net_ratio = round(abs(net) / bq * 100, 1) if bq else None
+        favg = None; favg_note = None
+        if net:
+            cand = round((ba - sa) / net)
+            if lo_c and hi_c and lo_c <= cand <= hi_c and (net_ratio or 0) >= 10:
+                favg = cand
+            else:
+                favg_note = ("순매수 비중 %.1f%% (과소)" % net_ratio) if (net_ratio is not None and net_ratio < 10) \
+                            else "산출값이 기간 종가 범위 밖 → 무효"
+
+        fr = sd.get("foreign_ratio_trend") or []
+        vals = [x.get("ratio") for x in fr if x.get("ratio") is not None]
+        fr_delta = round(vals[0] - vals[-1], 2) if len(vals) >= 2 else None
+
+        return {
+            "cum_21_60d": c2160,
+            "pattern": {lab: pattern(lab) for lab in ("외국인", "연기금", "기관계", "개인", "사모", "금융투자")},
+            "foreign_avg_price": favg,
+            "foreign_avg_note": favg_note,
+            "foreign_avg_vs_now_pct": (round((cur / favg - 1) * 100, 1) if (favg and cur) else None),
+            "foreign_buy_qty": bq, "foreign_sell_qty": sq, "foreign_net_qty": net,
+            "foreign_net_ratio_pct": net_ratio,
+            "close_range": {"low": lo_c, "high": hi_c},
+            "foreign_ratio_delta_60d": fr_delta,
+            "foreign_ratio_max": (max(vals) if vals else None),
+            "foreign_ratio_min": (min(vals) if vals else None),
+            "foreign_ratio_is_60d_high": (bool(vals) and vals[0] >= max(vals)),
+        }
+    except Exception as e:
+        return {"_err": f"{type(e).__name__}: {e}"}
+
+def compute_derived_valuation(total_infos, fin_a):
+    """이론 PBR = (ROE-g)/(COE-g). PBR 절대값이 아니라 '이론값 대비 %'로 판단하기 위함.
+    (삼양식품 PBR 6.34/ROE 37.6% → 이론 10.9 = -42% 할인. 절대값만 보면 오판)"""
+    try:
+        ti = {d.get("key"): d.get("value") for d in (total_infos or [])}
+        def num(x):
+            try: return float(str(x).replace(",", "").replace("%", "").replace("배", "").strip())
+            except Exception: return None
+        pbr = num(ti.get("PBR"))
+        # [중요] columns dict의 키 순서는 신뢰할 수 없다. trTitleList 순서를 기준으로 잡고
+        #        실적(isConsensus != Y)과 컨센(Y)을 분리해서 각각 확보한다.
+        titles = (fin_a or {}).get("trTitleList") or []
+        order  = [(c.get("key"), c.get("title"), c.get("isConsensus")) for c in titles]
+        roe_act = roe_est = None; roe_act_yr = roe_est_yr = None
+        for row in ((fin_a or {}).get("rowList") or []):
+            if "ROE" not in (row.get("title") or ""): continue
+            cols = row.get("columns") or {}
+            for k, t, isc in order:
+                v = num((cols.get(k) or {}).get("value"))
+                if v is None: continue
+                if isc == "Y": roe_est, roe_est_yr = v / 100.0, t
+                else:          roe_act, roe_act_yr = v / 100.0, t
+            break
+        roe = roe_est if roe_est is not None else roe_act      # 포워드 우선
+        if pbr is None or roe is None:
+            return {"pbr": pbr, "roe_pct": None, "note": "산출 불가"}
+        # [주의] 영구성장 모형은 ROE가 높을수록 폭발한다(하이닉스 101% → 이론 PBR 32배).
+        #        사이클 정점의 ROE는 영속 가정이 성립하지 않으므로 지속가능 ROE로 캡을 씌운다.
+        ROE_CAP = 0.25
+        roe_used = min(roe, ROE_CAP)
+        capped = roe > ROE_CAP
+        out = {"pbr": pbr, "roe_pct": round(roe * 100, 2),
+               "roe_used_pct": round(roe_used * 100, 2), "roe_capped": capped,
+               "roe_basis": (roe_est_yr + "(E)") if roe_est is not None else roe_act_yr,
+               "roe_actual_pct": (round(roe_act * 100, 2) if roe_act is not None else None),
+               "roe_actual_basis": roe_act_yr,
+               "roe_est_pct": (round(roe_est * 100, 2) if roe_est is not None else None)}
+        # 기준: COE 8% / g 3% (보수). 민감도로 g 5%, COE 9% 병기.
+        for coe, g, tag in ((0.08, 0.03, "base"), (0.08, 0.05, "g5"), (0.09, 0.03, "coe9")):
+            if roe_used > g and coe > g:
+                t = (roe_used - g) / (coe - g)
+                out[tag] = {"coe": coe, "g": g, "theo_pbr": round(t, 2),
+                            "premium_pct": round((pbr / t - 1) * 100, 1)}
+        # [자본훼손 종목] PBR이 극단이면 분모(BPS)가 무너진 것. 이론 PBR 프레임 자체가 무효다.
+        if pbr > 15:
+            out["verdict"] = "PBR 무효(자본훼손)"
+            out["note"] = "BPS가 훼손돼 PBR이 의미 없다. 포워드 PER·PEG로 판단하라."
+            return out
+        # [밴드] 고ROE의 지속가능성은 판단이 갈린다. 단일값 대신 밴드로 제시하고
+        #        현재 PBR이 밴드 어디에 있는지로 말한다.
+        theos = [v["theo_pbr"] for k, v in out.items() if isinstance(v, dict) and "theo_pbr" in v]
+        if capped and roe > ROE_CAP:
+            try:
+                theos.append(round((roe - 0.05) / (0.08 - 0.05), 2))   # 무캡 상단(낙관)
+            except Exception:
+                pass
+        if theos:
+            lo, hi = min(theos), max(theos)
+            out["theo_band"] = {"low": lo, "high": hi}
+            if pbr < lo:      pos, vd = round((pbr / lo - 1) * 100, 1), "저평가"
+            elif pbr > hi:    pos, vd = round((pbr / hi - 1) * 100, 1), "고평가"
+            else:             pos, vd = round((pbr - lo) / (hi - lo) * 100, 1), "밴드 내"
+            out["band_pos"] = pos
+            out["verdict"] = vd
+            if vd == "밴드 내":
+                out["note"] = ("이론 PBR %.2f~%.2f 밴드의 %.0f%% 지점. ROE 지속가능성이 판단을 가른다."
+                               % (lo, hi, pos))
+            elif capped:
+                out["note"] = "ROE %.1f%% → 지속가능 25%%로 캡 적용" % (roe * 100)
+        elif roe_used <= 0.03:
+            out["verdict"] = "산출불가(ROE≤g)"
+            out["note"] = "ROE가 영구성장률 이하 → 이론 PBR 1배 미만이 정상"
+        return out
+    except Exception as e:
+        return {"_err": f"{type(e).__name__}: {e}"}
+
+def compute_volume_stats(candles):
+    """거래량 에너지. 20일/60일 비율 + 당일 배수. 얇은 거래량 급등=매물소진 판별용."""
+    try:
+        vols = [float(r[5]) for r in candles]
+        if len(vols) < 61: return None
+        v20 = sum(vols[-21:-1]) / 20
+        v60 = sum(vols[-61:-1]) / 60
+        today = vols[-1]
+        return {"avg20": round(v20), "avg60": round(v60),
+                "ratio_20_60": round(v20 / v60, 2) if v60 else None,
+                "today": round(today),
+                "today_vs_60": round(today / v60, 2) if v60 else None}
+    except Exception:
+        return None
+
 def build_supply_detail(body):
     """토스 일별 투자자별 → 최근 HIST_DAYS일 + 누적(5/20/60일) by 투자주체 + 외인보유율 추이."""
     if not body:
@@ -384,6 +561,14 @@ def write_report_file(code, name, market, supply, raw, price_block,
         "financials_annual":  g("financials_annual",  lambda: (raw.get("fin_a") or {}).get("financeInfo")),
         "financials_quarter": g("financials_quarter", lambda: (raw.get("fin_q") or {}).get("financeInfo")),
         "disclosures":        raw.get("disc"),                 # 공시 (원본)
+        # ── v3 파생 필드 ─────────────────────────────────────────────
+        "earnings_alert":     g("earnings_alert", lambda: detect_earnings_alert(
+                                  raw.get("disc"), (raw.get("fin_q") or {}).get("financeInfo"))),
+        "supply_derived":     g("supply_derived", lambda: enhance_supply(supply_detail)),
+        "valuation_derived":  g("valuation_derived", lambda: compute_derived_valuation(
+                                  integ.get("totalInfos"), (raw.get("fin_a") or {}).get("financeInfo"))),
+        "volume_stats":       g("volume_stats", lambda: compute_volume_stats(
+                                  parse_candles(raw["candles"])) if raw.get("candles") else None),
         "news":               g("news",               lambda: parse_news(raw["news"]) if raw.get("news") else None),
         "_errors": errs,
     }
