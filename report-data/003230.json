@@ -2,7 +2,7 @@
   "code": "003230",
   "name": "삼양식품",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:53",
+  "updated": "2026-08-04 19:15",
   "supply_10d": {
     "foreign_net_10d": 56694,
     "foreign_buydays": "7/10",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "95,425"
+      "value": "97,226"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1,124억"
+      "value": "1,145억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1645,7 @@
       "nm": "삼양식품",
       "bnm": "유안타증권",
       "tit": "이제는 주가가 답할 차례",
-      "rcnt": "6625",
+      "rcnt": "6640",
       "wdt": "20260721"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "삼양식품",
       "bnm": "교보증권",
       "tit": "탄탄한 불닭, 여전한 수요",
-      "rcnt": "5773",
+      "rcnt": "5780",
       "wdt": "20260720"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "삼양식품",
       "bnm": "신한투자증권",
       "tit": "숫자가 증명하는 경쟁력",
-      "rcnt": "4927",
+      "rcnt": "4934",
       "wdt": "20260713"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "삼양식품",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 시장 기대 충족 전망",
-      "rcnt": "6547",
+      "rcnt": "6548",
       "wdt": "20260702"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "삼양식품",
       "bnm": "한화투자증권",
       "tit": "공급 병목 완화에 따른 추가 성장 기대",
-      "rcnt": "11426",
+      "rcnt": "11427",
       "wdt": "20260514"
     }
   ],
@@ -2845,9 +2845,103 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": false,
+    "items": [],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": false
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": -45651,
+      "외국인": 56739,
+      "기관계": 3759,
+      "금융투자": -27571,
+      "투신": -6317,
+      "사모": 6420,
+      "보험": 7419,
+      "은행": 267,
+      "기타금융": -1678,
+      "연기금": 25219,
+      "기타법인": -16396
+    },
+    "pattern": {
+      "외국인": "꾸준매집",
+      "연기금": "꾸준매집",
+      "기관계": "꾸준매집",
+      "개인": "일관매도",
+      "사모": "혼조",
+      "금융투자": "반전(복원중)"
+    },
+    "foreign_avg_price": 1262616,
+    "foreign_avg_note": null,
+    "foreign_avg_vs_now_pct": -3.5,
+    "foreign_buy_qty": 324487,
+    "foreign_sell_qty": 188544,
+    "foreign_net_qty": 135943,
+    "foreign_net_ratio_pct": 41.9,
+    "close_range": {
+      "low": 1053000,
+      "high": 1444000
+    },
+    "foreign_ratio_delta_60d": 1.02,
+    "foreign_ratio_max": 16.44,
+    "foreign_ratio_min": 14.8,
+    "foreign_ratio_is_60d_high": true
+  },
+  "valuation_derived": {
+    "pbr": 6.61,
+    "roe_pct": 37.24,
+    "roe_used_pct": 25.0,
+    "roe_capped": true,
+    "roe_basis": "2026.12.(E)",
+    "roe_actual_pct": 37.59,
+    "roe_actual_basis": "2025.12.",
+    "roe_est_pct": 37.24,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 4.4,
+      "premium_pct": 50.2
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 6.67,
+      "premium_pct": -0.8
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 3.67,
+      "premium_pct": 80.3
+    },
+    "theo_band": {
+      "low": 3.67,
+      "high": 10.75
+    },
+    "band_pos": 41.5,
+    "verdict": "밴드 내",
+    "note": "이론 PBR 3.67~10.75 밴드의 42% 지점. ROE 지속가능성이 판단을 가른다."
+  },
+  "volume_stats": {
+    "avg20": 64074,
+    "avg60": 63201,
+    "ratio_20_60": 1.01,
+    "today": 66134,
+    "today_vs_60": 1.05
+  },
   "news": [
     {
-      "title": "'삼전닉스 주춤' 코스피, 순환매로 선방…코스닥 5%대 급등[시황종합...",
+      "title": "국민연금, 급락장서 셀트리온 담았다",
+      "office": "매일경제",
+      "date": "202608041748",
+      "url": "https://n.news.naver.com/mnews/article/009/0005716571"
+    },
+    {
+      "title": "코스피 비반도체 순환매, 삼전닉스 보합…코스닥 5.9% 급등[시황종합...",
       "office": "뉴스1",
       "date": "202608041608",
       "url": "https://n.news.naver.com/mnews/article/421/0009096819"
@@ -2875,12 +2969,6 @@
       "office": "이데일리",
       "date": "202608041009",
       "url": "https://n.news.naver.com/mnews/article/018/0006343922"
-    },
-    {
-      "title": "삼양식품, 2분기 영업익 1776억 추정…예상치 부합할듯-하나",
-      "office": "머니투데이",
-      "date": "202608040854",
-      "url": "https://n.news.naver.com/mnews/article/008/0005395175"
     }
   ],
   "_errors": {}

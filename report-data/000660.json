@@ -2,7 +2,7 @@
   "code": "000660",
   "name": "SK하이닉스",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:38",
+  "updated": "2026-08-04 18:58",
   "supply_10d": {
     "foreign_net_10d": -1717118,
     "foreign_buydays": "4/10",
@@ -1560,12 +1560,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "8,498,921"
+      "value": "8,967,988"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "13조 1,876억"
+      "value": "13조 9,354억"
     },
     {
       "code": "marketValue",
@@ -1647,7 +1647,7 @@
       "nm": "SK하이닉스",
       "bnm": "SK증권",
       "tit": "2Q26 NDR 후기: 오해와 본질",
-      "rcnt": "13048",
+      "rcnt": "13722",
       "wdt": "20260803"
     },
     {
@@ -1656,7 +1656,7 @@
       "nm": "SK하이닉스",
       "bnm": "유진투자증권",
       "tit": "시간의 문제",
-      "rcnt": "22866",
+      "rcnt": "23320",
       "wdt": "20260731"
     },
     {
@@ -1665,7 +1665,7 @@
       "nm": "SK하이닉스",
       "bnm": "DS투자증권",
       "tit": "2Q26 Re: 귀에 걸면 귀걸이 코에 걸면 코걸이",
-      "rcnt": "28703",
+      "rcnt": "29068",
       "wdt": "20260730"
     },
     {
@@ -1674,7 +1674,7 @@
       "nm": "SK하이닉스",
       "bnm": "교보증권",
       "tit": "2Q26 Review HBM4와 LTA로 이어질 실적 모멘텀",
-      "rcnt": "19561",
+      "rcnt": "19845",
       "wdt": "20260730"
     },
     {
@@ -1683,7 +1683,7 @@
       "nm": "SK하이닉스",
       "bnm": "한화투자증권",
       "tit": "LTA가 불러올 나비효과",
-      "rcnt": "18459",
+      "rcnt": "18741",
       "wdt": "20260730"
     }
   ],
@@ -2847,42 +2847,135 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": true,
+    "items": [
+      {
+        "title": "에스케이하이닉스(주) 연결재무제표기준영업(잠정)실적(공정공시)",
+        "datetime": "2026-07-29T06:50:04"
+      }
+    ],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": true
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": 21438584,
+      "외국인": -22300314,
+      "기관계": 28765,
+      "금융투자": 2006298,
+      "투신": -1448675,
+      "사모": -167139,
+      "보험": -204217,
+      "은행": -6624,
+      "기타금융": -23064,
+      "연기금": -127814,
+      "기타법인": 697763
+    },
+    "pattern": {
+      "외국인": "혼조",
+      "연기금": "혼조",
+      "기관계": "혼조",
+      "개인": "당일이탈",
+      "사모": "반전(복원중)",
+      "금융투자": "U자형"
+    },
+    "foreign_avg_price": 2102394,
+    "foreign_avg_note": null,
+    "foreign_avg_vs_now_pct": -25.0,
+    "foreign_buy_qty": 7967109,
+    "foreign_sell_qty": 33284896,
+    "foreign_net_qty": -25317787,
+    "foreign_net_ratio_pct": 317.8,
+    "close_range": {
+      "low": 1322000,
+      "high": 2919000
+    },
+    "foreign_ratio_delta_60d": -1.83,
+    "foreign_ratio_max": 52.87,
+    "foreign_ratio_min": 49.77,
+    "foreign_ratio_is_60d_high": false
+  },
+  "valuation_derived": {
+    "pbr": 6.8,
+    "roe_pct": 101.22,
+    "roe_used_pct": 25.0,
+    "roe_capped": true,
+    "roe_basis": "2026.12.(E)",
+    "roe_actual_pct": 44.15,
+    "roe_actual_basis": "2025.12.",
+    "roe_est_pct": 101.22,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 4.4,
+      "premium_pct": 54.5
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 6.67,
+      "premium_pct": 2.0
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 3.67,
+      "premium_pct": 85.5
+    },
+    "theo_band": {
+      "low": 3.67,
+      "high": 32.07
+    },
+    "band_pos": 11.0,
+    "verdict": "밴드 내",
+    "note": "이론 PBR 3.67~32.07 밴드의 11% 지점. ROE 지속가능성이 판단을 가른다."
+  },
+  "volume_stats": {
+    "avg20": 6661159,
+    "avg60": 6219237,
+    "ratio_20_60": 1.07,
+    "today": 5302250,
+    "today_vs_60": 0.85
+  },
   "news": [
     {
-      "title": "코스피, '삼전·닉스' 회복에 1.6% 상승마감...코스닥 5.88%[fn마감시황...",
-      "office": "파이낸셜뉴스",
-      "date": "202608041637",
-      "url": "https://n.news.naver.com/mnews/article/014/0005557119"
+      "title": "한달만에 사라진 만스피의 꿈…낙관론자마저 ‘천장 8000’ 제시 [머니...",
+      "office": "매일경제",
+      "date": "202608041854",
+      "url": "https://n.news.naver.com/mnews/article/009/0005716662"
     },
     {
-      "title": "ETF 보완책 '과다거래부담금' 100만원?…업계 \"소탐대실\"",
-      "office": "머니투데이",
-      "date": "202608041636",
-      "url": "https://n.news.naver.com/mnews/article/008/0005395547"
+      "title": "'3천만원 벽'에 식은 레버리지…쏠림 해소는 과제",
+      "office": "연합뉴스TV",
+      "date": "202608041851",
+      "url": "https://n.news.naver.com/mnews/article/422/0000892329"
     },
     {
-      "title": "힘 받는 코스닥 사흘간 21%↑…매수사이드카 세 번 연속 울렸다",
-      "office": "노컷뉴스",
-      "date": "202608041635",
-      "url": "https://n.news.naver.com/mnews/article/079/0004175424"
+      "title": "IMM크레딧, 하나마이크론에 1000억 EB 투자 [시그널]",
+      "office": "서울경제",
+      "date": "202608041850",
+      "url": "https://n.news.naver.com/mnews/article/011/0004648539"
     },
     {
-      "title": "대기업·협력사 함께 미래산업 육성…15조원 ‘함께성장 프로젝트’",
-      "office": "한국경제TV",
-      "date": "202608041633",
-      "url": "https://n.news.naver.com/mnews/article/215/0001261125"
+      "title": "코스피·코스닥 '동반 상승 마감'",
+      "office": "연합뉴스TV",
+      "date": "202608041849",
+      "url": "https://n.news.naver.com/mnews/article/422/0000892328"
     },
     {
-      "title": "'롤러코스터' 코스피, 6,300대 회복…코스닥 5.9% 급등",
-      "office": "MBN",
-      "date": "202608041631",
-      "url": "https://n.news.naver.com/mnews/article/057/0001961964"
+      "title": "삼성전자, 2분기도 D램 점유율 1위…마이크론은 하이닉스 바짝 추격",
+      "office": "한겨레",
+      "date": "202608041848",
+      "url": "https://n.news.naver.com/mnews/article/028/0002817131"
     },
     {
-      "title": "‘미적지근’ 코스피와 정반대…‘불기둥’ 코스닥, 사상 첫 3거래일...",
-      "office": "헤럴드경제",
-      "date": "202608041631",
-      "url": "https://n.news.naver.com/mnews/article/016/0002679458"
+      "title": "IMM 크레딧, 하나머티리얼즈 EB 투자…1000억원 규모",
+      "office": "한국경제",
+      "date": "202608041841",
+      "url": "https://n.news.naver.com/mnews/article/015/0005317359"
     }
   ],
   "_errors": {}

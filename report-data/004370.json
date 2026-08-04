@@ -2,7 +2,7 @@
   "code": "004370",
   "name": "농심",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:54",
+  "updated": "2026-08-04 19:15",
   "supply_10d": {
     "foreign_net_10d": 39881,
     "foreign_buydays": "8/10",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "16,968"
+      "value": "17,309"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "63.8억"
+      "value": "65.1억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1645,7 @@
       "nm": "농심",
       "bnm": "유안타증권",
       "tit": "해외 성장으로 컨센서스 상회 전망",
-      "rcnt": "4787",
+      "rcnt": "4791",
       "wdt": "20260721"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "농심",
       "bnm": "교보증권",
       "tit": "예상 대비 선방 중",
-      "rcnt": "5923",
+      "rcnt": "5925",
       "wdt": "20260713"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "농심",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 원가 부담 가시화",
-      "rcnt": "4671",
+      "rcnt": "4673",
       "wdt": "20260702"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "농심",
       "bnm": "한화투자증권",
       "tit": "해외 성장 눈높이 상향",
-      "rcnt": "3311",
+      "rcnt": "3312",
       "wdt": "20260518"
     }
   ],
@@ -2845,7 +2845,106 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": false,
+    "items": [],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": false
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": -85392,
+      "외국인": 84541,
+      "기관계": -2637,
+      "금융투자": 12096,
+      "투신": -2128,
+      "사모": 1153,
+      "보험": -6319,
+      "은행": -400,
+      "기타금융": 67,
+      "연기금": -7106,
+      "기타법인": 1077
+    },
+    "pattern": {
+      "외국인": "꾸준매집",
+      "연기금": "혼조",
+      "기관계": "혼조",
+      "개인": "일관매도",
+      "사모": "당일이탈",
+      "금융투자": "꾸준매집"
+    },
+    "foreign_avg_price": 386450,
+    "foreign_avg_note": null,
+    "foreign_avg_vs_now_pct": -2.6,
+    "foreign_buy_qty": 280028,
+    "foreign_sell_qty": 141921,
+    "foreign_net_qty": 138107,
+    "foreign_net_ratio_pct": 49.3,
+    "close_range": {
+      "low": 329500,
+      "high": 400000
+    },
+    "foreign_ratio_delta_60d": 2.44,
+    "foreign_ratio_max": 23.43,
+    "foreign_ratio_min": 20.74,
+    "foreign_ratio_is_60d_high": false
+  },
+  "valuation_derived": {
+    "pbr": 0.75,
+    "roe_pct": 6.69,
+    "roe_used_pct": 6.69,
+    "roe_capped": false,
+    "roe_basis": "2026.12.(E)",
+    "roe_actual_pct": 6.18,
+    "roe_actual_basis": "2025.12.",
+    "roe_est_pct": 6.69,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 0.74,
+      "premium_pct": 1.6
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 0.56,
+      "premium_pct": 33.1
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 0.62,
+      "premium_pct": 22.0
+    },
+    "theo_band": {
+      "low": 0.56,
+      "high": 0.74
+    },
+    "band_pos": 1.4,
+    "verdict": "고평가"
+  },
+  "volume_stats": {
+    "avg20": 24872,
+    "avg60": 28863,
+    "ratio_20_60": 0.86,
+    "today": 13824,
+    "today_vs_60": 0.48
+  },
   "news": [
+    {
+      "title": "물가 2.8% 둔화?…식품부터 문구류까지 줄인상",
+      "office": "SBS Biz",
+      "date": "202608041825",
+      "url": "https://n.news.naver.com/mnews/article/374/0000525593"
+    },
+    {
+      "title": "'과자 먹으려다 머쓱' 2500만 조회수 아기에 대형 바나나킥 선물한 농...",
+      "office": "한국일보",
+      "date": "202608041738",
+      "url": "https://n.news.naver.com/mnews/article/469/0000946204"
+    },
     {
       "title": "[단독] 편의점 PB도 오른다…세븐일레븐 간편식 평균 5% 인상",
       "office": "헤럴드경제",
@@ -2869,18 +2968,6 @@
       "office": "주간동아",
       "date": "202608041142",
       "url": "https://n.news.naver.com/mnews/article/037/0000038617"
-    },
-    {
-      "title": "라면·콜라·아이스크림 최대 57% 할인… 8월 장바구니 할인전",
-      "office": "JIBS",
-      "date": "202608041113",
-      "url": "https://n.news.naver.com/mnews/article/661/0000081039"
-    },
-    {
-      "title": "[친절한 경제] 몰라서 못 받았다…병원비 본인부담상한제 날아간 돈만...",
-      "office": "SBS",
-      "date": "202608040909",
-      "url": "https://n.news.naver.com/mnews/article/055/0001377865"
     }
   ],
   "_errors": {}

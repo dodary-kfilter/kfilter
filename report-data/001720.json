@@ -2,7 +2,7 @@
   "code": "001720",
   "name": "신영증권",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:54",
+  "updated": "2026-08-04 19:15",
   "supply_10d": {
     "foreign_net_10d": 20044,
     "foreign_buydays": "8/10",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "5,269"
+      "value": "5,342"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "7.5억"
+      "value": "7.61억"
     },
     {
       "code": "marketValue",
@@ -2794,7 +2794,109 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": true,
+    "items": [
+      {
+        "title": "신영증권(주) (정정)매출액또는손익구조30%(대규모법인은15%)이상변경",
+        "datetime": "2026-05-27T06:53:35"
+      },
+      {
+        "title": "신영증권(주) 매출액또는손익구조30%(대규모법인은15%)이상변경",
+        "datetime": "2026-04-15T06:51:44"
+      }
+    ],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": true
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": -14421,
+      "외국인": -5054,
+      "기관계": 25481,
+      "금융투자": -9640,
+      "투신": -39734,
+      "사모": -4523,
+      "보험": 2362,
+      "은행": -1940,
+      "기타금융": 1,
+      "연기금": 78955,
+      "기타법인": -5686
+    },
+    "pattern": {
+      "외국인": "혼조",
+      "연기금": "꾸준매집",
+      "기관계": "꾸준매집",
+      "개인": "일관매도",
+      "사모": "일관매도",
+      "금융투자": "일관매도"
+    },
+    "foreign_avg_price": null,
+    "foreign_avg_note": "순매수 비중 3.4% (과소)",
+    "foreign_avg_vs_now_pct": null,
+    "foreign_buy_qty": 131716,
+    "foreign_sell_qty": 127247,
+    "foreign_net_qty": 4469,
+    "foreign_net_ratio_pct": 3.4,
+    "close_range": {
+      "low": 128000,
+      "high": 201000
+    },
+    "foreign_ratio_delta_60d": 0.25,
+    "foreign_ratio_max": 6.29,
+    "foreign_ratio_min": 5.85,
+    "foreign_ratio_is_60d_high": true
+  },
+  "valuation_derived": {
+    "pbr": 0.56,
+    "roe_pct": 8.04,
+    "roe_used_pct": 8.04,
+    "roe_capped": false,
+    "roe_basis": "2026.03.",
+    "roe_actual_pct": 8.04,
+    "roe_actual_basis": "2026.03.",
+    "roe_est_pct": null,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 1.01,
+      "premium_pct": -44.4
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 1.01,
+      "premium_pct": -44.7
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 0.84,
+      "premium_pct": -33.3
+    },
+    "theo_band": {
+      "low": 0.84,
+      "high": 1.01
+    },
+    "band_pos": -33.3,
+    "verdict": "저평가"
+  },
+  "volume_stats": {
+    "avg20": 11335,
+    "avg60": 19141,
+    "ratio_20_60": 0.59,
+    "today": 4016,
+    "today_vs_60": 0.21
+  },
   "news": [
+    {
+      "title": "레버리지 ETF 거래 꺽였지만...삼전·닉스 변동성은 ‘글쎄’",
+      "office": "중앙일보",
+      "date": "202608041653",
+      "url": "https://n.news.naver.com/mnews/article/025/0003542260"
+    },
     {
       "title": "미·일의 엔저 방어…원·달러 환율 1300원대 다시 볼까",
       "office": "경향신문",
@@ -2824,12 +2926,6 @@
       "office": "한국경제TV",
       "date": "202608041339",
       "url": "https://n.news.naver.com/mnews/article/215/0001261100"
-    },
-    {
-      "title": "“3분기도 최대 실적”…S-OIL 목표가 줄상향 [오늘, 이 종목]",
-      "office": "매경이코노미",
-      "date": "202608041221",
-      "url": "https://n.news.naver.com/mnews/article/024/0000107316"
     }
   ],
   "_errors": {}

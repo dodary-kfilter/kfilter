@@ -2,7 +2,7 @@
   "code": "011200",
   "name": "HMM",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:53",
+  "updated": "2026-08-04 19:14",
   "supply_10d": {
     "foreign_net_10d": 4183334,
     "foreign_buydays": "9/10",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,675,523"
+      "value": "1,712,250"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "354억"
+      "value": "362억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1645,7 @@
       "nm": "HMM",
       "bnm": "신한투자증권",
       "tit": "우려 속 반복되는 단기 호황",
-      "rcnt": "14249",
+      "rcnt": "14266",
       "wdt": "20260722"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "HMM",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 점점 더 지연되는 다운사이클 진입",
-      "rcnt": "7415",
+      "rcnt": "7422",
       "wdt": "20260706"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "HMM",
       "bnm": "한국투자증권",
       "tit": "SCFI 전쟁 이후 두 배 넘게 상승",
-      "rcnt": "18155",
+      "rcnt": "18162",
       "wdt": "20260608"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "HMM",
       "bnm": "미래에셋증권",
       "tit": "상승하는 운임, 비용 증가 상쇄 기대",
-      "rcnt": "9757",
+      "rcnt": "9762",
       "wdt": "20260514"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "HMM",
       "bnm": "하나증권",
       "tit": "1Q26 Re: 단기 Good, 중장기는 아직 우려가 더 많다",
-      "rcnt": "6439",
+      "rcnt": "6440",
       "wdt": "20260514"
     }
   ],
@@ -2845,6 +2845,93 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": false,
+    "items": [],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": false
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": -6177247,
+      "외국인": 1554823,
+      "기관계": -376021,
+      "금융투자": 453535,
+      "투신": 364171,
+      "사모": -188269,
+      "보험": -46639,
+      "은행": -6446,
+      "기타금융": -23327,
+      "연기금": -929046,
+      "기타법인": 5068720
+    },
+    "pattern": {
+      "외국인": "꾸준매집",
+      "연기금": "혼조",
+      "기관계": "혼조",
+      "개인": "일관매도",
+      "사모": "반전(복원중)",
+      "금융투자": "꾸준매집"
+    },
+    "foreign_avg_price": 21168,
+    "foreign_avg_note": null,
+    "foreign_avg_vs_now_pct": 0.2,
+    "foreign_buy_qty": 13118866,
+    "foreign_sell_qty": 5365557,
+    "foreign_net_qty": 7753309,
+    "foreign_net_ratio_pct": 59.1,
+    "close_range": {
+      "low": 18310,
+      "high": 22150
+    },
+    "foreign_ratio_delta_60d": 0.86,
+    "foreign_ratio_max": 8.32,
+    "foreign_ratio_min": 7.33,
+    "foreign_ratio_is_60d_high": true
+  },
+  "valuation_derived": {
+    "pbr": 0.72,
+    "roe_pct": 6.22,
+    "roe_used_pct": 6.22,
+    "roe_capped": false,
+    "roe_basis": "2026.12.(E)",
+    "roe_actual_pct": 6.9,
+    "roe_actual_basis": "2025.12.",
+    "roe_est_pct": 6.22,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 0.64,
+      "premium_pct": 11.8
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 0.41,
+      "premium_pct": 77.0
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 0.54,
+      "premium_pct": 34.2
+    },
+    "theo_band": {
+      "low": 0.41,
+      "high": 0.64
+    },
+    "band_pos": 12.5,
+    "verdict": "고평가"
+  },
+  "volume_stats": {
+    "avg20": 1502065,
+    "avg60": 1589712,
+    "ratio_20_60": 0.94,
+    "today": 1078734,
+    "today_vs_60": 0.68
+  },
   "news": [
     {
       "title": "\"유류비, 운임 급등으로 상쇄\"…중동 전쟁에 해운 2Q '반사이익'",

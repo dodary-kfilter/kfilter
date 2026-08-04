@@ -2,7 +2,7 @@
   "code": "036460",
   "name": "한국가스공사",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:53",
+  "updated": "2026-08-04 19:14",
   "supply_10d": {
     "foreign_net_10d": 450993,
     "foreign_buydays": "9/10",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "183,472"
+      "value": "190,694"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "62.8억"
+      "value": "65.3억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1645,7 @@
       "nm": "한국가스공사",
       "bnm": "하나증권",
       "tit": "하반기 자원개발 실적 극대화 가능",
-      "rcnt": "6494",
+      "rcnt": "6498",
       "wdt": "20260514"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "한국가스공사",
       "bnm": "대신증권",
       "tit": "영업실적 개선. 미수금 회수는 중장기적 접근 필요",
-      "rcnt": "4104",
+      "rcnt": "4108",
       "wdt": "20260514"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "한국가스공사",
       "bnm": "유진투자증권",
       "tit": "소리 없이 강하다",
-      "rcnt": "4436",
+      "rcnt": "4438",
       "wdt": "20260514"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "한국가스공사",
       "bnm": "한화투자증권",
       "tit": "배당이 아쉬우니",
-      "rcnt": "13268",
+      "rcnt": "13269",
       "wdt": "20260305"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "한국가스공사",
       "bnm": "하나증권",
       "tit": "올해도 피할 수 없었던 해외사업 손상차손",
-      "rcnt": "10886",
+      "rcnt": "10887",
       "wdt": "20260227"
     }
   ],
@@ -2845,6 +2845,110 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": true,
+    "items": [
+      {
+        "title": "한국가스공사(주) 영업(잠정)실적(공정공시)",
+        "datetime": "2026-07-09T06:51:50"
+      },
+      {
+        "title": "한국가스공사(주) 영업(잠정)실적(공정공시)",
+        "datetime": "2026-06-11T06:50:41"
+      },
+      {
+        "title": "한국가스공사(주) 영업(잠정)실적(공정공시)",
+        "datetime": "2026-05-14T06:51:04"
+      },
+      {
+        "title": "한국가스공사(주) 연결재무제표기준영업(잠정)실적(공정공시)",
+        "datetime": "2026-05-13T06:51:00"
+      }
+    ],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": true
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": -608245,
+      "외국인": 875976,
+      "기관계": -271801,
+      "금융투자": -86314,
+      "투신": -253220,
+      "사모": -82727,
+      "보험": -27377,
+      "은행": 0,
+      "기타금융": -375,
+      "연기금": 178212,
+      "기타법인": 6067
+    },
+    "pattern": {
+      "외국인": "꾸준매집",
+      "연기금": "당일이탈",
+      "기관계": "반전(복원중)",
+      "개인": "일관매도",
+      "사모": "혼조",
+      "금융투자": "혼조"
+    },
+    "foreign_avg_price": 36090,
+    "foreign_avg_note": null,
+    "foreign_avg_vs_now_pct": -5.5,
+    "foreign_buy_qty": 2248272,
+    "foreign_sell_qty": 715344,
+    "foreign_net_qty": 1532928,
+    "foreign_net_ratio_pct": 68.2,
+    "close_range": {
+      "low": 31700,
+      "high": 38100
+    },
+    "foreign_ratio_delta_60d": 1.72,
+    "foreign_ratio_max": 12.18,
+    "foreign_ratio_min": 10.4,
+    "foreign_ratio_is_60d_high": true
+  },
+  "valuation_derived": {
+    "pbr": 0.26,
+    "roe_pct": 8.86,
+    "roe_used_pct": 8.86,
+    "roe_capped": false,
+    "roe_basis": "2026.12.(E)",
+    "roe_actual_pct": 1.23,
+    "roe_actual_basis": "2025.12.",
+    "roe_est_pct": 8.86,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 1.17,
+      "premium_pct": -77.8
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 1.29,
+      "premium_pct": -79.8
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 0.98,
+      "premium_pct": -73.4
+    },
+    "theo_band": {
+      "low": 0.98,
+      "high": 1.29
+    },
+    "band_pos": -73.5,
+    "verdict": "저평가"
+  },
+  "volume_stats": {
+    "avg20": 155673,
+    "avg60": 224793,
+    "ratio_20_60": 0.69,
+    "today": 143645,
+    "today_vs_60": 0.64
+  },
   "news": [
     {
       "title": "\"당신의 '상생기업'에 투표하세요\"...중기부, '올해의 상생기업대상'...",

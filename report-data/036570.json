@@ -2,7 +2,7 @@
   "code": "036570",
   "name": "NC",
   "market": "KOSPI",
-  "updated": "2026-08-04 16:53",
+  "updated": "2026-08-04 19:15",
   "supply_10d": {
     "foreign_net_10d": 89895,
     "foreign_buydays": "8/10",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "58,459"
+      "value": "59,531"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "139억"
+      "value": "141억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1645,7 @@
       "nm": "NC",
       "bnm": "삼성증권",
       "tit": "일부 신작 지연에도 모멘텀은 풍부",
-      "rcnt": "2319",
+      "rcnt": "2344",
       "wdt": "20260730"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "NC",
       "bnm": "신한투자증권",
       "tit": "지금 이 주식을 사기 좋은 이유",
-      "rcnt": "3308",
+      "rcnt": "3326",
       "wdt": "20260724"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "NC",
       "bnm": "교보증권",
       "tit": "내년까지 마련된 이익 성장 스토리",
-      "rcnt": "10221",
+      "rcnt": "10234",
       "wdt": "20260710"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "NC",
       "bnm": "하나증권",
       "tit": "현재도, 미래도 밝다",
-      "rcnt": "8295",
+      "rcnt": "8305",
       "wdt": "20260709"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "NC",
       "bnm": "한화투자증권",
       "tit": "3분기는 비중 확대 구간",
-      "rcnt": "7241",
+      "rcnt": "7251",
       "wdt": "20260708"
     }
   ],
@@ -2845,6 +2845,98 @@
       "author": "KOSCOM"
     }
   ],
+  "earnings_alert": {
+    "disclosed": true,
+    "items": [
+      {
+        "title": "(주)엔씨 연결재무제표기준영업(잠정)실적(공정공시)",
+        "datetime": "2026-05-13T06:50:03"
+      }
+    ],
+    "consensus_cols": [
+      "2026.06."
+    ],
+    "mismatch": true
+  },
+  "supply_derived": {
+    "cum_21_60d": {
+      "개인": -582506,
+      "외국인": 332786,
+      "기관계": 266760,
+      "금융투자": -9025,
+      "투신": -34392,
+      "사모": 18352,
+      "보험": -8570,
+      "은행": -977,
+      "기타금융": -1567,
+      "연기금": 302939,
+      "기타법인": -16142
+    },
+    "pattern": {
+      "외국인": "꾸준매집",
+      "연기금": "U자형",
+      "기관계": "U자형",
+      "개인": "일관매도",
+      "사모": "일관매도",
+      "금융투자": "당일이탈"
+    },
+    "foreign_avg_price": 227987,
+    "foreign_avg_note": null,
+    "foreign_avg_vs_now_pct": 5.5,
+    "foreign_buy_qty": 961543,
+    "foreign_sell_qty": 401454,
+    "foreign_net_qty": 560089,
+    "foreign_net_ratio_pct": 58.2,
+    "close_range": {
+      "low": 210500,
+      "high": 338000
+    },
+    "foreign_ratio_delta_60d": 2.48,
+    "foreign_ratio_max": 37.92,
+    "foreign_ratio_min": 35.14,
+    "foreign_ratio_is_60d_high": true
+  },
+  "valuation_derived": {
+    "pbr": 1.32,
+    "roe_pct": 12.96,
+    "roe_used_pct": 12.96,
+    "roe_capped": false,
+    "roe_basis": "2026.12.(E)",
+    "roe_actual_pct": 10.79,
+    "roe_actual_basis": "2025.12.",
+    "roe_est_pct": 12.96,
+    "base": {
+      "coe": 0.08,
+      "g": 0.03,
+      "theo_pbr": 1.99,
+      "premium_pct": -33.7
+    },
+    "g5": {
+      "coe": 0.08,
+      "g": 0.05,
+      "theo_pbr": 2.65,
+      "premium_pct": -50.3
+    },
+    "coe9": {
+      "coe": 0.09,
+      "g": 0.03,
+      "theo_pbr": 1.66,
+      "premium_pct": -20.5
+    },
+    "theo_band": {
+      "low": 1.66,
+      "high": 2.65
+    },
+    "band_pos": -20.5,
+    "verdict": "저평가"
+  },
+  "volume_stats": {
+    "avg20": 81803,
+    "avg60": 136391,
+    "ratio_20_60": 0.6,
+    "today": 43882,
+    "today_vs_60": 0.32
+  },
   "news": [
     {
       "title": "프라이팬에 '배그' 못 쓴다…상표 등록 무효",
