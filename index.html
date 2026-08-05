@@ -426,6 +426,101 @@ function fmtScreenList(items, isV){
   }).join('\n');
 }
 
+// ── 개별 종목 프롬프트 (저가매수형 / 모멘텀형) ──
+//   report-data 파일이 없는 종목이므로 스캔 지표를 직접 담고, 나머지는 지침대로 1차(다음)에서 취득.
+function fmtOne(x){
+  const s=(x.labels&&x.labels.supply)||null, v=(x.labels&&x.labels.valuation)||{};
+  return `[스캔 지표 — ${DATA&&DATA.updated?DATA.updated+' 기준':''}]
+· 현재가 ${Math.round(x.cur).toLocaleString()}원 (${(x.changeRate>=0?'+':'')+x.changeRate.toFixed(2)}%) · 시총 ${x.mcap?Math.round(x.mcap/1e8).toLocaleString()+'억':'—'} · ${x.sector||''}
+· 이평 MA20 ${Math.round(x.ma20).toLocaleString()} · MA20이격 ${x.ma20_gap.toFixed(1)}% · 정배열 ${x.daily_aligned?'○':'✗'}${x.entry_days!=null?' (진입 '+x.entry_days+'일차)':''} · 주봉MA60 위 ${x.weekly_ma60_above?'○':'✗'}
+· 수익률 1M ${x.r1!=null?x.r1.toFixed(1)+'%':'—'} · 6M ${x.r6!=null?x.r6.toFixed(1)+'%':'—'} · 52주 ${x.low52w?Math.round(x.low52w).toLocaleString():'—'}~${x.high52w?Math.round(x.high52w).toLocaleString():'—'} (위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'})
+· 거래량 20일/60일 ${x.v2060?x.v2060.toFixed(2)+'배':'—'}
+· 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'} · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'★업종PER 무효(음수·200초과) → 절대PER+동종 개별로 대체'} · PBR ${v.pbr!=null?v.pbr:'—'} · DPS ${v.dps!=null?v.dps:'—'}
+· 수급 ${s?`외국인 ${s.f_buydays||'-'} (${s.f_net!=null?s.f_net.toLocaleString():'—'}) / 연기금 ${s.p_buydays||'-'} (${s.p_net!=null?s.p_net.toLocaleString():'—'})${s.is_zero_rank?' ★0순위 동시통과':''}`:'신호 없음 — 기술만 좋고 수급은 아직 없다(더 이른 단계일 수 있음)'}`;
+}
+
+function buildValueOne(x){
+  const eq=(x.eps_quarters||[]).map(q=>`${(q.date||'').slice(0,7)}: EPS ${q.eps!=null?Math.round(q.eps).toLocaleString():'—'} · 영업익 ${q.op!=null?Math.round(q.op/1e8).toLocaleString()+'억':'—'} · 매출 ${q.sales!=null?Math.round(q.sales/1e8).toLocaleString()+'억':'—'}`).join('\n  ');
+  return `${x.name}(${x.code}) — 저가매수형 통과 종목 정밀 분석.
+
+이 종목은 아래 조건을 전부 통과했다: 흑자 · 주봉MA60 위(장기 구조 안 무너짐) · 6개월 수익률 하위40%(충분히 빠짐) · 1개월 수익률 상위40%(돌아서는 중) · PER 하위40% · 최근분기 EPS > 직전분기.
+※ "52주 하단"은 전수 62%가 통과해 정보량이 없어 조건에서 뺐다. 핵심은 "싸다"가 아니라 "안 무너졌다"이다.
+
+${fmtOne(x)}
+
+[EPS 4분기]
+  ${eq||'—'}
+
+${RULE_KR}
+
+${RULE_COMMON}
+
+[★답해야 할 질문 — 순서대로. 이 순서가 논리의 축이다]
+1. 무슨 사업으로 돈을 버나 — companySummary(다음 quotes)와 검색으로 사업 구조를 먼저 파악하라. ★이게 2·3·4번의 전제다. 사업을 알면 계절성과 매크로 민감도가 자동으로 나온다.
+2. 왜 쌌나 — 6개월간 무엇 때문에 빠졌는지. 실적 훼손 / 섹터 디레이팅 / 일회성 악재 / 시장 전체 하락에 휩쓸림. 공시·뉴스·업황을 찾아 규명하고, 원인 불명이면 "확인 불가"로 명시하라.
+3. ★그 이유가 해소됐나 — 이 리포트의 핵심. 하락 원인이 그대로면 1개월 반등은 기술적 되돌림에 불과하다. 해소 근거를 공시·실적·업황에서 찾아라. 없으면 없다고 써라.
+4. ★EPS 증가가 진짜인가 — 위 4분기를 보고 판정하라.
+   · 계절 반작용인가 (1번의 사업 특성으로 판단. 예: 증권·지주는 4Q에 성과급·충당금이 몰려 1Q가 좋게 나옴)
+   · 영업이익도 같이 늘었나 — EPS만 늘었으면 영업외·세금·주식수 변동
+   · 매크로 기여인가 — 원자재·환율·운임 등 외생 요인
+   · ★공시에 「영업(잠정)실적」이 있는데 위 4분기에 그 분기가 없으면 DART 원문으로 확인하라.
+5. 촉매 — 밸류 갭이 좁혀질 조건. 한국은 "싸면 오른다"가 자동으로 작동하지 않는다(KOSPI 총주주환원 1%대). 실적 서프라이즈 / 수주 / 정책 / 주주환원 / 지배구조 변화 중 무엇이 있는지 구체적으로. 없으면 "촉매 부재 — 시간이 오래 걸린다"로 명시하라.
+6. 밸류의 크기 — PER이 얼마나 싼 건지 수치로. 업종 대비 몇 %(무효면 무효라고), 동종 개별 종목 대비. PBR은 이론 PBR과 비교.
+7. 매물대·지지 — 일봉 2년(days)에서 거래량 집중 구간을 계산해 위쪽 저항과 아래쪽 지지를 짚어라.
+
+[출력]
+■ 결론 먼저 — 확신도 / 비중 / 시간축
+■ 사업 (2~3줄)
+■ 왜 쌌나 → 해소 여부 ★핵심
+■ EPS 증가 판정 (계절성 vs 실질)
+■ 촉매
+■ 밸류·매물대
+■ 판단 근거 3~4줄
+■ 틀리는 조건 — "X 확인되면 틀린 것, 그때 나갈 자리는 Y원"`;
+}
+
+function buildMomentumOne(x){
+  return `${x.name}(${x.code}) — 모멘텀형 통과 종목 정밀 분석.
+
+이 종목은 아래 조건을 전부 통과했다: 흑자 · 일봉 정배열(MA5>MA20>MA60) · 정배열 진입 20일 이내 · 1개월 수익률 상위20% · 거래량 20일/60일 > 1.0.
+※ 필터는 "오른다"만 알려준다. ★왜 오르는지는 이 리포트가 찾아야 한다.
+
+${fmtOne(x)}
+
+${RULE_KR}
+
+${RULE_COMMON}
+
+[★답해야 할 질문]
+1. ★왜 오르나 — 이게 전부다. 아래로 분류하라(복수 가능). 공시·뉴스·수급을 근거로.
+   ① 실적 — 잠정실적 공시, 컨센 대비 상회
+   ② 수주·계약 — 규모, 매출 대비 비중, 납기
+   ③ 정책·업황 — 구조적인가 헤드라인인가
+   ④ 수급 — 외인·연기금 유입 (다만 결과일 수 있다)
+   ⑤ 낙폭과대 반등 — 재료 없이 되돌림
+   원인 미상이면 "확인 불가"로 명시. 추정하지 마라.
+2. 일회성인가 지속적인가 — ①②는 대개 지속, ③은 사안별, ⑤는 일회성. ④만 있으면 "수급만으로 오르는 중"으로 명시하고 리스크로 잡아라.
+3. 얼마나 갔나 — 과열. 위 MA20 이격·1M 수익률·52주 위치를 근거로. ★이격 25% 초과면 추격 부담을 명시하라. ※지수가 ±10% 이상 움직인 날의 개별 등락률은 무의미하니 월간 상대강도와 같이 봐라.
+4. 어디서 막히나 — 매물대. 일봉 2년(days)에서 거래량 집중 구간을 계산해 현재가 위 저항을 짚어라. 공백이면 공백이라 쓰되, ★위로 저항이 없으면 아래로 지지도 없다는 걸 같이 명시하라.
+5. 실적이 받쳐주나 — 다음 financials(확정치)로 최근 분기 매출·영업이익·OPM 흐름을 확인. 주가 상승이 실적과 정합적인지, 아니면 기대만 앞선 것인지 판정.
+6. 언제 끝나나 — 추세 철회 조건을 가격으로. "X원 이탈 시 이 판단은 틀린 것."
+
+[★주의]
+- 모멘텀형은 그 자체로 매수 근거가 아니다. "왜 오르는지"가 확인돼야 근거가 된다.
+- ①②가 없고 ⑤만 있으면 확신도를 올리지 마라.
+- 얇은 거래량 급등은 "에너지 부족"이 아니라 "매물 소진"일 수 있다. 직전 며칠 투매 여부·시가갭·저가 이탈폭을 같이 봐라.
+
+[출력]
+■ 결론 먼저 — 확신도 / 비중 / 시간축
+■ ★왜 오르나 — ①~⑤ 분류 + 근거 (가장 자세히)
+■ 지속성 판정
+■ 과열도
+■ 매물대·저항
+■ 실적 정합성
+■ 판단 근거 3~4줄
+■ 철회 조건 — "X원 이탈 시 틀린 것"`;
+}
+
 function buildValuePrompt(){
   const items=(DATA&&DATA.value_pick)||[];
   if(!items.length) return '오늘 저가매수형 조건을 충족한 종목이 없다. (개수를 맞추려 기준을 풀지 않는다)';
@@ -830,6 +925,19 @@ function hardReload(){
   const u = location.origin + location.pathname + '?t=' + Date.now();
   location.replace(u);
 }
+function copyOne(ev, code, isV){
+  ev.stopPropagation();
+  const pool = isV ? (DATA&&DATA.value_pick||[]) : (DATA&&DATA.momentum||[]);
+  const it = pool.find(x=>x.code===code);
+  if(!it) return;
+  const text = isV ? buildValueOne(it) : buildMomentumOne(it);
+  const btn=ev.currentTarget;
+  const done=()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  }else{ fallbackCopy(text,done); }
+}
 function copyScreen(ev){
   ev.stopPropagation();
   const text = CUR==='value_pick' ? buildValuePrompt()
@@ -859,7 +967,8 @@ function sectionScreen(items, isV){
     const warn = (!isV && x.ma20_gap>25) ? ' <b style="color:#f85149">과열</b>' : '';
     return '<div class="pcard">'
       +'<div class="prow"><div class="pname">'+(i+1)+'. <b>'+esc(x.name)+'</b> <span class="pcode">'+x.code+'</span>'
-      +' <span style="color:var(--dim);font-size:11px">'+esc(x.sector||'')+'</span></div></div>'
+      +' <span style="color:var(--dim);font-size:11px">'+esc(x.sector||'')+'</span></div>'
+      +'<button class="copybtn" onclick="copyOne(event,\''+x.code+'\','+(isV?'1':'0')+')" title="이 종목 정밀 분석 프롬프트">프롬프트</button></div>'
       +'<div class="psub">'+fmtN(x.cur)+'원 '+fmtPct(x.changeRate)+' · '+mid+warn+'</div>'
       +'<div class="psub">PER '+perTxt+' · PBR '+(val.pbr!=null?val.pbr:'—')+' · '+supTxt+'</div>'
       +'</div>';
