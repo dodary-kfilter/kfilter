@@ -2,9 +2,9 @@
   "code": "003230",
   "name": "삼양식품",
   "market": "KOSPI",
-  "updated": "2026-08-05 08:57",
+  "updated": "2026-08-05 13:47",
   "supply_10d": {
-    "foreign_net_10d": 62470,
+    "foreign_net_10d": 60231,
     "foreign_buydays": "7/10",
     "pension_net_10d": 17059,
     "pension_buydays": "7/10"
@@ -13,13 +13,13 @@
     "recent_daily": [
       {
         "date": "2026-08-05",
-        "close": 1219000,
+        "close": 1205000,
         "foreignRatio": 16.47,
         "개인": 0,
-        "외국인": 0,
-        "기관계": 0,
+        "외국인": -2240,
+        "기관계": -1000,
         "금융투자": 0,
-        "투신": 0,
+        "투신": -1000,
         "사모": 0,
         "보험": 0,
         "은행": 0,
@@ -974,10 +974,10 @@
     ],
     "cum_5d": {
       "개인": 1656,
-      "외국인": 12101,
-      "기관계": -9915,
+      "외국인": 9861,
+      "기관계": -10915,
       "금융투자": -2071,
-      "투신": -3097,
+      "투신": -4097,
       "사모": -11167,
       "보험": -370,
       "은행": 89,
@@ -987,10 +987,10 @@
     },
     "cum_20d": {
       "개인": -59450,
-      "외국인": 60434,
-      "기관계": -2110,
+      "외국인": 58194,
+      "기관계": -3110,
       "금융투자": -2216,
-      "투신": 31371,
+      "투신": 30371,
       "사모": -54644,
       "보험": 2114,
       "은행": -402,
@@ -1000,10 +1000,10 @@
     },
     "cum_60d": {
       "개인": -99625,
-      "외국인": 100429,
-      "기관계": 14899,
+      "외국인": 98189,
+      "기관계": 13899,
       "금융투자": -26969,
-      "투신": 37034,
+      "투신": 36034,
       "사모": -56566,
       "보험": 10260,
       "은행": -311,
@@ -1255,23 +1255,23 @@
     ]
   },
   "price_daily": {
-    "now": 1219000,
-    "prevClose": 1151000,
-    "changePct": 5.91,
+    "now": 1207000,
+    "prevClose": 1219000,
+    "changePct": -0.98,
     "ma": {
-      "ma5": 1200200.0,
-      "ma20": 1144700.0,
-      "ma60": 1182050.0,
-      "ma120": 1192200.0,
+      "ma5": 1197600.0,
+      "ma20": 1143950.0,
+      "ma60": 1179500.0,
+      "ma120": 1193291.7,
       "aligned": false,
       "vs": {
-        "ma5": 1.57,
-        "ma20": 6.49,
-        "ma60": 3.13,
-        "ma120": 2.25
+        "ma5": 0.78,
+        "ma20": 5.51,
+        "ma60": 2.33,
+        "ma120": 1.15
       }
     },
-    "trend20": 11.02,
+    "trend20": -1.23,
     "pocket": [
       {
         "low": 1148600,
@@ -1281,27 +1281,27 @@
       {
         "low": 1190800,
         "high": 1211900,
-        "volPct": 9.4
+        "volPct": 9.7
       },
       {
         "low": 1211900,
         "high": 1233000,
-        "volPct": 11.9
+        "volPct": 11.8
       }
     ]
   },
   "price_weekly": {
-    "now": 1219000,
+    "now": 1207000,
     "ma": {
-      "ma5": 1149200.0,
-      "ma10": 1133600.0,
-      "ma20": 1217650.0,
-      "ma60": 1289433.3
+      "ma5": 1146800.0,
+      "ma10": 1132400.0,
+      "ma20": 1217050.0,
+      "ma60": 1289233.3
     },
     "aligned": false,
     "rangeHigh": 1616000,
     "rangeLow": 79400,
-    "posPct": 74.2,
+    "posPct": 73.4,
     "recent": [
       {
         "d": "20260213",
@@ -1404,22 +1404,22 @@
         "c": 1168000
       },
       {
-        "d": "20260804",
-        "c": 1219000
+        "d": "20260805",
+        "c": 1207000
       }
     ]
   },
   "price_monthly": {
-    "now": 1219000,
+    "now": 1207000,
     "ma": {
-      "ma6": 1208666.7,
-      "ma12": 1267166.7,
-      "ma24": 1101708.3
+      "ma6": 1206666.7,
+      "ma12": 1266166.7,
+      "ma24": 1101208.3
     },
     "aligned": false,
     "rangeHigh": 1566000,
     "rangeLow": 26700,
-    "posPct": 77.5,
+    "posPct": 76.7,
     "recent": [
       {
         "d": "20240930",
@@ -1514,8 +1514,8 @@
         "c": 1168000
       },
       {
-        "d": "20260804",
-        "c": 1219000
+        "d": "20260805",
+        "c": 1207000
       }
     ]
   },
@@ -1538,11 +1538,11 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "1,219,000",
+      "value": "1,248,000",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
@@ -1558,17 +1558,17 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "6,177"
+      "value": "55,073"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "74.4억"
+      "value": "669억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "9조 1,827억"
+      "value": "9조 923억"
     },
     {
       "code": "foreignRate",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "21.11배",
+      "value": "20.91배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "16.28배"
+      "value": "16.12배"
     },
     {
       "code": "cnsEps",
@@ -1610,7 +1610,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "6.61배",
+      "value": "6.55배",
       "valueDesc": "2026.03."
     },
     {
@@ -1622,7 +1622,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "0.39%",
+      "value": "0.40%",
       "valueDesc": "2026.02."
     },
     {
@@ -1645,7 +1645,7 @@
       "nm": "삼양식품",
       "bnm": "유안타증권",
       "tit": "이제는 주가가 답할 차례",
-      "rcnt": "6694",
+      "rcnt": "6729",
       "wdt": "20260721"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "삼양식품",
       "bnm": "교보증권",
       "tit": "탄탄한 불닭, 여전한 수요",
-      "rcnt": "5807",
+      "rcnt": "5836",
       "wdt": "20260720"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "삼양식품",
       "bnm": "신한투자증권",
       "tit": "숫자가 증명하는 경쟁력",
-      "rcnt": "4961",
+      "rcnt": "4977",
       "wdt": "20260713"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "삼양식품",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 시장 기대 충족 전망",
-      "rcnt": "6568",
+      "rcnt": "6575",
       "wdt": "20260702"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "삼양식품",
       "bnm": "한화투자증권",
       "tit": "공급 병목 완화에 따른 추가 성장 기대",
-      "rcnt": "11443",
+      "rcnt": "11447",
       "wdt": "20260514"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "271560",
       "stockName": "오리온",
       "sosok": "0",
-      "closePrice": "132,700",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "130,300",
+      "compareToPreviousClosePrice": "-2,400",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "-1.81",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,245,470",
+      "marketValue": "5,150,601",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "097950",
       "stockName": "CJ제일제당",
       "sosok": "0",
-      "closePrice": "195,100",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "198,300",
+      "compareToPreviousClosePrice": "3,200",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "1.64",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,937,071",
+      "marketValue": "2,985,245",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "026960",
       "stockName": "동서",
       "sosok": "0",
-      "closePrice": "25,400",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "25,350",
+      "compareToPreviousClosePrice": "-50",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "-0.20",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,532,380",
+      "marketValue": "2,527,395",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "140410",
       "stockName": "메지온",
       "sosok": "1",
-      "closePrice": "54,400",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "56,300",
+      "compareToPreviousClosePrice": "1,900",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "3.49",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,664,966",
+      "marketValue": "1,723,117",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "006040",
       "stockName": "동원산업",
       "sosok": "0",
-      "closePrice": "36,950",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "36,000",
+      "compareToPreviousClosePrice": "-950",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "-2.57",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,631,003",
+      "marketValue": "1,589,069",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2971,13 +2971,13 @@
       "사모": "일관매도",
       "금융투자": "일관매도"
     },
-    "foreign_avg_price": 1224137,
+    "foreign_avg_price": 1224574,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": -0.4,
+    "foreign_avg_vs_now_pct": -1.6,
     "foreign_buy_qty": 288973,
-    "foreign_sell_qty": 188544,
-    "foreign_net_qty": 100429,
-    "foreign_net_ratio_pct": 34.8,
+    "foreign_sell_qty": 190784,
+    "foreign_net_qty": 98189,
+    "foreign_net_ratio_pct": 34.0,
     "close_range": {
       "low": 1053000,
       "high": 1444000
@@ -2988,7 +2988,7 @@
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
-    "pbr": 6.61,
+    "pbr": 6.55,
     "roe_pct": 37.24,
     "roe_used_pct": 25.0,
     "roe_capped": true,
@@ -3000,41 +3000,47 @@
       "coe": 0.08,
       "g": 0.03,
       "theo_pbr": 4.4,
-      "premium_pct": 50.2
+      "premium_pct": 48.9
     },
     "g5": {
       "coe": 0.08,
       "g": 0.05,
       "theo_pbr": 6.67,
-      "premium_pct": -0.8
+      "premium_pct": -1.8
     },
     "coe9": {
       "coe": 0.09,
       "g": 0.03,
       "theo_pbr": 3.67,
-      "premium_pct": 80.3
+      "premium_pct": 78.6
     },
     "theo_band": {
       "low": 3.67,
       "high": 10.75
     },
-    "band_pos": 41.5,
+    "band_pos": 40.7,
     "verdict": "밴드 내",
-    "note": "이론 PBR 3.67~10.75 밴드의 42% 지점. ROE 지속가능성이 판단을 가른다."
+    "note": "이론 PBR 3.67~10.75 밴드의 41% 지점. ROE 지속가능성이 판단을 가른다."
   },
   "volume_stats": {
-    "avg20": 64074,
-    "avg60": 63201,
-    "ratio_20_60": 1.01,
-    "today": 66134,
-    "today_vs_60": 1.05
+    "avg20": 65147,
+    "avg60": 63035,
+    "ratio_20_60": 1.03,
+    "today": 35444,
+    "today_vs_60": 0.56
   },
   "news": [
     {
-      "title": "불닭에 꽂힌 투썸플레이스, 이번엔 바게트 샌드위치까지",
-      "office": "한국경제",
-      "date": "202608050840",
-      "url": "https://n.news.naver.com/mnews/article/015/0005317468"
+      "title": "투썸플레이스, 삼양식품 불닭 손잡았다…델리 2종 출시",
+      "office": "이데일리",
+      "date": "202608051147",
+      "url": "https://n.news.naver.com/mnews/article/018/0006345006"
+    },
+    {
+      "title": "\"6일까지 납품해달라\" 공문 돌린 홈플러스…식품기업들 \"밀린 돈부터...",
+      "office": "머니투데이",
+      "date": "202608051125",
+      "url": "https://n.news.naver.com/mnews/article/008/0005395917"
     },
     {
       "title": "[기자의 눈]반도체만 있는 게 아니다…조용하지만 강한 'K-푸드'",
@@ -3059,12 +3065,6 @@
       "office": "뉴스1",
       "date": "202608041608",
       "url": "https://n.news.naver.com/mnews/article/421/0009096819"
-    },
-    {
-      "title": "진격의 불닭볶음면, 진라면 제쳤다…2위 짜파게티 '위협'",
-      "office": "아시아경제",
-      "date": "202608041601",
-      "url": "https://n.news.naver.com/mnews/article/277/0005798778"
     }
   ],
   "_errors": {}
