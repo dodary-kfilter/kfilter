@@ -158,9 +158,15 @@ def fetch_prices(symbol_codes):
                 for q in (d.get("quotes") or []):
                     sc = q.get("symbolCode")
                     if sc:
+                        tp = q.get("tradePrice")
+                        cr = q.get("changeRate")
+                        # ★전일 종가 역산 — 다음 PER은 '전일종가 ÷ EPS' 기준이다.
+                        #   당일가로 계산하면 장중 등락만큼 PER이 왜곡된다(대원전선 +13.7%일 때 PER 13% 부풀려짐).
+                        prev = (tp / (1 + cr)) if (tp and cr is not None and (1 + cr) != 0) else tp
                         out[sc] = {
-                            "price": q.get("tradePrice"),
-                            "changeRate": q.get("changeRate"),
+                            "price": tp,
+                            "prevClose": prev,
+                            "changeRate": cr,
                             "volume": q.get("accTradeVolume"),
                             "amount": q.get("accTradePrice"),
                             "foreignRatio": q.get("foreignRatio"),
@@ -314,8 +320,9 @@ def run_screeners(supply_map=None):
             "sector": f.get("sector"),
             "cur": cur, "changeRate": (p.get("changeRate") or 0) * 100,
             "volume": p.get("volume"), "foreignRatio": p.get("foreignRatio"),
-            # PER은 당일가 ÷ 캐시EPS (매일 계산 가능 → quotes 호출 불필요)
-            "per": (cur / eps) if (eps and eps > 0) else None,
+            # ★PER은 '전일종가 ÷ EPS' — 다음 산출 기준과 동일(실측 검증: PER×EPS = 전일종가).
+            #   당일가로 계산하면 장중 등락만큼 왜곡되어 '저가매수형 PER 하위40%' 판정이 틀어진다.
+            "per": ((p.get("prevClose") or cur) / eps) if (eps and eps > 0) else None,
             "pbr": f.get("pbr"), "dps": f.get("dps"),
             "sectorPer": f.get("sectorPer"), "mcap": f.get("mcap"),
             **ind,

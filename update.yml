@@ -5,7 +5,7 @@ on:
     # 매 평일 한국시간 19:00 (UTC 10:00) 실행. 장 마감(시간외 18:00) + 수급 확정 후.
     # ※ GitHub 스케줄은 부하 시 지연될 수 있어 실제 실행은 다소 늦어질 수 있음(데이터엔 무해).
     - cron: '0 10 * * 1-5'
-  workflow_dispatch:   # 수동 실행 버튼도 제공
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -28,12 +28,15 @@ jobs:
       - name: 스캐너 실행
         run: python scanner.py
         env:
-          RUN_TRIGGER: ${{ github.event_name }}   # schedule=예약(가드 적용) / workflow_dispatch=수동(항상 실행)
+          RUN_TRIGGER: ${{ github.event_name }}
 
       - name: 결과 커밋
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
+          # 파이썬 캐시는 커밋하지 않는다(.gitignore로도 막지만, 이미 추적 중인 것까지 정리)
+          rm -rf __pycache__
+          git rm -r --cached __pycache__ --ignore-unmatch -q || true
           git add -A
           git commit -m "데이터 갱신 $(date -u +%Y-%m-%d)" || echo "변경 없음"
           git push

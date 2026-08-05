@@ -165,6 +165,12 @@
   .nw:hover .nw-t{color:var(--both)}
   .nw-t{display:block; font-size:12.5px; line-height:1.45}
   .nw-m{display:block; font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); margin-top:2px}
+  .hd-r{display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end}
+  .hdbtn{font-family:'IBM Plex Sans KR',sans-serif; font-size:12px; font-weight:600; color:var(--dim);
+    background:var(--card); border:1px solid var(--line); border-radius:8px; padding:7px 13px; cursor:pointer;
+    transition:all .15s; white-space:nowrap}
+  .hdbtn:hover{color:var(--fg); border-color:var(--both); background:#121a24}
+  .hdbtn:active{transform:translateY(1px)}
 
   @media(max-width:560px){.refresh{flex-direction:column; gap:8px}.refresh button{width:100%; max-width:320px}.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}
     .pk-r{width:104px} .vg{gap:6px 10px} .copybtn{padding:6px 8px; font-size:10.5px}}
@@ -174,7 +180,10 @@
 <div class="wrap">
   <header>
     <h1>수급 필터</h1>
-    <div class="meta">최종 갱신 <b id="updated">—</b></div>
+    <div class="hd-r">
+      <button class="hdbtn" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
+      <div class="meta">최종 갱신 <b id="updated">—</b></div>
+    </div>
   </header>
   <div class="rule" id="rule">판정 기준을 불러오는 중…</div>
   <div class="tabs">
@@ -1016,11 +1025,9 @@ function show(k){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));
   const b=document.getElementById('screenbtn');
   if(b){
-    b.textContent = k==='value_pick' ? '저가매수 분석 프롬프트'
-                  : k==='momentum'   ? '모멘텀 분석 프롬프트'
-                  : '일괄 스크리닝 프롬프트';
+    b.textContent = '일괄 스크리닝 프롬프트';   // 탭 무관 통일 (내용은 탭별로 다름)
     // 스크리닝 프롬프트는 0순위·저가매수·모멘텀 탭에서만 의미가 있다
-    b.style.display = (k==='foreign'||k==='pension') ? 'none' : '';
+    b.style.display = (k==='both'||k==='value_pick'||k==='momentum') ? '' : 'none';
   }
   render();
 }
