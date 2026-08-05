@@ -765,18 +765,20 @@ def latest_trade_date():
 def main():
     print("스캔 시작:", now_kst().strftime("%Y-%m-%d %H:%M"), flush=True)
 
-    # [장 안 열린 날 가드] 예약(cron) 실행 시 새 거래일 데이터가 없으면(주말·공휴일·소스 미갱신) 스캔·저장·커밋 생략.
-    #   수동 실행(workflow_dispatch)·로컬 실행은 건너뛰고 항상 갱신(같은 날 재실행으로 확정 데이터 새로고침 가능).
+    # [장 안 열린 날 가드] 예약(cron)이 주말·공휴일에 헛돌지 않게 막는다.
+    #   ★장중 시간대(09:30~15:30)는 같은 날 반복 실행을 허용한다 — 가격·수급이 계속 변하므로.
+    #     (하루 1회 예약이던 시절엔 '같은 날이면 스킵'이었으나, 장중 모니터링용 다회 예약으로 바뀌어 조건을 분리했다.)
+    #   수동 실행(workflow_dispatch)·로컬 실행은 언제나 갱신.
     new_date = latest_trade_date()
     if new_date and os.environ.get("RUN_TRIGGER") == "schedule":
-        try:
-            with open("data.json", encoding="utf-8") as f:
-                prev_date = json.load(f).get("market_date")
-        except Exception:
-            prev_date = None
-        if prev_date and new_date == prev_date:
-            print(f"[스킵] 새 거래일 데이터 없음 (최신 {new_date} == 직전 {prev_date}). 예약 실행 생략.", flush=True)
-            return
+        today_kst = now_kst().strftime("%Y-%m-%d")
+        if new_date != today_kst:
+            # 소스의 최신 거래일이 오늘이 아니다 = 오늘은 장이 안 열렸다(주말·공휴일).
+            #   단, 장 시작 직후엔 소스가 아직 전일자를 줄 수 있으므로 09:00~09:40 사이는 통과시킨다.
+            hm = now_kst().strftime("%H:%M")
+            if not ("09:00" <= hm <= "09:40"):
+                print(f"[스킵] 오늘({today_kst})은 거래일이 아님 (소스 최신 {new_date}). 예약 실행 생략.", flush=True)
+                return
 
     # [#3 우선 처리] 내 종목(포트폴리오)을 유니버스 스캔보다 '먼저' 돌린다.
     #   → 뒤의 대량 스캔이 느려지거나 중간에 멈춰도(취소/스로틀) 보유종목 리포트는 항상 최신.
