@@ -44,6 +44,10 @@
   .tab[data-k="foreign"] .c{color:var(--foreign)}
   .tab[data-k="pension"] .c{color:var(--pension)}
   .tab[data-k="both"] .c{color:var(--both)}
+  .tab[data-k="value_pick"] .c{color:#3fb950}
+  .tab[data-k="momentum"] .c{color:#f0883e}
+  .tab.active[data-k="value_pick"]{border-color:#3fb950}
+  .tab.active[data-k="momentum"]{border-color:#f0883e}
   .tab.active[data-k="foreign"]{border-color:var(--foreign)}
   .tab.active[data-k="pension"]{border-color:var(--pension)}
   .tab.active[data-k="both"]{border-color:var(--both)}
@@ -100,6 +104,13 @@
   .copybtn.copied{color:var(--foreign); border-color:var(--foreign); background:rgba(63,185,80,.14)}
   .bothtip{font-size:12px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
     border-left:3px solid var(--both); border-radius:8px; padding:10px 12px; margin:8px 0 4px}
+  .sec{margin-bottom:18px}
+  .sechd{font-size:12px;color:var(--dim);font-weight:700;padding:0 2px 8px}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+  .prow{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .pname{font-size:14px}
+  .pcode{color:var(--dim);font-size:11px;font-family:ui-monospace,monospace}
+  .psub{font-size:12px;color:var(--dim);margin-top:5px;line-height:1.6}
   .refresh button.screenbtn{font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:700; color:#fff;
     background:linear-gradient(135deg,#58a6ff,#a371f7); border:none; border-radius:8px;
     padding:10px 22px; cursor:pointer; white-space:nowrap;
@@ -170,6 +181,8 @@
     <div class="tab active" data-k="foreign" onclick="show('foreign')"><div class="c" id="c-foreign">—</div><div class="l">외국인</div></div>
     <div class="tab" data-k="pension" onclick="show('pension')"><div class="c" id="c-pension">—</div><div class="l">연기금</div></div>
     <div class="tab" data-k="both" onclick="show('both')"><div class="c" id="c-both">—</div><div class="l">동시 (0순위)</div></div>
+    <div class="tab" data-k="value_pick" onclick="show('value_pick')"><div class="c" id="c-value_pick">—</div><div class="l">저가매수</div></div>
+    <div class="tab" data-k="momentum" onclick="show('momentum')"><div class="c" id="c-momentum">—</div><div class="l">모멘텀</div></div>
     <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">내 종목</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
@@ -367,6 +380,152 @@ function sectionPort(list){
 }
 
 // ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
+// ── 기술적 필터 리포트 프롬프트 (저가매수형 / 모멘텀형) ──
+const RULE_COMMON = `[결론 형식 — 종목마다]
+확신도 : 강한 매수 / 매수 / 중립 / 매도 / 강한 매도
+비중   : 포트 대비 N~M%
+시간축 : N개월
+
+[중립은 두 경우만] ① 밸류와 수급이 정면 상충 ② 가격을 계산할 수 없는 국면
+금지: "N일 뒤 실적을 봐야" / "강점과 리스크가 상쇄" / "확인 불가가 많다" / "변동성이 크다"
+
+[반대 시나리오]
+❌ "다만 ~할 수도 있다"
+⭕ "X가 확인되면 이 판단은 틀린 것이고, 그때 나갈 자리는 Y원이다"
+
+[★밸류 해석 — 데이터 함정 3개]
+1. 업종PER이 음수이거나 200 초과면 업종 비교 무효다(전수 24%가 해당). "업종 비교 무효"로 명시하고 절대 PER + 동종 개별 종목으로 대체하라.
+2. 분기 흑자인데 PER이 음수면 턴어라운드 진행 중이다. 연간 적자가 언제 해소되는지 확인하고 PER 대신 분기 추세로 판단하라.
+3. PBR은 절대값으로 쓰지 마라. 이론 PBR=(ROE-g)/(COE-g), COE 8%/g 3%. 고ROE는 PBR이 높아도 싸다. PBR>15면 자본훼손 → 포워드 PER·PSR로.
+
+[수급 해석]
+· 21~60일 역산 = 60일 누적 − 20일 누적 → 꾸준/반전/U자형
+· 외국인 평균단가 역산 (순매수/총매수 <10%면 무효)
+· 연기금 매수를 무조건 호재로 읽지 마라. 변동성 관리용 파킹일 수 있다.
+· ★수급 라벨이 없는 것도 정보다. "기술만 좋고 수급은 아직 없음" = 더 이른 단계일 수 있다.
+
+[분량] 5개 이하면 각각 자세히. 10개 이상이면 상위 5개만 자세히 + 나머지 한 줄. 전체 화면 3장 이내.`;
+
+function fmtScreenList(items, isV){
+  return items.map((x,i)=>{
+    const s=(x.labels&&x.labels.supply)||null, v=(x.labels&&x.labels.valuation)||{};
+    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / 연 ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' ★0순위':''}` : '수급 신호 없음';
+    const per = x.per!=null ? x.per.toFixed(1)+'배' : '—';
+    const sec = v.sector_valid ? `업종 ${v.sectorPer.toFixed(1)}배` : '업종PER 무효';
+    const base = `${i+1}. ${x.name}(${x.code}) · ${x.sector||''} · ${Math.round(x.cur).toLocaleString()}원 ${(x.changeRate>=0?'+':'')+x.changeRate.toFixed(2)}%
+   PER ${per} (${sec}) · PBR ${v.pbr!=null?v.pbr:'—'} · 시총 ${x.mcap?Math.round(x.mcap/1e8).toLocaleString()+'억':'—'}
+   수급: ${sup}`;
+    if(isV){
+      const eq=(x.eps_quarters||[]).map(q=>`${(q.date||'').slice(0,7)} EPS ${q.eps!=null?Math.round(q.eps).toLocaleString():'—'}`).join(' | ');
+      return base+`
+   1M ${x.r1.toFixed(1)}% · 6M ${x.r6.toFixed(1)}% · 52주위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'} · 주봉MA60 위
+   EPS 4분기: ${eq||'—'}`;
+    }
+    return base+`
+   정배열 ${x.entry_days}일차 · 1M ${x.r1.toFixed(1)}% · MA20이격 ${x.ma20_gap.toFixed(1)}%${x.ma20_gap>25?' ★과열':''} · 거래량 ${x.v2060?x.v2060.toFixed(2):'—'}배 · 52주위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}`;
+  }).join('\n');
+}
+
+function buildValuePrompt(){
+  const items=(DATA&&DATA.value_pick)||[];
+  if(!items.length) return '오늘 저가매수형 조건을 충족한 종목이 없다. (개수를 맞추려 기준을 풀지 않는다)';
+  return `저가매수형 필터 통과 종목을 분석해줘.
+
+[필터 정의]
+· 흑자 (최근 확정분기 영업이익>0 AND 순이익>0)
+· 주봉 MA60 위          — 장기 구조가 안 무너짐
+· 6개월 수익률 하위 40%   — 충분히 빠짐
+· 1개월 수익률 상위 40%   — 돌아서는 중
+· PER 하위 40%          — 이익 대비 싸다
+· 최근분기 EPS > 직전분기 EPS
+※ "52주 하단"은 전수 62%가 통과해 정보량이 없어 쓰지 않았다. 핵심은 "싸다"가 아니라 "안 무너졌다"이다.
+
+${RULE_KR}
+
+${RULE_COMMON}
+
+[★답해야 할 질문 — 순서대로]
+1. 무슨 사업으로 돈을 버나 — companySummary와 검색으로 사업 구조를 먼저 파악하라. ★이게 2·3번의 전제다. 사업을 알면 계절성과 매크로 민감도가 자동으로 나온다.
+2. 왜 쌌나 — 6개월간 무엇 때문에 빠졌는지. 실적 훼손 / 섹터 디레이팅 / 일회성 악재 / 시장 전체 하락에 휩쓸림. 원인 불명이면 "확인 불가"로 명시하라.
+3. ★그 이유가 해소됐나 — 이 리포트의 핵심. 하락 원인이 그대로면 1개월 반등은 기술적 되돌림이다. 해소 근거를 공시·실적·업황에서 찾아라. 없으면 없다고 써라.
+4. ★EPS 증가가 진짜인가 — 아래 4분기 EPS를 보고 판정하라.
+   · 계절 반작용인가 (1번에서 파악한 사업 특성으로 판단. 예: 증권·지주는 4Q에 성과급·충당금이 몰려 1Q가 좋게 나옴)
+   · 영업이익도 같이 늘었나 — EPS만 늘었으면 영업외·세금·주식수 변동
+   · 매크로 기여인가 — 원자재·환율·운임 등 외생 요인
+5. 촉매 — 밸류 갭이 좁혀질 조건. 한국은 "싸면 오른다"가 자동으로 작동하지 않는다(KOSPI 총주주환원 1%대). 실적 서프라이즈 / 수주 / 정책 / 주주환원 / 지배구조 변화 중 무엇이 있는지. 없으면 "촉매 부재 — 시간이 오래 걸린다"로 명시하라.
+6. 밸류의 크기 — PER 하위 40%가 얼마나 싼 건지 수치로. 업종PER 대비 %(무효면 무효라고), 동종 대비.
+
+[출력]
+■ 통과 종목
+종목명(코드) · 현재가 · 등락
+  사업       : 무엇으로 돈 버나 (1줄)
+  왜 쌌나    : 6개월 하락 원인
+  해소 여부  : ★핵심
+  EPS 증가   : 4분기 나열 + 계절성/실질 판정
+  촉매       : 구체적으로, 없으면 "부재"
+  밸류       : PER / 업종 대비 / 동종 대비
+  → 판단     : 확신도·비중·시간축 + 근거 2~3줄
+  틀리는 조건 : "X 확인되면 틀린 것, 나갈 자리 Y원"
+
+■ 총평 2~3줄
+
+[통과 종목 ${items.length}개]
+${fmtScreenList(items,true)}`;
+}
+
+function buildMomentumPrompt(){
+  const items=(DATA&&DATA.momentum)||[];
+  if(!items.length) return '오늘 모멘텀형 조건을 충족한 종목이 없다. (개수를 맞추려 기준을 풀지 않는다)';
+  return `모멘텀형 필터 통과 종목을 분석해줘.
+
+[필터 정의]
+· 흑자 (최근 확정분기 영업이익>0 AND 순이익>0)
+· 일봉 정배열 (MA5>MA20>MA60)
+· 정배열 진입 20일 이내
+· 1개월 수익률 상위 20%
+· 거래량 20일/60일 > 1.0
+
+${RULE_KR}
+
+${RULE_COMMON}
+
+[★답해야 할 질문]
+1. ★왜 오르나 — 이게 전부다. 필터는 "오른다"만 알려준다. 이유는 리포트가 찾는다. 아래로 분류(복수 가능):
+   ① 실적 — 잠정실적 공시, 컨센 대비 상회
+   ② 수주·계약 — 규모, 매출 대비 비중, 납기
+   ③ 정책·업황 — 구조적인가 헤드라인인가
+   ④ 수급 — 외인·연기금 유입 (다만 결과일 수 있다)
+   ⑤ 낙폭과대 반등 — 재료 없이 되돌림
+   원인 미상이면 "확인 불가"로 명시. 추정하지 마라.
+2. 일회성인가 지속적인가 — ①②는 대개 지속, ③은 사안별, ⑤는 일회성. ④만 있으면 "수급만으로 오르는 중"으로 명시하고 리스크로 잡아라.
+3. 얼마나 갔나 — 과열. MA20 이격 %, 1개월 수익률, 52주 위치. ★MA20 이격 25% 초과면 추격 부담을 명시하라. ※지수가 ±10% 이상 움직인 날의 개별 등락률은 무의미. 월간 상대강도와 같이 봐라.
+4. 어디서 막히나 — 매물대. 현재가 위 매물대 구간과 비중. 공백이면 공백이라고 쓰되, 위로 저항이 없으면 아래로 지지도 없다는 걸 같이 명시하라.
+5. 언제 끝나나 — 추세 철회 조건을 가격으로. "X원 이탈 시 이 판단은 틀린 것."
+
+[★주의]
+- 모멘텀형은 그 자체로 매수 근거가 아니다. "왜 오르는지"가 확인돼야 근거가 된다.
+- ①②가 없고 ⑤만 있으면 확신도를 올리지 마라.
+- 얇은 거래량 급등은 "에너지 부족"이 아니라 "매물 소진"일 수 있다. 직전 며칠 투매 여부·시가갭·저가 이탈폭을 같이 봐라.
+
+[출력]
+■ 통과 종목 (상승 이유가 명확한 순)
+종목명(코드) · 현재가 · 등락 · 정배열 N일차
+  왜 오르나  : ★①~⑤ 분류 + 근거
+  지속성     : 일회성/지속적
+  과열도     : MA20 이격, 1M 상대강도, 52주 위치
+  저항       : 위 매물대 또는 공백
+  → 판단     : 확신도·비중·시간축 + 근거
+  철회 조건  : "X원 이탈 시 틀린 것"
+
+■ 요약 분류
+  실적 기반 / 수주·정책 / 수급만(리스크) / 원인 미상
+
+■ 총평 2~3줄 (섹터 쏠림, 상승 원인의 성격, 시장 국면에서의 의미)
+
+[통과 종목 ${items.length}개]
+${fmtScreenList(items,false)}`;
+}
+
 function buildScreenPrompt(){
   const n = (DATA && DATA.both) ? DATA.both.length : 0;
   const upd = (DATA && DATA.updated) ? DATA.updated : '';
@@ -431,75 +590,76 @@ https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json
 - 확인 안 된 것은 추정하지 말고 "확인 불가"로 명시.
 - 전체 분량은 화면 2~3장 이내. 매수 후보는 자세히, 중립·매도는 한 줄로 간결하게.`;
 }
-function buildPrompt(it){
-  const D=(c)=>'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/report-data/'+c+'.json';
-
-  // ── 공통: 데이터 취득·우선순위 규칙 (국내 / 미국) ──
-  const RULE_KR = `[데이터 취득 규칙 — 캐스케이드]
+// ── 공통: 데이터 취득·우선순위 규칙 (국내 / 미국) ──
+const RULE_KR = `[데이터 취득 규칙 — 캐스케이드]
 ★ 1차에서 다 뽑는다. 1차가 안 주는 것만 2차로 간다. 소스를 왕복하지 마라.
 ★ web_fetch 금지(캐시된 구버전 반환). 전부 bash_tool + curl.
 ★ 추정 금지. 조회 실패·미확인은 "확인 불가"로 명시.
 
 ■ 1차 — 다음 (헤더 Referer: https://finance.daum.net/ 필수, 없으면 403)
-  ※ quote(단수) ≠ quotes(복수). 시계열·재무는 단수. 혼동 시 500.
-  ① /api/quotes/A{코드}?summary=false&changeStatistics=true
-     → 시세(OHLC·거래량·거래대금) / marketStatus(PRE_MARKET·TRADING·CLOSING) / 52주·50일 고저
-       / marketCap·listedShareCount / per·pbr·eps·bps·dps
-       / sales·operatingProfit·preTaxProfit·netIncome·debtRatio(최근분기)
-       / foreignRatio·foreignOwnShares / wicsSectorName·sectorPer
-       / stockState.marketWarning·isTradingSuspended·isAdministrativeIssue / companySummary
-     ★여기 있는 건 다른 데서 또 받지 마라.
-  ② /api/quote/A{코드}/days?perPage=500&page=1 → 일봉 2년(OHLCV)
-     → 이평·MDD·변동성·매물대·거래량배수·주봉·월봉을 전부 여기서 직접 계산하라.
-  ③ /api/investor/days?symbolCode=A{코드}&perPage=60&page=1 → 외국인·기관 순매수 60일 + 외인비중 추이
-  ④ /api/quote/A{코드}/financials → 분기·연간 확정 재무 (구조: data.QUARTER / data.YEAR)
-  ⑤ /api/disclosures?symbolCode=A{코드}&perPage=20&page=1 → 공시
-  기타: /api/quote/A{코드}/times(분봉) · /api/quotesv4?codes=A..,A..(멀티 비교)
-        /api/market_index/days?market=KOSPI|KOSDAQ(지수+개인/외인/기관) · /api/quotes/sectors(업종)
-        /api/global/today · /api/global/exchanges (Referer: .../global)
+※ quote(단수) ≠ quotes(복수). 시계열·재무는 단수. 혼동 시 500.
+① /api/quotes/A{코드}?summary=false&changeStatistics=true
+   → 시세(OHLC·거래량·거래대금) / marketStatus(PRE_MARKET·TRADING·CLOSING) / 52주·50일 고저
+     / marketCap·listedShareCount / per·pbr·eps·bps·dps
+     / sales·operatingProfit·preTaxProfit·netIncome·debtRatio(최근분기)
+     / foreignRatio·foreignOwnShares / wicsSectorName·sectorPer
+     / stockState.marketWarning·isTradingSuspended·isAdministrativeIssue / companySummary
+   ★여기 있는 건 다른 데서 또 받지 마라.
+② /api/quote/A{코드}/days?perPage=500&page=1 → 일봉 2년(OHLCV)
+   → 이평·MDD·변동성·매물대·거래량배수·주봉·월봉을 전부 여기서 직접 계산하라.
+③ /api/investor/days?symbolCode=A{코드}&perPage=60&page=1 → 외국인·기관 순매수 60일 + 외인비중 추이
+④ /api/quote/A{코드}/financials → 분기·연간 확정 재무 (구조: data.QUARTER / data.YEAR)
+⑤ /api/disclosures?symbolCode=A{코드}&perPage=20&page=1 → 공시
+기타: /api/quote/A{코드}/times(분봉) · /api/quotesv4?codes=A..,A..(멀티 비교)
+      /api/market_index/days?market=KOSPI|KOSDAQ(지수+개인/외인/기관) · /api/quotes/sectors(업종)
+      /api/global/today · /api/global/exchanges (Referer: .../global)
 
 ■ 2차 — 1차가 안 주는 것만
-  · 컨센서스·목표주가·투자의견·증권사 리포트·뉴스 → 아래 수급 파일(kfilter JSON)
-  · 공시 본문 → DART 2단계: dsaf001/main.do?rcpNo={rcpNo} 로 dcmNo 추출 → report/viewer.do (cp949 디코딩)
-  · 배당·분배금 이력 → 야후 ?events=div
+· 컨센서스·목표주가·투자의견·증권사 리포트·뉴스 → 아래 수급 파일(kfilter JSON)
+· 공시 본문 → DART 2단계: dsaf001/main.do?rcpNo={rcpNo} 로 dcmNo 추출 → report/viewer.do (cp949 디코딩)
+· 배당·분배금 이력 → 야후 ?events=div
 
 ■ 수급 파일 vs 실시간
-  · 수급 파일(kfilter JSON)은 스캔 시점 스냅샷이다. 값이 실시간과 다르면 실시간을 쓰고,
-    파일 값은 "N월 N일 기준"으로 명시해 구분하라.
-  · ★kfilter(네이버) financials는 최신 분기를 컨센으로 채운다. 다음 financials는 확정치만 준다.
-    → 분기 실적은 다음 기준. 공시에 「영업(잠정)실적」이 있는데 다음 financials에 그 분기가 없으면 DART 원문 필수.
+· 수급 파일(kfilter JSON)은 스캔 시점 스냅샷이다. 값이 실시간과 다르면 실시간을 쓰고,
+  파일 값은 "N월 N일 기준"으로 명시해 구분하라.
+· ★kfilter(네이버) financials는 최신 분기를 컨센으로 채운다. 다음 financials는 확정치만 준다.
+  → 분기 실적은 다음 기준. 공시에 「영업(잠정)실적」이 있는데 다음 financials에 그 분기가 없으면 DART 원문 필수.
 
 ■ 교차검증 — 두 가지만
-  1) 국내 등락률: 다음 changeRate ↔ 다음 /days 2행 역산
-  2) 미국 등락률: 야후 금지(부호까지 틀림). 나스닥 API 또는 다음 global
-  1차 안에서 필드가 일관되면 추가 검증 불필요.
+1) 국내 등락률: 다음 changeRate ↔ 다음 /days 2행 역산
+2) 미국 등락률: 야후 금지(부호까지 틀림). 나스닥 API 또는 다음 global
+1차 안에서 필드가 일관되면 추가 검증 불필요.
 
 ■ 차단(시도 금지): 네이버 전 도메인 / data.krx.co.kr / investing.com / stockplus.com / MarketWatch / WSJ / FRED
 
 ■ 알려진 오류
-  1. 다음 prevClosingPrice는 마감 후 다음 세션 기준가로 굴러간다 → 등락은 changePrice/changeRate 사용.
-  2. ★marketStatus가 PRE_MARKET이면 tradePrice는 전일 종가이고 등락률은 0이다. 오늘 등락으로 오독하지 마라.
-  3. ★PRE_MARKET일 때 /days 첫 행은 오늘 날짜 더미행(종가=전일값 복사, accTradeVolume=0)이다.
-     → 이평·변동성·MDD·거래량배수 계산 시 accTradeVolume==0인 행을 제거하고,
-       등락률 역산은 days[1] ÷ days[2]로 하라.
-  4. 다음 investor/days에 개인 필드가 없다 → 개인 수급은 market_index/days에서.
-  5. 외국인 소진율은 장내 순매수 외 경로(블록딜·시간외 등)로도 변한다. foreignStraightPurchaseVolume은 장내만 잡는다.
+1. 다음 prevClosingPrice는 마감 후 다음 세션 기준가로 굴러간다 → 등락은 changePrice/changeRate 사용.
+2. ★marketStatus가 PRE_MARKET이면 tradePrice는 전일 종가이고 등락률은 0이다. 오늘 등락으로 오독하지 마라.
+3. ★PRE_MARKET일 때 /days 첫 행은 오늘 날짜 더미행(종가=전일값 복사, accTradeVolume=0)이다.
+   → 이평·변동성·MDD·거래량배수 계산 시 accTradeVolume==0인 행을 제거하고,
+     등락률 역산은 days[1] ÷ days[2]로 하라.
+4. 다음 investor/days에 개인 필드가 없다 → 개인 수급은 market_index/days에서.
+5. 외국인 소진율은 장내 순매수 외 경로(블록딜·시간외 등)로도 변한다. foreignStraightPurchaseVolume은 장내만 잡는다.
 
 ■ 필수 확인
-  · marketStatus를 확인하고 "N월 N일 장마감/장중/장전"을 명시하라.
-  · PRE_MARKET이면 /days의 더미행을 제거하고 계산했는지 확인하라.`;
+· marketStatus를 확인하고 "N월 N일 장마감/장중/장전"을 명시하라.
+· PRE_MARKET이면 /days의 더미행을 제거하고 계산했는지 확인하라.`;
 
-  const RULE_US = `[데이터 취득 규칙]
+const RULE_US = `[데이터 취득 규칙]
 - 실시간 취득은 bash_tool + curl로. web_fetch는 캐시된 구버전을 반환하므로 쓰지 마라.
-  · 미국 종목 1순위 — 나스닥: api.nasdaq.com/api/quote/{TICKER}/info?assetclass=stocks|etf|index (종목=stocks, ETF=etf, 지수=index)
-  · 프리/애프터 — api.nasdaq.com/api/quote/{TICKER}/extended-trading?assetclass=stocks&markettype=pre|after (lastUpdateInfo로 갱신시각 확인 필수)
-  · 교차검증 — 야후: query1.finance.yahoo.com/v8/finance/chart/{TICKER}
-  · 지수(S&P·다우·나스닥)·환율 — 다음: finance.daum.net/api/global/today (Referer: https://finance.daum.net/global)
-  · 금리·VIX — 야후 ^TNX, ^VIX / 재무·밸류 — stockanalysis.com/stocks/{ticker}/
-  · 차단됨(시도 금지) — MarketWatch, WSJ, FRED, investing.com
+· 미국 종목 1순위 — 나스닥: api.nasdaq.com/api/quote/{TICKER}/info?assetclass=stocks|etf|index (종목=stocks, ETF=etf, 지수=index)
+· 프리/애프터 — api.nasdaq.com/api/quote/{TICKER}/extended-trading?assetclass=stocks&markettype=pre|after (lastUpdateInfo로 갱신시각 확인 필수)
+· 교차검증 — 야후: query1.finance.yahoo.com/v8/finance/chart/{TICKER}
+· 지수(S&P·다우·나스닥)·환율 — 다음: finance.daum.net/api/global/today (Referer: https://finance.daum.net/global)
+· 금리·VIX — 야후 ^TNX, ^VIX / 재무·밸류 — stockanalysis.com/stocks/{ticker}/
+· 차단됨(시도 금지) — MarketWatch, WSJ, FRED, investing.com
 - ★ 야후는 가격은 정확하나 등락률이 자주 틀린다(거래일 누락으로 부호까지 반대인 사례 있음). 등락률은 나스닥 API 또는 다음으로 확인하라.
 - 하나의 값은 두 소스로 교차검증. 데이터 시각(장중/확정종가/전일)을 반드시 확인해 명시.
 - 조회 실패·미확인 항목은 추정으로 채우지 말고 "확인 불가"로 명시하라.`;
+function buildPrompt(it){
+  const D=(c)=>'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/report-data/'+c+'.json';
+
+
 
   // ── 파생(레버·커버드콜) → 기초자산으로 치환 ──
   //   ref가 있으면 데이터·분석 대상을 기초자산 코드로 바꿔서, 기초자산과 100% 동일한 프롬프트를 만든다.
@@ -672,7 +832,9 @@ function hardReload(){
 }
 function copyScreen(ev){
   ev.stopPropagation();
-  const text=buildScreenPrompt();
+  const text = CUR==='value_pick' ? buildValuePrompt()
+             : CUR==='momentum'   ? buildMomentumPrompt()
+             : buildScreenPrompt();
   const btn=ev.currentTarget;
   const done=()=>{ const o=btn.innerHTML; btn.innerHTML='복사됨 ✓'; btn.classList.add('copied');
     setTimeout(()=>{btn.innerHTML=o; btn.classList.remove('copied');},1600); };
@@ -681,6 +843,31 @@ function copyScreen(ev){
   }else{ fallbackCopy(text,done); }
 }
 
+function sectionScreen(items, isV){
+  const rows = items.map((x,i)=>{
+    const sup = (x.labels&&x.labels.supply)||null;
+    const val = (x.labels&&x.labels.valuation)||{};
+    const supTxt = sup
+      ? '<span style="color:var(--foreign)">외 '+(sup.f_buydays||'—')+'</span> <span style="color:var(--pension)">연 '+(sup.p_buydays||'—')+'</span>'+(sup.is_zero_rank?' <b style="color:var(--both)">0순위</b>':'')
+      : '<span style="color:#6e7681">수급 신호 없음</span>';
+    const perTxt = (x.per!=null? x.per.toFixed(1)+'배':'—')
+      + (val.sector_valid? ' <span style="color:var(--dim)">(업종 '+val.sectorPer.toFixed(1)+')</span>'
+                          : ' <span style="color:#6e7681">(업종비교 무효)</span>');
+    const mid = isV
+      ? '1M '+fmtPct(x.r1)+' · 6M '+fmtPct(x.r6)+' · 52주 '+(x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—')
+      : '정배열 '+x.entry_days+'일차 · 1M '+fmtPct(x.r1)+' · MA20이격 '+fmtPct(x.ma20_gap)+' · 거래량 '+(x.v2060?x.v2060.toFixed(2):'—')+'배';
+    const warn = (!isV && x.ma20_gap>25) ? ' <b style="color:#f85149">과열</b>' : '';
+    return '<div class="pcard">'
+      +'<div class="prow"><div class="pname">'+(i+1)+'. <b>'+esc(x.name)+'</b> <span class="pcode">'+x.code+'</span>'
+      +' <span style="color:var(--dim);font-size:11px">'+esc(x.sector||'')+'</span></div></div>'
+      +'<div class="psub">'+fmtN(x.cur)+'원 '+fmtPct(x.changeRate)+' · '+mid+warn+'</div>'
+      +'<div class="psub">PER '+perTxt+' · PBR '+(val.pbr!=null?val.pbr:'—')+' · '+supTxt+'</div>'
+      +'</div>';
+  }).join('');
+  return '<div class="sec"><div class="sechd">'+(isV?'저가매수형':'모멘텀형')+' 통과 '+items.length+'종목</div>'+rows+'</div>';
+}
+function fmtPct(v){ if(v==null) return '—'; const t=(v>=0?'+':'')+v.toFixed(1)+'%'; return '<span style="color:'+(v>=0?'#f85149':'#4493f8')+'">'+t+'</span>'; }
+function fmtN(v){ return v==null?'—':Number(v).toLocaleString('ko-KR'); }
 function render(){
   const content=document.getElementById('content');
   if(!DATA){content.innerHTML='<div class="empty">데이터 없음</div>';return;}
@@ -689,6 +876,19 @@ function render(){
     if(items.length===0){content.innerHTML='<div class="empty">포트폴리오 종목이 없습니다.</div>';return;}
     const tip='<div class="bothtip">내 보유 종목. 수급(외인·연기금)으로 <b>스마트머니가 아직 있는지 / 이탈했는지</b> 확인하고, <b>프롬프트</b>로 동일 포맷 리포트를 받으세요. <span style="color:var(--dim)">초록=필터 통과(매집), 회색=미통과.</span></div>';
     content.innerHTML = tip + sectionPort(items);
+    return;
+  }
+  // [기술적 필터 탭] 저가매수형·모멘텀형 — 수급과 독립. 조건 통과 여부만 보여준다(순위·판단 없음).
+  if(CUR==='value_pick' || CUR==='momentum'){
+    const isV = CUR==='value_pick';
+    if(items.length===0){
+      content.innerHTML='<div class="empty">오늘 '+(isV?'저가매수형':'모멘텀형')+' 조건을 충족한 종목이 없습니다.<br><span style="font-size:12px;color:var(--dim)">개수를 맞추려 기준을 풀지 않습니다. 0개면 0개입니다.</span></div>';
+      return;
+    }
+    const tip = isV
+      ? '<div class="bothtip"><b>저가매수형</b> — 흑자 · 주봉MA60 위(구조 안 무너짐) · 6M 하위40%(충분히 빠짐) · 1M 상위40%(돌아서는 중) · PER 하위40% · EPS 직전분기 대비 증가.<br><span style="color:var(--dim)">핵심은 “싸다”가 아니라 “안 무너졌다”입니다. 52주 하단은 62%가 해당돼 정보량이 없어 쓰지 않습니다.</span></div>'
+      : '<div class="bothtip"><b>모멘텀형</b> — 흑자 · 일봉 정배열(MA5>MA20>MA60) · 정배열 진입 20일 이내 · 1M 상위20% · 거래량 20일/60일 &gt; 1.0.<br><span style="color:var(--dim)">필터는 “오른다”만 알려줍니다. <b>왜</b> 오르는지는 프롬프트로 확인하세요.</span></div>';
+    content.innerHTML = tip + sectionScreen(items, isV);
     return;
   }
   const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
@@ -702,7 +902,19 @@ function render(){
     content.innerHTML = sectionSingle('KOSPI', kospi, 'kospi') + sectionSingle('KOSDAQ', kosdaq, 'kosdaq');
   }
 }
-function show(k){CUR=k;document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));render();}
+function show(k){
+  CUR=k;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));
+  const b=document.getElementById('screenbtn');
+  if(b){
+    b.textContent = k==='value_pick' ? '저가매수 분석 프롬프트'
+                  : k==='momentum'   ? '모멘텀 분석 프롬프트'
+                  : '일괄 스크리닝 프롬프트';
+    // 스크리닝 프롬프트는 0순위·저가매수·모멘텀 탭에서만 의미가 있다
+    b.style.display = (k==='foreign'||k==='pension') ? 'none' : '';
+  }
+  render();
+}
 // 재접속 직후 주소창의 캐시버스팅 파라미터를 지워 깔끔하게 유지
 if(location.search.indexOf('t=')>-1 || location.search.indexOf('v=')>-1){
   try{ history.replaceState(null,'',location.origin+location.pathname); }catch(e){}
@@ -718,6 +930,8 @@ async function load(){
     document.getElementById('c-foreign').textContent=DATA.foreign.length;
     document.getElementById('c-pension').textContent=DATA.pension.length;
     document.getElementById('c-both').textContent=DATA.both.length;
+    document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
+    document.getElementById('c-momentum').textContent=(DATA.momentum||[]).length;
     document.getElementById('c-portfolio').textContent=(DATA.portfolio||[]).length;
     document.getElementById('rule').innerHTML='판정: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수 <b>&gt; 0</b> 그리고 순매수일 <b>'+DATA.buy_ratio+'% 이상</b> · 스캔 <b>'+DATA.scanned+'종목</b>';
     render();
