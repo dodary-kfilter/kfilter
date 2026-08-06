@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          # 파이썬 캐시는 커밋하지 않는다(.gitignore로도 막지만, 이미 추적 중인 것까지 정리)
+          # 파이썬 캐시는 커밋하지 않는다
           rm -rf __pycache__
           git rm -r --cached __pycache__ --ignore-unmatch -q || true
           git add -A

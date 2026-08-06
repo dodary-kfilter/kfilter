@@ -60,9 +60,9 @@ PORTFOLIO = [
     {"code": "0193W0", "name": "KODEX 삼성전자단일종목레버리지",   "market": "KOSPI", "ptype": "stock", "ref": "005930"},
     {"code": "0193T0", "name": "KODEX SK하이닉스단일종목레버리지", "market": "KOSPI", "ptype": "stock", "ref": "000660"},
     # 지수 레버(코스피200) → 자기가 본체
-    {"code": "122630", "name": "KODEX 레버리지",            "market": "KOSPI", "ptype": "index", "basis": "코스피200"},
+    {"code": "122630", "name": "KODEX 레버리지",            "market": "KOSPI", "ptype": "index", "basis": "코스피"},
     # 코스피200 커버드콜 → 코스피200(122630) 데이터 재사용
-    {"code": "498400", "name": "KODEX 200타겟위클리커버드콜", "market": "KOSPI", "ptype": "index", "basis": "코스피200", "ref": "122630"},
+    {"code": "498400", "name": "KODEX 200타겟위클리커버드콜", "market": "KOSPI", "ptype": "index", "basis": "코스피", "ref": "122630"},
     # 섹터 레버(ETN) → 구성종목 5개 수급을 묶어 '섹터 총괄' 분석. 데이터는 전용파일(sector_power) 1개.
     {"code": "760026", "name": "키움 레버리지 전력TOP5 ETN", "market": "KOSPI", "ptype": "sector",
      "basis": "전력설비 TOP5", "sector_key": "sector_power",
@@ -82,7 +82,7 @@ PORTFOLIO = [
     {"code": "SNXX", "name": "샌디스크 2배 (SNXX)", "market": "US", "ptype": "us",
      "us_target": "SanDisk", "us_ticker": "SNDK", "basis": "SanDisk(SNDK)"},
     {"code": "ACE500CC", "name": "ACE 미국500데일리타겟커버드콜", "market": "US", "ptype": "us",
-     "us_target": "S&P500", "us_ticker": "^GSPC", "basis": "S&P500 지수", "us_kind": "index"},
+     "us_target": "S&P500", "us_ticker": "^GSPC", "basis": "S&P500", "us_kind": "index"},
 ]
 # ===============
 
