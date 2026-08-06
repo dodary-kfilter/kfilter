@@ -2,15 +2,31 @@
   "code": "051900",
   "name": "LG생활건강",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:25",
+  "updated": "2026-08-07 08:29",
   "supply_10d": {
-    "foreign_net_10d": 287450,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 205878,
-    "pension_buydays": "10/10"
+    "foreign_net_10d": 275952,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 204910,
+    "pension_buydays": "9/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 31.18,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 324000,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": -341,
         "기타법인": -34
-      },
-      {
-        "date": "2026-05-12",
-        "close": 264000,
-        "foreignRatio": 27.3,
-        "개인": 9,
-        "외국인": 3355,
-        "기관계": -2119,
-        "금융투자": 654,
-        "투신": -68,
-        "사모": 20,
-        "보험": -151,
-        "은행": -22,
-        "기타금융": 1,
-        "연기금": -2553,
-        "기타법인": -1097
       }
     ],
     "cum_5d": {
-      "개인": -230195,
-      "외국인": 68988,
-      "기관계": 153431,
-      "금융투자": 34669,
-      "투신": -4806,
-      "사모": 8627,
-      "보험": 1888,
+      "개인": -230706,
+      "외국인": 70728,
+      "기관계": 153134,
+      "금융투자": 20903,
+      "투신": -863,
+      "사모": 17755,
+      "보험": 2462,
       "은행": 0,
-      "기타금융": -297,
-      "연기금": 113350,
-      "기타법인": 8365
+      "기타금융": -301,
+      "연기금": 113178,
+      "기타법인": 7262
     },
     "cum_20d": {
-      "개인": -673400,
-      "외국인": 326281,
-      "기관계": 352247,
-      "금융투자": 107303,
-      "투신": 10735,
-      "사모": 16433,
-      "보험": 14849,
+      "개인": -673827,
+      "외국인": 322600,
+      "기관계": 355968,
+      "금융투자": 108399,
+      "투신": 11185,
+      "사모": 17875,
+      "보험": 14856,
       "은행": 0,
       "기타금융": -664,
-      "연기금": 203591,
-      "기타법인": -3398
+      "연기금": 204317,
+      "기타법인": -3376
     },
     "cum_60d": {
-      "개인": -923212,
-      "외국인": 497001,
-      "기관계": 439332,
-      "금융투자": 137897,
-      "투신": 24775,
-      "사모": -27340,
-      "보험": 10685,
-      "은행": 21,
-      "기타금융": -912,
-      "연기금": 294206,
-      "기타법인": -9474
+      "개인": -923221,
+      "외국인": 493646,
+      "기관계": 441451,
+      "금융투자": 137243,
+      "투신": 24843,
+      "사모": -27360,
+      "보험": 10836,
+      "은행": 43,
+      "기타금융": -913,
+      "연기금": 296759,
+      "기타법인": -8377
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 31.18
+      },
       {
         "date": "2026-08-06",
         "ratio": 31.18
@@ -1247,10 +1251,6 @@
       {
         "date": "2026-05-13",
         "ratio": 27.23
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 27.3
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "292,500"
+      "value": "324,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "295,500",
+      "value": "323,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "328,000",
+      "value": "327,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,22 +1548,22 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "293,500",
+      "value": "317,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "434,408"
+      "value": "9,147"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1,373억"
+      "value": "29.2억"
     },
     {
       "code": "marketValue",
@@ -1573,7 +1573,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "30.99%"
+      "value": "31.18%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1645,7 +1645,7 @@
       "nm": "LG생활건강",
       "bnm": "한화투자증권",
       "tit": "높아진 실적 가시성",
-      "rcnt": "4804",
+      "rcnt": "4987",
       "wdt": "20260805"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "LG생활건강",
       "bnm": "교보증권",
       "tit": "오랜만에 턴어라운드",
-      "rcnt": "4967",
+      "rcnt": "5032",
       "wdt": "20260730"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "LG생활건강",
       "bnm": "하나증권",
       "tit": "실적 턴어라운드 구간 본격 진입",
-      "rcnt": "4170",
+      "rcnt": "4215",
       "wdt": "20260730"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "LG생활건강",
       "bnm": "유진투자증권",
       "tit": "2Q26 Review: 북미 매출이 중국 매출 추월",
-      "rcnt": "2977",
+      "rcnt": "3006",
       "wdt": "20260730"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "LG생활건강",
       "bnm": "신한투자증권",
       "tit": "두 번째 서프라이즈! 투자의견 상향!",
-      "rcnt": "3554",
+      "rcnt": "3614",
       "wdt": "20260730"
     }
   ],
@@ -1694,13 +1694,13 @@
       "stockName": "에이피알",
       "sosok": "0",
       "closePrice": "378,000",
-      "compareToPreviousClosePrice": "20,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "5.73",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "14,151,622",
@@ -1731,13 +1731,13 @@
       "stockName": "아모레퍼시픽",
       "sosok": "0",
       "closePrice": "137,800",
-      "compareToPreviousClosePrice": "6,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "4.95",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "8,060,302",
@@ -1768,13 +1768,13 @@
       "stockName": "달바글로벌",
       "sosok": "0",
       "closePrice": "247,000",
-      "compareToPreviousClosePrice": "15,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "6.47",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "3,085,997",
@@ -1805,13 +1805,13 @@
       "stockName": "한국콜마",
       "sosok": "0",
       "closePrice": "106,900",
-      "compareToPreviousClosePrice": "4,600",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "4.50",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,523,382",
@@ -1842,13 +1842,13 @@
       "stockName": "코스맥스",
       "sosok": "0",
       "closePrice": "202,000",
-      "compareToPreviousClosePrice": "7,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "3.59",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,292,600",
@@ -1879,13 +1879,13 @@
       "stockName": "아모레퍼시픽홀딩스",
       "sosok": "0",
       "closePrice": "26,700",
-      "compareToPreviousClosePrice": "600",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.30",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,041,433",
@@ -2874,7 +2874,7 @@
       "itemCode": "051900",
       "disclosureId": 95367455,
       "title": "(주)LG생활건강 주식선물ㆍ주식옵션 2단계 가격제한폭 확대요건 도달(상승)",
-      "datetime": "2026-08-06T14:01:03",
+      "datetime": "2026-08-06T06:50:35",
       "author": "KOSCOM"
     },
     {
@@ -2956,17 +2956,17 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -249812,
-      "외국인": 170720,
-      "기관계": 87085,
-      "금융투자": 30594,
-      "투신": 14040,
-      "사모": -43773,
-      "보험": -4164,
-      "은행": 21,
-      "기타금융": -248,
-      "연기금": 90615,
-      "기타법인": -6076
+      "개인": -249394,
+      "외국인": 171046,
+      "기관계": 85483,
+      "금융투자": 28844,
+      "투신": 13658,
+      "사모": -45235,
+      "보험": -4020,
+      "은행": 43,
+      "기타금융": -249,
+      "연기금": 92442,
+      "기타법인": -5001
     },
     "pattern": {
       "외국인": "꾸준매집",
@@ -2976,18 +2976,18 @@
       "사모": "반전(복원중)",
       "금융투자": "꾸준매집"
     },
-    "foreign_avg_price": 271946,
+    "foreign_avg_price": 272000,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 19.1,
-    "foreign_buy_qty": 625901,
+    "foreign_avg_vs_now_pct": null,
+    "foreign_buy_qty": 622546,
     "foreign_sell_qty": 128900,
-    "foreign_net_qty": 497001,
-    "foreign_net_ratio_pct": 79.4,
+    "foreign_net_qty": 493646,
+    "foreign_net_ratio_pct": 79.3,
     "close_range": {
       "low": 215000,
       "high": 324000
     },
-    "foreign_ratio_delta_60d": 3.88,
+    "foreign_ratio_delta_60d": 3.95,
     "foreign_ratio_max": 31.18,
     "foreign_ratio_min": 27.23,
     "foreign_ratio_is_60d_high": true
@@ -3029,6 +3029,18 @@
   },
   "news": [
     {
+      "title": "K뷰티 원조 챔피언 아모레퍼시픽이 돌아온다",
+      "office": "한경비즈니스",
+      "date": "202608070701",
+      "url": "https://n.news.naver.com/mnews/article/050/0000109402"
+    },
+    {
+      "title": "역대급 실적에 대통령 '세일즈 무기'로 올라선 K뷰티, 주가 전성기 다...",
+      "office": "한경비즈니스",
+      "date": "202608070701",
+      "url": "https://n.news.naver.com/mnews/article/050/0000109401"
+    },
+    {
       "title": "중국 대신 미국으로…에이피알·아모레·LG, 누가 잘했나 [참견하는 기...",
       "office": "한국경제TV",
       "date": "202608061856",
@@ -3051,18 +3063,6 @@
       "office": "한국경제TV",
       "date": "202608061604",
       "url": "https://n.news.naver.com/mnews/article/215/0001261411"
-    },
-    {
-      "title": "잘 나간 K-뷰티 3사…성장 공식은 달랐다",
-      "office": "디지털데일리",
-      "date": "202608061041",
-      "url": "https://n.news.naver.com/mnews/article/138/0002236816"
-    },
-    {
-      "title": "말복 앞두고 건강식품 사볼까…11번가 슈팅배송 '건강 챙기기' 기획전",
-      "office": "뉴시스",
-      "date": "202608060914",
-      "url": "https://n.news.naver.com/mnews/article/003/0014111306"
     }
   ],
   "_errors": {}

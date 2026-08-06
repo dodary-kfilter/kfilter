@@ -2,15 +2,31 @@
   "code": "036570",
   "name": "NC",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:25",
+  "updated": "2026-08-07 08:30",
   "supply_10d": {
-    "foreign_net_10d": 83092,
+    "foreign_net_10d": 88579,
     "foreign_buydays": "8/10",
-    "pension_net_10d": 33654,
-    "pension_buydays": "8/10"
+    "pension_net_10d": 27849,
+    "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 38.03,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 239500,
@@ -954,64 +970,52 @@
         "기타금융": 7,
         "연기금": 21728,
         "기타법인": 7751
-      },
-      {
-        "date": "2026-05-12",
-        "close": 250000,
-        "foreignRatio": 35.65,
-        "개인": -24857,
-        "외국인": 25750,
-        "기관계": -1030,
-        "금융투자": -5319,
-        "투신": -4555,
-        "사모": 4096,
-        "보험": 2672,
-        "은행": 0,
-        "기타금융": -236,
-        "연기금": 2312,
-        "기타법인": -396
       }
     ],
     "cum_5d": {
-      "개인": -16184,
-      "외국인": 60722,
-      "기관계": -41293,
-      "금융투자": -12675,
-      "투신": -16533,
-      "사모": -4008,
-      "보험": 491,
+      "개인": -10843,
+      "외국인": 38924,
+      "기관계": -25652,
+      "금융투자": -3505,
+      "투신": -10510,
+      "사모": 1107,
+      "보험": 239,
       "은행": 0,
-      "기타금융": 13,
-      "연기금": -8581,
-      "기타법인": -3221
+      "기타금융": 4,
+      "연기금": -12987,
+      "기타법인": -2437
     },
     "cum_20d": {
-      "개인": -128993,
-      "외국인": 238204,
-      "기관계": -104928,
-      "금융투자": 28853,
-      "투신": -15515,
-      "사모": -59250,
-      "보험": -5308,
+      "개인": -125347,
+      "외국인": 251155,
+      "기관계": -121542,
+      "금융투자": 8094,
+      "투신": -15592,
+      "사모": -58554,
+      "보험": -4565,
       "은행": 0,
       "기타금융": -938,
-      "연기금": -52770,
-      "기타법인": -4157
+      "연기금": -49987,
+      "기타법인": -4159
     },
     "cum_60d": {
-      "개인": -748134,
-      "외국인": 560334,
-      "기관계": 214015,
-      "금융투자": 43992,
-      "투신": -47248,
-      "사모": -21598,
-      "보험": -14109,
+      "개인": -723277,
+      "외국인": 534584,
+      "기관계": 215045,
+      "금융투자": 49311,
+      "투신": -42693,
+      "사모": -25694,
+      "보험": -16781,
       "은행": -977,
-      "기타금융": -2425,
-      "연기금": 256380,
-      "기타법인": -24931
+      "기타금융": -2189,
+      "연기금": 254068,
+      "기타법인": -24535
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 38.03
+      },
       {
         "date": "2026-08-06",
         "ratio": 38.03
@@ -1247,10 +1251,6 @@
       {
         "date": "2026-05-13",
         "ratio": 35.14
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 35.65
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "235,000"
+      "value": "239,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "235,000",
+      "value": "240,500",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "241,000",
+      "value": "240,500",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,7 +1548,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "233,000",
+      "value": "238,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "60,241"
+      "value": "564"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "143억"
+      "value": "1.34억"
     },
     {
       "code": "marketValue",
@@ -1573,7 +1573,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "38.00%"
+      "value": "38.03%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1645,7 +1645,7 @@
       "nm": "NC",
       "bnm": "삼성증권",
       "tit": "일부 신작 지연에도 모멘텀은 풍부",
-      "rcnt": "2788",
+      "rcnt": "2872",
       "wdt": "20260730"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "NC",
       "bnm": "신한투자증권",
       "tit": "지금 이 주식을 사기 좋은 이유",
-      "rcnt": "3782",
+      "rcnt": "3878",
       "wdt": "20260724"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "NC",
       "bnm": "교보증권",
       "tit": "내년까지 마련된 이익 성장 스토리",
-      "rcnt": "10539",
+      "rcnt": "10597",
       "wdt": "20260710"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "NC",
       "bnm": "하나증권",
       "tit": "현재도, 미래도 밝다",
-      "rcnt": "8585",
+      "rcnt": "8645",
       "wdt": "20260709"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "NC",
       "bnm": "한화투자증권",
       "tit": "3분기는 비중 확대 구간",
-      "rcnt": "7521",
+      "rcnt": "7575",
       "wdt": "20260708"
     }
   ],
@@ -1694,13 +1694,13 @@
       "stockName": "크래프톤",
       "sosok": "0",
       "closePrice": "230,000",
-      "compareToPreviousClosePrice": "1,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "0.44",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "10,611,701",
@@ -1731,13 +1731,13 @@
       "stockName": "넷마블",
       "sosok": "0",
       "closePrice": "39,000",
-      "compareToPreviousClosePrice": "1,050",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.77",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "3,195,448",
@@ -1768,13 +1768,13 @@
       "stockName": "펄어비스",
       "sosok": "1",
       "closePrice": "35,200",
-      "compareToPreviousClosePrice": "550",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "1.59",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,212,105",
@@ -1805,13 +1805,13 @@
       "stockName": "시프트업",
       "sosok": "0",
       "closePrice": "32,800",
-      "compareToPreviousClosePrice": "500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "1.55",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,926,733",
@@ -1842,13 +1842,13 @@
       "stockName": "더블유게임즈",
       "sosok": "0",
       "closePrice": "62,100",
-      "compareToPreviousClosePrice": "1,200",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "1.97",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,314,872",
@@ -1879,13 +1879,13 @@
       "stockName": "카카오게임즈",
       "sosok": "1",
       "closePrice": "7,970",
-      "compareToPreviousClosePrice": "200",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.57",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "850,759",
@@ -2874,7 +2874,7 @@
       "itemCode": "036570",
       "disclosureId": 95484416,
       "title": "(주)엔씨 기업설명회(IR) 개최(안내공시)",
-      "datetime": "2026-08-06T15:08:56",
+      "datetime": "2026-08-06T06:50:49",
       "author": "KOSCOM"
     },
     {
@@ -2951,38 +2951,38 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -619141,
-      "외국인": 322130,
-      "기관계": 318943,
-      "금융투자": 15139,
-      "투신": -31733,
-      "사모": 37652,
-      "보험": -8801,
+      "개인": -597930,
+      "외국인": 283429,
+      "기관계": 336587,
+      "금융투자": 41217,
+      "투신": -27101,
+      "사모": 32860,
+      "보험": -12216,
       "은행": -977,
-      "기타금융": -1487,
-      "연기금": 309150,
-      "기타법인": -20774
+      "기타금융": -1251,
+      "연기금": 304055,
+      "기타법인": -20376
     },
     "pattern": {
       "외국인": "꾸준매집",
       "연기금": "혼조",
       "기관계": "혼조",
       "개인": "일관매도",
-      "사모": "일관매도",
+      "사모": "혼조",
       "금융투자": "당일이탈"
     },
-    "foreign_avg_price": 227641,
+    "foreign_avg_price": 226564,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 5.2,
-    "foreign_buy_qty": 961788,
+    "foreign_avg_vs_now_pct": null,
+    "foreign_buy_qty": 936038,
     "foreign_sell_qty": 401454,
-    "foreign_net_qty": 560334,
-    "foreign_net_ratio_pct": 58.3,
+    "foreign_net_qty": 534584,
+    "foreign_net_ratio_pct": 57.1,
     "close_range": {
       "low": 210500,
       "high": 338000
     },
-    "foreign_ratio_delta_60d": 2.38,
+    "foreign_ratio_delta_60d": 2.89,
     "foreign_ratio_max": 38.03,
     "foreign_ratio_min": 35.14,
     "foreign_ratio_is_60d_high": true

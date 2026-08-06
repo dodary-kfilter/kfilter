@@ -2,17 +2,33 @@
   "code": "402340",
   "name": "SK스퀘어",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:23",
+  "updated": "2026-08-07 08:27",
   "supply_10d": {
-    "foreign_net_10d": 687576,
-    "foreign_buydays": "7/10",
-    "foreign_pass": true,
-    "pension_net_10d": -527533,
+    "foreign_net_10d": 636626,
+    "foreign_buydays": "6/10",
+    "foreign_pass": false,
+    "pension_net_10d": -415048,
     "pension_buydays": "3/10",
     "pension_pass": false
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 45.93,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 970000,
@@ -956,64 +972,52 @@
         "기타금융": -116,
         "연기금": 17782,
         "기타법인": 2684
-      },
-      {
-        "date": "2026-05-12",
-        "close": 1126000,
-        "foreignRatio": 49.0,
-        "개인": 95612,
-        "외국인": -67594,
-        "기관계": -17917,
-        "금융투자": 10962,
-        "투신": -7215,
-        "사모": -30676,
-        "보험": -2626,
-        "은행": 500,
-        "기타금융": -232,
-        "연기금": 11370,
-        "기타법인": -10300
       }
     ],
     "cum_5d": {
-      "개인": -9675,
-      "외국인": 133986,
-      "기관계": -98734,
-      "금융투자": -26109,
-      "투신": -32821,
-      "사모": -19502,
-      "보험": 699,
-      "은행": 218,
-      "기타금융": 234,
-      "연기금": -21453,
-      "기타법인": -24417
+      "개인": 357198,
+      "외국인": -266244,
+      "기관계": -79112,
+      "금융투자": 46282,
+      "투신": -47780,
+      "사모": -31462,
+      "보험": -7908,
+      "은행": 331,
+      "기타금융": 386,
+      "연기금": -38961,
+      "기타법인": -12470
     },
     "cum_20d": {
-      "개인": 161685,
-      "외국인": 870533,
-      "기관계": -1047782,
-      "금융투자": 192834,
-      "투신": -394037,
-      "사모": -129454,
-      "보험": -48925,
-      "은행": 122,
-      "기타금융": 1009,
-      "연기금": -669331,
-      "기타법인": 15920
+      "개인": 225084,
+      "외국인": 763607,
+      "기관계": -1003046,
+      "금융투자": 234290,
+      "투신": -426835,
+      "사모": -110545,
+      "보험": -55103,
+      "은행": -76,
+      "기타금융": 801,
+      "연기금": -645578,
+      "기타법인": 14135
     },
     "cum_60d": {
-      "개인": 1674012,
-      "외국인": -4008418,
-      "기관계": 2284139,
-      "금융투자": 1621554,
-      "투신": 2237514,
-      "사모": -74894,
-      "보험": -200395,
-      "은행": -1698,
-      "기타금융": -8087,
-      "연기금": -1289855,
-      "기타법인": 24455
+      "개인": 1578400,
+      "외국인": -3940824,
+      "기관계": 2302056,
+      "금융투자": 1610592,
+      "투신": 2244729,
+      "사모": -44218,
+      "보험": -197769,
+      "은행": -2198,
+      "기타금융": -7855,
+      "연기금": -1301225,
+      "기타법인": 34755
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 45.93
+      },
       {
         "date": "2026-08-06",
         "ratio": 45.93
@@ -1249,10 +1253,6 @@
       {
         "date": "2026-05-13",
         "ratio": 48.95
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 49.0
       }
     ]
   },
@@ -1525,47 +1525,47 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "1,119,000"
+      "value": "970,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "1,090,000",
+      "value": "986,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "1,090,000",
+      "value": "994,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "968,000",
+      "value": "970,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,152,306"
+      "value": "36,212"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1조 1,528억"
+      "value": "356억"
     },
     {
       "code": "marketValue",
@@ -1575,7 +1575,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "46.10%"
+      "value": "45.93%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1645,7 +1645,7 @@
       "nm": "SK스퀘어",
       "bnm": "대신증권",
       "tit": "프리미엄 확인하면 늦어!",
-      "rcnt": "17980",
+      "rcnt": "18155",
       "wdt": "20260713"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "SK스퀘어",
       "bnm": "유안타증권",
       "tit": "[NDR 후기] 명확한 방향성 확인",
-      "rcnt": "14011",
+      "rcnt": "14105",
       "wdt": "20260707"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "SK스퀘어",
       "bnm": "유안타증권",
       "tit": "SK하이닉스 야호~",
-      "rcnt": "18750",
+      "rcnt": "18837",
       "wdt": "20260702"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "SK스퀘어",
       "bnm": "대신증권",
       "tit": "닉스 보다 빠른 상승",
-      "rcnt": "35365",
+      "rcnt": "35438",
       "wdt": "20260618"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "SK스퀘어",
       "bnm": "SK증권",
       "tit": "SK하이닉스에 웃는다",
-      "rcnt": "24787",
+      "rcnt": "24858",
       "wdt": "20260617"
     }
   ],
@@ -1694,13 +1694,13 @@
       "stockName": "삼성전자",
       "sosok": "0",
       "closePrice": "230,500",
-      "compareToPreviousClosePrice": "-15,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-6.30",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,347,567,219",
@@ -1731,13 +1731,13 @@
       "stockName": "SK하이닉스",
       "sosok": "0",
       "closePrice": "1,495,000",
-      "compareToPreviousClosePrice": "-173,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-10.37",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,092,086,085",
@@ -1768,13 +1768,13 @@
       "stockName": "한미반도체",
       "sosok": "0",
       "closePrice": "200,500",
-      "compareToPreviousClosePrice": "-8,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-4.07",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "19,110,096",
@@ -1805,13 +1805,13 @@
       "stockName": "주성엔지니어링",
       "sosok": "1",
       "closePrice": "133,400",
-      "compareToPreviousClosePrice": "-9,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-6.65",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "6,200,581",
@@ -1842,13 +1842,13 @@
       "stockName": "이수페타시스",
       "sosok": "0",
       "closePrice": "83,100",
-      "compareToPreviousClosePrice": "-1,600",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-1.89",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "6,100,306",
@@ -2874,7 +2874,7 @@
       "itemCode": "402340",
       "disclosureId": 94938601,
       "title": "에스케이스퀘어 주식회사 주식선물 2단계 가격제한폭 확대요건 도달(하락)",
-      "datetime": "2026-08-06T09:44:50",
+      "datetime": "2026-08-06T06:50:12",
       "author": "KOSCOM"
     },
     {
@@ -2951,38 +2951,38 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": 1512327,
-      "외국인": -4878951,
-      "기관계": 3331921,
-      "금융투자": 1428720,
-      "투신": 2631551,
-      "사모": 54560,
-      "보험": -151470,
-      "은행": -1820,
-      "기타금융": -9096,
-      "연기금": -620524,
-      "기타법인": 8535
+      "개인": 1353316,
+      "외국인": -4704431,
+      "기관계": 3305102,
+      "금융투자": 1376302,
+      "투신": 2671564,
+      "사모": 66327,
+      "보험": -142666,
+      "은행": -2122,
+      "기타금융": -8656,
+      "연기금": -655647,
+      "기타법인": 20620
     },
     "pattern": {
       "외국인": "반전(복원중)",
       "연기금": "일관매도",
       "기관계": "혼조",
-      "개인": "당일이탈",
+      "개인": "꾸준매집",
       "사모": "일관매도",
-      "금융투자": "당일이탈"
+      "금융투자": "꾸준매집"
     },
-    "foreign_avg_price": 1809148,
+    "foreign_avg_price": 1820865,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": -46.4,
+    "foreign_avg_vs_now_pct": null,
     "foreign_buy_qty": 2460532,
-    "foreign_sell_qty": 6468950,
-    "foreign_net_qty": -4008418,
-    "foreign_net_ratio_pct": 162.9,
+    "foreign_sell_qty": 6401356,
+    "foreign_net_qty": -3940824,
+    "foreign_net_ratio_pct": 160.2,
     "close_range": {
       "low": 799000,
       "high": 1970000
     },
-    "foreign_ratio_delta_60d": -3.07,
+    "foreign_ratio_delta_60d": -3.02,
     "foreign_ratio_max": 49.25,
     "foreign_ratio_min": 45.3,
     "foreign_ratio_is_60d_high": false
@@ -3031,6 +3031,24 @@
   },
   "news": [
     {
+      "title": "[마켓 프리뷰] 상승세 지키지 못한 코스피 급락 마감…코스닥 '강보합...",
+      "office": "SBS Biz",
+      "date": "202608070728",
+      "url": "https://n.news.naver.com/mnews/article/374/0000526133"
+    },
+    {
+      "title": "개인 주식거래 급증에 국내 증권사 상반기 역대급 실적",
+      "office": "동아일보",
+      "date": "202608070434",
+      "url": "https://n.news.naver.com/mnews/article/020/0003739254"
+    },
+    {
+      "title": "\"3조 던져요\" 또 돌아선 외인, 이번엔 왜?...AI 투심 '이 회사'에 달렸...",
+      "office": "머니투데이",
+      "date": "202608070400",
+      "url": "https://n.news.naver.com/mnews/article/008/0005396793"
+    },
+    {
       "title": "'반도체 거리두기' 외인 이탈 코스피 4%대↓, 네이버 실적이 분수령",
       "office": "머니투데이",
       "date": "202608061720",
@@ -3047,24 +3065,6 @@
       "office": "뉴스1",
       "date": "202608061703",
       "url": "https://n.news.naver.com/mnews/article/421/0009101389"
-    },
-    {
-      "title": "SK하닉 10% 급락에 하루 만에 매도 사이드카…코스피 4.58%↓(종합)",
-      "office": "이데일리",
-      "date": "202608061652",
-      "url": "https://n.news.naver.com/mnews/article/018/0006346219"
-    },
-    {
-      "title": "코스피, 반도체 투톱 급락에 6200선 후퇴…코스닥은 5거래일째 상승[마...",
-      "office": "서울경제",
-      "date": "202608061642",
-      "url": "https://n.news.naver.com/mnews/article/011/0004649239"
-    },
-    {
-      "title": "코스피 6200선대로 주저앉아…코스닥 겨우 상승 마감",
-      "office": "노컷뉴스",
-      "date": "202608061641",
-      "url": "https://n.news.naver.com/mnews/article/079/0004176266"
     }
   ],
   "_errors": {}

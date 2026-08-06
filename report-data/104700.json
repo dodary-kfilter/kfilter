@@ -2,15 +2,31 @@
   "code": "104700",
   "name": "한국철강",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:25",
+  "updated": "2026-08-07 08:30",
   "supply_10d": {
-    "foreign_net_10d": 37314,
-    "foreign_buydays": "9/10",
-    "pension_net_10d": 11222,
-    "pension_buydays": "8/10"
+    "foreign_net_10d": 34580,
+    "foreign_buydays": "8/10",
+    "pension_net_10d": 8781,
+    "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 5.64,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 9640,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": 1000,
         "기타법인": 0
-      },
-      {
-        "date": "2026-05-12",
-        "close": 9860,
-        "foreignRatio": 5.53,
-        "개인": -1389,
-        "외국인": -11190,
-        "기관계": 13039,
-        "금융투자": 360,
-        "투신": 5428,
-        "사모": -73,
-        "보험": 9696,
-        "은행": -2005,
-        "기타금융": 0,
-        "연기금": -367,
-        "기타법인": 0
       }
     ],
     "cum_5d": {
-      "개인": -117482,
-      "외국인": 39293,
-      "기관계": 77191,
-      "금융투자": 79464,
-      "투신": 551,
+      "개인": -79209,
+      "외국인": 33051,
+      "기관계": 46047,
+      "금융투자": 44719,
+      "투신": 623,
       "사모": 1151,
-      "보험": 531,
-      "은행": -1794,
+      "보험": 829,
+      "은행": -1563,
       "기타금융": 0,
-      "연기금": -2712,
-      "기타법인": 1005
+      "연기금": 288,
+      "기타법인": 10
     },
     "cum_20d": {
-      "개인": -338145,
-      "외국인": -8740,
-      "기관계": 342389,
-      "금융투자": 332056,
-      "투신": 4056,
+      "개인": -324607,
+      "외국인": -714,
+      "기관계": 320825,
+      "금융투자": 317621,
+      "투신": 4148,
       "사모": 1335,
-      "보험": -1144,
-      "은행": -1281,
+      "보험": -940,
+      "은행": -1010,
       "기타금융": -15000,
-      "연기금": 22367,
+      "연기금": 14671,
       "기타법인": 4418
     },
     "cum_60d": {
-      "개인": -239600,
-      "외국인": -211223,
-      "기관계": 448105,
-      "금융투자": 660888,
-      "투신": -23915,
-      "사모": 32684,
-      "보험": -43164,
-      "은행": -35538,
+      "개인": -238211,
+      "외국인": -200033,
+      "기관계": 435066,
+      "금융투자": 660528,
+      "투신": -29343,
+      "사모": 32757,
+      "보험": -52860,
+      "은행": -33533,
       "기타금융": -15000,
-      "연기금": -127850,
+      "연기금": -127483,
       "기타법인": 1410
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 5.64
+      },
       {
         "date": "2026-08-06",
         "ratio": 5.64
@@ -1247,10 +1251,6 @@
       {
         "date": "2026-05-13",
         "ratio": 5.47
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 5.53
       }
     ]
   },
@@ -1523,22 +1523,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "9,570"
+      "value": "9,640"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "9,570",
+      "value": "9,660",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "9,710",
+      "value": "9,660",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1548,22 +1548,22 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "9,420",
+      "value": "9,640",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "33,250"
+      "value": "103"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "3.19억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1573,7 +1573,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "5.63%"
+      "value": "5.64%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1648,13 +1648,13 @@
       "stockName": "POSCO홀딩스",
       "sosok": "0",
       "closePrice": "319,000",
-      "compareToPreviousClosePrice": "2,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "0.63",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "25,278,047",
@@ -1685,13 +1685,13 @@
       "stockName": "현대제철",
       "sosok": "0",
       "closePrice": "28,150",
-      "compareToPreviousClosePrice": "500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "1.81",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "3,756,498",
@@ -1722,13 +1722,13 @@
       "stockName": "세아베스틸지주",
       "sosok": "0",
       "closePrice": "40,050",
-      "compareToPreviousClosePrice": "-750",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-1.84",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,436,277",
@@ -1759,13 +1759,13 @@
       "stockName": "KG스틸",
       "sosok": "0",
       "closePrice": "5,660",
-      "compareToPreviousClosePrice": "10",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "0.18",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "566,050",
@@ -1796,13 +1796,13 @@
       "stockName": "세아홀딩스",
       "sosok": "0",
       "closePrice": "121,000",
-      "compareToPreviousClosePrice": "200",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "0.17",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "513,310",
@@ -1833,13 +1833,13 @@
       "stockName": "동국제강",
       "sosok": "0",
       "closePrice": "9,840",
-      "compareToPreviousClosePrice": "10",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "0.10",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "488,142",
@@ -2905,16 +2905,16 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": 98545,
-      "외국인": -202483,
-      "기관계": 105716,
-      "금융투자": 328832,
-      "투신": -27971,
-      "사모": 31349,
-      "보험": -42020,
-      "은행": -34257,
+      "개인": 86396,
+      "외국인": -199319,
+      "기관계": 114241,
+      "금융투자": 342907,
+      "투신": -33491,
+      "사모": 31422,
+      "보험": -51920,
+      "은행": -32523,
       "기타금융": 0,
-      "연기금": -150217,
+      "연기금": -142154,
       "기타법인": -3008
     },
     "pattern": {
@@ -2925,18 +2925,18 @@
       "사모": "꾸준매집",
       "금융투자": "꾸준매집"
     },
-    "foreign_avg_price": 8942,
+    "foreign_avg_price": 8891,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 7.8,
+    "foreign_avg_vs_now_pct": null,
     "foreign_buy_qty": 190903,
-    "foreign_sell_qty": 402126,
-    "foreign_net_qty": -211223,
-    "foreign_net_ratio_pct": 110.6,
+    "foreign_sell_qty": 390936,
+    "foreign_net_qty": -200033,
+    "foreign_net_ratio_pct": 104.8,
     "close_range": {
       "low": 8040,
-      "high": 9860
+      "high": 9740
     },
-    "foreign_ratio_delta_60d": 0.11,
+    "foreign_ratio_delta_60d": 0.17,
     "foreign_ratio_max": 5.64,
     "foreign_ratio_min": 5.15,
     "foreign_ratio_is_60d_high": true

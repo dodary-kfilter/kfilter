@@ -2,17 +2,33 @@
   "code": "440110",
   "name": "파두",
   "market": "KOSDAQ",
-  "updated": "2026-08-06 21:23",
+  "updated": "2026-08-07 08:27",
   "supply_10d": {
-    "foreign_net_10d": 467623,
-    "foreign_buydays": "6/10",
+    "foreign_net_10d": 417636,
+    "foreign_buydays": "5/10",
     "foreign_pass": false,
-    "pension_net_10d": 151162,
+    "pension_net_10d": 173286,
     "pension_buydays": "6/10",
     "pension_pass": false
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 26.4,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 57900,
@@ -956,64 +972,52 @@
         "기타금융": 0,
         "연기금": 14524,
         "기타법인": 3406
-      },
-      {
-        "date": "2026-05-12",
-        "close": 94800,
-        "foreignRatio": 16.52,
-        "개인": -120429,
-        "외국인": 150922,
-        "기관계": -28215,
-        "금융투자": 90229,
-        "투신": 26760,
-        "사모": -147176,
-        "보험": -4,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 1976,
-        "기타법인": -9104
       }
     ],
     "cum_5d": {
-      "개인": 155645,
-      "외국인": -410559,
-      "기관계": 290172,
-      "금융투자": 63686,
-      "투신": 35281,
-      "사모": 13855,
-      "보험": 2426,
+      "개인": 158630,
+      "외국인": -191571,
+      "기관계": 63345,
+      "금융투자": 50760,
+      "투신": -33769,
+      "사모": -9098,
+      "보험": 605,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 174924,
-      "기타법인": -21015
+      "연기금": 54847,
+      "기타법인": -28378
     },
     "cum_20d": {
-      "개인": -15596,
-      "외국인": -657854,
-      "기관계": 637923,
-      "금융투자": 21265,
-      "투신": 314741,
-      "사모": 125028,
-      "보험": 9062,
+      "개인": 30836,
+      "외국인": -558796,
+      "기관계": 512604,
+      "금융투자": 17194,
+      "투신": 224239,
+      "사모": 94293,
+      "보험": 9051,
       "은행": 0,
       "기타금융": -31769,
       "연기금": 199596,
-      "기타법인": 17590
+      "기타법인": -2664
     },
     "cum_60d": {
-      "개인": -2773838,
-      "외국인": 5995447,
-      "기관계": -3164479,
-      "금융투자": -407101,
-      "투신": -788267,
-      "사모": -1908930,
-      "보험": -3003,
+      "개인": -2653409,
+      "외국인": 5844525,
+      "기관계": -3136264,
+      "금융투자": -497330,
+      "투신": -815027,
+      "사모": -1761754,
+      "보험": -2999,
       "은행": 180,
       "기타금융": -92505,
-      "연기금": 35147,
-      "기타법인": -33470
+      "연기금": 33171,
+      "기타법인": -24366
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 26.4
+      },
       {
         "date": "2026-08-06",
         "ratio": 26.4
@@ -1249,10 +1253,6 @@
       {
         "date": "2026-05-13",
         "ratio": 16.3
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 16.52
       }
     ]
   },
@@ -1525,47 +1525,47 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "66,500"
+      "value": "57,900"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "64,000",
+      "value": "57,900",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "64,000",
+      "value": "57,900",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "57,500",
+      "value": "57,900",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "711,695"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "425억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1575,7 +1575,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "26.54%"
+      "value": "26.40%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1645,7 +1645,7 @@
       "nm": "파두",
       "bnm": "신한투자증권",
       "tit": "의심을 거둘 때",
-      "rcnt": "8864",
+      "rcnt": "9010",
       "wdt": "20260716"
     }
   ],
@@ -1658,13 +1658,13 @@
       "stockName": "삼성전자",
       "sosok": "0",
       "closePrice": "230,500",
-      "compareToPreviousClosePrice": "-15,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-6.30",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,347,567,219",
@@ -1695,13 +1695,13 @@
       "stockName": "SK하이닉스",
       "sosok": "0",
       "closePrice": "1,495,000",
-      "compareToPreviousClosePrice": "-173,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-10.37",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,092,086,085",
@@ -1732,13 +1732,13 @@
       "stockName": "SK스퀘어",
       "sosok": "0",
       "closePrice": "970,000",
-      "compareToPreviousClosePrice": "-149,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-13.32",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "127,999,634",
@@ -1769,13 +1769,13 @@
       "stockName": "한미반도체",
       "sosok": "0",
       "closePrice": "200,500",
-      "compareToPreviousClosePrice": "-8,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-4.07",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "19,110,096",
@@ -1806,13 +1806,13 @@
       "stockName": "주성엔지니어링",
       "sosok": "1",
       "closePrice": "133,400",
-      "compareToPreviousClosePrice": "-9,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-6.65",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "6,200,581",
@@ -1843,13 +1843,13 @@
       "stockName": "이수페타시스",
       "sosok": "0",
       "closePrice": "83,100",
-      "compareToPreviousClosePrice": "-1,600",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-1.89",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "6,100,306",
@@ -2737,102 +2737,7 @@
       }
     ]
   },
-  "financials_confirmed": {
-    "quarter": [
-      {
-        "date": "2026-03-01",
-        "sales": 59538451700.0,
-        "operatingProfit": 7685802060.0,
-        "netIncome": 10214783510.0,
-        "eps": 208.84,
-        "roe": 0.39495,
-        "debtRatio": 326.817,
-        "dps": null,
-        "opm": 12.91
-      },
-      {
-        "date": "2025-12-01",
-        "sales": 23876637480.0,
-        "operatingProfit": -29494004650.0,
-        "netIncome": -38448265360.0,
-        "eps": -775.094,
-        "roe": -0.98964,
-        "debtRatio": 518.497,
-        "dps": null,
-        "opm": -123.53
-      },
-      {
-        "date": "2025-09-01",
-        "sales": 25644431130.0,
-        "operatingProfit": -11426230240.0,
-        "netIncome": -10882512240.0,
-        "eps": -217.298,
-        "roe": -0.1674,
-        "debtRatio": 80.964,
-        "dps": null,
-        "opm": -44.56
-      },
-      {
-        "date": "2025-06-01",
-        "sales": 23679326010.0,
-        "operatingProfit": -12564211320.0,
-        "netIncome": -14750903090.0,
-        "eps": -295.213,
-        "roe": -0.18829,
-        "debtRatio": 61.489,
-        "dps": null,
-        "opm": -53.06
-      }
-    ],
-    "annual": [
-      {
-        "date": "2025-12-01",
-        "sales": 92419333230.0,
-        "operatingProfit": -65469985710.0,
-        "netIncome": -76218175610.0,
-        "eps": -1529.909,
-        "roe": -1.31083,
-        "debtRatio": 518.497,
-        "dps": 0,
-        "opm": -70.84
-      },
-      {
-        "date": "2024-12-01",
-        "sales": 43502744970.0,
-        "operatingProfit": -95048300910.0,
-        "netIncome": -91508531300.0,
-        "eps": -1842.487,
-        "roe": -0.64469,
-        "debtRatio": 37.245,
-        "dps": 0,
-        "opm": -218.49
-      },
-      {
-        "date": "2023-12-01",
-        "sales": 22470905710.0,
-        "operatingProfit": -58569439220.0,
-        "netIncome": -56832521390.0,
-        "eps": -1272.085,
-        "roe": -0.50196,
-        "debtRatio": 30.756,
-        "dps": 0,
-        "opm": -260.65
-      },
-      {
-        "date": "2022-12-01",
-        "sales": 56401518000.0,
-        "operatingProfit": 1507325000.0,
-        "netIncome": -227459980000.0,
-        "eps": -7307.947,
-        "roe": 3.80207,
-        "debtRatio": 66.399,
-        "dps": 0,
-        "opm": 2.67
-      }
-    ],
-    "source": "daum(확정치)",
-    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
-  },
+  "financials_confirmed": null,
   "disclosures": [
     {
       "itemCode": "440110",
@@ -2920,38 +2825,38 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -2758242,
-      "외국인": 6653301,
-      "기관계": -3802402,
-      "금융투자": -428366,
-      "투신": -1103008,
-      "사모": -2033958,
-      "보험": -12065,
+      "개인": -2684245,
+      "외국인": 6403321,
+      "기관계": -3648868,
+      "금융투자": -514524,
+      "투신": -1039266,
+      "사모": -1856047,
+      "보험": -12050,
       "은행": 180,
       "기타금융": -60736,
-      "연기금": -164449,
-      "기타법인": -51060
+      "연기금": -166425,
+      "기타법인": -21702
     },
     "pattern": {
       "외국인": "혼조",
       "연기금": "혼조",
       "기관계": "반전(복원중)",
-      "개인": "혼조",
+      "개인": "반전(복원중)",
       "사모": "반전(복원중)",
       "금융투자": "반전(복원중)"
     },
-    "foreign_avg_price": 102226,
+    "foreign_avg_price": 102418,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": -43.4,
-    "foreign_buy_qty": 8153245,
+    "foreign_avg_vs_now_pct": null,
+    "foreign_buy_qty": 8002323,
     "foreign_sell_qty": 2157798,
-    "foreign_net_qty": 5995447,
-    "foreign_net_ratio_pct": 73.5,
+    "foreign_net_qty": 5844525,
+    "foreign_net_ratio_pct": 73.0,
     "close_range": {
       "low": 48800,
       "high": 128300
     },
-    "foreign_ratio_delta_60d": 9.88,
+    "foreign_ratio_delta_60d": 10.1,
     "foreign_ratio_max": 29.54,
     "foreign_ratio_min": 16.3,
     "foreign_ratio_is_60d_high": false
@@ -2995,6 +2900,12 @@
   },
   "news": [
     {
+      "title": "'삼전닉스' 안 부럽다는 코스닥 이 종목…액티브ETF가 담은 TOP5",
+      "office": "뉴스1",
+      "date": "202608070600",
+      "url": "https://n.news.naver.com/mnews/article/421/0009101697"
+    },
+    {
       "title": "파두 “2028년 7세대 SSD 컨트롤러 고객사 샘플링 예정…시장 선점”",
       "office": "헤럴드경제",
       "date": "202608051530",
@@ -3023,12 +2934,6 @@
       "office": "뉴스1",
       "date": "202607311616",
       "url": "https://n.news.naver.com/mnews/article/421/0009090868"
-    },
-    {
-      "title": "8월 중 에이피알·대한조선·마키나락스 등 1억8078만주 의무보유등록...",
-      "office": "매일신문",
-      "date": "202607311133",
-      "url": "https://n.news.naver.com/mnews/article/088/0001021533"
     }
   ],
   "_errors": {}

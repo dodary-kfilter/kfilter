@@ -2,15 +2,31 @@
   "code": "003230",
   "name": "삼양식품",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:25",
+  "updated": "2026-08-07 08:30",
   "supply_10d": {
-    "foreign_net_10d": 69723,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 31569,
-    "pension_buydays": "9/10"
+    "foreign_net_10d": 54351,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 20330,
+    "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 16.81,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 1233000,
@@ -954,64 +970,52 @@
         "기타금융": 18,
         "연기금": -939,
         "기타법인": -62
-      },
-      {
-        "date": "2026-05-12",
-        "close": 1331000,
-        "foreignRatio": 15.05,
-        "개인": -6025,
-        "외국인": -2742,
-        "기관계": 8242,
-        "금융투자": 3892,
-        "투신": 1522,
-        "사모": 538,
-        "보험": 393,
-        "은행": -1,
-        "기타금융": -58,
-        "연기금": 1956,
-        "기타법인": 447
       }
     ],
     "cum_5d": {
-      "개인": 2101,
-      "외국인": 26272,
-      "기관계": -25444,
-      "금융투자": -1171,
-      "투신": -18423,
-      "사모": -10117,
-      "보험": -1829,
+      "개인": -11646,
+      "외국인": 25844,
+      "기관계": -11012,
+      "금융투자": 50,
+      "투신": -5971,
+      "사모": -13340,
+      "보험": -408,
       "은행": 84,
-      "기타금융": 68,
-      "연기금": 5944,
-      "기타법인": -2644
+      "기타금융": 17,
+      "연기금": 8556,
+      "기타법인": -3038
     },
     "cum_20d": {
-      "개인": -66228,
-      "외국인": 90962,
-      "기관계": -24381,
-      "금융투자": -227,
-      "투신": 27528,
-      "사모": -74684,
-      "보험": 261,
-      "은행": -402,
-      "기타금융": 117,
-      "연기금": 23026,
-      "기타법인": 309
+      "개인": -76557,
+      "외국인": 97923,
+      "기관계": -21419,
+      "금융투자": -1208,
+      "투신": 26711,
+      "사모": -67337,
+      "보험": -2,
+      "은행": -404,
+      "기타금융": 167,
+      "연기금": 20654,
+      "기타법인": 766
     },
     "cum_60d": {
-      "개인": -119526,
-      "외국인": 144931,
-      "기관계": -7542,
-      "금융투자": -21575,
-      "투신": 38033,
-      "사모": -93257,
-      "보험": 10438,
-      "은행": -302,
-      "기타금융": -1555,
-      "연기금": 60676,
-      "기타법인": -18994
+      "개인": -113501,
+      "외국인": 147673,
+      "기관계": -15784,
+      "금융투자": -25467,
+      "투신": 36511,
+      "사모": -93795,
+      "보험": 10045,
+      "은행": -301,
+      "기타금융": -1497,
+      "연기금": 58720,
+      "기타법인": -19441
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 16.81
+      },
       {
         "date": "2026-08-06",
         "ratio": 16.81
@@ -1247,10 +1251,6 @@
       {
         "date": "2026-05-13",
         "ratio": 14.8
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 15.05
       }
     ]
   },
@@ -1523,32 +1523,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "1,210,000"
+      "value": "1,233,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "1,229,000",
+      "value": "1,231,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "1,249,000",
+      "value": "1,233,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "1,201,000",
+      "value": "1,223,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "60,919"
+      "value": "615"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "745억"
+      "value": "7.54억"
     },
     {
       "code": "marketValue",
@@ -1573,7 +1573,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "16.70%"
+      "value": "16.81%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1645,7 +1645,7 @@
       "nm": "삼양식품",
       "bnm": "유안타증권",
       "tit": "이제는 주가가 답할 차례",
-      "rcnt": "6889",
+      "rcnt": "6932",
       "wdt": "20260721"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "삼양식품",
       "bnm": "교보증권",
       "tit": "탄탄한 불닭, 여전한 수요",
-      "rcnt": "5932",
+      "rcnt": "5949",
       "wdt": "20260720"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "삼양식품",
       "bnm": "신한투자증권",
       "tit": "숫자가 증명하는 경쟁력",
-      "rcnt": "5135",
+      "rcnt": "5173",
       "wdt": "20260713"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "삼양식품",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 시장 기대 충족 전망",
-      "rcnt": "6620",
+      "rcnt": "6628",
       "wdt": "20260702"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "삼양식품",
       "bnm": "한화투자증권",
       "tit": "공급 병목 완화에 따른 추가 성장 기대",
-      "rcnt": "11488",
+      "rcnt": "11494",
       "wdt": "20260514"
     }
   ],
@@ -1694,13 +1694,13 @@
       "stockName": "오리온",
       "sosok": "0",
       "closePrice": "135,500",
-      "compareToPreviousClosePrice": "5,200",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "3.99",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "5,356,150",
@@ -1731,13 +1731,13 @@
       "stockName": "CJ제일제당",
       "sosok": "0",
       "closePrice": "203,000",
-      "compareToPreviousClosePrice": "5,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.78",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "3,055,999",
@@ -1768,13 +1768,13 @@
       "stockName": "동서",
       "sosok": "0",
       "closePrice": "26,250",
-      "compareToPreviousClosePrice": "1,050",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "4.17",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,617,125",
@@ -1805,13 +1805,13 @@
       "stockName": "농심",
       "sosok": "0",
       "closePrice": "390,000",
-      "compareToPreviousClosePrice": "13,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "3.59",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,372,230",
@@ -1842,13 +1842,13 @@
       "stockName": "메지온",
       "sosok": "1",
       "closePrice": "55,500",
-      "compareToPreviousClosePrice": "-1,400",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-2.46",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,698,632",
@@ -1879,13 +1879,13 @@
       "stockName": "동원산업",
       "sosok": "0",
       "closePrice": "37,000",
-      "compareToPreviousClosePrice": "800",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.21",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,633,210",
@@ -2951,38 +2951,38 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -53298,
-      "외국인": 53969,
-      "기관계": 16839,
-      "금융투자": -21348,
-      "투신": 10505,
-      "사모": -18573,
-      "보험": 10177,
-      "은행": 100,
-      "기타금융": -1672,
-      "연기금": 37650,
-      "기타법인": -19303
+      "개인": -36944,
+      "외국인": 49750,
+      "기관계": 5635,
+      "금융투자": -24259,
+      "투신": 9800,
+      "사모": -26458,
+      "보험": 10047,
+      "은행": 103,
+      "기타금융": -1664,
+      "연기금": 38066,
+      "기타법인": -20207
     },
     "pattern": {
       "외국인": "꾸준매집",
       "연기금": "꾸준매집",
       "기관계": "일관매도",
-      "개인": "혼조",
+      "개인": "일관매도",
       "사모": "일관매도",
-      "금융투자": "일관매도"
+      "금융투자": "혼조"
     },
-    "foreign_avg_price": 1235928,
+    "foreign_avg_price": 1237693,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": -0.2,
+    "foreign_avg_vs_now_pct": null,
     "foreign_buy_qty": 314398,
-    "foreign_sell_qty": 169467,
-    "foreign_net_qty": 144931,
-    "foreign_net_ratio_pct": 46.1,
+    "foreign_sell_qty": 166725,
+    "foreign_net_qty": 147673,
+    "foreign_net_ratio_pct": 47.0,
     "close_range": {
       "low": 1053000,
       "high": 1444000
     },
-    "foreign_ratio_delta_60d": 1.76,
+    "foreign_ratio_delta_60d": 2.01,
     "foreign_ratio_max": 16.81,
     "foreign_ratio_min": 14.8,
     "foreign_ratio_is_60d_high": true

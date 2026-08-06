@@ -2,17 +2,33 @@
   "code": "005930",
   "name": "삼성전자",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:23",
+  "updated": "2026-08-07 08:26",
   "supply_10d": {
-    "foreign_net_10d": -9956332,
+    "foreign_net_10d": -5795984,
     "foreign_buydays": "4/10",
     "foreign_pass": false,
-    "pension_net_10d": -346418,
+    "pension_net_10d": -130945,
     "pension_buydays": "3/10",
     "pension_pass": false
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 0,
+        "foreignRatio": 46.63,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 230500,
@@ -956,64 +972,52 @@
         "기타금융": -121403,
         "연기금": -18228,
         "기타법인": 518852
-      },
-      {
-        "date": "2026-05-12",
-        "close": 279000,
-        "foreignRatio": 48.91,
-        "개인": 9049416,
-        "외국인": -9173388,
-        "기관계": 114693,
-        "금융투자": -601685,
-        "투신": 612743,
-        "사모": 275957,
-        "보험": -115246,
-        "은행": 205,
-        "기타금융": 2405,
-        "연기금": -59686,
-        "기타법인": -23370
       }
     ],
     "cum_5d": {
-      "개인": 6564136,
-      "외국인": 5002267,
-      "기관계": -11733331,
-      "금융투자": -7006132,
-      "투신": -1189109,
-      "사모": -2824278,
-      "보험": -85233,
-      "은행": 26637,
-      "기타금융": 27669,
-      "연기금": -682885,
-      "기타법인": 207156
+      "개인": 19142106,
+      "외국인": -4816144,
+      "기관계": -14459559,
+      "금융투자": -6327192,
+      "투신": -2898391,
+      "사모": -4319443,
+      "보험": 80916,
+      "은행": -21974,
+      "기타금융": 7028,
+      "연기금": -980503,
+      "기타법인": 94095
     },
     "cum_20d": {
-      "개인": 4123436,
-      "외국인": 3483711,
-      "기관계": -7448002,
-      "금융투자": -9279829,
-      "투신": -2557485,
-      "사모": 3694332,
-      "보험": 796136,
-      "은행": -132218,
-      "기타금융": 35590,
-      "연기금": -4528,
-      "기타법인": -135060
+      "개인": 7331670,
+      "외국인": 1933989,
+      "기관계": -9228908,
+      "금융투자": -9799493,
+      "투신": -3638373,
+      "사모": 3798115,
+      "보험": 582495,
+      "은행": -122669,
+      "기타금융": 37912,
+      "연기금": -86895,
+      "기타법인": -26280
     },
     "cum_60d": {
-      "개인": 124775807,
-      "외국인": -143253352,
-      "기관계": 14493711,
-      "금융투자": 12921902,
-      "투신": -388426,
-      "사모": 2736531,
-      "보험": -311642,
-      "은행": -226644,
-      "기타금융": -267671,
-      "연기금": 29661,
-      "기타법인": 3360014
+      "개인": 115726391,
+      "외국인": -134079964,
+      "기관계": 14379018,
+      "금융투자": 13523587,
+      "투신": -1001169,
+      "사모": 2460574,
+      "보험": -196396,
+      "은행": -226849,
+      "기타금융": -270076,
+      "연기금": 89347,
+      "기타법인": 3383384
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 46.63
+      },
       {
         "date": "2026-08-06",
         "ratio": 46.63
@@ -1249,10 +1253,6 @@
       {
         "date": "2026-05-13",
         "ratio": 48.83
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 48.91
       }
     ]
   },
@@ -1525,22 +1525,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "246,000"
+      "value": "230,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "241,500",
+      "value": "231,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "246,000",
+      "value": "235,500",
+      "compareToPreviousPrice": {
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
+      }
+    },
+    {
+      "code": "lowPrice",
+      "key": "저가",
+      "value": "230,500",
       "compareToPreviousPrice": {
         "code": "3",
         "text": "보합",
@@ -1548,24 +1558,14 @@
       }
     },
     {
-      "code": "lowPrice",
-      "key": "저가",
-      "value": "228,000",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
-    },
-    {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "41,324,505"
+      "value": "1,277,456"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "9조 6,544억"
+      "value": "2,968억"
     },
     {
       "code": "marketValue",
@@ -1575,7 +1575,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "46.68%"
+      "value": "46.63%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1647,7 +1647,7 @@
       "nm": "삼성전자",
       "bnm": "현대차증권",
       "tit": "공급과 수요 모두 변화 / HBM 시장 점유율 확대 예상",
-      "rcnt": "15241",
+      "rcnt": "16711",
       "wdt": "20260805"
     },
     {
@@ -1656,7 +1656,7 @@
       "nm": "삼성전자",
       "bnm": "교보증권",
       "tit": "2Q26 Review 변하지 않은 메모리 호황",
-      "rcnt": "33933",
+      "rcnt": "34702",
       "wdt": "20260731"
     },
     {
@@ -1665,7 +1665,7 @@
       "nm": "삼성전자",
       "bnm": "DS투자증권",
       "tit": "2Q26 Re: 폼은 일시적이지만 클래스는 영원하다",
-      "rcnt": "24797",
+      "rcnt": "25470",
       "wdt": "20260731"
     },
     {
@@ -1674,7 +1674,7 @@
       "nm": "삼성전자",
       "bnm": "한화투자증권",
       "tit": "강력한 LTA와 주주환원으로 합당한 기업가치 회복 가능",
-      "rcnt": "22057",
+      "rcnt": "22653",
       "wdt": "20260731"
     },
     {
@@ -1683,7 +1683,7 @@
       "nm": "삼성전자",
       "bnm": "하나증권",
       "tit": "메모리 산업의 구조적 변화에 주목",
-      "rcnt": "18345",
+      "rcnt": "18863",
       "wdt": "20260731"
     }
   ],
@@ -1696,13 +1696,13 @@
       "stockName": "SK하이닉스",
       "sosok": "0",
       "closePrice": "1,495,000",
-      "compareToPreviousClosePrice": "-173,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-10.37",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,092,086,085",
@@ -1733,13 +1733,13 @@
       "stockName": "SK스퀘어",
       "sosok": "0",
       "closePrice": "970,000",
-      "compareToPreviousClosePrice": "-149,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-13.32",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "127,999,634",
@@ -1770,13 +1770,13 @@
       "stockName": "한미반도체",
       "sosok": "0",
       "closePrice": "200,500",
-      "compareToPreviousClosePrice": "-8,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-4.07",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "19,110,096",
@@ -1807,13 +1807,13 @@
       "stockName": "주성엔지니어링",
       "sosok": "1",
       "closePrice": "133,400",
-      "compareToPreviousClosePrice": "-9,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-6.65",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "6,200,581",
@@ -1844,13 +1844,13 @@
       "stockName": "이수페타시스",
       "sosok": "0",
       "closePrice": "83,100",
-      "compareToPreviousClosePrice": "-1,600",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-1.89",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "6,100,306",
@@ -2962,17 +2962,17 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": 120652371,
-      "외국인": -146737063,
-      "기관계": 21941713,
-      "금융투자": 22201731,
-      "투신": 2169059,
-      "사모": -957801,
-      "보험": -1107778,
-      "은행": -94426,
-      "기타금융": -303261,
-      "연기금": 34189,
-      "기타법인": 3495074
+      "개인": 108394721,
+      "외국인": -136013953,
+      "기관계": 23607926,
+      "금융투자": 23323080,
+      "투신": 2637204,
+      "사모": -1337541,
+      "보험": -778891,
+      "은행": -104180,
+      "기타금융": -307988,
+      "연기금": 176242,
+      "기타법인": 3409664
     },
     "pattern": {
       "외국인": "반전(복원중)",
@@ -2982,19 +2982,19 @@
       "사모": "당일이탈",
       "금융투자": "혼조"
     },
-    "foreign_avg_price": 308882,
+    "foreign_avg_price": 310926,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": -25.4,
+    "foreign_avg_vs_now_pct": null,
     "foreign_buy_qty": 47726863,
-    "foreign_sell_qty": 190980215,
-    "foreign_net_qty": -143253352,
-    "foreign_net_ratio_pct": 300.2,
+    "foreign_sell_qty": 181806827,
+    "foreign_net_qty": -134079964,
+    "foreign_net_ratio_pct": 280.9,
     "close_range": {
       "low": 207000,
       "high": 362500
     },
-    "foreign_ratio_delta_60d": -2.28,
-    "foreign_ratio_max": 48.91,
+    "foreign_ratio_delta_60d": -2.2,
+    "foreign_ratio_max": 48.85,
     "foreign_ratio_min": 46.5,
     "foreign_ratio_is_60d_high": false
   },
@@ -3042,40 +3042,40 @@
   },
   "news": [
     {
-      "title": "[미리보는 이데일리 신문]中 반도체 장비 쇼크…韓도 '소부장'부터 국...",
-      "office": "이데일리",
-      "date": "202608062122",
-      "url": "https://n.news.naver.com/mnews/article/018/0006346469"
+      "title": "삼성전자, 美 FMS 전시 부스에 2000명 몰려…차세대 AI 메모리 호평",
+      "office": "아시아경제",
+      "date": "202608070823",
+      "url": "https://n.news.naver.com/mnews/article/277/0005800061"
     },
     {
-      "title": "코스피는 떨어지는데 '희망고문?'…골드만삭스 “1만2000 간다” 근거...",
-      "office": "전자신문",
-      "date": "202608062113",
-      "url": "https://n.news.naver.com/mnews/article/030/0003455037"
+      "title": "삼성전자·SK하이닉스, 프리마켓서 동반 1%대 상승",
+      "office": "뉴시스",
+      "date": "202608070815",
+      "url": "https://n.news.naver.com/mnews/article/003/0014113588"
     },
     {
-      "title": "김정관 장관 “주52시간 특례 필요…제도가 일할 의지 꺾어선 안 돼”",
-      "office": "한겨레",
-      "date": "202608062054",
-      "url": "https://n.news.naver.com/mnews/article/028/0002817497"
+      "title": "[마켓뷰] 美증시 약세 vs 반발매수 유입 기대…코스피 향배는",
+      "office": "연합뉴스",
+      "date": "202608070801",
+      "url": "https://n.news.naver.com/mnews/article/001/0016238473"
     },
     {
-      "title": "[데일리안 오늘뉴스 종합] 축구협회 외국인 심판에 성접대 의혹, 李대...",
-      "office": "데일리안",
-      "date": "202608062041",
-      "url": "https://n.news.naver.com/mnews/article/119/0003119213"
+      "title": "\"레버리지 ETF 탓 아니다\"…코스피 변동성 키운 진짜 원인 [1분 브리프...",
+      "office": "아시아경제",
+      "date": "202608070800",
+      "url": "https://n.news.naver.com/mnews/article/277/0005800049"
     },
     {
-      "title": "ETF 중 80%가 와르르, ‘돈 번 사람도 있어?’…잔인한 7월 [투자360]",
-      "office": "헤럴드경제",
-      "date": "202608062040",
-      "url": "https://n.news.naver.com/mnews/article/016/0002680628"
+      "title": "삼전닉스에 물린 홍진경 \"왜 비쌀 때 사라고 했냐\" 분통",
+      "office": "한국경제",
+      "date": "202608070759",
+      "url": "https://n.news.naver.com/mnews/article/015/0005318315"
     },
     {
-      "title": "‘76조 국고채 담합’ 제재 초읽기…금융권·재정당국 ‘긴장’",
-      "office": "경향신문",
-      "date": "202608062039",
-      "url": "https://n.news.naver.com/mnews/article/032/0003462792"
+      "title": "\"중국은 밤 12시까지 일해\"...'주52시간' 손볼까 [굿모닝경제]",
+      "office": "YTN",
+      "date": "202608070754",
+      "url": "https://n.news.naver.com/mnews/article/052/0002390055"
     }
   ],
   "_errors": {}

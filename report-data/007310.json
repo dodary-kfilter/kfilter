@@ -2,15 +2,31 @@
   "code": "007310",
   "name": "오뚜기",
   "market": "KOSPI",
-  "updated": "2026-08-06 21:25",
+  "updated": "2026-08-07 08:30",
   "supply_10d": {
-    "foreign_net_10d": 10973,
-    "foreign_buydays": "8/10",
-    "pension_net_10d": 4938,
-    "pension_buydays": "10/10"
+    "foreign_net_10d": 9975,
+    "foreign_buydays": "7/10",
+    "pension_net_10d": 4836,
+    "pension_buydays": "9/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-07",
+        "close": 334500,
+        "foreignRatio": 11.37,
+        "개인": 0,
+        "외국인": 0,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-06",
         "close": 334500,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": -2,
         "기타법인": -1
-      },
-      {
-        "date": "2026-05-12",
-        "close": 347500,
-        "foreignRatio": 10.94,
-        "개인": 3515,
-        "외국인": -1527,
-        "기관계": -2010,
-        "금융투자": -469,
-        "투신": -48,
-        "사모": 93,
-        "보험": -146,
-        "은행": -42,
-        "기타금융": 1,
-        "연기금": -1399,
-        "기타법인": -34
       }
     ],
     "cum_5d": {
-      "개인": -24,
-      "외국인": 717,
-      "기관계": -689,
-      "금융투자": -2084,
-      "투신": -374,
-      "사모": 23,
-      "보험": -108,
+      "개인": -519,
+      "외국인": 654,
+      "기관계": -109,
+      "금융투자": -1883,
+      "투신": 13,
+      "사모": -20,
+      "보험": -36,
       "은행": -41,
       "기타금융": 0,
-      "연기금": 1895,
-      "기타법인": -8
+      "연기금": 1858,
+      "기타법인": -27
     },
     "cum_20d": {
-      "개인": -18748,
-      "외국인": 8768,
-      "기관계": 10235,
-      "금융투자": 5991,
-      "투신": -628,
-      "사모": -1153,
-      "보험": 32,
-      "은행": 140,
-      "기타금융": -14,
-      "연기금": 5867,
+      "개인": -16079,
+      "외국인": 9589,
+      "기관계": 6737,
+      "금융투자": 2689,
+      "투신": -596,
+      "사모": -1149,
+      "보험": 30,
+      "은행": 142,
+      "기타금융": -15,
+      "연기금": 5636,
       "기타법인": -235
     },
     "cum_60d": {
-      "개인": -20159,
-      "외국인": 6063,
-      "기관계": 13455,
-      "금융투자": 4371,
-      "투신": 7859,
-      "사모": -338,
-      "보험": -349,
-      "은행": -106,
-      "기타금융": -16,
-      "연기금": 2034,
-      "기타법인": 590
+      "개인": -23674,
+      "외국인": 7590,
+      "기관계": 15465,
+      "금융투자": 4840,
+      "투신": 7907,
+      "사모": -431,
+      "보험": -203,
+      "은행": -64,
+      "기타금융": -17,
+      "연기금": 3433,
+      "기타법인": 624
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-07",
+        "ratio": 11.37
+      },
       {
         "date": "2026-08-06",
         "ratio": 11.37
@@ -1247,10 +1251,6 @@
       {
         "date": "2026-05-13",
         "ratio": 11.06
-      },
-      {
-        "date": "2026-05-12",
-        "ratio": 10.94
       }
     ]
   },
@@ -1523,47 +1523,47 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "323,500"
+      "value": "334,500"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "324,000",
+      "value": "333,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "335,000",
+      "value": "334,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       }
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "324,000",
+      "value": "330,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "5,855"
+      "value": "25"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "19.4억"
+      "value": "0.08억"
     },
     {
       "code": "marketValue",
@@ -1573,7 +1573,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "11.36%"
+      "value": "11.37%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1643,13 +1643,13 @@
       "stockName": "삼양식품",
       "sosok": "0",
       "closePrice": "1,233,000",
-      "compareToPreviousClosePrice": "23,000",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "1.90",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "9,288,207",
@@ -1680,13 +1680,13 @@
       "stockName": "오리온",
       "sosok": "0",
       "closePrice": "135,500",
-      "compareToPreviousClosePrice": "5,200",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "3.99",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "5,356,150",
@@ -1717,13 +1717,13 @@
       "stockName": "CJ제일제당",
       "sosok": "0",
       "closePrice": "203,000",
-      "compareToPreviousClosePrice": "5,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "2.78",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "3,055,999",
@@ -1754,13 +1754,13 @@
       "stockName": "동서",
       "sosok": "0",
       "closePrice": "26,250",
-      "compareToPreviousClosePrice": "1,050",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "4.17",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,617,125",
@@ -1791,13 +1791,13 @@
       "stockName": "농심",
       "sosok": "0",
       "closePrice": "390,000",
-      "compareToPreviousClosePrice": "13,500",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "3.59",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,372,230",
@@ -1828,13 +1828,13 @@
       "stockName": "메지온",
       "sosok": "1",
       "closePrice": "55,500",
-      "compareToPreviousClosePrice": "-1,400",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-2.46",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "1,698,632",
@@ -2905,38 +2905,38 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -1411,
-      "외국인": -2705,
-      "기관계": 3220,
-      "금융투자": -1620,
-      "투신": 8487,
-      "사모": 815,
-      "보험": -381,
-      "은행": -246,
+      "개인": -7595,
+      "외국인": -1999,
+      "기관계": 8728,
+      "금융투자": 2151,
+      "투신": 8503,
+      "사모": 718,
+      "보험": -233,
+      "은행": -206,
       "기타금융": -2,
-      "연기금": -3833,
-      "기타법인": 825
+      "연기금": -2203,
+      "기타법인": 859
     },
     "pattern": {
       "외국인": "혼조",
       "연기금": "혼조",
       "기관계": "당일이탈",
       "개인": "일관매도",
-      "사모": "혼조",
+      "사모": "일관매도",
       "금융투자": "당일이탈"
     },
-    "foreign_avg_price": 327574,
+    "foreign_avg_price": 331582,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 2.1,
+    "foreign_avg_vs_now_pct": 0.9,
     "foreign_buy_qty": 38657,
-    "foreign_sell_qty": 32594,
-    "foreign_net_qty": 6063,
-    "foreign_net_ratio_pct": 15.7,
+    "foreign_sell_qty": 31067,
+    "foreign_net_qty": 7590,
+    "foreign_net_ratio_pct": 19.6,
     "close_range": {
       "low": 295000,
       "high": 364000
     },
-    "foreign_ratio_delta_60d": 0.43,
+    "foreign_ratio_delta_60d": 0.31,
     "foreign_ratio_max": 11.41,
     "foreign_ratio_min": 10.81,
     "foreign_ratio_is_60d_high": false
@@ -2978,6 +2978,18 @@
   },
   "news": [
     {
+      "title": "감튀모임부터 케챂 버터까지…‘55살 국민 소스’의 변신 [해봤어요]",
+      "office": "이코노미스트",
+      "date": "202608070701",
+      "url": "https://n.news.naver.com/mnews/article/243/0000101328"
+    },
+    {
+      "title": "기후·원가 불확실성에…오뚜기, 국산 농산물 자체 공급망 키운다",
+      "office": "뉴스1",
+      "date": "202608070650",
+      "url": "https://n.news.naver.com/mnews/article/421/0009101747"
+    },
+    {
       "title": "[미리보는 이데일리 신문]中 반도체 장비 쇼크…韓도 '소부장'부터 국...",
       "office": "이데일리",
       "date": "202608062122",
@@ -3000,18 +3012,6 @@
       "office": "조세일보",
       "date": "202608061535",
       "url": "https://n.news.naver.com/mnews/article/123/0002387957"
-    },
-    {
-      "title": "제주 청귤·우도 땅콩 풍미 담았다…오뚜기, 드립 커피 2종 출시",
-      "office": "문화일보",
-      "date": "202608061105",
-      "url": "https://n.news.naver.com/mnews/article/021/0002809571"
-    },
-    {
-      "title": "李정부 출범 1년 물가 보니…외식 상승폭 확대·생필품 품목별 엇갈려",
-      "office": "데일리안",
-      "date": "202608060701",
-      "url": "https://n.news.naver.com/mnews/article/119/0003118729"
     }
   ],
   "_errors": {}
