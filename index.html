@@ -87,7 +87,6 @@
   .refresh button{font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:600; color:var(--txt);
     background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 22px; cursor:pointer; transition:all .15s}
   .refresh button:hover{border-color:var(--foreign); color:var(--foreign)}
-  .foot{margin-top:14px; text-align:center; font-size:11px; color:var(--dim)}
 
   /* ── 동시 펼침 카드 ── */
   .cards{display:flex; flex-direction:column; gap:8px; margin-top:4px}
@@ -105,8 +104,6 @@
     padding:6px 10px; cursor:pointer; white-space:nowrap; flex:none; transition:all .15s}
   .copybtn:hover{background:rgba(247,120,186,.2)}
   .copybtn.copied{color:var(--foreign); border-color:var(--foreign); background:rgba(63,185,80,.14)}
-  .bothtip{font-size:12px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
-    border-left:3px solid var(--both); border-radius:8px; padding:10px 12px; margin:8px 0 4px}
   .srow{display:flex; gap:8px; margin-bottom:14px}
   .sinput{flex:1; background:var(--card); border:1px solid var(--line); border-radius:9px;
     padding:11px 14px; font-size:14px; color:var(--fg); font-family:inherit; outline:none}
@@ -131,7 +128,6 @@
   .refresh button.screenbtn:hover{transform:translateY(-1px); box-shadow:0 4px 14px rgba(88,166,255,.42); color:#fff; border:none}
   .refresh button.screenbtn:active{transform:translateY(0)}
   .refresh button.screenbtn.copied{background:linear-gradient(135deg,#3fb950,#2ea043)}
-  .bothtip b{color:var(--both)}
   .chev{color:var(--dim); transition:transform .2s; flex:none; font-size:13px}
   .card.open .chev{transform:rotate(180deg)}
   .card-b{display:none; padding:0 14px 14px; border-top:1px solid var(--line)}
@@ -237,7 +233,6 @@
     <button onclick="hardReload()">새로고침</button>
     <button id="screenbtn" class="screenbtn" onclick="copyScreen(event)">일괄 스크리닝 프롬프트</button>
   </div>
-  <div class="foot">명단: 네이버 금융 시총순 · 수급: 토스증권 투자자별 매매동향</div>
 </div>
 <script>
 let DATA=null, CUR='foreign';
@@ -495,7 +490,8 @@ function fmtScreenList(items, isV){
       const eq=(x.eps_quarters||[]).map(q=>`${(q.date||'').slice(0,7)} EPS ${q.eps!=null?Math.round(q.eps).toLocaleString():'—'}`).join(' | ');
       return base+`
    ①ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'} · ②반기EPS ${x.eps_turnaround?'흑자전환':(x.eps_growth!=null?(x.eps_growth>=0?'+':'')+x.eps_growth.toFixed(0)+'%':'—')} · ③이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'}(연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ④초과낙폭 ${x.excess_dd!=null?x.excess_dd.toFixed(1)+'p':'—'}
-   낙폭 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'}(고점 ${x.peak_date||'—'}, ${x.peak_days!=null?x.peak_days+'일 전':'—'}) · 같은기간 지수 ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} · 1M ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}
+   낙폭 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'}(고점 ${x.peak_date||'—'}, ${x.peak_days!=null?x.peak_days+'일 전':'—'}) · 같은기간 지수 ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'}
+   1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'} · 20일선과의 거리 ${x.ma20_gap!=null?(x.ma20_gap>=0?'+':'')+x.ma20_gap.toFixed(1)+'%':'—'} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2)+'배':'—'} · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${(x.r1!=null&&x.r1<=-15)?'  ★1개월 급락 중 — 5일선만 갓 회복한 상태다. 되돌림인지 바닥인지 반드시 구분하라':''}
    EPS 4분기: ${eq||'—'}`;
     }
     return base+`
@@ -747,7 +743,10 @@ function buildValuePrompt(){
 · 초과낙폭은 절대 낙폭이 아니다. 지수가 −31% 빠진 국면에서 −35% 하락은 초과낙폭 −4%p에 불과하다.
 · 이익수익률은 PER의 역수다. 주가 수준이 달라도 종목 간 직접 비교되고 금리와 같은 단위다.
 · ★낙폭은 52주 고점 "종가" 대비다(지수와 단위를 맞추려고). 장중 고가 기준 52주 레인지와는 다른 값이다.
-· ★6M 수익률과 낙폭의 부호가 엇갈릴 수 있다. 6M +100%에 낙폭 −45%면 모순이 아니라 급등 후 조정이다 — 오래 눌린 게 아니라 짧게 급등했다 꺾인 것이니, 되돌림의 성격을 반드시 구분해서 판정하라.
+· ★6개월 수익률과 낙폭의 부호가 엇갈릴 수 있다. 6개월 +100%에 낙폭 −45%면 모순이 아니라 급등 후 조정이다 — 오래 눌린 게 아니라 짧게 급등했다 꺾인 것이니, 되돌림의 성격을 반드시 구분해서 판정하라.
+· ★PER이 두 개 나온다. 목록 첫 줄의 "PER"은 다음이 주는 직전 확정 연간 EPS 기준이고, "연율PER"은 최근 반기를 연환산한 기준이다.
+  실적이 급변한 종목에서 둘은 크게 벌어진다(실측 17.8%가 1.5배 이상 괴리). ★밸류 판단은 연율PER·이익수익률로 하라. 두 값의 괴리 자체가 "실적이 얼마나 빠르게 변하고 있나"의 신호다.
+· ★고점이 최근(30~60일)이면서 1개월 수익률이 크게 마이너스인 종목은 급락 직후 기술적 반등일 수 있다. 5일선을 갓 넘긴 것만으로 바닥이라고 쓰지 마라 — 하락 원인이 해소됐는지부터 확인하라.
 
 ${RULE_KR}
 
@@ -1450,10 +1449,7 @@ function render(){
   // [검색 탭] 필터를 안 거친 종목 — 백지 상태 종합 진단용
   if(CUR==='search'){
     content.innerHTML =
-      '<div class="bothtip"><b>종목 검색</b> — 필터에 안 걸린 종목도 분석합니다. '
-      + '어떤 조건도 전제되지 않은 <b>백지 상태 종합 진단</b> 프롬프트가 생성됩니다.<br>'
-      + '<span style="color:var(--dim)">회사가 뭐 하는 곳인지부터 시작해 현재 국면(매집·상승·조정·소외 등)을 먼저 규정한 뒤 판단합니다.</span></div>'
-      + '<div class="srow"><input id="sq" class="sinput" type="search" placeholder="종목명 또는 코드 (예: 삼성전자, 005930)" '
+      '<div class="srow"><input id="sq" class="sinput" type="search" placeholder="종목명 또는 코드 (예: 삼성전자, 005930)" '
       + 'oninput="doSearch()" autocomplete="off"><button class="sbtn" onclick="doSearch()">검색</button></div>'
       + '<div id="sres"><div class="empty">종목명 또는 코드를 입력하세요.</div></div>';
     loadUniverse().then(()=>{
@@ -1466,8 +1462,7 @@ function render(){
   }
   if(CUR==='portfolio'){
     if(items.length===0){content.innerHTML='<div class="empty">포트폴리오 종목이 없습니다.</div>';return;}
-    const tip='<div class="bothtip">관심 종목. 수급(외인·연기금)으로 <b>스마트머니가 아직 있는지 / 이탈했는지</b> 확인하고, <b>프롬프트</b>로 동일 포맷 리포트를 받으세요. <span style="color:var(--dim)">초록=필터 통과(매집), 회색=미통과.</span></div>';
-    content.innerHTML = tip + sectionPort(items);
+    content.innerHTML = sectionPort(items);
     return;
   }
   // [기술적 필터 탭] 저가매수형·모멘텀형 — 수급과 독립. 조건 통과 여부만 보여준다(순위·판단 없음).
@@ -1477,10 +1472,7 @@ function render(){
       content.innerHTML='<div class="empty">오늘 '+(isV?'저가매수형':'모멘텀형')+' 조건을 충족한 종목이 없습니다.<br><span style="font-size:12px;color:var(--dim)">'+(isV?'자격 미달이면 채우지 않습니다.':'개수를 맞추려 기준을 풀지 않습니다. 0개면 0개입니다.')+'</span></div>';
       return;
     }
-    const tip = isV
-      ? '<div class="bothtip"><b>저가매수형</b> — ①잘 번다(연환산 ROE) ②잘 벌 거다(반기 EPS 증가) ③주가가 낮다(이익수익률 5%↑) ④지수 대비 더 낮다(초과낙폭 −5%p↓).<br><span style="color:var(--dim)">자격 통과분을 ROE 순으로 상위 20개까지 표시합니다. 상승장엔 후보가 적어 20개가 안 채워지는 날이 있습니다 — 억지로 채우지 않습니다.</span></div>'
-      : '<div class="bothtip"><b>모멘텀형</b> — 흑자 · 일봉 정배열(MA5>MA20>MA60) · 정배열 진입 20일 이내 · 1M 상위20% · 거래량 20일/60일 &gt; 1.0.<br><span style="color:var(--dim)">필터는 “오른다”만 알려줍니다. <b>왜</b> 오르는지는 프롬프트로 확인하세요.</span></div>';
-    content.innerHTML = tip + sectionScreen(items, isV);
+    content.innerHTML = sectionScreen(items, isV);
     return;
   }
   const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
@@ -1488,8 +1480,7 @@ function render(){
   const kospi=items.filter(x=>x.market==='KOSPI');
   const kosdaq=items.filter(x=>x.market==='KOSDAQ');
   if(CUR==='both'){
-    const tip='<div class="bothtip"><b>프롬프트</b> → Claude에 붙여넣으면 그 종목 원본 데이터(수급·주가·실적·밸류·컨센서스·공시·뉴스)를 링크로 읽어 분석 리포트를 만들어줍니다. 아래 <b>일괄 스크리닝</b>은 전 종목을 한 번에 분석해 매수 우선순위로 정리합니다.</div>';
-    content.innerHTML = tip + sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
+    content.innerHTML = sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
   }else{
     content.innerHTML = sectionSingle('KOSPI', kospi, 'kospi') + sectionSingle('KOSDAQ', kosdaq, 'kosdaq');
   }
