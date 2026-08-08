@@ -2,12 +2,16 @@
 """
 kfilter 확장 — 기술적 스크리닝 필터 (저가매수형 / 모멘텀형)
 
-[설계 원칙 — 변경 금지]
+[설계 원칙]
 · 수급은 필터가 아니라 라벨. 필터로 쓰면 "수급 없이 기술만 좋은 종목"을 못 본다.
-· 백분위 기준(지수 대비 아님). 지수는 대형주에 왜곡되고 통과율이 기간별로 널뛴다.
-· 개수를 맞추려 임계값을 풀지 않는다. 조건 만족이 0개면 그날은 0개.
-· 필터는 판단하지 않는다. 순위 매기지 말고 조건 통과 여부만. 판단은 프롬프트.
-· 저가는 주봉, 모멘텀은 일봉. 호흡이 다르다.
+· 【저가매수형】 4축 = ①잘 번다(ROE) ②잘 벌 거다(EPS 성장) ③주가가 낮다(이익수익률) ④지수 대비 더 낮다(초과낙폭).
+    - 자격은 시장 국면에 안 흔들리는 것만 절대 기준으로. 개수는 ROE 순위로 자른다.
+    - ★상위 20개 고정. 꾸준한 모니터링이 목적이라 개수가 일정해야 시간에 따른 변화가 보인다.
+    - 백분위(순위) 폐기 — "PER 하위 40%"는 싸다는 뜻이 아니라 남들보다 덜 비싸다는 뜻이다.
+    - 절대 낙폭 폐기 — 하락장에서 전부 통과한다. 지수 대비 초과낙폭으로 본다.
+    - 컨센서스 폐기 — 크게 빠진 종목은 이미 전망이 틀린 집단이다. 실측 낙관배율 중앙값 1.65배.
+· 【모멘텀형】 현행 유지. 시장 국면에 따라 개수가 고무줄인 게 정상이다. 0개면 0개.
+· 필터는 판단하지 않는다. 매수 우선순위는 일괄 분석 리포트에서 정한다.
 
 [호출 최적화 — 실측 기준]
 · 유니버스: sectors 2회(4.6초). ★page 파라미터 무의미 — 1페이지에 전체가 온다.
@@ -38,6 +42,14 @@ BULK_MAX     = 400     # quotesv4 1회 청크 (실측: 400은 2735전량 100%성
 DAYS_N       = 320     # 일봉 조회 건수 (MA60 + 정배열진입 120일 역산 + 여유)
 MIN_ROWS     = 130     # 유효행 최소치 (미만이면 제외)
 WORKERS      = 12      # 병렬 스레드
+
+# 【저가매수형】 자격 — 시장 국면에 안 흔들리는 절대 기준만
+VP_DD_FLOOR  = -70.0   # 낙폭 하한(%). 이보다 더 빠졌으면 눌림이 아니라 붕괴
+VP_PEAK_DAYS = 180     # 52주 고점이 이 일수 이내여야 "단기 눌림". 오래된 고점은 장기 우하향이다
+VP_EY_MIN    = 5.0     # 이익수익률 최소(%). 연율PER 20배 — "주가가 낮다" 축의 최소선
+VP_EXCESS_MAX = -5.0   # 초과낙폭 최소선(%p). 이보다 얕으면 신고가 근처지 눌린 게 아니다
+VP_TOP_N     = 20      # ★상한(ROE 순). 상승장엔 후보 자체가 적어 안 채워지는 날이 있다
+FIN_CACHE    = os.path.join(CACHE_DIR, "financials.json")   # 분기 재무 캐시(분기 갱신)
 
 # ===== 공통 =====
 def _get(url, timeout=15):
@@ -231,12 +243,26 @@ def calc_indicators(rows):
     hi = max((r.get("highPrice") or 0) for r in yr) if yr else None
     lo = min((r.get("lowPrice") or 0) for r in yr if (r.get("lowPrice") or 0) > 0) if yr else None
 
+    # ★저가매수형용 — 종가 기준 52주 고점(지수도 종가 기준이라 단위를 맞춰야 초과낙폭이 정확하다)
+    pk = max(yr, key=lambda r: (r.get("tradePrice") or 0)) if yr else None
+    peak_close = (pk.get("tradePrice") if pk else None)
+    peak_date = ((pk.get("date") or "")[:10] if pk else None)
+    peak_days = None
+    if peak_date:
+        try:
+            peak_days = (datetime.now() - datetime.strptime(peak_date, "%Y-%m-%d")).days
+        except Exception:
+            peak_days = None
+
     v20 = sum(vo[:20]) / 20 if len(vo) >= 20 else 0
     v60 = sum(vo[:60]) / 60 if len(vo) >= 60 else 0
 
     return {
         "cur": cur, "ma5": ma5, "ma20": ma20, "ma60": ma60,
         "daily_aligned": ma5 > ma20 > ma60,
+        "ma5_above": cur > ma5,
+        "peak_close": peak_close, "peak_date": peak_date, "peak_days": peak_days,
+        "dd_close": ((cur / peak_close - 1) * 100) if peak_close else None,
         "weekly_ma60_above": (cur / w60 - 1) > 0 if w60 else False,
         "entry_days": entry,
         "r1": (cl[0] / cl[21] - 1) * 100 if len(cl) > 21 else None,
@@ -248,7 +274,97 @@ def calc_indicators(rows):
     }
 
 
-# ───────────────────── 5. 백분위 ─────────────────────
+# ───────────────────── 5. 지수 일봉 (초과낙폭용) ─────────────────────
+def fetch_index_days():
+    """코스피·코스닥 일봉 → {market: {date: close}}.
+    ★저가매수형 ④축(지수 대비 초과낙폭) 계산용. 절대 낙폭만 쓰면 하락장에서 전부 통과한다."""
+    out = {}
+    for mkt in ("KOSPI", "KOSDAQ"):
+        try:
+            d = _get(f"{DAUM}/market_index/days?page=1&perPage={DAYS_N}"
+                     f"&market={mkt}&pagination=true", timeout=20).get("data") or []
+            # ★장전엔 당일 행이 미확정이므로 종목 일봉 기준일과 맞추기 위해 그대로 담고 조회 시 보정
+            out[mkt] = {(r.get("date") or "")[:10]: r.get("tradePrice")
+                        for r in d if r.get("tradePrice")}
+        except Exception as e:
+            print(f"  [경고] 지수 일봉 실패 {mkt}: {e}", flush=True)
+            out[mkt] = {}
+    return out
+
+
+def index_at(idx, market, date):
+    """해당 일자(없으면 그 이전 최근 거래일)의 지수 종가."""
+    ks = idx.get("KOSDAQ" if market == "KOSDAQ" else "KOSPI") or {}
+    if not ks:
+        return None
+    if date in ks:
+        return ks[date]
+    prev = [d for d in ks if d <= date]
+    return ks[max(prev)] if prev else None
+
+
+# ───────────────────── 6. 분기 재무 캐시 (분기 갱신) ─────────────────────
+def fetch_financials(symbol_codes, force=False):
+    """QUARTER 4건을 캐시. ★매일 부르면 613회다 — 분기 캐시로 흡수해 호출 0회.
+    캐시: {symbolCode: [{date, eps, op, sales, roe}, ...4건]}
+    ROE는 분기 단독값(소수). 연환산은 최근 2분기 합 x 2로 계산한다."""
+    cache = _load(FIN_CACHE)
+    if cache and not force:
+        try:
+            upd = datetime.fromisoformat(cache["updated"])
+            stale = (datetime.now() - upd) > timedelta(days=100)
+            need = stale or (_is_earnings_season() and upd.month != datetime.now().month)
+            if not need:
+                return cache["data"]
+        except Exception:
+            pass
+
+    print(f"  [캐시] 분기재무 갱신 {len(symbol_codes)}종목…", flush=True)
+    out = {}
+
+    def one(sc):
+        try:
+            q = (_get(f"{DAUM}/quote/{sc}/financials", timeout=12).get("data") or {}).get("QUARTER") or []
+            return sc, [{"date": r.get("date"), "eps": r.get("eps"),
+                         "op": r.get("operatingProfit"), "sales": r.get("sales"),
+                         "roe": r.get("roe")} for r in q[:4]]
+        except Exception:
+            return sc, None
+
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        for sc, v in ex.map(one, symbol_codes):
+            if v:
+                out[sc] = v
+
+    if out:
+        _save(FIN_CACHE, {"updated": datetime.now().isoformat(timespec="seconds"), "data": out})
+        return out
+    return (cache or {}).get("data", {})
+
+
+def derive_fundamentals(q):
+    """분기 4건 → 저가매수형 4축 원재료.
+    ·연환산 ROE = 최근 2분기 ROE 합 x 2   (분기 단독값이므로)
+    ·연환산 EPS = 최근 반기 EPS 합 x 2    (TTM은 과거 부진을 끌고 와 개선 국면을 과소평가)
+    ·반기 EPS 성장 = 최근 반기 / 직전 반기"""
+    if not q or len(q) < 4:
+        return None
+    e = [(r.get("eps") or 0) for r in q[:4]]
+    op = [(r.get("op") or 0) for r in q[:4]]
+    ro = [(r.get("roe") or 0) for r in q[:4]]
+    hn, ho = e[0] + e[1], e[2] + e[3]
+    turn = (ho <= 0 and hn > 0)
+    return {
+        "roe_ann": (ro[0] + ro[1]) * 2 * 100,
+        "eps_ann": hn * 2,
+        "eps_growth": ((hn / ho - 1) * 100) if ho > 0 else None,
+        "eps_turnaround": turn,
+        "eps_up": turn or (ho > 0 and hn > ho),
+        "op_2q_pos": all(v > 0 for v in op[:2]),
+    }
+
+
+# ───────────────────── 7. 백분위 (모멘텀형 전용) ─────────────────────
 def percentile_map(items, key):
     """유니버스 내 순위(0~100). ★지수 대비가 아니다."""
     vals = [(x["code"], x[key]) for x in items if x.get(key) is not None]
@@ -259,20 +375,7 @@ def percentile_map(items, key):
     return {c: i / (n - 1) * 100 for i, (c, _) in enumerate(vals)}
 
 
-# ───────────────────── 6. EPS QoQ (통과분만) ─────────────────────
-def eps_qoq_up(sc):
-    """★financials를 전 종목에 부르지 마라. 앞 조건 통과분만.
-    QUARTER는 최신 4건뿐이라 전년동기(YoY) 비교는 불가 → QoQ로 확정."""
-    try:
-        q = (_get(f"{DAUM}/quote/{sc}/financials", timeout=12).get("data") or {}).get("QUARTER") or []
-        if len(q) >= 2 and q[0].get("eps") is not None and q[1].get("eps") is not None:
-            return q[0]["eps"] > q[1]["eps"], q
-    except Exception:
-        pass
-    return False, []
-
-
-# ───────────────────── 7. 메인 ─────────────────────
+# ───────────────────── 8. 메인 ─────────────────────
 def run_screeners(supply_map=None):
     """저가매수형·모멘텀형 스크리닝.
     supply_map: {code6: {f_net,f_buydays,p_net,p_buydays,is_zero_rank}} — 수급 '라벨'용(필터 아님)
@@ -292,6 +395,9 @@ def run_screeners(supply_map=None):
     prices = fetch_prices(list(univ.keys()))
     print(f"  펀더멘털 {len(fund)} / 시세 {len(prices)}", flush=True)
 
+    # 2-b) 지수 일봉 — 저가매수형 ④축(초과낙폭)
+    idx = fetch_index_days()
+
     # 3) 시총 상위 → 흑자 게이트 (★순서 고정)
     ranked = sorted(
         [(sc, f) for sc, f in fund.items() if f.get("mcap")],
@@ -301,6 +407,9 @@ def run_screeners(supply_map=None):
     profit_ok = [(sc, f) for sc, f in ranked
                  if (f.get("op") or 0) > 0 and (f.get("ni") or 0) > 0]
     print(f"  시총상위 {len(ranked)} → 흑자 {len(profit_ok)}", flush=True)
+
+    # 3-b) 분기재무 캐시 — 시총 상위 전체 기준(흑자 통과분은 매번 바뀌므로 모집단을 고정한다)
+    fin = fetch_financials([sc for sc, _ in ranked])
 
     # 4) 일봉 (흑자 통과분만)
     def load(item):
@@ -314,7 +423,7 @@ def run_screeners(supply_map=None):
         p = prices.get(sc) or {}
         cur = p.get("price") or ind["cur"]
         eps = f.get("eps")
-        return {
+        out = {
             "code": sc[1:] if sc.startswith("A") else sc, "symbol": sc,
             "name": f.get("name") or p.get("name"), "market": f.get("market"),
             "sector": f.get("sector"),
@@ -327,6 +436,33 @@ def run_screeners(supply_map=None):
             "sectorPer": f.get("sectorPer"), "mcap": f.get("mcap"),
             **ind,
         }
+        # 【저가매수형 4축 원재료】
+        d = derive_fundamentals(fin.get(sc))
+        if d:
+            ann = d["eps_ann"]
+            out.update({
+                "roe_ann": d["roe_ann"],                                   # ①잘 번다
+                "eps_growth": d["eps_growth"],                             # ②잘 벌 거다
+                "eps_turnaround": d["eps_turnaround"], "eps_up": d["eps_up"],
+                "op_2q_pos": d["op_2q_pos"],
+                "eps_ann": ann,
+                "earn_yield": (ann / cur * 100) if (ann > 0 and cur) else None,   # ③주가가 낮다
+                "per_ann": (cur / ann) if (ann > 0 and cur) else None,
+                "eps_quarters": fin.get(sc),
+            })
+        # ★낙폭은 실시간 cur 기준으로 재계산 — earn_yield와 기준을 통일한다
+        #   (calc_indicators의 dd_close는 일봉 첫 행 기준. 장중 갱신 지연 시 어긋날 수 있다)
+        if ind.get("peak_close"):
+            out["dd_close"] = (cur / ind["peak_close"] - 1) * 100
+        # ④지수 대비 더 낮다 — 고점일부터 오늘까지 지수 변화를 빼준다
+        if ind.get("peak_date") and out.get("dd_close") is not None:
+            base = (rows[0].get("date") or "")[:10]
+            i_now = index_at(idx, f.get("market"), base)
+            i_pk = index_at(idx, f.get("market"), ind["peak_date"])
+            if i_now and i_pk:
+                out["idx_since_peak"] = (i_now / i_pk - 1) * 100
+                out["excess_dd"] = out["dd_close"] - out["idx_since_peak"]
+        return out
 
     with ThreadPoolExecutor(max_workers=WORKERS) as ex:
         items = [x for x in ex.map(load, profit_ok) if x]
@@ -334,40 +470,37 @@ def run_screeners(supply_map=None):
     if not items:
         return {"value_pick": [], "momentum": [], "stats": {"error": "일봉 수집 실패"}}
 
-    # 5) 백분위 (유니버스 내부 순위)
+    # 5) 백분위 — ★모멘텀형 1개월 순위에만 사용. 저가매수형은 백분위를 쓰지 않는다.
     p1 = percentile_map(items, "r1")
-    p6 = percentile_map(items, "r6")
-    pper = percentile_map([x for x in items if (x.get("per") or 0) > 0], "per")
 
     # 6) 필터
     value_cand, momentum = [], []
     for x in items:
         c = x["code"]
-        # 【저가매수형】 핵심은 "싸다"가 아니라 "안 무너졌다"(주봉 MA60).
-        #   52주 하단은 62%가 통과해 정보량이 없어서 미채택.
-        if (x["weekly_ma60_above"]
-                and p6.get(c) is not None and p6[c] < 40
-                and p1.get(c) is not None and p1[c] > 60
-                and pper.get(c) is not None and pper[c] < 40):
+        # 【저가매수형】 자격 — 시장 국면에 안 흔들리는 절대 기준만.
+        #   문턱을 조이면 상승장에서 0개가 된다(실측: 5개 시점 중 2개가 0). 개수는 ROE 순위로 자른다.
+        if (x.get("op_2q_pos")                                    # ①실적이 살아있다
+                and x.get("eps_up")                               # ②실적이 늘고 있다
+                and (x.get("earn_yield") or 0) >= VP_EY_MIN       # ③주가가 낮다
+                and x.get("ma5_above")                            #  반등 시작
+                and x.get("dd_close") is not None
+                and x["dd_close"] >= VP_DD_FLOOR                  #  붕괴 배제
+                and (x.get("peak_days") is not None
+                     and x["peak_days"] <= VP_PEAK_DAYS)          #  고점이 최근 = 단기 눌림
+                and x.get("excess_dd") is not None
+                and x["excess_dd"] <= VP_EXCESS_MAX):             # ④지수보다 확실히 못 갔다
             value_cand.append(x)
-        # 【모멘텀형】
+        # 【모멘텀형】 ★현행 유지 — 시장 국면에 따라 개수가 고무줄인 게 정상이다
         if (x["daily_aligned"]
                 and x["entry_days"] <= 20
                 and p1.get(c) is not None and p1[c] > 80
                 and (x["v2060"] or 0) > 1.0):
             momentum.append(x)
 
-    # 7) EPS QoQ — 저가매수형 후보에만 (호출 최소화)
-    value_pick = []
-    for x in value_cand:
-        up, q = eps_qoq_up(x["symbol"])
-        if up:
-            x["eps_quarters"] = [
-                {"date": r.get("date"), "eps": r.get("eps"),
-                 "op": r.get("operatingProfit"), "sales": r.get("sales")}
-                for r in q[:4]
-            ]
-            value_pick.append(x)
+    # 7) 저가매수형 — ROE(잘 번다) 순으로 상위 N개 고정
+    value_cand.sort(key=lambda z: -(z.get("roe_ann") or -9e9))
+    value_pick = value_cand[:VP_TOP_N]
+    vp_qualified = len(value_cand)
 
     # 8) 라벨 부착 (통과분에만)
     for lst in (value_pick, momentum):
@@ -385,14 +518,16 @@ def run_screeners(supply_map=None):
             for k in ("ma5", "ma60", "symbol"):
                 x.pop(k, None)
 
-    value_pick.sort(key=lambda z: z.get("per") or 9e9)
+    # ★저가매수형은 이미 ROE 순으로 정렬됨 — 다시 정렬하지 마라
     momentum.sort(key=lambda z: z.get("entry_days", 999))
 
     stats = {
         "universe": len(univ), "mcap_cut": mcap_cut,
         "top_n": len(ranked), "profit": len(profit_ok), "valid": len(items),
-        "value_pick": len(value_pick), "momentum": len(momentum),
+        "value_pick": len(value_pick), "vp_qualified": vp_qualified, "vp_cap": VP_TOP_N,
+        "momentum": len(momentum),
         "elapsed": round(time.time() - t0, 1),
     }
-    print(f"  → 저가매수 {len(value_pick)} / 모멘텀 {len(momentum)}  ({stats['elapsed']}초)", flush=True)
+    print(f"  → 저가매수 {len(value_pick)}(자격 {vp_qualified}) / 모멘텀 {len(momentum)}"
+          f"  ({stats['elapsed']}초)", flush=True)
     return {"value_pick": value_pick, "momentum": momentum, "stats": stats}
