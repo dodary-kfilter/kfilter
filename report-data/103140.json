@@ -2,30 +2,30 @@
   "code": "103140",
   "name": "풍산",
   "market": "KOSPI",
-  "updated": "2026-08-10 11:41",
+  "updated": "2026-08-10 14:02",
   "supply_10d": {
-    "foreign_net_10d": 152089,
+    "foreign_net_10d": 138326,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 116898,
+    "pension_net_10d": 118898,
     "pension_buydays": "10/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
         "date": "2026-08-10",
-        "close": 86100,
+        "close": 86300,
         "foreignRatio": 13.88,
         "개인": 0,
-        "외국인": -6896,
-        "기관계": 9000,
+        "외국인": -20673,
+        "기관계": 29000,
         "금융투자": 0,
-        "투신": 7000,
+        "투신": 25000,
         "사모": 0,
         "보험": 0,
         "은행": 0,
         "기타금융": 0,
-        "연기금": 2000,
-        "기타법인": 5000
+        "연기금": 4000,
+        "기타법인": 7000
       },
       {
         "date": "2026-08-07",
@@ -974,42 +974,42 @@
     ],
     "cum_5d": {
       "개인": -361611,
-      "외국인": 36305,
-      "기관계": 332261,
+      "외국인": 22528,
+      "기관계": 352261,
       "금융투자": 29658,
-      "투신": 139240,
+      "투신": 157240,
       "사모": 49121,
       "보험": 26532,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 87710,
-      "기타법인": 1582
+      "연기금": 89710,
+      "기타법인": 3582
     },
     "cum_20d": {
       "개인": -669706,
-      "외국인": 198601,
-      "기관계": 462891,
+      "외국인": 184824,
+      "기관계": 482891,
       "금융투자": 44277,
-      "투신": 206402,
+      "투신": 224402,
       "사모": 71478,
       "보험": 16021,
       "은행": 0,
       "기타금융": 9,
-      "연기금": 124704,
-      "기타법인": 18246
+      "연기금": 126704,
+      "기타법인": 20246
     },
     "cum_60d": {
       "개인": -984299,
-      "외국인": 913830,
-      "기관계": 120157,
+      "외국인": 900053,
+      "기관계": 140157,
       "금융투자": -92976,
-      "투신": 179298,
+      "투신": 197298,
       "사모": 70953,
       "보험": 30959,
       "은행": -110,
       "기타금융": 28,
-      "연기금": -67995,
-      "기타법인": -46652
+      "연기금": -65995,
+      "기타법인": -44652
     },
     "foreign_ratio_trend": [
       {
@@ -1255,23 +1255,23 @@
     ]
   },
   "price_daily": {
-    "now": 86100,
+    "now": 86200,
     "prevClose": 83600,
-    "changePct": 2.99,
+    "changePct": 3.11,
     "ma": {
-      "ma5": 80940.0,
-      "ma20": 67410.0,
-      "ma60": 71733.3,
-      "ma120": 87375.0,
+      "ma5": 80960.0,
+      "ma20": 67415.0,
+      "ma60": 71735.0,
+      "ma120": 87375.8,
       "aligned": false,
       "vs": {
-        "ma5": 6.38,
-        "ma20": 27.73,
-        "ma60": 20.03,
-        "ma120": -1.46
+        "ma5": 6.47,
+        "ma20": 27.86,
+        "ma60": 20.16,
+        "ma120": -1.35
       }
     },
-    "trend20": 32.26,
+    "trend20": 32.41,
     "pocket": [
       {
         "low": 101800,
@@ -1291,17 +1291,17 @@
     ]
   },
   "price_weekly": {
-    "now": 86100,
+    "now": 86200,
     "ma": {
-      "ma5": 74260.0,
-      "ma10": 71130.0,
-      "ma20": 81620.0,
-      "ma60": 105481.7
+      "ma5": 74280.0,
+      "ma10": 71140.0,
+      "ma20": 81625.0,
+      "ma60": 105483.3
     },
     "aligned": false,
     "rangeHigh": 160800,
     "rangeLow": 23900,
-    "posPct": 45.4,
+    "posPct": 45.5,
     "recent": [
       {
         "d": "20260220",
@@ -1405,21 +1405,21 @@
       },
       {
         "d": "20260810",
-        "c": 86100
+        "c": 86200
       }
     ]
   },
   "price_monthly": {
-    "now": 86100,
+    "now": 86200,
     "ma": {
-      "ma6": 81300.0,
-      "ma12": 97933.3,
-      "ma24": 87781.2
+      "ma6": 81316.7,
+      "ma12": 97941.7,
+      "ma24": 87785.4
     },
     "aligned": false,
     "rangeHigh": 160800,
     "rangeLow": 17650,
-    "posPct": 47.8,
+    "posPct": 47.9,
     "recent": [
       {
         "d": "20240930",
@@ -1515,7 +1515,7 @@
       },
       {
         "d": "20260810",
-        "c": 86100
+        "c": 86200
       }
     ]
   },
@@ -1558,17 +1558,17 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "139,350"
+      "value": "193,447"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "120억"
+      "value": "167억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "2조 4,129억"
+      "value": "2조 4,157억"
     },
     {
       "code": "foreignRate",
@@ -1588,7 +1588,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "13.14배",
+      "value": "13.16배",
       "valueDesc": "2026.03."
     },
     {
@@ -1600,7 +1600,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "8.11배"
+      "value": "8.12배"
     },
     {
       "code": "cnsEps",
@@ -1645,7 +1645,7 @@
       "nm": "풍산",
       "bnm": "키움증권",
       "tit": "신동사업 호조로 서프라이즈",
-      "rcnt": "2279",
+      "rcnt": "2299",
       "wdt": "20260806"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "풍산",
       "bnm": "한화투자증권",
       "tit": "2Q26 Review: 실적 서프라이즈 기록, 예상 외의 강한 메탈게인 지속",
-      "rcnt": "6785",
+      "rcnt": "6792",
       "wdt": "20260803"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "풍산",
       "bnm": "하나증권",
       "tit": "2Q26 어닝서프라이즈, 올해 연간 실적 큰 폭 개선 전망",
-      "rcnt": "4456",
+      "rcnt": "4462",
       "wdt": "20260803"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "풍산",
       "bnm": "iM증권",
       "tit": "좋은 실적, 상대적으로 부진한 주가",
-      "rcnt": "2982",
+      "rcnt": "2986",
       "wdt": "20260803"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "풍산",
       "bnm": "신한투자증권",
       "tit": "신동에서 방산으로 바통 터치 기대",
-      "rcnt": "3134",
+      "rcnt": "3150",
       "wdt": "20260803"
     }
   ],
@@ -1693,17 +1693,17 @@
       "reutersCode": "010130",
       "stockName": "고려아연",
       "sosok": "0",
-      "closePrice": "1,234,500",
-      "compareToPreviousClosePrice": "128,500",
+      "closePrice": "1,223,000",
+      "compareToPreviousClosePrice": "117,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "11.62",
+      "fluctuationsRatio": "10.58",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "25,767,680",
+      "marketValue": "25,527,641",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1730,17 +1730,17 @@
       "reutersCode": "006110",
       "stockName": "삼아알미늄",
       "sosok": "0",
-      "closePrice": "52,300",
-      "compareToPreviousClosePrice": "5,100",
+      "closePrice": "53,000",
+      "compareToPreviousClosePrice": "5,800",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "10.81",
+      "fluctuationsRatio": "12.29",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "790,956",
+      "marketValue": "801,543",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "295310",
       "stockName": "에이치브이엠",
       "sosok": "1",
-      "closePrice": "55,700",
-      "compareToPreviousClosePrice": "5,500",
+      "closePrice": "54,100",
+      "compareToPreviousClosePrice": "3,900",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "10.96",
+      "fluctuationsRatio": "7.77",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "676,654",
+      "marketValue": "657,217",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "005810",
       "stockName": "풍산홀딩스",
       "sosok": "0",
-      "closePrice": "37,800",
-      "compareToPreviousClosePrice": "550",
+      "closePrice": "37,650",
+      "compareToPreviousClosePrice": "400",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "1.48",
+      "fluctuationsRatio": "1.07",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "544,973",
+      "marketValue": "542,811",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "009160",
       "stockName": "SIMPAC",
       "sosok": "0",
-      "closePrice": "4,920",
-      "compareToPreviousClosePrice": "145",
+      "closePrice": "4,880",
+      "compareToPreviousClosePrice": "105",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "3.04",
+      "fluctuationsRatio": "2.20",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "321,625",
+      "marketValue": "319,010",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1878,17 +1878,17 @@
       "reutersCode": "058430",
       "stockName": "포스코스틸리온",
       "sosok": "0",
-      "closePrice": "4,675",
-      "compareToPreviousClosePrice": "120",
+      "closePrice": "4,685",
+      "compareToPreviousClosePrice": "130",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "2.63",
+      "fluctuationsRatio": "2.85",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "280,500",
+      "marketValue": "281,100",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2980,13 +2980,13 @@
       "사모": "혼조",
       "금융투자": "반전(복원중)"
     },
-    "foreign_avg_price": 73596,
+    "foreign_avg_price": 73400,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 17.0,
+    "foreign_avg_vs_now_pct": 17.6,
     "foreign_buy_qty": 1284057,
-    "foreign_sell_qty": 370227,
-    "foreign_net_qty": 913830,
-    "foreign_net_ratio_pct": 71.2,
+    "foreign_sell_qty": 384004,
+    "foreign_net_qty": 900053,
+    "foreign_net_ratio_pct": 70.1,
     "close_range": {
       "low": 57700,
       "high": 92800
@@ -3034,8 +3034,8 @@
     "avg20": 158545,
     "avg60": 148168,
     "ratio_20_60": 1.07,
-    "today": 91623,
-    "today_vs_60": 0.62
+    "today": 137305,
+    "today_vs_60": 0.93
   },
   "news": [
     {
