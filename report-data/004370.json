@@ -2,30 +2,30 @@
   "code": "004370",
   "name": "농심",
   "market": "KOSPI",
-  "updated": "2026-08-11 15:13",
+  "updated": "2026-08-11 16:46",
   "supply_10d": {
-    "foreign_net_10d": 33822,
+    "foreign_net_10d": 33426,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 21774,
-    "pension_buydays": "9/10"
+    "pension_net_10d": 22412,
+    "pension_buydays": "10/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
         "date": "2026-08-11",
-        "close": 396000,
+        "close": 395500,
         "foreignRatio": 23.74,
-        "개인": 0,
-        "외국인": -3802,
-        "기관계": 4000,
-        "금융투자": 0,
-        "투신": 1000,
-        "사모": 0,
-        "보험": 3000,
+        "개인": -4021,
+        "외국인": -4217,
+        "기관계": 8272,
+        "금융투자": 3593,
+        "투신": 2157,
+        "사모": 616,
+        "보험": 1268,
         "은행": 0,
         "기타금융": 0,
-        "연기금": 0,
-        "기타법인": 0
+        "연기금": 638,
+        "기타법인": -60
       },
       {
         "date": "2026-08-10",
@@ -973,43 +973,43 @@
       }
     ],
     "cum_5d": {
-      "개인": -36753,
-      "외국인": 17131,
-      "기관계": 21365,
-      "금융투자": 3250,
-      "투신": 6451,
-      "사모": 2002,
-      "보험": 3871,
+      "개인": -40774,
+      "외국인": 16716,
+      "기관계": 25637,
+      "금융투자": 6843,
+      "투신": 7608,
+      "사모": 2618,
+      "보험": 2139,
       "은행": 7,
       "기타금융": 0,
-      "연기금": 5784,
-      "기타법인": -1386
+      "연기금": 6422,
+      "기타법인": -1446
     },
     "cum_20d": {
-      "개인": -148313,
-      "외국인": 60636,
-      "기관계": 93082,
-      "금융투자": 9630,
-      "투신": 34803,
-      "사모": 2306,
-      "보험": 11128,
+      "개인": -152334,
+      "외국인": 60221,
+      "기관계": 97354,
+      "금융투자": 13223,
+      "투신": 35960,
+      "사모": 2922,
+      "보험": 9396,
       "은행": -21,
       "기타금융": -116,
-      "연기금": 35352,
-      "기타법인": -2902
+      "연기금": 35990,
+      "기타법인": -2962
     },
     "cum_60d": {
-      "개인": -233105,
-      "외국인": 122149,
-      "기관계": 113404,
-      "금융투자": 22031,
-      "투신": 36667,
-      "사모": 998,
-      "보험": 9723,
+      "개인": -237126,
+      "외국인": 121734,
+      "기관계": 117676,
+      "금융투자": 25624,
+      "투신": 37824,
+      "사모": 1614,
+      "보험": 7991,
       "은행": -168,
       "기타금융": -51,
-      "연기금": 44204,
-      "기타법인": -2418
+      "연기금": 44842,
+      "기타법인": -2478
     },
     "foreign_ratio_trend": [
       {
@@ -1558,12 +1558,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "23,394"
+      "value": "25,197"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "93.5억"
+      "value": "101억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1645,7 @@
       "nm": "농심",
       "bnm": "유안타증권",
       "tit": "해외 성장으로 컨센서스 상회 전망",
-      "rcnt": "5229",
+      "rcnt": "5239",
       "wdt": "20260721"
     },
     {
@@ -1654,7 +1654,7 @@
       "nm": "농심",
       "bnm": "교보증권",
       "tit": "예상 대비 선방 중",
-      "rcnt": "6152",
+      "rcnt": "6161",
       "wdt": "20260713"
     },
     {
@@ -1663,7 +1663,7 @@
       "nm": "농심",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 원가 부담 가시화",
-      "rcnt": "4874",
+      "rcnt": "4882",
       "wdt": "20260702"
     },
     {
@@ -1672,7 +1672,7 @@
       "nm": "농심",
       "bnm": "하나증권",
       "tit": "1Q26 Re: 해외법인 수익성 선방",
-      "rcnt": "4875",
+      "rcnt": "4882",
       "wdt": "20260518"
     },
     {
@@ -1681,7 +1681,7 @@
       "nm": "농심",
       "bnm": "한화투자증권",
       "tit": "해외 성장 눈높이 상향",
-      "rcnt": "3445",
+      "rcnt": "3453",
       "wdt": "20260518"
     }
   ],
@@ -1730,17 +1730,17 @@
       "reutersCode": "271560",
       "stockName": "오리온",
       "sosok": "0",
-      "closePrice": "136,600",
-      "compareToPreviousClosePrice": "-900",
+      "closePrice": "136,000",
+      "compareToPreviousClosePrice": "-1,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.65",
+      "fluctuationsRatio": "-1.09",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,399,632",
+      "marketValue": "5,375,915",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1767,17 +1767,17 @@
       "reutersCode": "097950",
       "stockName": "CJ제일제당",
       "sosok": "0",
-      "closePrice": "187,800",
-      "compareToPreviousClosePrice": "-17,700",
+      "closePrice": "188,000",
+      "compareToPreviousClosePrice": "-17,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-8.61",
+      "fluctuationsRatio": "-8.52",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,827,176",
+      "marketValue": "2,830,186",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1804,17 +1804,17 @@
       "reutersCode": "026960",
       "stockName": "동서",
       "sosok": "0",
-      "closePrice": "26,450",
-      "compareToPreviousClosePrice": "-100",
+      "closePrice": "26,500",
+      "compareToPreviousClosePrice": "-50",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.38",
+      "fluctuationsRatio": "-0.19",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,637,065",
+      "marketValue": "2,642,050",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1841,17 +1841,17 @@
       "reutersCode": "140410",
       "stockName": "메지온",
       "sosok": "1",
-      "closePrice": "63,100",
-      "compareToPreviousClosePrice": "2,100",
+      "closePrice": "63,000",
+      "compareToPreviousClosePrice": "2,000",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "3.44",
+      "fluctuationsRatio": "3.28",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,931,238",
+      "marketValue": "1,928,177",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2971,13 +2971,13 @@
       "사모": "혼조",
       "금융투자": "꾸준매집"
     },
-    "foreign_avg_price": 386117,
+    "foreign_avg_price": 386100,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 2.6,
+    "foreign_avg_vs_now_pct": 2.4,
     "foreign_buy_qty": 261116,
-    "foreign_sell_qty": 138967,
-    "foreign_net_qty": 122149,
-    "foreign_net_ratio_pct": 46.8,
+    "foreign_sell_qty": 139382,
+    "foreign_net_qty": 121734,
+    "foreign_net_ratio_pct": 46.6,
     "close_range": {
       "low": 329500,
       "high": 405000
@@ -3025,8 +3025,8 @@
     "avg20": 24385,
     "avg60": 28520,
     "ratio_20_60": 0.86,
-    "today": 16953,
-    "today_vs_60": 0.59
+    "today": 18206,
+    "today_vs_60": 0.64
   },
   "news": [
     {
@@ -3054,16 +3054,16 @@
       "url": "https://n.news.naver.com/mnews/article/138/0002237356"
     },
     {
-      "title": "농협은행, 최고 연 8.15% ‘NH농심천심’ 예·적금 출시…상생금융 선...",
-      "office": "디지털타임스",
-      "date": "202608111035",
-      "url": "https://n.news.naver.com/mnews/article/029/0003041734"
-    },
-    {
       "title": "“농심과 협업” 배럴, ‘육개장 사발면 수모’ 출시",
       "office": "스포츠동아",
       "date": "202608111022",
       "url": "https://n.news.naver.com/mnews/article/382/0001287633"
+    },
+    {
+      "title": "NH농심천심 예·적금 신상품 출시",
+      "office": "서울경제",
+      "date": "202608110933",
+      "url": "https://n.news.naver.com/mnews/article/011/0004650484"
     }
   ],
   "_errors": {}
