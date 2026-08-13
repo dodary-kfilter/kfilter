@@ -2,7 +2,7 @@
   "code": "006040",
   "name": "동원산업",
   "market": "KOSPI",
-  "updated": "2026-08-13 15:55",
+  "updated": "2026-08-13 17:15",
   "supply_10d": {
     "foreign_net_10d": 88279,
     "foreign_buydays": "7/10",
@@ -1290,6 +1290,7 @@
       }
     ]
   },
+  "idxRel": null,
   "price_weekly": {
     "now": 36900,
     "ma": {
@@ -1558,12 +1559,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "143,443"
+      "value": "144,448"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "53.9억"
+      "value": "54.3억"
     },
     {
       "code": "marketValue",
@@ -1645,7 +1646,7 @@
       "nm": "동원산업",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 비식품 선방",
-      "rcnt": "4387",
+      "rcnt": "4390",
       "wdt": "20260720"
     },
     {
@@ -1654,7 +1655,7 @@
       "nm": "동원산업",
       "bnm": "하나증권",
       "tit": "1Q26 Pre: 식품 호조 VS. 비식품 부진",
-      "rcnt": "8885",
+      "rcnt": "8886",
       "wdt": "20260403"
     }
   ],
@@ -2746,7 +2747,102 @@
       }
     ]
   },
-  "financials_confirmed": null,
+  "financials_confirmed": {
+    "quarter": [
+      {
+        "date": "2026-03-01",
+        "sales": 2530018775440.0,
+        "operatingProfit": 146157183080.0,
+        "netIncome": 112900452360.0,
+        "eps": 2512.799,
+        "roe": 0.03079,
+        "debtRatio": 107.132,
+        "dps": null,
+        "opm": 5.78
+      },
+      {
+        "date": "2025-12-01",
+        "sales": 2319231262960.0,
+        "operatingProfit": 109544937300.0,
+        "netIncome": 122845171670.0,
+        "eps": 2719.742,
+        "roe": 0.03542,
+        "debtRatio": 110.103,
+        "dps": 600,
+        "opm": 4.72
+      },
+      {
+        "date": "2025-09-01",
+        "sales": 2586517748700.0,
+        "operatingProfit": 148103644730.0,
+        "netIncome": 101489736650.0,
+        "eps": 2282.29,
+        "roe": 0.03244,
+        "debtRatio": 120.961,
+        "dps": null,
+        "opm": 5.73
+      },
+      {
+        "date": "2025-06-01",
+        "sales": 2358613258350.0,
+        "operatingProfit": 133642247430.0,
+        "netIncome": 88030990760.0,
+        "eps": 2077.391,
+        "roe": 0.02896,
+        "debtRatio": 121.401,
+        "dps": 550,
+        "opm": 5.67
+      }
+    ],
+    "annual": [
+      {
+        "date": "2025-12-01",
+        "sales": 9583673896990.0,
+        "operatingProfit": 516134102430.0,
+        "netIncome": 387148699080.0,
+        "eps": 8795.234,
+        "roe": 0.11607,
+        "debtRatio": 110.103,
+        "dps": 1150,
+        "opm": 5.39
+      },
+      {
+        "date": "2024-12-01",
+        "sales": 8944231939720.0,
+        "operatingProfit": 501319940390.0,
+        "netIncome": 113563839180.0,
+        "eps": 1732.203,
+        "roe": 0.02741,
+        "debtRatio": 120.496,
+        "dps": 1000,
+        "opm": 5.6
+      },
+      {
+        "date": "2023-12-01",
+        "sales": 8948570757960.0,
+        "operatingProfit": 464733626620.0,
+        "netIncome": 272187151010.0,
+        "eps": 4215.318,
+        "roe": 0.08623,
+        "debtRatio": 146.359,
+        "dps": 1000,
+        "opm": 5.19
+      },
+      {
+        "date": "2022-12-01",
+        "sales": 9026258367480.0,
+        "operatingProfit": 494432749960.0,
+        "netIncome": 296545278650.0,
+        "eps": 7188.822,
+        "roe": 0.08531,
+        "debtRatio": 142.779,
+        "dps": 1000,
+        "opm": 5.48
+      }
+    ],
+    "source": "daum(확정치)",
+    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
+  },
   "disclosures": [
     {
       "itemCode": "006040",
