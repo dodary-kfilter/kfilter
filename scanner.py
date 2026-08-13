@@ -151,6 +151,16 @@ def _index_days(market="KOSPI"):
     mk = "KOSDAQ" if str(market).upper() == "KOSDAQ" else "KOSPI"
     if mk in _IDX_CACHE:
         return _IDX_CACHE[mk]
+    # ★screener가 이미 받아뒀으면 재사용(중복 호출 제거)
+    try:
+        import screener as _scr
+        if getattr(_scr, "_IDX_MEMO", None):
+            got = _scr._IDX_MEMO.get(mk)
+            if got:
+                _IDX_CACHE[mk] = got
+                return got
+    except Exception:
+        pass
     out = {}
     try:
         r = requests.get(f"https://finance.daum.net/api/market_index/days"
@@ -650,7 +660,8 @@ def fetch_all(code):
     return out
 
 def write_report_file(code, name, market, supply, raw, price_block,
-                      week_block=None, month_block=None, supply_detail=None):
+                      week_block=None, month_block=None, supply_detail=None,
+                      idx_rel=None):
     """리포트용 원본 풀데이터 → report-data/{code}.json.
     [방어] 어느 한 필드(밸류/컨센/실적/뉴스 등)가 깨져도 파일 전체 저장은 실패하지 않는다.
            실패한 필드와 사유는 _errors에 남겨 화면/로그에서 바로 보이게 한다.
@@ -672,6 +683,8 @@ def write_report_file(code, name, market, supply, raw, price_block,
         "supply_10d": supply,                                  # 외인/연기금 최근10일 (토스)
         "supply_detail": supply_detail,                        # 투자자별 세부 + 외인보유율 추이
         "price_daily": price_block,                            # 일봉
+        # ★지수 대비 — 변화점검·정밀분석이 "수급 파일 idxRel에 있다"고 지시하므로 여기 실어야 한다
+        "idxRel": idx_rel,
         "price_weekly": week_block,                            # 주봉
         "price_monthly": month_block,                          # 월봉
         "valuation":          g("valuation",          lambda: integ.get("totalInfos")),
@@ -802,7 +815,7 @@ def enrich_stock(code, name="", market="", supply=None):
     # 리포트 파일 저장
     try:
         write_report_file(code, name, market, supply or {}, raw, price_block,
-                          week_block, month_block, supply_detail)
+                          week_block, month_block, supply_detail, idx_rel)
     except Exception as e:
         print(f"  report 파일 저장 실패 {code}: {e}", flush=True)
     # 화면용 요약(기존과 동일)

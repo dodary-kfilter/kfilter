@@ -55,6 +55,11 @@ VP_OPM_MIN   = -10.0   # 영업이익률 증감 하한(%). 직전 분기 대비 
 VP_SHARE_LO  = 0.67    # 상장주식수 변동 허용 하한(배). 벗어나면 액면분할·병합·대규모 증자
 VP_SHARE_HI  = 1.50    # 상장주식수 변동 허용 상한(배)
 VP_HALT_MAX  = 5       # 거래정지 허용일(52주 내). 초과하면 가격이 멈춰 낙폭 계산이 무의미
+# ★권리락 탐지 — 무상·유상증자 권리락은 주가만 기계적으로 떨어지고 상장주식수는 그대로다.
+#   신주가 나중에 상장되므로 listedSharesCount 비교로는 절대 못 잡는다.
+#   실측: 저가매수 20종목 중 3개(티앤엘·RF머트리얼즈·HLB제약)가 이 경로로 가짜 낙폭 1위권에 올랐다.
+VP_GAP_DROP  = -25.0   # 하루 낙폭이 이보다 크면 권리락 의심(정상 급락도 포함되므로 공시로 확정)
+VP_GAP_DAYS  = 60      # 의심 구간(최근 N거래일)
 VP_TOP_N     = 20      # ★상위 N개 컷(초과낙폭 큰 순)
 FIN_CACHE    = os.path.join(CACHE_DIR, "financials.json")   # 분기 재무 캐시(분기 갱신)
 
@@ -216,6 +221,39 @@ def fetch_days(sc):
         return None, 0
 
 
+def detect_gap_drop(rows, n_days=None, thr=None):
+    """★하루 -25% 이상 급락 탐지 → 권리락 의심 신호.
+    반환: (있으면 {"date","before","after","pct"}, 없으면 None)
+    정상 급락(악재)도 걸리므로 확정은 공시로 한다."""
+    n_days = n_days or VP_GAP_DAYS
+    thr = thr if thr is not None else VP_GAP_DROP
+    for i in range(min(n_days, len(rows) - 1)):
+        a = rows[i].get("tradePrice")
+        b = rows[i + 1].get("tradePrice")
+        if not a or not b or b <= 0:
+            continue
+        pct = (a / b - 1) * 100
+        if pct <= thr:
+            return {"date": (rows[i].get("date") or "")[:10], "before": b,
+                    "after": a, "pct": pct}
+    return None
+
+
+def is_rights_offering(sc):
+    """★공시로 권리락 확정. 급락이 감지된 종목에만 부른다(전 종목 호출 금지).
+    무상증자·유상증자·액면분할·주식배당 전부 주가를 기계적으로 떨어뜨린다."""
+    try:
+        d = _get(f"{DAUM}/disclosures?symbolCode={sc}&perPage=20&page=1", timeout=12)
+        kws = ("권리락", "무상증자", "액면분할", "주식분할", "주식배당", "감자")
+        for r in (d.get("data") or []):
+            t = str(r.get("title") or "")
+            if any(k in t for k in kws):
+                return t[:60]
+    except Exception:
+        pass
+    return None
+
+
 def calc_indicators(rows):
     """일봉(최신순)에서 지표 계산. rows[0]이 최근."""
     cl = [r.get("tradePrice") for r in rows if r.get("tradePrice")]
@@ -290,9 +328,14 @@ def calc_indicators(rows):
 
 
 # ───────────────────── 5. 지수 일봉 (초과낙폭용) ─────────────────────
+_IDX_MEMO = {}
+
 def fetch_index_days():
     """코스피·코스닥 일봉 → {market: {date: close}}.
+    ★프로세스당 1회만 받는다. scanner도 이 결과를 재사용해 중복 호출을 없앤다.
     ★저가매수형 ④축(지수 대비 초과낙폭) 계산용. 절대 낙폭만 쓰면 하락장에서 전부 통과한다."""
+    if _IDX_MEMO:
+        return _IDX_MEMO
     out = {}
     for mkt in ("KOSPI", "KOSDAQ"):
         try:
@@ -304,6 +347,7 @@ def fetch_index_days():
         except Exception as e:
             print(f"  [경고] 지수 일봉 실패 {mkt}: {e}", flush=True)
             out[mkt] = {}
+    _IDX_MEMO.update(out)
     return out
 
 
@@ -387,12 +431,21 @@ def derive_fundamentals(q):
     hn = (e[0] + e[1]) if len(e) >= 2 else 0
     ho = (e[2] + e[3]) if len(e) >= 4 else 0
 
+    # ★흑자전환 — 직전 분기 적자면 증가율(e0/e1)이 무의미하다. "—" 대신 명시해야 리포트가 읽는다.
+    eps_turn = (len(e) >= 2 and (e[1] or 0) <= 0 and (e[0] or 0) > 0)
+    eps_still_loss = (len(e) >= 2 and (e[1] or 0) <= 0 and (e[0] or 0) <= 0)
+
     return {
         "sales_growth": sales_g,
+        "eps_turnaround_q": eps_turn,          # 적자 → 흑자
+        "eps_still_loss": eps_still_loss,      # 적자 지속
         "opm_recent": m0, "opm_prev": m1, "opm_growth": opm_g,
         "profit_ok": (sales_g >= VP_SALES_MIN) and opm_ok,     # ②비슷하거나 개선
         "op_2q_pos": o0 > 0 and o1 > 0,
         "eps_ann": hn * 2,
+        # ★"돈 버는가"의 최소 정의 — 연환산 EPS가 음수면 이익수익률·연율PER이 산출조차 안 된다.
+        #   영업이익 흑자여도 직전 분기 대규모 적자가 반기 합을 음수로 만드는 경우가 있다(실측 2/20종목).
+        "eps_ann_pos": (hn * 2) > 0,
         "roe_ann": ((ro[0] + ro[1]) * 2 * 100) if len(ro) >= 2 else None,
         "eps_growth": ((hn / ho - 1) * 100) if ho > 0 else None,
         "eps_turnaround": (ho <= 0 and hn > 0),
@@ -474,12 +527,16 @@ def run_screeners(supply_map=None):
             **ind,
         }
         out["halt_days"] = halt_days
+        out["gap_drop"] = detect_gap_drop(rows)     # ★권리락 의심(공시 확정은 필터 단계에서)
         # 【저가매수형 원재료】
         d = derive_fundamentals(fin.get(sc))
         if d:
             ann = d["eps_ann"]
             out.update({
                 "sales_growth": d["sales_growth"],                         # ②매출
+                "eps_turnaround_q": d["eps_turnaround_q"],
+                "eps_still_loss": d["eps_still_loss"],
+                "eps_ann_pos": d["eps_ann_pos"],
                 "opm_recent": d["opm_recent"], "opm_prev": d["opm_prev"],
                 "opm_growth": d["opm_growth"],                             # ②영업이익률
                 "profit_ok": d["profit_ok"],
@@ -504,16 +561,18 @@ def run_screeners(supply_map=None):
             if i_now and i_pk:
                 out["idx_since_peak"] = (i_now / i_pk - 1) * 100
                 out["excess_dd"] = out["dd_close"] - out["idx_since_peak"]
-            # ★1개월·6개월도 지수와 나란히 — 혼자 간 건지 시장 따라간 건지 구분용
-            for lab, n_, own in (("r1", 21, ind.get("r1")), ("r6", 126, ind.get("r6"))):
-                if own is None or len(rows) <= n_:
-                    continue
-                d_past = (rows[n_].get("date") or "")[:10]
-                i_past = index_at(idx, f.get("market"), d_past)
-                if i_now and i_past:
-                    ix = (i_now / i_past - 1) * 100
-                    out[f"idx_{lab}"] = ix
-                    out[f"excess_{lab}"] = own - ix
+        # ★1개월·6개월 지수 대비 — peak 유무와 무관하게 항상 계산한다.
+        #   (블록 안에 두면 신고가 종목은 peak_date 조건에 막혀 모멘텀이 통째로 None이 된다)
+        base_d = (rows[0].get("date") or "")[:10]
+        i_now2 = index_at(idx, f.get("market"), base_d)
+        for lab, n_, own in (("r1", 21, ind.get("r1")), ("r6", 126, ind.get("r6"))):
+            if own is None or len(rows) <= n_ or not i_now2:
+                continue
+            i_past = index_at(idx, f.get("market"), (rows[n_].get("date") or "")[:10])
+            if i_past:
+                ix = (i_now2 / i_past - 1) * 100
+                out[f"idx_{lab}"] = ix
+                out[f"excess_{lab}"] = own - ix
         return out
 
     with ThreadPoolExecutor(max_workers=WORKERS) as ex:
@@ -532,6 +591,7 @@ def run_screeners(supply_map=None):
         # 【저가매수형】 "돈 버는데 주가가 눌린 종목" — 돈 버는 놈만 통과, 정렬은 눌린 순
         if (x.get("op_2q_pos")                                    # ①적자 아님
                 and x.get("profit_ok")                            # ②매출·OPM 비슷하거나 개선
+                and x.get("eps_ann_pos")                          # ★연환산 EPS>0 — 돈 버는가의 최소 정의
                 and x.get("share_ratio") is not None
                 and VP_SHARE_LO < x["share_ratio"] < VP_SHARE_HI  # ★액면변동 배제
                 and (x.get("halt_days") or 0) <= VP_HALT_MAX      # ★장기 거래정지 배제
@@ -545,6 +605,22 @@ def run_screeners(supply_map=None):
                 and (x["v2060"] or 0) > 1.0):
             momentum.append(x)
 
+    # 6-b) ★권리락 제외 — 급락 감지된 종목만 공시 조회(전 종목 호출 금지)
+    #   무상·유상증자 권리락은 주가만 기계적으로 떨어지고 주식수는 그대로라
+    #   listedSharesCount 필터로는 절대 못 잡는다. 낙폭이 통째로 가짜가 된다.
+    susp = [x for x in value_cand if x.get("gap_drop")]
+    if susp:
+        print(f"  급락 감지 {len(susp)}종목 → 공시 확인", flush=True)
+        with ThreadPoolExecutor(max_workers=min(8, len(susp))) as ex:
+            marks = list(ex.map(lambda x: is_rights_offering(x["symbol"]), susp))
+        drop = set()
+        for x, mk in zip(susp, marks):
+            if mk:
+                drop.add(x["code"])
+                g = x["gap_drop"]
+                print(f"    ★제외 {x['name']}({x['code']}) {g['date']} {g['pct']:.1f}% — {mk}", flush=True)
+        value_cand = [x for x in value_cand if x["code"] not in drop]
+
     # 7) 저가매수형 — ③업황보다 눌림(업종 중앙 낙폭 대비) → ④초과낙폭 순 → ⑤상위 N
     #    업종 중앙값은 유니버스 전체로 계산한다. 후보만으로 내면 기준이 후보에 끌려간다.
     sec_dd = {}
@@ -553,9 +629,14 @@ def run_screeners(supply_map=None):
             sec_dd.setdefault(x["sector"], []).append(x["dd_close"])
     sec_med = {k: median(v) for k, v in sec_dd.items() if len(v) >= 3}
     for x in value_cand:
-        m = sec_med.get(x.get("sector"))
+        sec = x.get("sector")
+        m = sec_med.get(sec)
         x["sector_median_dd"] = m
         x["vs_sector_dd"] = (x["dd_close"] - m) if (m is not None and x.get("dd_close") is not None) else None
+        if m is None:
+            # ★왜 없는지 알려줘야 리포트가 헤매지 않는다
+            cnt = len(sec_dd.get(sec) or [])
+            x["vs_sector_note"] = f"업종 표본 {cnt}개(3개 미만) — 중앙값 산출 불가"
     value_cand = [x for x in value_cand if (x.get("vs_sector_dd") or 0) < 0]
 
     value_cand.sort(key=lambda z: z.get("excess_dd") or 0)        # 많이 눌린 순
