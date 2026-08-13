@@ -504,6 +504,16 @@ def run_screeners(supply_map=None):
             if i_now and i_pk:
                 out["idx_since_peak"] = (i_now / i_pk - 1) * 100
                 out["excess_dd"] = out["dd_close"] - out["idx_since_peak"]
+            # ★1개월·6개월도 지수와 나란히 — 혼자 간 건지 시장 따라간 건지 구분용
+            for lab, n_, own in (("r1", 21, ind.get("r1")), ("r6", 126, ind.get("r6"))):
+                if own is None or len(rows) <= n_:
+                    continue
+                d_past = (rows[n_].get("date") or "")[:10]
+                i_past = index_at(idx, f.get("market"), d_past)
+                if i_now and i_past:
+                    ix = (i_now / i_past - 1) * 100
+                    out[f"idx_{lab}"] = ix
+                    out[f"excess_{lab}"] = own - ix
         return out
 
     with ThreadPoolExecutor(max_workers=WORKERS) as ex:

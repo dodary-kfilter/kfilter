@@ -144,6 +144,71 @@ def parse_candles(raw):
     rows = arr[1:] if arr and isinstance(arr[0], list) and "날짜" in str(arr[0][0]) else arr
     return [r for r in rows if isinstance(r, list) and len(r) >= 6]
 
+_IDX_CACHE = {}
+
+def _index_days(market="KOSPI"):
+    """코스피·코스닥 일봉 {날짜: 종가}. 프로세스당 1회만 받는다."""
+    mk = "KOSDAQ" if str(market).upper() == "KOSDAQ" else "KOSPI"
+    if mk in _IDX_CACHE:
+        return _IDX_CACHE[mk]
+    out = {}
+    try:
+        r = requests.get(f"https://finance.daum.net/api/market_index/days"
+                         f"?page=1&perPage=320&market={mk}&pagination=true",
+                         headers={"User-Agent": UA, "Referer": "https://finance.daum.net/"}, timeout=20)
+        for k in (r.json().get("data") or []):
+            if k.get("tradePrice"):
+                out[(k.get("date") or "")[:10]] = k["tradePrice"]
+    except Exception as e:
+        print(f"  [경고] 지수 일봉 실패 {mk}: {e}", flush=True)
+    _IDX_CACHE[mk] = out
+    return out
+
+
+def _index_at(mk, date):
+    ks = _index_days(mk)
+    if not ks:
+        return None
+    if date in ks:
+        return ks[date]
+    prev = [d for d in ks if d <= date]
+    return ks[max(prev)] if prev else None
+
+
+def compute_index_relative(candles, market="KOSPI"):
+    """★주가 위치를 지수와 나란히 — 혼자 빠진 건지 시장 따라간 건지 구분하려면 필수.
+    candles: [[date, o, h, l, c, v], ...] 오래된순
+    """
+    try:
+        rows = [(str(r[0])[:10].replace("/", "-"), float(r[4])) for r in candles if r and r[4]]
+        if len(rows) < 30:
+            return None
+        base_d, now = rows[-1]
+        cut = (datetime.strptime(base_d, "%Y-%m-%d") - timedelta(days=365)).strftime("%Y-%m-%d")
+        yr = [x for x in rows if x[0] >= cut] or rows
+        pk_d, pk_c = max(yr, key=lambda x: x[1])
+        dd = (now / pk_c - 1) * 100
+        i_now, i_pk = _index_at(market, base_d), _index_at(market, pk_d)
+        out = {"peakClose": round(pk_c), "peakDate": pk_d, "ddFromPeak": round(dd, 1)}
+        if i_now and i_pk:
+            ic = (i_now / i_pk - 1) * 100
+            out["idxSincePeak"] = round(ic, 1)
+            out["excessDd"] = round(dd - ic, 1)
+        # 1개월·6개월 종목 vs 지수
+        for lab, n in (("m1", 21), ("m6", 126)):
+            if len(rows) > n:
+                d0, c0 = rows[-1 - n]
+                st = (now / c0 - 1) * 100
+                i0 = _index_at(market, d0)
+                out[lab] = round(st, 1)
+                if i_now and i0:
+                    out[lab + "Idx"] = round((i_now / i0 - 1) * 100, 1)
+                    out[lab + "Excess"] = round(st - (i_now / i0 - 1) * 100, 1)
+        return out
+    except Exception:
+        return None
+
+
 def compute_price_block(candles):
     closes = [float(r[4]) for r in candles]
     vols   = [float(r[5]) for r in candles]
@@ -662,7 +727,9 @@ def enrich_sector(sector_key, sector_name, members):
             detail = {}
             if raw.get("candles"):
                 try:
-                    detail["price"] = compute_price_block(parse_candles(raw["candles"]))
+                    _c2 = parse_candles(raw["candles"])
+                    detail["price"] = compute_price_block(_c2)
+                    detail["idxRel"] = compute_index_relative(_c2, member.get("market") if isinstance(member, dict) else "KOSPI")
                 except Exception:
                     pass
             if raw.get("toss"):
@@ -705,9 +772,12 @@ def enrich_stock(code, name="", market="", supply=None):
     raw = fetch_all(code)
     # 일봉 가격블록
     price_block = None
+    idx_rel = None
     if raw.get("candles"):
         try:
-            price_block = compute_price_block(parse_candles(raw["candles"]))
+            _c = parse_candles(raw["candles"])
+            price_block = compute_price_block(_c)
+            idx_rel = compute_index_relative(_c, market)      # ★지수 대비 위치
         except Exception:
             price_block = None
     # 주봉/월봉 블록
@@ -740,6 +810,8 @@ def enrich_stock(code, name="", market="", supply=None):
     now_price = None
     if price_block:
         out.update(price_block); now_price = price_block["now"]
+    if idx_rel:
+        out["idxRel"] = idx_rel                                # ★지수 대비 위치
     if raw.get("integ"):
         try:
             out.update(parse_integration(raw["integ"], now_price))
