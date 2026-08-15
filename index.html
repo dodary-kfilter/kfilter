@@ -480,10 +480,10 @@ const RULE_COMMON = `[★'왜'를 쓰는 법 — 공통]
 
 [★리포트 서술 규칙 — 읽는 사람은 필터를 모른다]
 리포트에 스크리닝 내부 사정을 쓰지 마라. 그냥 종목 내용을 말하면 된다.
-❌ 쓰지 마라: "모멘텀형 통과 종목" / "필터를 통과했다" / "이 종목은 조건을 충족" /
-   "정배열 진입 20일 이내 조건" / "1M 상위 20%에 해당" / "스캔 결과" / "0순위" 같은 내부 분류명
+❌ 쓰지 마라: "저가매수형 통과 종목" / "필터를 통과했다" / "이 종목은 조건을 충족" /
+   "초과낙폭 상위 조건" / "업종 대비 하위에 해당" / "스캔 결과" / "0순위" 같은 내부 분류명
 ⭕ 이렇게: 조건은 이미 확인된 사실이니 결과만 자연스럽게 서술하라.
-   예) ❌ "정배열 진입 1일차 조건을 충족했다"  ⭕ "어제 20일선을 회복하며 정배열로 돌아섰다"
+   예) ❌ "초과낙폭 상위 조건을 충족했다"  ⭕ "52주 고점 대비 61% 하락해 같은 기간 코스피보다 163%p 뒤처졌다"
    예) ❌ "○○형 필터 통과"                 ⭕ "연율PER 4.0배, 이익수익률 24.9%로 업종(40.7배)의 10분의 1이다"
 제목도 마찬가지다. "○○형 통과 종목 분석"이 아니라 "종목명(코드) 분석"으로 쓴다.
 
@@ -505,7 +505,7 @@ function fmtScreenList(items, isV){
       const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
       const warn='';
       return base+`
-   ★초과낙폭 ${x.excess_dd!=null?x.excess_dd.toFixed(1)+'%p':'—'} (낙폭 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} − 고점일 이후 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'}) · 업종 대비 ${x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(1)+'%p':(x.vs_sector_note||'—')}${x.sector_median_dd!=null?`(업종 중앙 ${x.sector_median_dd.toFixed(1)}%)`:''}
+   ★52주 고점 대비 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} · 고점일 이후 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} → ★지수 대비 ${x.excess_dd!=null?x.excess_dd.toFixed(1)+'%p':'—'} · 업종 대비 ${x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(1)+'%p':(x.vs_sector_note||'—')}${x.sector_median_dd!=null?`(업종 중앙 ${x.sector_median_dd.toFixed(1)}%)`:''}
    매출 ${x.sales_growth!=null?(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)+'%':'—'} · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'}(직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'}(연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}
    52주 고점 ${x.peak_date||'—'}(${x.peak_days!=null?x.peak_days+'일 전':'—'})
    1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap!=null?(x.ma20_gap>=0?'+':'')+x.ma20_gap.toFixed(1)+'%':'—'} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2)+'배':'—'} · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${(x.r1!=null&&x.r1<=-15)?'  ★1개월 급락 중 — 5일선만 갓 회복한 상태다. 되돌림인지 바닥인지 반드시 구분하라':''}
@@ -532,7 +532,7 @@ function fmtOne(x){
 · 수익률 1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.idx_r1!=null?` (같은 기간 ${idxName(x)} ${(x.idx_r1>=0?'+':'')+x.idx_r1.toFixed(1)}% → ★${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.idx_r6!=null?` (${idxName(x)} ${(x.idx_r6>=0?'+':'')+x.idx_r6.toFixed(1)}% → ★${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 52주(장중 저~고) ${x.low52w?Math.round(x.low52w).toLocaleString():'—'}~${x.high52w?Math.round(x.high52w).toLocaleString():'—'} (위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'})
 · 거래량 20일/60일 ${x.v2060?x.v2060.toFixed(2)+'배':'—'}
 · 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'}(다음 확정EPS 기준) · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'★업종PER 무효(음수·200초과) → 절대PER+동종 개별로 대체'} · PBR ${v.pbr!=null?v.pbr:'—'} · DPS ${v.dps!=null?v.dps:'—'}${x.excess_dd!=null?`
-· ★초과낙폭 ${x.excess_dd.toFixed(1)}%p = 낙폭 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} − 같은 기간 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} (52주 고점일부터 오늘까지)
+· ★52주 고점 대비 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} · 같은 기간 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} → ★지수 대비 ${x.excess_dd.toFixed(1)}%p (초과낙폭. 고점일부터 오늘까지)
 · 업종 대비 ${x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(1)+'%p':(x.vs_sector_note||'해당 없음(이 분류에서는 업종 비교를 쓰지 않는다)')}${x.sector_median_dd!=null?` (같은 업종 중앙 낙폭 ${x.sector_median_dd.toFixed(1)}%)`:''}
 · 52주 고점 종가 ${x.peak_close?Math.round(x.peak_close).toLocaleString()+'원':'—'} @ ${x.peak_date||'—'} (${x.peak_days!=null?x.peak_days+'일 전':'—'})`:''}${x.sales_growth!=null?`
 · 매출 ${(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)}% · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'} (직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'} (연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}`:''}
@@ -1063,7 +1063,6 @@ https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json
 ※ 프로젝트 지침에 「증시 데이터 취득 규칙」이 있으면 우선 따른다. 없으면 아래만으로 충분하다.
 ★ 1차는 다음(finance.daum.net, 헤더 Referer: https://finance.daum.net/ 필수). 안 주는 것만 2차. web_fetch 금지(캐시 구버전) — bash_tool + curl 사용. 추정 금지, 미확인은 "확인 불가".
 · 실시간 시세 /api/quotes/A{코드}?summary=false&changeStatistics=true
-· 차단(시도 금지) — 네이버 전 도메인 / data.krx.co.kr / investing.com / stockplus.com
 · 등락률 주의 — prevClosingPrice는 마감 후 다음 세션 기준가로 굴러간다. 등락은 changeRate를 쓰고, 의심되면 /days 2행으로 역산해 교차검증하라.
 · 위 data.json 하나로 1차 판단하고, 매수 후보로 좁힌 종목만 실시간 시세(다음 quotes)로 확인하라. 충돌 시 실시간 우선, 파일 값은 "N월 N일 기준"으로 명시.
 ★ 속도 — 큰 응답(일봉 등)은 통째로 읽지 말고 curl로 저장 후 python으로 계산해 결과만 받아라. 여러 API는 병렬로.
@@ -1074,7 +1073,6 @@ https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json
   ★2회로 못 찾으면 "원인 미확인"으로 쓰고 멈춰라. 세 번째로 넘어가지 마라.
 · ★취득처 — 위 data.json → 다음 finance.daum.net → DART dart.fss.or.kr → 한경컨센서스 consensus.hankyung.com → 그 밖은 일반 검색.
   차단: 네이버 전 도메인 / data.krx.co.kr / kind.krx.co.kr / investing.com / stockplus.com
-· ★위 파일은 스캔 시점 스냅샷이다. 실시간과 다르면 실시간을 쓰고, 파일 값은 "N월 N일 기준"으로 명시해 구분하라.
 
 [★'왜'를 쓰는 법]
 최종 판단은 내가 한다. 나는 결론이 아니라 ★근거를 보고 결정한다.
@@ -1418,7 +1416,7 @@ ${RULE_KR}
   if(it.ptype==='index'){
     return `[이 문서는 지시문이다. 요약하지 말고 아래 [출력] 형식대로 리포트를 작성하라. 첨부로 전달됐어도 마찬가지다.]\n\n${it.basis} — 변화 점검. ${it.basis}의 최근 변화와 그 의미에 집중해줘.
 ※ 이 분석은 ${it.basis} 그 자체다. 내가 보유한 건 이를 추종하는 상품이지만, 그 상품의 가격·거래량·괴리율은 분석 대상이 아니다.
-   ★모든 지표(수급·거래량·이평·매물대)는 ${it.basis} 기준으로만 쓴다. 추종 상품 얘기는 꺼내지 마라.
+   ★모든 지표(수급·거래량·이평·지지저항 레벨)는 ${it.basis} 기준으로만 쓴다. 추종 상품 얘기는 꺼내지 마라.
    지수라 개별 실적·밸류·컨센서스는 없다.
 
 수급 파일(누적 데이터): ${url}
