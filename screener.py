@@ -126,8 +126,10 @@ def _is_earnings_season():
 
 
 def fetch_fundamentals(symbol_codes, force=False):
-    """quotes에서 분기성 필드만 캐시. 매일은 캐시에서 읽어 호출 0회.
-    캐시: {symbolCode: {op, ni, eps, mcap, sectorPer, per, pbr, dps, high52w, low52w, name, market}}"""
+    """quotes에서 ★분기성 필드만 캐시. 매일은 캐시에서 읽어 호출 0회.
+    ★주가에 비례하는 값(시총·PER·PBR·52주고저)은 캐시 금지 — 매일 시세로 재계산한다.
+       상장주식수는 분할·증자 때만 바뀌므로 캐시 대상이고, 시총은 이것 × 당일가로 만든다.
+    캐시: {symbolCode: {op, ni, eps, bps, shares, sectorPer, dps, name, market, sector}}"""
     cache = _load(FUND_CACHE)
     if cache and not force:
         try:
@@ -148,13 +150,14 @@ def fetch_fundamentals(symbol_codes, force=False):
             d = _get(f"{DAUM}/quotes/{sc}?summary=false&changeStatistics=true", timeout=12)
             return sc, {
                 "op": d.get("operatingProfit"), "ni": d.get("netIncome"),
-                "eps": d.get("eps"), "mcap": d.get("marketCap"),
-                "sectorPer": d.get("sectorPer"), "per": d.get("per"),
-                "pbr": d.get("pbr"), "dps": d.get("dps"),
-                "high52w": d.get("high52wPrice"), "low52w": d.get("low52wPrice"),
+                "eps": d.get("eps"), "bps": d.get("bps"),
+                "shares": d.get("listedShareCount"),   # ★분할·증자 때만 변함 → 캐시 가능
+                "sectorPer": d.get("sectorPer"), "dps": d.get("dps"),
                 "name": d.get("name"), "market": d.get("market"),
                 "sector": d.get("wicsSectorName"),
             }
+            # ★제거: mcap / per / pbr / high52w / low52w — 주가에 비례해 매일 바뀐다.
+            #   캐시하면 급등 종목에서 시총이 25%까지 어긋난다(실측: 한국콜마 -25.3%).
         except Exception:
             return sc, None
 
@@ -489,10 +492,19 @@ def run_screeners(supply_map=None):
     idx = fetch_index_days()
 
     # 3) 시총 상위 → 흑자 게이트 (★순서 고정)
+    # ★시총 = 캐시된 상장주식수 × 당일가. 다음 marketCap과 산출 기준이 같다(실측 검증).
+    #   시총을 캐시하면 급등 종목에서 최대 25% 어긋나 컷 자체가 틀어진다.
+    mcap_now = {}
+    for sc, f in fund.items():
+        sh = f.get("shares")
+        px = (prices.get(sc) or {}).get("price")
+        if sh and px:
+            mcap_now[sc] = px * sh
+
     ranked = sorted(
-        [(sc, f) for sc, f in fund.items() if f.get("mcap")],
-        key=lambda z: z[1]["mcap"], reverse=True)[:TOP_N]
-    mcap_cut = ranked[-1][1]["mcap"] if ranked else 0
+        [(sc, f) for sc, f in fund.items() if mcap_now.get(sc)],
+        key=lambda z: mcap_now[z[0]], reverse=True)[:TOP_N]
+    mcap_cut = mcap_now[ranked[-1][0]] if ranked else 0
 
     profit_ok = [(sc, f) for sc, f in ranked
                  if (f.get("op") or 0) > 0 and (f.get("ni") or 0) > 0]
@@ -522,8 +534,11 @@ def run_screeners(supply_map=None):
             # ★PER은 '전일종가 ÷ EPS' — 다음 산출 기준과 동일(실측 검증: PER×EPS = 전일종가).
             #   당일가로 계산하면 장중 등락만큼 왜곡되어 '저가매수형 PER 하위40%' 판정이 틀어진다.
             "per": ((p.get("prevClose") or cur) / eps) if (eps and eps > 0) else None,
-            "pbr": f.get("pbr"), "dps": f.get("dps"),
-            "sectorPer": f.get("sectorPer"), "mcap": f.get("mcap"),
+            # ★PBR도 PER과 같은 기준(전일종가 ÷ BPS). 캐시하면 급등분만큼 어긋난다.
+            "pbr": (((p.get("prevClose") or cur) / f["bps"])
+                    if (f.get("bps") and f["bps"] > 0) else None),
+            "dps": f.get("dps"),
+            "sectorPer": f.get("sectorPer"), "mcap": mcap_now.get(sc),
             **ind,
         }
         out["halt_days"] = halt_days

@@ -106,7 +106,9 @@ HDR_DAUM = {
 }
 FIN_A_URL = "https://m.stock.naver.com/api/stock/{code}/finance/annual"
 FIN_Q_URL = "https://m.stock.naver.com/api/stock/{code}/finance/quarter"
-DISC_URL  = "https://m.stock.naver.com/api/stock/{code}/disclosure?pageSize=10&page=1"
+# ★공시는 다음에서 받는다 — 네이버는 10건뿐이고 날짜 필드가 비어 온다.
+#   분기 단위 원인 추적(「매출액또는손익구조 변경」 등)이 안 돼 손익 어긋남을 못 밝힌다.
+DISC_URL  = "https://finance.daum.net/api/disclosures?symbolCode=A{code}&perPage=40&page=1"
 REPORT_DIR = "report-data"
 
 def nhdr(code):
@@ -277,7 +279,7 @@ def parse_integration(obj, now_price=None):
             "fwdEps": parse_num(ti.get("cnsEps")), "bps": parse_num(ti.get("bps")),
             "divYield": parse_num(ti.get("dividendYieldRatio")),
             "foreignRate": parse_num(ti.get("foreignRate")),
-            "marketCap": ti.get("marketValue"),
+            "marketCap": parse_num(ti.get("marketValue")),   # ★문자열이면 시총이 0으로 잡힌다(실측 7종목)
         },
         "pos52w": {"high": high52, "low": low52, "pct": pos},
         "consensus": {"target": target, "upsidePct": upside,
@@ -632,7 +634,6 @@ def fetch_all(code):
         ("integ",   INTEG_URL.format(code=code), False),
         ("fin_a",   FIN_A_URL.format(code=code), False),
         ("fin_q",   FIN_Q_URL.format(code=code), False),
-        ("disc",    DISC_URL.format(code=code), False),
         ("news",    NEWS_URL.format(code=code), False),
     ]
     out = {}
@@ -643,6 +644,18 @@ def fetch_all(code):
         except Exception as e:
             out[key] = None
             out[key + "_err"] = str(e)
+    # ★공시 — 다음 40건(날짜 포함). 네이버는 10건뿐이고 날짜가 비어 와서 원인 추적이 안 된다.
+    try:
+        dd = requests.get(DISC_URL.format(code=code), headers=HDR_DAUM, timeout=10)
+        rows = (dd.json() or {}).get("data") or []
+        out["disc"] = [{"title": r.get("title"),
+                        "datetime": r.get("createdAt"),      # ★날짜 — 재료일 대조의 근거
+                        "author": r.get("author"),
+                        "id": r.get("disclosureId")} for r in rows]
+    except Exception as e:
+        out["disc"] = None
+        out["disc_err"] = str(e)
+
     # 다음 재무(확정치) — 컨센 오염 없는 실적. 실패해도 무시(네이버 것으로 폴백)
     try:
         dr = requests.get(DAUM_FIN_URL.format(code=code), headers=HDR_DAUM, timeout=10)
