@@ -2,7 +2,7 @@
   "code": "440110",
   "name": "파두",
   "market": "KOSDAQ",
-  "updated": "2026-08-16 21:18",
+  "updated": "2026-08-16 22:15",
   "supply_10d": {
     "foreign_net_10d": 66401,
     "foreign_buydays": "5/10",
@@ -1646,7 +1646,7 @@
       "nm": "파두",
       "bnm": "신한투자증권",
       "tit": "의심을 거둘 때",
-      "rcnt": "10302",
+      "rcnt": "10329",
       "wdt": "20260716"
     }
   ],
@@ -2738,7 +2738,102 @@
       }
     ]
   },
-  "financials_confirmed": null,
+  "financials_confirmed": {
+    "quarter": [
+      {
+        "date": "2026-03-01",
+        "sales": 59538451700.0,
+        "operatingProfit": 7685802060.0,
+        "netIncome": 10214783510.0,
+        "eps": 208.84,
+        "roe": 0.39495,
+        "debtRatio": 326.817,
+        "dps": null,
+        "opm": 12.91
+      },
+      {
+        "date": "2025-12-01",
+        "sales": 23876637480.0,
+        "operatingProfit": -29494004650.0,
+        "netIncome": -38448265360.0,
+        "eps": -775.094,
+        "roe": -0.98964,
+        "debtRatio": 518.497,
+        "dps": null,
+        "opm": -123.53
+      },
+      {
+        "date": "2025-09-01",
+        "sales": 25644431130.0,
+        "operatingProfit": -11426230240.0,
+        "netIncome": -10882512240.0,
+        "eps": -217.298,
+        "roe": -0.1674,
+        "debtRatio": 80.964,
+        "dps": null,
+        "opm": -44.56
+      },
+      {
+        "date": "2025-06-01",
+        "sales": 23679326010.0,
+        "operatingProfit": -12564211320.0,
+        "netIncome": -14750903090.0,
+        "eps": -295.213,
+        "roe": -0.18829,
+        "debtRatio": 61.489,
+        "dps": null,
+        "opm": -53.06
+      }
+    ],
+    "annual": [
+      {
+        "date": "2025-12-01",
+        "sales": 92419333230.0,
+        "operatingProfit": -65469985710.0,
+        "netIncome": -76218175610.0,
+        "eps": -1529.909,
+        "roe": -1.31083,
+        "debtRatio": 518.497,
+        "dps": 0,
+        "opm": -70.84
+      },
+      {
+        "date": "2024-12-01",
+        "sales": 43502744970.0,
+        "operatingProfit": -95048300910.0,
+        "netIncome": -91508531300.0,
+        "eps": -1842.487,
+        "roe": -0.64469,
+        "debtRatio": 37.245,
+        "dps": 0,
+        "opm": -218.49
+      },
+      {
+        "date": "2023-12-01",
+        "sales": 22470905710.0,
+        "operatingProfit": -58569439220.0,
+        "netIncome": -56832521390.0,
+        "eps": -1272.085,
+        "roe": -0.50196,
+        "debtRatio": 30.756,
+        "dps": 0,
+        "opm": -260.65
+      },
+      {
+        "date": "2022-12-01",
+        "sales": 56401518000.0,
+        "operatingProfit": 1507325000.0,
+        "netIncome": -227459980000.0,
+        "eps": -7307.947,
+        "roe": 3.80207,
+        "debtRatio": 66.399,
+        "dps": 0,
+        "opm": 2.67
+      }
+    ],
+    "source": "daum(확정치)",
+    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
+  },
   "disclosures": [
     {
       "title": "(주)파두 기업설명회(IR) 개최",
