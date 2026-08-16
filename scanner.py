@@ -108,6 +108,8 @@ FIN_A_URL = "https://m.stock.naver.com/api/stock/{code}/finance/annual"
 FIN_Q_URL = "https://m.stock.naver.com/api/stock/{code}/finance/quarter"
 # ★공시는 다음에서 받는다 — 네이버는 10건뿐이고 날짜 필드가 비어 온다.
 #   분기 단위 원인 추적(「매출액또는손익구조 변경」 등)이 안 돼 손익 어긋남을 못 밝힌다.
+# ★일봉도 다음에서. 네이버 차트는 egress 차단(403)이라 캔들이 통째로 비어 온다.
+DAUM_DAYS_URL = "https://finance.daum.net/api/quote/A{code}/days?perPage=500&page=1"
 DISC_URL  = "https://finance.daum.net/api/disclosures?symbolCode=A{code}&perPage=40&page=1"
 REPORT_DIR = "report-data"
 
@@ -136,7 +138,43 @@ def parse_num(s):
     m = re.search(r"-?\d+(?:\.\d+)?", t)
     return float(m.group()) if m else None
 
+def _norm_d(v):
+    """날짜를 YYYY-MM-DD로. 네이버는 20260814, 다음은 2026-08-14로 준다.
+    ★이 차이 때문에 strptime이 예외를 던져 idxRel이 통째로 null이 됐던 적이 있다."""
+    t = str(v)[:10].replace("/", "-").replace(".", "-")
+    if len(t) == 8 and t.isdigit():
+        return t[:4] + "-" + t[4:6] + "-" + t[6:]
+    return t
+
+
+def _resample(day, unit):
+    """일봉 [[date,o,h,l,c,v],...] → 주봉('W')·월봉('M'). 기간 첫 시가, 최고/최저, 마지막 종가, 거래량 합."""
+    if not day:
+        return []
+    buckets, order = {}, []
+    for r in day:
+        d = _norm_d(r[0])
+        try:
+            dt = datetime.strptime(d, "%Y-%m-%d")
+        except Exception:
+            continue
+        key = dt.strftime("%Y-%m") if unit == "M" else "%d-W%02d" % dt.isocalendar()[:2]
+        if key not in buckets:
+            buckets[key] = [d, r[1], r[2], r[3], r[4], r[5] or 0]
+            order.append(key)
+        else:
+            b = buckets[key]
+            if r[2] is not None and (b[2] is None or r[2] > b[2]): b[2] = r[2]
+            if r[3] is not None and (b[3] is None or r[3] < b[3]): b[3] = r[3]
+            b[4] = r[4]
+            b[5] = (b[5] or 0) + (r[5] or 0)
+    return [buckets[k] for k in order]
+
+
 def parse_candles(raw):
+    # ★다음에서 받으면 이미 [[date,o,h,l,c,v],...] 형태다. 그대로 통과.
+    if isinstance(raw, list):
+        return [r for r in raw if isinstance(r, list) and len(r) >= 6]
     """일봉 텍스트배열 → [[date,o,h,l,c,v,foreignRate], ...] (오래된→최신)"""
     s = raw.strip()
     i, j = s.find("["), s.rfind("]")
@@ -192,7 +230,7 @@ def compute_index_relative(candles, market="KOSPI"):
     candles: [[date, o, h, l, c, v], ...] 오래된순
     """
     try:
-        rows = [(str(r[0])[:10].replace("/", "-"), float(r[4])) for r in candles if r and r[4]]
+        rows = [(_norm_d(r[0]), float(r[4])) for r in candles if r and r[4]]
         if len(rows) < 30:
             return None
         base_d, now = rows[-1]
@@ -628,9 +666,6 @@ def fetch_all(code):
     start_w = (datetime.now() - timedelta(days=365 * 5)).strftime("%Y%m%d")
     start_m = (datetime.now() - timedelta(days=365 * 10)).strftime("%Y%m%d")
     spec = [
-        ("candles",   CHART_URL.format(code=code, start=start,   end=end, tf="day"),   True),
-        ("candles_w", CHART_URL.format(code=code, start=start_w, end=end, tf="week"),  True),
-        ("candles_m", CHART_URL.format(code=code, start=start_m, end=end, tf="month"), True),
         ("integ",   INTEG_URL.format(code=code), False),
         ("fin_a",   FIN_A_URL.format(code=code), False),
         ("fin_q",   FIN_Q_URL.format(code=code), False),
@@ -644,6 +679,21 @@ def fetch_all(code):
         except Exception as e:
             out[key] = None
             out[key + "_err"] = str(e)
+    # ★일/주/월봉 — 다음에서 받는다. 네이버 차트는 차단(403)이라 idxRel·주봉·월봉이 통째로 죽는다.
+    #   형식은 기존과 동일하게 [[date, o, h, l, c, v], ...] 오래된순으로 맞춘다.
+    try:
+        dr = requests.get(DAUM_DAYS_URL.format(code=code), headers=HDR_DAUM, timeout=15)
+        rows = (dr.json() or {}).get("data") or []
+        day = [[(x.get("date") or "")[:10], x.get("openingPrice"), x.get("highPrice"),
+                x.get("lowPrice"), x.get("tradePrice"), x.get("accTradeVolume")]
+               for x in reversed(rows) if x.get("tradePrice")]
+        out["candles"]   = day
+        out["candles_w"] = _resample(day, "W")
+        out["candles_m"] = _resample(day, "M")
+    except Exception as e:
+        out["candles"] = None
+        out["candles_err"] = str(e)
+
     # ★공시 — 다음 40건(날짜 포함). 네이버는 10건뿐이고 날짜가 비어 와서 원인 추적이 안 된다.
     try:
         dd = requests.get(DISC_URL.format(code=code), headers=HDR_DAUM, timeout=10)

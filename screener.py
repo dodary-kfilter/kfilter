@@ -553,7 +553,7 @@ def run_screeners(supply_map=None):
             #   당일가로 계산하면 장중 등락만큼 왜곡되어 '저가매수형 PER 하위40%' 판정이 틀어진다.
             "per": ((p.get("prevClose") or cur) / eps) if (eps and eps > 0) else None,
             # ★PBR도 PER과 같은 기준(전일종가 ÷ BPS). 캐시하면 급등분만큼 어긋난다.
-            "pbr": (((p.get("prevClose") or cur) / f["bps"])
+            "pbr": (round((p.get("prevClose") or cur) / f["bps"], 2)
                     if (f.get("bps") and f["bps"] > 0) else f.get("pbr")),
             "dps": f.get("dps"),
             "sectorPer": f.get("sectorPer"), "mcap": mcap_now.get(sc),
