@@ -137,6 +137,14 @@ def fetch_fundamentals(symbol_codes, force=False):
             stale = (datetime.now() - upd) > timedelta(days=100)
             # 실적 시즌이고 이번 달에 아직 안 받았으면 갱신
             need = stale or (_is_earnings_season() and upd.month != datetime.now().month)
+            # ★스키마 변경 감지 — shares/bps 없는 구버전 캐시면 무조건 다시 받는다.
+            #   (이걸 빼면 시총 계산이 통째로 비어 스크리너 결과가 0이 된다)
+            _d = cache.get("data") or {}
+            if _d:
+                _s = next(iter(_d.values())) or {}
+                if "shares" not in _s or "bps" not in _s:
+                    need = True
+                    print("  [캐시] 스키마 변경 감지 → 강제 갱신", flush=True)
             if not need:
                 return cache["data"]
         except Exception:
@@ -376,6 +384,14 @@ def fetch_financials(symbol_codes, force=False):
             upd = datetime.fromisoformat(cache["updated"])
             stale = (datetime.now() - upd) > timedelta(days=100)
             need = stale or (_is_earnings_season() and upd.month != datetime.now().month)
+            # ★스키마 변경 감지 — shares/bps 없는 구버전 캐시면 무조건 다시 받는다.
+            #   (이걸 빼면 시총 계산이 통째로 비어 스크리너 결과가 0이 된다)
+            _d = cache.get("data") or {}
+            if _d:
+                _s = next(iter(_d.values())) or {}
+                if "shares" not in _s or "bps" not in _s:
+                    need = True
+                    print("  [캐시] 스키마 변경 감지 → 강제 갱신", flush=True)
             if not need:
                 return cache["data"]
         except Exception:
@@ -500,6 +516,8 @@ def run_screeners(supply_map=None):
         px = (prices.get(sc) or {}).get("price")
         if sh and px:
             mcap_now[sc] = px * sh
+        elif f.get("mcap"):
+            mcap_now[sc] = f["mcap"]      # ★폴백: 구버전 캐시. 전멸보다 낡은 값이 낫다
 
     ranked = sorted(
         [(sc, f) for sc, f in fund.items() if mcap_now.get(sc)],
@@ -536,7 +554,7 @@ def run_screeners(supply_map=None):
             "per": ((p.get("prevClose") or cur) / eps) if (eps and eps > 0) else None,
             # ★PBR도 PER과 같은 기준(전일종가 ÷ BPS). 캐시하면 급등분만큼 어긋난다.
             "pbr": (((p.get("prevClose") or cur) / f["bps"])
-                    if (f.get("bps") and f["bps"] > 0) else None),
+                    if (f.get("bps") and f["bps"] > 0) else f.get("pbr")),
             "dps": f.get("dps"),
             "sectorPer": f.get("sectorPer"), "mcap": mcap_now.get(sc),
             **ind,
