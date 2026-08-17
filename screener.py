@@ -125,6 +125,22 @@ def _is_earnings_season():
     return datetime.now().month in (2, 5, 8, 11)
 
 
+# [C6] 실적시즌 캐시 갱신 주기(일).
+#   종전 조건은 "그 달에 한 번 받으면 그 달엔 끝"(upd.month != now.month)이었다.
+#   그런데 분기 실적은 ★한 달에 걸쳐 흩어져 나온다(7/23 IPARK, 7/30 삼성전기, 8/7 씨에스윈드, 8/12 동원산업).
+#   8월 1일에 캐시를 채우면 그 뒤에 나온 실적을 9월까지 못 잡아,
+#   구 분기 데이터로 필터를 통과하는 종목이 생긴다(실측). → 시즌 중엔 주 1회로 좁힌다.
+EARNINGS_REFRESH_DAYS = 7
+
+
+def _cache_stale(upd):
+    """캐시 갱신 필요 여부. 평시 100일, 실적시즌(2·5·8·11월)엔 EARNINGS_REFRESH_DAYS."""
+    age = datetime.now() - upd
+    if age > timedelta(days=100):
+        return True
+    return _is_earnings_season() and age > timedelta(days=EARNINGS_REFRESH_DAYS)
+
+
 def fetch_fundamentals(symbol_codes, force=False):
     """quotes에서 ★분기성 필드만 캐시. 매일은 캐시에서 읽어 호출 0회.
     ★주가에 비례하는 값(시총·PER·PBR·52주고저)은 캐시 금지 — 매일 시세로 재계산한다.
@@ -134,9 +150,8 @@ def fetch_fundamentals(symbol_codes, force=False):
     if cache and not force:
         try:
             upd = datetime.fromisoformat(cache["updated"])
-            stale = (datetime.now() - upd) > timedelta(days=100)
             # 실적 시즌이고 이번 달에 아직 안 받았으면 갱신
-            need = stale or (_is_earnings_season() and upd.month != datetime.now().month)
+            need = _cache_stale(upd)          # [C6] 실적시즌엔 주 1회로 좁힌다
             # ★스키마 변경 감지 — shares/bps 없는 구버전 캐시면 무조건 다시 받는다.
             #   (이걸 빼면 시총 계산이 통째로 비어 스크리너 결과가 0이 된다)
             _d = cache.get("data") or {}
@@ -382,8 +397,7 @@ def fetch_financials(symbol_codes, force=False):
     if cache and not force:
         try:
             upd = datetime.fromisoformat(cache["updated"])
-            stale = (datetime.now() - upd) > timedelta(days=100)
-            need = stale or (_is_earnings_season() and upd.month != datetime.now().month)
+            need = _cache_stale(upd)          # [C6] 실적시즌엔 주 1회로 좁힌다
             # ★스키마 변경 감지 — shares/bps 없는 구버전 캐시면 무조건 다시 받는다.
             #   (이걸 빼면 시총 계산이 통째로 비어 스크리너 결과가 0이 된다)
             _d = cache.get("data") or {}

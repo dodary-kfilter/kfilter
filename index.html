@@ -681,11 +681,12 @@ function fmtScreenList(items, isV){
 //   ★컨센서스는 일부러 뺐다 — 목표를 부르기 전에 보면 그 값에 끌려간다(A41).
 function fmtBothList(items){
   return (items||[]).map((x,i)=>{
-    const e=x.enrich||{}, v=e.valuation||{}, ma=(e.ma&&e.ma.vs)||{}, ir=e.idxRel||{};
+    const e=x.enrich||{}, v=e.valuation||{}, ma=(e.ma&&e.ma.vs)||{}, ir=e.idxRel||{}, sc=e.supplyCum||{};
     const num=(z,d)=> (z==null||isNaN(z)) ? '—' : (d?(+z).toFixed(d):Math.round(z).toLocaleString());
     const pct=(z)=> (z==null||isNaN(z)) ? '—' : ((z>=0?'+':'')+(+z).toFixed(1)+'%');
     return `${i+1}. ${x.name}(${x.code}) · ${x.market||''} · ${num(e.now)}원 ${pct(e.changePct)}
-   ★수급 외국인 ${x.f_buydays||'-'} ${num(x.f_net)}주 / 연기금 ${x.p_buydays||'-'} ${num(x.p_net)}주
+   ★수급 10일 외국인 ${x.f_buydays||'-'} ${num(x.f_net)}주 / 연기금 ${x.p_buydays||'-'} ${num(x.p_net)}주
+   ★구간 외국인 5일 ${num(sc.f5d)} · 20일 ${num(sc.f20d)} · 60일 ${num(sc.f60d)} → ${sc.fdir||'—'} / 연기금 20일 ${num(sc.p20d)} · 60일 ${num(sc.p60d)}
    밸류 PER ${v.per!=null?num(v.per,1)+'배':'—(적자 또는 산출 불가)'} · 추정PER ${v.fwdPer!=null?num(v.fwdPer,1)+'배':'—'} · PBR ${v.pbr!=null?num(v.pbr,2)+'배':'—'} · 배당수익률 ${v.divYield!=null?num(v.divYield,2)+'%':'—'} · 외국인 지분율 ${v.foreignRate!=null?num(v.foreignRate,2)+'%':'—'}
    위치 20일선과의 거리 ${pct(ma.ma20)} · 60일선 ${pct(ma.ma60)} · 52주 내 위치 ${e.pos52w&&e.pos52w.pct!=null?num(e.pos52w.pct,0)+'%':'—'}
    지수 대비 52주 고점 ${ir.peakDate||'—'} 이후 ${pct(ir.ddFromPeak)} (같은 기간 지수 ${pct(ir.idxSincePeak)}) · 1개월 ${pct(ir.m1)} (지수 대비 ${pct(ir.m1Excess)}) · 6개월 ${pct(ir.m6)} (지수 대비 ${pct(ir.m6Excess)})`;
@@ -1293,6 +1294,8 @@ function buildScreenPrompt(){
 
 [대상] 외국인과 연기금이 ★둘 다 순매수한 종목 ${n}개. ★아래에 전 종목이 그대로 실려 있다.
 ※ 수급 표기 "7/10 596,936" = 최근 10거래일 중 7일 순매수, 기간 합계 596,936주.
+※ ★구간 수급이 5·20·60일 누적으로 실려 있다. ★한 구간만 보고 판정하지 마라 — 방향이 갈리면 갈린다고 쓴다.
+   "매도→매수 전환 중"을 "수급이 안 따라온다"로 읽으면 정반대다.
 
 [데이터 사용법]
 ★★위 목록만으로 ${n}개 전부를 판단하라. 「뺄 것」도 수급을 보고 판단하는 것이지 밸류로만 거르는 게 아니다.

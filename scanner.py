@@ -644,6 +644,33 @@ def build_supply_detail(body):
     return {"recent_daily": daily, "cum_5d": cum(5), "cum_20d": cum(20), "cum_60d": cum(60),
             "foreign_ratio_trend": fr}
 
+def supply_cum_summary(sd):
+    """[C-A49b] data.json 목록용 구간별 수급 요약.
+    report-data 를 열지 않고도 5/20/60일 방향이 갈리는지 판정할 수 있게, 외국인·연기금만 압축해 싣는다.
+    (전 주체 11개와 일별 60일치는 종전대로 report-data 에만 둔다 — 목록이 비대해지면 안 되므로.)"""
+    if not sd:
+        return None
+    out = {}
+    for win in ("5d", "20d", "60d"):
+        c = sd.get("cum_" + win) or {}
+        out["f" + win] = c.get("외국인")
+        out["p" + win] = c.get("연기금")
+    f5, f20, f60 = out.get("f5d"), out.get("f20d"), out.get("f60d")
+    # 방향 판정: 세 구간이 같은 방향인가, 전환 중인가, 차익실현 국면인가.
+    if None in (f5, f20, f60):
+        out["fdir"] = None
+    elif f5 >= 0 and f20 >= 0 and f60 >= 0:
+        out["fdir"] = "매수 지속"
+    elif f5 <= 0 and f20 <= 0 and f60 <= 0:
+        out["fdir"] = "매도 지속"
+    elif f60 < 0 and (f20 > 0 or f5 > 0):
+        out["fdir"] = "매도→매수 전환 중"
+    elif f60 > 0 and (f20 < 0 or f5 < 0):
+        out["fdir"] = "매수 후 차익실현"
+    else:
+        out["fdir"] = "혼조"
+    return out
+
 def compute_tf(candles, ma_list, recent_n):
     """주봉/월봉 등 일반 타임프레임 블록: 이평·정배열·구간내 위치·최근봉."""
     closes = [float(r[4]) for r in candles]
@@ -888,6 +915,9 @@ def enrich_stock(code, name="", market="", supply=None):
         out.update(price_block); now_price = price_block["now"]
     if idx_rel:
         out["idxRel"] = idx_rel                                # ★지수 대비 위치
+    _cum = supply_cum_summary(supply_detail)                   # [C-A49b] 구간별 수급 요약
+    if _cum:
+        out["supplyCum"] = _cum
     if raw.get("integ"):
         try:
             out.update(parse_integration(raw["integ"], now_price))
