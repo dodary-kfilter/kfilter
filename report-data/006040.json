@@ -2,7 +2,7 @@
   "code": "006040",
   "name": "동원산업",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:37",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 104231,
     "foreign_buydays": "7/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 36350,
-        "foreignRatio": 3.55,
+        "foreignRatio": 0,
         "개인": -9294,
         "외국인": 5451,
         "기관계": 1077,
@@ -1250,28 +1250,28 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 3.55
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 38000,
-    "prevClose": 37550,
-    "changePct": 1.2,
+    "prevClose": 38000,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 37170.0,
-      "ma20": 35895.0,
-      "ma60": 34369.2,
-      "ma120": 36687.1,
+      "ma5": 37350.0,
+      "ma20": 36135.0,
+      "ma60": 34396.7,
+      "ma120": 36620.4,
       "aligned": false,
       "vs": {
-        "ma5": 2.23,
-        "ma20": 5.86,
-        "ma60": 10.56,
-        "ma120": 3.58
+        "ma5": 1.74,
+        "ma20": 5.16,
+        "ma60": 10.48,
+        "ma120": 3.77
       }
     },
-    "trend20": 15.5,
+    "trend20": 14.46,
     "pocket": [
       {
         "low": 41000,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -24.0,
     "idxSincePeak": 69.9,
     "excessDd": -93.9,
-    "m1": 13.9,
-    "m1Idx": 0.7,
-    "m1Excess": 13.2,
-    "m6": -11.8,
-    "m6Idx": 29.7,
-    "m6Excess": -41.5
+    "m1": 15.5,
+    "m1Idx": 5.4,
+    "m1Excess": 10.1,
+    "m6": -13.6,
+    "m6Idx": 29.6,
+    "m6Excess": -43.2
   },
   "price_weekly": {
     "now": 38000,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "37,550"
+      "value": "38,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "37,700",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "38,400",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "37,050",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "41,502"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "15.6억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1658,7 +1643,7 @@
       "nm": "동원산업",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 비식품 선방",
-      "rcnt": "4533",
+      "rcnt": "4545",
       "wdt": "20260720"
     },
     {
@@ -1667,7 +1652,7 @@
       "nm": "동원산업",
       "bnm": "하나증권",
       "tit": "1Q26 Pre: 식품 호조 VS. 비식품 부진",
-      "rcnt": "8978",
+      "rcnt": "8983",
       "wdt": "20260403"
     }
   ],
@@ -3159,9 +3144,9 @@
       "low": 30050,
       "high": 38000
     },
-    "foreign_ratio_delta_60d": 0.95,
+    "foreign_ratio_delta_60d": 4.5,
     "foreign_ratio_max": 4.5,
-    "foreign_ratio_min": 3.49,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3199,11 +3184,11 @@
     "verdict": "저평가"
   },
   "volume_stats": {
-    "avg20": 51082,
-    "avg60": 61863,
+    "avg20": 50293,
+    "avg60": 60804,
     "ratio_20_60": 0.83,
-    "today": 33732,
-    "today_vs_60": 0.55
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
     {

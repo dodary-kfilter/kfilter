@@ -2,7 +2,7 @@
   "code": "006360",
   "name": "GS건설",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:36",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 975395,
     "foreign_buydays": "8/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 31000,
-        "foreignRatio": 16.39,
+        "foreignRatio": 0,
         "개인": 254655,
         "외국인": -178959,
         "기관계": -43727,
@@ -1250,28 +1250,28 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 16.39
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 34150,
-    "prevClose": 35350,
-    "changePct": -3.39,
+    "prevClose": 34150,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 35030.0,
-      "ma20": 30015.0,
-      "ma60": 28843.3,
-      "ma120": 29737.3,
+      "ma5": 34910.0,
+      "ma20": 30442.5,
+      "ma60": 28895.8,
+      "ma120": 29829.8,
       "aligned": false,
       "vs": {
-        "ma5": -2.51,
-        "ma20": 13.78,
-        "ma60": 18.4,
-        "ma120": 14.84
+        "ma5": -2.18,
+        "ma20": 12.18,
+        "ma60": 18.18,
+        "ma120": 14.48
       }
     },
-    "trend20": 31.09,
+    "trend20": 33.4,
     "pocket": [
       {
         "low": 18116,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -20.8,
     "idxSincePeak": 7.5,
     "excessDd": -28.3,
-    "m1": 25.1,
-    "m1Idx": 0.7,
-    "m1Excess": 24.4,
-    "m6": 68.2,
-    "m6Idx": 29.7,
-    "m6Excess": 38.6
+    "m1": 31.1,
+    "m1Idx": 5.4,
+    "m1Excess": 25.7,
+    "m6": 59.6,
+    "m6Idx": 29.6,
+    "m6Excess": 30.0
   },
   "price_weekly": {
     "now": 34150,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "35,350"
+      "value": "-"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "35,050",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "36,000",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "33,650",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,716,363"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "597억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1658,7 +1643,7 @@
       "nm": "GS건설",
       "bnm": "유진투자증권",
       "tit": "GS이니마의 빈자리를 채워갈 동해 AIDC",
-      "rcnt": "3775",
+      "rcnt": "3833",
       "wdt": "20260813"
     },
     {
@@ -1667,7 +1652,7 @@
       "nm": "GS건설",
       "bnm": "IBK투자증권",
       "tit": "2Q26 NDR 후기: 현금은 돌아오고, 성장은 시작되었다",
-      "rcnt": "6818",
+      "rcnt": "6857",
       "wdt": "20260803"
     },
     {
@@ -1676,7 +1661,7 @@
       "nm": "GS건설",
       "bnm": "미래에셋증권",
       "tit": "아쉬운 실적, AI 데이터센터 가시화 여부가 관건",
-      "rcnt": "8386",
+      "rcnt": "8423",
       "wdt": "20260730"
     },
     {
@@ -1685,7 +1670,7 @@
       "nm": "GS건설",
       "bnm": "교보증권",
       "tit": "2Q26 Review: 본업인 주택에 관심을 갖자",
-      "rcnt": "6352",
+      "rcnt": "6388",
       "wdt": "20260730"
     },
     {
@@ -1694,7 +1679,7 @@
       "nm": "GS건설",
       "bnm": "한화투자증권",
       "tit": "[2Q26 Review] 실망이 아닌, 기대를 가질 때",
-      "rcnt": "5809",
+      "rcnt": "5845",
       "wdt": "20260730"
     }
   ],
@@ -3174,9 +3159,9 @@
       "low": 22200,
       "high": 35700
     },
-    "foreign_ratio_delta_60d": 2.81,
+    "foreign_ratio_delta_60d": 19.2,
     "foreign_ratio_max": 20.74,
-    "foreign_ratio_min": 15.72,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
@@ -3208,13 +3193,25 @@
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 3571033,
-    "avg60": 2381547,
-    "ratio_20_60": 1.5,
-    "today": 1713131,
-    "today_vs_60": 0.72
+    "avg20": 3604816,
+    "avg60": 2390201,
+    "ratio_20_60": 1.51,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
+    {
+      "title": "\"주택·데이터센터·원전 삼박자 갖춘 GS건설, 목표가 상향\"[클릭 e종...",
+      "office": "아시아경제",
+      "date": "202608190722",
+      "url": "https://n.news.naver.com/mnews/article/277/0005804373"
+    },
+    {
+      "title": "\"내가 먼저 '찜'할게\"…건설사, 미래기술 지식재산권 확보 '열기'",
+      "office": "뉴스1",
+      "date": "202608190605",
+      "url": "https://n.news.naver.com/mnews/article/421/0009120033"
+    },
     {
       "title": "삼전닉스에 무슨 일이…\"목표가 하향으로 분위기 역전\"",
       "office": "이데일리",
@@ -3238,18 +3235,6 @@
       "office": "한국경제TV",
       "date": "202608181354",
       "url": "https://n.news.naver.com/mnews/article/215/0001262707"
-    },
-    {
-      "title": "“서른보다 쉰이 많다”… 일부 대기업은 5대 1 넘어",
-      "office": "JIBS",
-      "date": "202608181050",
-      "url": "https://n.news.naver.com/mnews/article/661/0000081792"
-    },
-    {
-      "title": "\"삼박자 갖췄다\"...'36,000원→44,000원' 목표가 오른 종목 [주식R]",
-      "office": "한국경제TV",
-      "date": "202608172155",
-      "url": "https://n.news.naver.com/mnews/article/215/0001262630"
     }
   ],
   "_errors": {}

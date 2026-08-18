@@ -2,7 +2,7 @@
   "code": "004490",
   "name": "세방전지",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:37",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 33904,
     "foreign_buydays": "8/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 57700,
-        "foreignRatio": 22.98,
+        "foreignRatio": 0,
         "개인": 1125,
         "외국인": 2910,
         "기관계": -8805,
@@ -1250,28 +1250,28 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 22.98
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 55100,
-    "prevClose": 58000,
-    "changePct": -5.0,
+    "prevClose": 55100,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 56040.0,
-      "ma20": 53225.0,
-      "ma60": 54046.7,
-      "ma120": 58230.8,
+      "ma5": 55840.0,
+      "ma20": 53350.0,
+      "ma60": 54003.3,
+      "ma120": 58093.3,
       "aligned": false,
       "vs": {
-        "ma5": -1.68,
-        "ma20": 3.52,
-        "ma60": 1.95,
-        "ma120": -5.38
+        "ma5": -1.33,
+        "ma20": 3.28,
+        "ma60": 2.03,
+        "ma120": -5.15
       }
     },
-    "trend20": 2.23,
+    "trend20": 4.75,
     "pocket": [
       {
         "low": 62450,
@@ -1286,7 +1286,7 @@
       {
         "low": 68350,
         "high": 71300,
-        "volPct": 11.5
+        "volPct": 11.6
       }
     ]
   },
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -23.0,
     "idxSincePeak": 17.5,
     "excessDd": -40.6,
-    "m1": 0.2,
-    "m1Idx": 0.7,
-    "m1Excess": -0.5,
-    "m6": -15.2,
-    "m6Idx": 29.7,
-    "m6Excess": -44.9
+    "m1": 2.2,
+    "m1Idx": 5.4,
+    "m1Excess": -3.2,
+    "m6": -18.4,
+    "m6Idx": 29.6,
+    "m6Excess": -47.9
   },
   "price_weekly": {
     "now": 55100,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "58,000"
+      "value": "55,100"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "58,500",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "58,500",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "54,400",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "65,043"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "36.6억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1653,7 +1638,7 @@
       "nm": "세방전지",
       "bnm": "하나증권",
       "tit": "미국 전력망용 ESS 배터리 모듈/팩 사업 진출",
-      "rcnt": "8034",
+      "rcnt": "8045",
       "wdt": "20260616"
     }
   ],
@@ -3141,9 +3126,9 @@
       "low": 47700,
       "high": 63700
     },
-    "foreign_ratio_delta_60d": 1.57,
+    "foreign_ratio_delta_60d": 24.55,
     "foreign_ratio_max": 24.99,
-    "foreign_ratio_min": 22.98,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
@@ -3181,11 +3166,11 @@
     "verdict": "저평가"
   },
   "volume_stats": {
-    "avg20": 32177,
-    "avg60": 57317,
-    "ratio_20_60": 0.56,
-    "today": 42726,
-    "today_vs_60": 0.75
+    "avg20": 32739,
+    "avg60": 57042,
+    "ratio_20_60": 0.57,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
     {

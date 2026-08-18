@@ -2,7 +2,7 @@
   "code": "009150",
   "name": "삼성전기",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:34",
+  "updated": "2026-08-19 07:24",
   "supply_10d": {
     "foreign_net_10d": -1076110,
     "foreign_buydays": "4/10",
@@ -960,7 +960,7 @@
       {
         "date": "2026-05-21",
         "close": 1204000,
-        "foreignRatio": 38.26,
+        "foreignRatio": 0,
         "개인": -95711,
         "외국인": 53737,
         "기관계": 28912,
@@ -1252,33 +1252,33 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 38.26
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 1440000,
-    "prevClose": 1558000,
-    "changePct": -7.57,
+    "prevClose": 1440000,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 1419600.0,
-      "ma20": 1275950.0,
-      "ma60": 1618316.7,
-      "ma120": 1116062.5,
+      "ma5": 1455200.0,
+      "ma20": 1282450.0,
+      "ma60": 1622250.0,
+      "ma120": 1124508.3,
       "aligned": false,
       "vs": {
-        "ma5": 1.44,
-        "ma20": 12.86,
-        "ma60": -11.02,
-        "ma120": 29.03
+        "ma5": -1.04,
+        "ma20": 12.29,
+        "ma60": -11.23,
+        "ma120": 28.06
       }
     },
-    "trend20": 12.94,
+    "trend20": 9.92,
     "pocket": [
       {
         "low": 105600,
         "high": 213820,
-        "volPct": 38.9
+        "volPct": 38.7
       },
       {
         "low": 213820,
@@ -1298,12 +1298,12 @@
     "ddFromPeak": -36.6,
     "idxSincePeak": -24.1,
     "excessDd": -12.5,
-    "m1": 12.8,
-    "m1Idx": 0.7,
-    "m1Excess": 12.0,
-    "m6": 373.7,
-    "m6Idx": 29.7,
-    "m6Excess": 344.0
+    "m1": 12.9,
+    "m1Idx": 5.4,
+    "m1Excess": 7.5,
+    "m6": 359.3,
+    "m6Idx": 29.6,
+    "m6Excess": 329.8
   },
   "price_weekly": {
     "now": 1440000,
@@ -1538,47 +1538,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "1,558,000"
+      "value": "1,440,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "1,605,000",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "1,626,000",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "1,420,000",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "2,083,831"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "3조 1,410억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1660,7 +1645,7 @@
       "nm": "삼성전기",
       "bnm": "하나증권",
       "tit": "[NDR 후기] 수급 불안을 먹고 자라는 중",
-      "rcnt": "17418",
+      "rcnt": "17553",
       "wdt": "20260811"
     },
     {
@@ -1669,7 +1654,7 @@
       "nm": "삼성전기",
       "bnm": "유안타증권",
       "tit": "LTA 본격화, 서버가 이끄는 P와 Q",
-      "rcnt": "12003",
+      "rcnt": "12057",
       "wdt": "20260811"
     },
     {
@@ -1678,7 +1663,7 @@
       "nm": "삼성전기",
       "bnm": "미래에셋증권",
       "tit": "줄은 더 길어졌다",
-      "rcnt": "22612",
+      "rcnt": "22650",
       "wdt": "20260803"
     },
     {
@@ -1687,7 +1672,7 @@
       "nm": "삼성전기",
       "bnm": "교보증권",
       "tit": "2Q26 Review AI가 이끈 수익성 레벨업",
-      "rcnt": "21312",
+      "rcnt": "21334",
       "wdt": "20260731"
     },
     {
@@ -1696,7 +1681,7 @@
       "nm": "삼성전기",
       "bnm": "DS투자증권",
       "tit": "매수해야 되는 실적",
-      "rcnt": "20728",
+      "rcnt": "20762",
       "wdt": "20260731"
     }
   ],
@@ -3184,9 +3169,9 @@
       "low": 879000,
       "high": 2270000
     },
-    "foreign_ratio_delta_60d": -0.34,
+    "foreign_ratio_delta_60d": 37.92,
     "foreign_ratio_max": 40.11,
-    "foreign_ratio_min": 37.5,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
@@ -3224,13 +3209,25 @@
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 863419,
-    "avg60": 1181001,
-    "ratio_20_60": 0.73,
-    "today": 1080896,
-    "today_vs_60": 0.92
+    "avg20": 882299,
+    "avg60": 1167210,
+    "ratio_20_60": 0.76,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
+    {
+      "title": "코스피 반등장 8兆 베팅한 외국인… ‘삼전닉스’ 집중 매수",
+      "office": "국민일보",
+      "date": "202608190503",
+      "url": "https://n.news.naver.com/mnews/article/005/0001867657"
+    },
+    {
+      "title": "외국인 매수세 멈추자… 달리던 코스피, 5일만에 급제동",
+      "office": "머니투데이",
+      "date": "202608190400",
+      "url": "https://n.news.naver.com/mnews/article/008/0005401586"
+    },
     {
       "title": "‘이젠 진짜 국장 떠날 판’ 오전엔 급등·오후엔 급락…정신없는 코...",
       "office": "헤럴드경제",
@@ -3254,18 +3251,6 @@
       "office": "머니투데이",
       "date": "202608181705",
       "url": "https://n.news.naver.com/mnews/article/008/0005401484"
-    },
-    {
-      "title": "반도체로 다시 쏠리는 증시…코스피 대형주·코스닥 소부장 ‘투톱’",
-      "office": "이데일리",
-      "date": "202608181655",
-      "url": "https://n.news.naver.com/mnews/article/018/0006353637"
-    },
-    {
-      "title": "코스피 '전강후약', 7000선 돌파 후 매크로 변수에 후퇴",
-      "office": "비즈워치",
-      "date": "202608181641",
-      "url": "https://n.news.naver.com/mnews/article/648/0000049924"
     }
   ],
   "_errors": {}

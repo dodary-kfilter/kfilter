@@ -2,7 +2,7 @@
   "code": "008930",
   "name": "한미사이언스",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:37",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 354202,
     "foreign_buydays": "8/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 32100,
-        "foreignRatio": 2.05,
+        "foreignRatio": 0,
         "개인": 2976,
         "외국인": -2145,
         "기관계": -1430,
@@ -1250,28 +1250,28 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 2.05
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 44600,
-    "prevClose": 44300,
-    "changePct": 0.68,
+    "prevClose": 44600,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 44640.0,
-      "ma20": 39087.5,
-      "ma60": 33705.0,
-      "ma120": 35993.8,
+      "ma5": 44320.0,
+      "ma20": 39667.5,
+      "ma60": 33913.3,
+      "ma120": 36009.2,
       "aligned": false,
       "vs": {
-        "ma5": -0.09,
-        "ma20": 14.1,
-        "ma60": 32.32,
-        "ma120": 23.91
+        "ma5": 0.63,
+        "ma20": 12.43,
+        "ma60": 31.51,
+        "ma120": 23.86
       }
     },
-    "trend20": 37.23,
+    "trend20": 35.15,
     "pocket": [
       {
         "low": 35840,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -12.0,
     "idxSincePeak": 15.1,
     "excessDd": -27.1,
-    "m1": 36.4,
-    "m1Idx": 0.7,
-    "m1Excess": 35.7,
-    "m6": -6.9,
-    "m6Idx": 29.7,
-    "m6Excess": -36.6
+    "m1": 37.2,
+    "m1Idx": 5.4,
+    "m1Excess": 31.8,
+    "m6": -0.9,
+    "m6Idx": 29.6,
+    "m6Excess": -30.5
   },
   "price_weekly": {
     "now": 44600,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "44,300"
+      "value": "44,600"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "44,950",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "45,000",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "42,800",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "273,141"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "120억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -3135,9 +3120,9 @@
       "low": 26100,
       "high": 46200
     },
-    "foreign_ratio_delta_60d": -0.81,
+    "foreign_ratio_delta_60d": 1.24,
     "foreign_ratio_max": 2.08,
-    "foreign_ratio_min": 0.82,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
@@ -3175,11 +3160,11 @@
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 213073,
-    "avg60": 176877,
-    "ratio_20_60": 1.2,
-    "today": 201279,
-    "today_vs_60": 1.14
+    "avg20": 216471,
+    "avg60": 176797,
+    "ratio_20_60": 1.22,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
     {

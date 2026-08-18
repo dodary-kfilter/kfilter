@@ -2,7 +2,7 @@
   "code": "051900",
   "name": "LG생활건강",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:37",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 147576,
     "foreign_buydays": "8/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 252000,
-        "foreignRatio": 27.47,
+        "foreignRatio": 0,
         "개인": 2244,
         "외국인": -463,
         "기관계": -1601,
@@ -1250,25 +1250,25 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 27.47
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 300000,
-    "prevClose": 307500,
-    "changePct": -2.44,
+    "prevClose": 300000,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 308700.0,
-      "ma20": 286375.0,
-      "ma60": 256925.0,
-      "ma120": 255108.3,
+      "ma5": 305000.0,
+      "ma20": 289125.0,
+      "ma60": 257725.0,
+      "ma120": 255341.7,
       "aligned": true,
       "vs": {
-        "ma5": -2.82,
-        "ma20": 4.76,
-        "ma60": 16.77,
-        "ma120": 17.6
+        "ma5": -1.64,
+        "ma20": 3.76,
+        "ma60": 16.4,
+        "ma120": 17.49
       }
     },
     "trend20": 22.45,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -10.0,
     "idxSincePeak": 9.8,
     "excessDd": -19.8,
-    "m1": 21.7,
-    "m1Idx": 0.7,
-    "m1Excess": 21.0,
-    "m6": 11.7,
-    "m6Idx": 29.7,
-    "m6Excess": -17.9
+    "m1": 22.4,
+    "m1Idx": 5.4,
+    "m1Excess": 17.0,
+    "m6": 9.3,
+    "m6Idx": 29.6,
+    "m6Excess": -20.3
   },
   "price_weekly": {
     "now": 300000,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "307,500"
+      "value": "300,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "306,000",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "308,500",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "295,500",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "102,988"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "308억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1658,7 +1643,7 @@
       "nm": "LG생활건강",
       "bnm": "한화투자증권",
       "tit": "높아진 실적 가시성",
-      "rcnt": "6785",
+      "rcnt": "6804",
       "wdt": "20260805"
     },
     {
@@ -1667,7 +1652,7 @@
       "nm": "LG생활건강",
       "bnm": "교보증권",
       "tit": "오랜만에 턴어라운드",
-      "rcnt": "5834",
+      "rcnt": "5845",
       "wdt": "20260730"
     },
     {
@@ -1676,7 +1661,7 @@
       "nm": "LG생활건강",
       "bnm": "하나증권",
       "tit": "실적 턴어라운드 구간 본격 진입",
-      "rcnt": "5035",
+      "rcnt": "5046",
       "wdt": "20260730"
     },
     {
@@ -1685,7 +1670,7 @@
       "nm": "LG생활건강",
       "bnm": "유진투자증권",
       "tit": "2Q26 Review: 북미 매출이 중국 매출 추월",
-      "rcnt": "3451",
+      "rcnt": "3461",
       "wdt": "20260730"
     },
     {
@@ -1694,7 +1679,7 @@
       "nm": "LG생활건강",
       "bnm": "신한투자증권",
       "tit": "두 번째 서프라이즈! 투자의견 상향!",
-      "rcnt": "4417",
+      "rcnt": "4460",
       "wdt": "20260730"
     }
   ],
@@ -3186,9 +3171,9 @@
       "low": 215000,
       "high": 333500
     },
-    "foreign_ratio_delta_60d": 3.98,
+    "foreign_ratio_delta_60d": 31.45,
     "foreign_ratio_max": 31.49,
-    "foreign_ratio_min": 27.47,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
@@ -3220,13 +3205,25 @@
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 121307,
-    "avg60": 81011,
+    "avg20": 122130,
+    "avg60": 81190,
     "ratio_20_60": 1.5,
-    "today": 74749,
-    "today_vs_60": 0.92
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
+    {
+      "title": "[인터뷰]\"일주일 안 빤 운동복\" 일등공신…'빨래 쉰내' 쫓아 매출 316%...",
+      "office": "아시아경제",
+      "date": "202608190711",
+      "url": "https://n.news.naver.com/mnews/article/277/0005804370"
+    },
+    {
+      "title": "LG생활건강, 음료 사업만 '쓴맛'…회복 관건은",
+      "office": "비즈워치",
+      "date": "202608190700",
+      "url": "https://n.news.naver.com/mnews/article/648/0000049936"
+    },
     {
       "title": "북미·유럽서 존재감 확대… 화장품 3사 실적 질주",
       "office": "파이낸셜뉴스",
@@ -3250,18 +3247,6 @@
       "office": "뉴시스",
       "date": "202608180603",
       "url": "https://n.news.naver.com/mnews/article/003/0014131706"
-    },
-    {
-      "title": "쿠폰으로 최저가 맞춘 쿠팡… 할인 비용, 납품사에 떠넘겨",
-      "office": "조선일보",
-      "date": "202608180032",
-      "url": "https://n.news.naver.com/mnews/article/023/0003993422"
-    },
-    {
-      "title": "성장지도 바뀐 K뷰티…탈중국 후 美·유럽 전선 확대",
-      "office": "아시아경제",
-      "date": "202608171000",
-      "url": "https://n.news.naver.com/mnews/article/277/0005803681"
     }
   ],
   "_errors": {}

@@ -2,7 +2,7 @@
   "code": "028300",
   "name": "HLB",
   "market": "KOSDAQ",
-  "updated": "2026-08-19 00:36",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 1717004,
     "foreign_buydays": "9/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 46800,
-        "foreignRatio": 20.1,
+        "foreignRatio": 0,
         "개인": 12005,
         "외국인": 31847,
         "기관계": -22805,
@@ -1250,7 +1250,7 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 20.1
+        "ratio": 0
       }
     ]
   },
@@ -1259,19 +1259,19 @@
     "prevClose": 43150,
     "changePct": 0.0,
     "ma": {
-      "ma5": 42520.0,
-      "ma20": 34980.0,
-      "ma60": 43016.7,
-      "ma120": 48790.8,
+      "ma5": 42760.0,
+      "ma20": 35617.5,
+      "ma60": 42955.8,
+      "ma120": 48712.9,
       "aligned": false,
       "vs": {
-        "ma5": 1.48,
-        "ma20": 23.36,
-        "ma60": 0.31,
-        "ma120": -11.56
+        "ma5": 0.91,
+        "ma20": 21.15,
+        "ma60": 0.45,
+        "ma120": -11.42
       }
     },
-    "trend20": 41.24,
+    "trend20": 41.94,
     "pocket": [
       {
         "low": 45705,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -36.7,
     "idxSincePeak": -27.6,
     "excessDd": -9.1,
-    "m1": 22.2,
-    "m1Idx": 5.3,
-    "m1Excess": 16.9,
-    "m6": -18.1,
-    "m6Idx": -26.0,
-    "m6Excess": 7.9
+    "m1": 41.2,
+    "m1Idx": 11.3,
+    "m1Excess": 30.0,
+    "m6": -17.2,
+    "m6Idx": -25.2,
+    "m6Excess": 8.0
   },
   "price_weekly": {
     "now": 43150,
@@ -1541,42 +1541,27 @@
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "43,000",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "45,200",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "42,200",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,403,427"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "614억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -3112,9 +3097,9 @@
       "low": 25650,
       "high": 55500
     },
-    "foreign_ratio_delta_60d": 0.25,
+    "foreign_ratio_delta_60d": 20.35,
     "foreign_ratio_max": 20.35,
-    "foreign_ratio_min": 18.11,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3130,13 +3115,19 @@
     "note": "ROE가 영구성장률 이하 → 이론 PBR 1배 미만이 정상"
   },
   "volume_stats": {
-    "avg20": 992630,
-    "avg60": 1037131,
-    "ratio_20_60": 0.96,
-    "today": 828598,
-    "today_vs_60": 0.8
+    "avg20": 969949,
+    "avg60": 1040424,
+    "ratio_20_60": 0.93,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
+    {
+      "title": "“癌 정밀 타격하고 면역세포 깨운다”…유럽 출격하는 K바이오",
+      "office": "조선비즈",
+      "date": "202608190602",
+      "url": "https://n.news.naver.com/mnews/article/366/0001186967"
+    },
     {
       "title": "HLB, 현금 줄고 차입금 급증…CB·BW 리스크 부담 커진다",
       "office": "블로터",
@@ -3166,12 +3157,6 @@
       "office": "뉴스1",
       "date": "202608181138",
       "url": "https://n.news.naver.com/mnews/article/421/0009118735"
-    },
-    {
-      "title": "코스피, '7천피' 안착 시도…상승 탄력은 다소 둔화",
-      "office": "연합뉴스",
-      "date": "202608181120",
-      "url": "https://n.news.naver.com/mnews/article/001/0016255996"
     }
   ],
   "_errors": {}

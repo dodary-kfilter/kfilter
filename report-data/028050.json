@@ -2,7 +2,7 @@
   "code": "028050",
   "name": "삼성E&A",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:36",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 687031,
     "foreign_buydays": "7/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 51300,
-        "foreignRatio": 39.53,
+        "foreignRatio": 0,
         "개인": 367093,
         "외국인": -522001,
         "기관계": 162233,
@@ -1250,33 +1250,33 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 39.53
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 47900,
-    "prevClose": 49800,
-    "changePct": -3.82,
+    "prevClose": 47900,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 48990.0,
-      "ma20": 46287.5,
-      "ma60": 47087.5,
-      "ma120": 45376.2,
+      "ma5": 48780.0,
+      "ma20": 46617.5,
+      "ma60": 47030.8,
+      "ma120": 45477.9,
       "aligned": false,
       "vs": {
-        "ma5": -2.22,
-        "ma20": 3.48,
-        "ma60": 1.73,
-        "ma120": 5.56
+        "ma5": -1.8,
+        "ma20": 2.75,
+        "ma60": 1.85,
+        "ma120": 5.33
       }
     },
-    "trend20": 22.19,
+    "trend20": 15.98,
     "pocket": [
       {
         "low": 16310,
         "high": 18714,
-        "volPct": 14.3
+        "volPct": 14.4
       },
       {
         "low": 18714,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -25.6,
     "idxSincePeak": -8.3,
     "excessDd": -17.3,
-    "m1": 17.3,
-    "m1Idx": 0.7,
-    "m1Excess": 16.5,
-    "m6": 43.8,
-    "m6Idx": 29.7,
-    "m6Excess": 14.2
+    "m1": 22.2,
+    "m1Idx": 5.4,
+    "m1Excess": 16.8,
+    "m6": 45.4,
+    "m6Idx": 29.6,
+    "m6Excess": 15.8
   },
   "price_weekly": {
     "now": 47900,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "49,800"
+      "value": "-"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "49,350",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "49,650",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "47,150",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,238,568"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "601억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1658,7 +1643,7 @@
       "nm": "삼성E&A",
       "bnm": "한화투자증권",
       "tit": "믿고 보는 실적",
-      "rcnt": "11614",
+      "rcnt": "11662",
       "wdt": "20260724"
     },
     {
@@ -1667,7 +1652,7 @@
       "nm": "삼성E&A",
       "bnm": "교보증권",
       "tit": "2Q26 Review: 편안하게 계속 성장하는 실적",
-      "rcnt": "9985",
+      "rcnt": "10026",
       "wdt": "20260724"
     },
     {
@@ -1676,7 +1661,7 @@
       "nm": "삼성E&A",
       "bnm": "하나증권",
       "tit": "빨라진 반도체 공사, 일회성 이익에 서프",
-      "rcnt": "9689",
+      "rcnt": "9729",
       "wdt": "20260724"
     },
     {
@@ -1685,7 +1670,7 @@
       "nm": "삼성E&A",
       "bnm": "미래에셋증권",
       "tit": "가팔라지는 실적과 수주의 상향 기울기",
-      "rcnt": "7557",
+      "rcnt": "7598",
       "wdt": "20260724"
     },
     {
@@ -1694,7 +1679,7 @@
       "nm": "삼성E&A",
       "bnm": "대신증권",
       "tit": "실적도, 수주도 가속화",
-      "rcnt": "7113",
+      "rcnt": "7146",
       "wdt": "20260724"
     }
   ],
@@ -3178,9 +3163,9 @@
       "low": 39200,
       "high": 56700
     },
-    "foreign_ratio_delta_60d": -0.6,
+    "foreign_ratio_delta_60d": 38.93,
     "foreign_ratio_max": 39.65,
-    "foreign_ratio_min": 37.44,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
@@ -3219,11 +3204,11 @@
     "note": "이론 PBR 1.95~3.23 밴드의 0% 지점. ROE 지속가능성이 판단을 가른다."
   },
   "volume_stats": {
-    "avg20": 2245548,
-    "avg60": 2238831,
-    "ratio_20_60": 1.0,
-    "today": 1237849,
-    "today_vs_60": 0.55
+    "avg20": 2251381,
+    "avg60": 2227897,
+    "ratio_20_60": 1.01,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
     {

@@ -2,7 +2,7 @@
   "code": "098460",
   "name": "고영",
   "market": "KOSDAQ",
-  "updated": "2026-08-19 00:36",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 795829,
     "foreign_buydays": "8/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 37500,
-        "foreignRatio": 21.7,
+        "foreignRatio": 0,
         "개인": -213334,
         "외국인": 119145,
         "기관계": 81586,
@@ -1250,28 +1250,28 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 21.7
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 30300,
-    "prevClose": 32350,
-    "changePct": -6.34,
+    "prevClose": 30300,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 31830.0,
-      "ma20": 28495.0,
-      "ma60": 30759.2,
-      "ma120": 31470.0,
+      "ma5": 31330.0,
+      "ma20": 28730.0,
+      "ma60": 30639.2,
+      "ma120": 31463.8,
       "aligned": false,
       "vs": {
-        "ma5": -4.81,
-        "ma20": 6.33,
-        "ma60": -1.49,
-        "ma120": -3.72
+        "ma5": -3.29,
+        "ma20": 5.46,
+        "ma60": -1.11,
+        "ma120": -3.7
       }
     },
-    "trend20": 22.92,
+    "trend20": 18.36,
     "pocket": [
       {
         "low": 14788,
@@ -1286,7 +1286,7 @@
       {
         "low": 18377,
         "high": 20172,
-        "volPct": 11.2
+        "volPct": 11.3
       }
     ]
   },
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -30.3,
     "idxSincePeak": -32.0,
     "excessDd": 1.6,
-    "m1": 14.8,
-    "m1Idx": 5.3,
-    "m1Excess": 9.4,
-    "m6": -10.4,
-    "m6Idx": -26.0,
-    "m6Excess": 15.7
+    "m1": 22.9,
+    "m1Idx": 11.3,
+    "m1Excess": 11.6,
+    "m6": -6.9,
+    "m6Idx": -25.2,
+    "m6Excess": 18.3
   },
   "price_weekly": {
     "now": 30300,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "32,350"
+      "value": "-"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "32,550",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "32,750",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "30,150",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,090,684"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "342억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1658,7 +1643,7 @@
       "nm": "고영",
       "bnm": "iM증권",
       "tit": "Physical AI 솔루션 선순환 효과 가속화",
-      "rcnt": "4074",
+      "rcnt": "4100",
       "wdt": "20260803"
     },
     {
@@ -1667,7 +1652,7 @@
       "nm": "고영",
       "bnm": "신한투자증권",
       "tit": "AI CapEx 핵심 수혜기업으로 자리매김",
-      "rcnt": "3936",
+      "rcnt": "3987",
       "wdt": "20260803"
     },
     {
@@ -1676,7 +1661,7 @@
       "nm": "고영",
       "bnm": "미래에셋증권",
       "tit": "내년까지 든든한 AI 서버 수요",
-      "rcnt": "5201",
+      "rcnt": "5217",
       "wdt": "20260729"
     },
     {
@@ -1685,7 +1670,7 @@
       "nm": "고영",
       "bnm": "유진투자증권",
       "tit": "2Q26P Review: 어닝서프라이즈 시현, 최대 실적",
-      "rcnt": "4115",
+      "rcnt": "4130",
       "wdt": "20260729"
     },
     {
@@ -1694,7 +1679,7 @@
       "nm": "고영",
       "bnm": "키움증권",
       "tit": "운기조식(運氣調息)",
-      "rcnt": "4494",
+      "rcnt": "4509",
       "wdt": "20260729"
     }
   ],
@@ -2786,7 +2771,102 @@
       }
     ]
   },
-  "financials_confirmed": null,
+  "financials_confirmed": {
+    "quarter": [
+      {
+        "date": "2026-03-01",
+        "sales": 72733688370.0,
+        "operatingProfit": 9852134090.0,
+        "netIncome": 15678440960.0,
+        "eps": 228.366,
+        "roe": 0.04618,
+        "debtRatio": 26.804,
+        "dps": null,
+        "opm": 13.55
+      },
+      {
+        "date": "2025-12-01",
+        "sales": 69145594220.0,
+        "operatingProfit": 6945453120.0,
+        "netIncome": 7797635670.0,
+        "eps": 113.578,
+        "roe": 0.02373,
+        "debtRatio": 22.428,
+        "dps": 140,
+        "opm": 10.04
+      },
+      {
+        "date": "2025-09-01",
+        "sales": 60286386590.0,
+        "operatingProfit": 4696263720.0,
+        "netIncome": 8453775650.0,
+        "eps": 123.135,
+        "roe": 0.02666,
+        "debtRatio": 19.327,
+        "dps": null,
+        "opm": 7.79
+      },
+      {
+        "date": "2025-06-01",
+        "sales": 52090079760.0,
+        "operatingProfit": 2513135610.0,
+        "netIncome": -4704109770.0,
+        "eps": -68.518,
+        "roe": -0.015,
+        "debtRatio": 18.533,
+        "dps": null,
+        "opm": 4.82
+      }
+    ],
+    "annual": [
+      {
+        "date": "2025-12-01",
+        "sales": 232647218650.0,
+        "operatingProfit": 17342338480.0,
+        "netIncome": 14756087560.0,
+        "eps": 214.932,
+        "roe": 0.04483,
+        "debtRatio": 22.428,
+        "dps": 140,
+        "opm": 7.45
+      },
+      {
+        "date": "2024-12-01",
+        "sales": 202538127210.0,
+        "operatingProfit": 3322352720.0,
+        "netIncome": 20998990600.0,
+        "eps": 305.864,
+        "roe": 0.06682,
+        "debtRatio": 16.946,
+        "dps": 140,
+        "opm": 1.64
+      },
+      {
+        "date": "2023-12-01",
+        "sales": 225630691390.0,
+        "operatingProfit": 20372226090.0,
+        "netIncome": 21925959770.0,
+        "eps": 319.365,
+        "roe": 0.07183,
+        "debtRatio": 20.272,
+        "dps": 140,
+        "opm": 9.03
+      },
+      {
+        "date": "2022-12-01",
+        "sales": 275359587200.0,
+        "operatingProfit": 44258682110.0,
+        "netIncome": 39283548830.0,
+        "eps": 572.19,
+        "roe": 0.13417,
+        "debtRatio": 28.348,
+        "dps": 140,
+        "opm": 16.07
+      }
+    ],
+    "source": "daum(확정치)",
+    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
+  },
   "disclosures": [
     {
       "title": "(주)고영테크놀러지 신규시설투자등(자율공시)",
@@ -3087,9 +3167,9 @@
       "low": 22550,
       "high": 40800
     },
-    "foreign_ratio_delta_60d": 4.13,
+    "foreign_ratio_delta_60d": 25.83,
     "foreign_ratio_max": 25.83,
-    "foreign_ratio_min": 21.7,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3127,11 +3207,11 @@
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 1312018,
-    "avg60": 1811306,
-    "ratio_20_60": 0.72,
-    "today": 1088760,
-    "today_vs_60": 0.6
+    "avg20": 1327246,
+    "avg60": 1798807,
+    "ratio_20_60": 0.74,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
     {

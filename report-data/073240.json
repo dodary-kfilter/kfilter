@@ -2,7 +2,7 @@
   "code": "073240",
   "name": "금호타이어",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:36",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 6308535,
     "foreign_buydays": "9/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 4870,
-        "foreignRatio": 9.82,
+        "foreignRatio": 0,
         "개인": 29890,
         "외국인": 34122,
         "기관계": -66619,
@@ -1250,25 +1250,25 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 9.82
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 7790,
-    "prevClose": 8140,
-    "changePct": -4.3,
+    "prevClose": 7790,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 7802.0,
-      "ma20": 6949.0,
-      "ma60": 5782.5,
-      "ma120": 5870.8,
+      "ma5": 7856.0,
+      "ma20": 7033.5,
+      "ma60": 5831.2,
+      "ma120": 5876.6,
       "aligned": false,
       "vs": {
-        "ma5": -0.15,
-        "ma20": 12.1,
-        "ma60": 34.72,
-        "ma120": 32.69
+        "ma5": -0.84,
+        "ma20": 10.76,
+        "ma60": 33.59,
+        "ma120": 32.56
       }
     },
     "trend20": 27.7,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -4.3,
     "idxSincePeak": 0.8,
     "excessDd": -5.1,
-    "m1": 33.2,
-    "m1Idx": 0.7,
-    "m1Excess": 32.4,
-    "m6": 12.7,
-    "m6Idx": 29.7,
-    "m6Excess": -16.9
+    "m1": 27.7,
+    "m1Idx": 5.4,
+    "m1Excess": 22.3,
+    "m6": 5.8,
+    "m6Idx": 29.6,
+    "m6Excess": -23.7
   },
   "price_weekly": {
     "now": 7790,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "8,140"
+      "value": "7,790"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "8,110",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "8,550",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "7,550",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "15,001,993"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1,210억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1656,7 +1641,7 @@
       "nm": "금호타이어",
       "bnm": "한화투자증권",
       "tit": "믹스 개선 중심 물량 배분으로 수익성 방어",
-      "rcnt": "10882",
+      "rcnt": "10898",
       "wdt": "20260731"
     },
     {
@@ -1665,7 +1650,7 @@
       "nm": "금호타이어",
       "bnm": "DS투자증권",
       "tit": "원가 부담보다 앞선 믹스 개선",
-      "rcnt": "9459",
+      "rcnt": "9472",
       "wdt": "20260731"
     },
     {
@@ -1674,7 +1659,7 @@
       "nm": "금호타이어",
       "bnm": "하나증권",
       "tit": "원가 걱정은 3분기가 끝, 판가 기대는 4분기가 시작",
-      "rcnt": "7495",
+      "rcnt": "7503",
       "wdt": "20260731"
     },
     {
@@ -1683,7 +1668,7 @@
       "nm": "금호타이어",
       "bnm": "신한투자증권",
       "tit": "Q 회복, 자산가치, 배당 재개, 증설. What else?",
-      "rcnt": "15914",
+      "rcnt": "15958",
       "wdt": "20260715"
     },
     {
@@ -1692,7 +1677,7 @@
       "nm": "금호타이어",
       "bnm": "DS투자증권",
       "tit": "외생변수보다 구조적 점유율 확대 주목",
-      "rcnt": "29288",
+      "rcnt": "29295",
       "wdt": "20260430"
     }
   ],
@@ -3180,9 +3165,9 @@
       "low": 4305,
       "high": 8140
     },
-    "foreign_ratio_delta_60d": 0.99,
+    "foreign_ratio_delta_60d": 10.81,
     "foreign_ratio_max": 10.81,
-    "foreign_ratio_min": 6.25,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3220,11 +3205,11 @@
     "verdict": "저평가"
   },
   "volume_stats": {
-    "avg20": 8363038,
-    "avg60": 6128358,
-    "ratio_20_60": 1.36,
-    "today": 7098047,
-    "today_vs_60": 1.16
+    "avg20": 8422126,
+    "avg60": 6230411,
+    "ratio_20_60": 1.35,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
     {

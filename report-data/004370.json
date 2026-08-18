@@ -2,7 +2,7 @@
   "code": "004370",
   "name": "농심",
   "market": "KOSPI",
-  "updated": "2026-08-19 00:37",
+  "updated": "2026-08-19 07:26",
   "supply_10d": {
     "foreign_net_10d": 116589,
     "foreign_buydays": "7/10",
@@ -958,7 +958,7 @@
       {
         "date": "2026-05-21",
         "close": 393500,
-        "foreignRatio": 22.2,
+        "foreignRatio": 0,
         "개인": -4370,
         "외국인": 3209,
         "기관계": 1006,
@@ -1250,28 +1250,28 @@
       },
       {
         "date": "2026-05-21",
-        "ratio": 22.2
+        "ratio": 0
       }
     ]
   },
   "price_daily": {
     "now": 420000,
-    "prevClose": 437500,
-    "changePct": -4.0,
+    "prevClose": 420000,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 406500.0,
-      "ma20": 384225.0,
-      "ma60": 370058.3,
-      "ma120": 377141.7,
+      "ma5": 411400.0,
+      "ma20": 387800.0,
+      "ma60": 370500.0,
+      "ma120": 376829.2,
       "aligned": false,
       "vs": {
-        "ma5": 3.32,
-        "ma20": 9.31,
-        "ma60": 13.5,
-        "ma120": 11.36
+        "ma5": 2.09,
+        "ma20": 8.3,
+        "ma60": 13.36,
+        "ma120": 11.46
       }
     },
-    "trend20": 20.34,
+    "trend20": 20.52,
     "pocket": [
       {
         "low": 375000,
@@ -1296,12 +1296,12 @@
     "ddFromPeak": -19.5,
     "idxSincePeak": 102.3,
     "excessDd": -121.9,
-    "m1": 20.2,
-    "m1Idx": 0.7,
-    "m1Excess": 19.4,
-    "m6": -1.8,
-    "m6Idx": 29.7,
-    "m6Excess": -31.4
+    "m1": 20.3,
+    "m1Idx": 5.4,
+    "m1Excess": 14.9,
+    "m6": -4.9,
+    "m6Idx": 29.6,
+    "m6Excess": -34.4
   },
   "price_weekly": {
     "now": 420000,
@@ -1536,47 +1536,32 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "437,500"
+      "value": "420,000"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "437,000",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "452,000",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      }
+      "value": "-"
     },
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "416,500",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      }
+      "value": "-"
     },
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "90,404"
+      "value": "-"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "393억"
+      "value": "-"
     },
     {
       "code": "marketValue",
@@ -1658,7 +1643,7 @@
       "nm": "농심",
       "bnm": "한화투자증권",
       "tit": "시동 거는 해외 성장",
-      "rcnt": "2069",
+      "rcnt": "2575",
       "wdt": "20260818"
     },
     {
@@ -1667,7 +1652,7 @@
       "nm": "농심",
       "bnm": "하나증권",
       "tit": "2Q26 Re: 해외 견조한 성장 + 환율 효과",
-      "rcnt": "1558",
+      "rcnt": "1868",
       "wdt": "20260818"
     },
     {
@@ -1676,7 +1661,7 @@
       "nm": "농심",
       "bnm": "유안타증권",
       "tit": "해외 성장의 질이 달라졌다",
-      "rcnt": "1512",
+      "rcnt": "1828",
       "wdt": "20260818"
     },
     {
@@ -1685,7 +1670,7 @@
       "nm": "농심",
       "bnm": "신한투자증권",
       "tit": "해외가 답했다, 실적 성장 재개",
-      "rcnt": "1698",
+      "rcnt": "2038",
       "wdt": "20260818"
     },
     {
@@ -1694,7 +1679,7 @@
       "nm": "농심",
       "bnm": "키움증권",
       "tit": "辛 브랜드의 확장",
-      "rcnt": "1593",
+      "rcnt": "1677",
       "wdt": "20260818"
     }
   ],
@@ -2789,6 +2774,17 @@
   "financials_confirmed": {
     "quarter": [
       {
+        "date": "2026-06-01",
+        "sales": 956063105300.0,
+        "operatingProfit": 59252095210.0,
+        "netIncome": 54665696240.0,
+        "eps": 8998.792,
+        "roe": 0.01845,
+        "debtRatio": 36.912,
+        "dps": null,
+        "opm": 6.2
+      },
+      {
         "date": "2026-03-01",
         "sales": 934029005210.0,
         "operatingProfit": 67424701260.0,
@@ -2820,17 +2816,6 @@
         "debtRatio": 34.504,
         "dps": null,
         "opm": 6.24
-      },
-      {
-        "date": "2025-06-01",
-        "sales": 867725185760.0,
-        "operatingProfit": 40152228650.0,
-        "netIncome": 36412680440.0,
-        "eps": 5995.535,
-        "roe": 0.01361,
-        "debtRatio": 35.418,
-        "dps": null,
-        "opm": 4.63
       }
     ],
     "annual": [
@@ -3170,9 +3155,9 @@
       "low": 329500,
       "high": 437500
     },
-    "foreign_ratio_delta_60d": 2.89,
+    "foreign_ratio_delta_60d": 25.09,
     "foreign_ratio_max": 25.09,
-    "foreign_ratio_min": 21.79,
+    "foreign_ratio_min": 0,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3210,13 +3195,37 @@
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 31185,
-    "avg60": 28178,
-    "ratio_20_60": 1.11,
-    "today": 63405,
-    "today_vs_60": 2.25
+    "avg20": 33677,
+    "avg60": 28710,
+    "ratio_20_60": 1.17,
+    "today": 0,
+    "today_vs_60": 0.0
   },
   "news": [
+    {
+      "title": "식품업계, 2분기 평균 이익률 6.12%…16곳 중 절반만 개선",
+      "office": "데일리안",
+      "date": "202608190718",
+      "url": "https://n.news.naver.com/mnews/article/119/0003122854"
+    },
+    {
+      "title": "\"해외서 잘나가는 辛라면…농심 목표가 상향\"[클릭 e종목]",
+      "office": "아시아경제",
+      "date": "202608190703",
+      "url": "https://n.news.naver.com/mnews/article/277/0005804368"
+    },
+    {
+      "title": "\"만들기 무섭게 팔려나간다\"…반도체만큼 잘 나가는 '이것' [분석+]",
+      "office": "한국경제",
+      "date": "202608190631",
+      "url": "https://n.news.naver.com/mnews/article/015/0005322212"
+    },
+    {
+      "title": "\"글로벌 휩쓴 'K-라면' 파워\"…고용 늘고 연봉도 늘었다",
+      "office": "뉴스1",
+      "date": "202608190620",
+      "url": "https://n.news.naver.com/mnews/article/421/0009120045"
+    },
     {
       "title": "월마트도 반한 '한국의 맛' 뭐길래…\"주가 60만원 갑니다\" [종목+]",
       "office": "한국경제",
@@ -3228,30 +3237,6 @@
       "office": "한국경제",
       "date": "202608181811",
       "url": "https://n.news.naver.com/mnews/article/015/0005322089"
-    },
-    {
-      "title": "실적 날았는데 주가는 제자리…K라면株 다시 끓나",
-      "office": "서울경제",
-      "date": "202608181800",
-      "url": "https://n.news.naver.com/mnews/article/011/0004652762"
-    },
-    {
-      "title": "라면 3사, 실적 개선 속 오너 보수도 '쑥'…김정수 8.9억 '최다'",
-      "office": "더팩트",
-      "date": "202608181626",
-      "url": "https://n.news.naver.com/mnews/article/629/0000525328"
-    },
-    {
-      "title": "[특징주] 삼양식품, '해외매출 중심 호실적'에 5% 강세(종합)",
-      "office": "연합뉴스",
-      "date": "202608181536",
-      "url": "https://n.news.naver.com/mnews/article/001/0016256778"
-    },
-    {
-      "title": "농심, 해외 수출 증대 전망에...목표가 '상향', 반면 주가는? [주가동...",
-      "office": "조세일보",
-      "date": "202608181320",
-      "url": "https://n.news.naver.com/mnews/article/123/0002388537"
     }
   ],
   "_errors": {}
