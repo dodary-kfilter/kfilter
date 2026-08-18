@@ -113,6 +113,14 @@ DAUM_DAYS_URL = "https://finance.daum.net/api/quote/A{code}/days?perPage=500&pag
 DISC_URL  = "https://finance.daum.net/api/disclosures?symbolCode=A{code}&perPage=40&page=1"
 REPORT_DIR = "report-data"
 
+# ── [추적] 예측 성적 추적 ────────────────────────────────────────────
+#   리포트는 채팅에서 나오므로 자동 저장이 안 된다. 사람이 reports/{code}/{YYYY-MM-DD}.md 로 올리면
+#   여기서 읽어 ① 다음 회차 리포트에 직전 판단을 실어주고(연속성) ② 목표 도달률을 매일 갱신한다.
+#   대상은 관심종목 개별만 — 지수·섹터는 매크로 판단이라 예측 검증 대상이 아니다.
+REPORTS_DIR = "reports"
+TRACK_CODES = {"005930", "000660", "440110", "402340", "009150",   # 국내 개별
+               "MRVL", "MU", "SNDK"}                                # 미국 개별(기초자산)
+
 def nhdr(code):
     return {"User-Agent": UA,
             "Referer": f"https://m.stock.naver.com/domestic/stock/{code}/total",
@@ -749,6 +757,77 @@ def fetch_all(code):
         out["toss_err"] = str(e)
     return out
 
+def _parse_report_header(text):
+    """리포트 .md 맨 앞 YAML 헤더(--- ... ---)를 dict로. 형식이 어긋나면 None."""
+    if not text or not text.lstrip().startswith("---"):
+        return None
+    body = text.lstrip()[3:]
+    end = body.find("\n---")
+    if end < 0:
+        return None
+    head, rest = body[:end], body[end + 4:]
+    out = {}
+    for line in head.splitlines():
+        if ":" not in line:
+            continue
+        k, v = line.split(":", 1)
+        out[k.strip()] = v.strip()
+    for k in ("price", "target"):
+        try:
+            out[k] = float(str(out.get(k, "")).replace(",", "")) if str(out.get(k, "")).strip() else None
+        except Exception:
+            out[k] = None
+    out["_body"] = rest.strip()
+    return out if out.get("code") else None
+
+
+def load_prev_report(code):
+    """reports/{code}/ 에서 가장 최근 .md 하나를 읽어 (헤더, 본문). 없으면 (None, None)."""
+    d = os.path.join(REPORTS_DIR, str(code))
+    if not os.path.isdir(d):
+        return None, None
+    files = sorted(f for f in os.listdir(d) if f.endswith(".md"))
+    if not files:
+        return None, None
+    try:
+        with open(os.path.join(d, files[-1]), "r", encoding="utf-8") as f:
+            txt = f.read()
+    except Exception:
+        return None, None
+    h = _parse_report_header(txt)
+    if not h:
+        return None, None
+    body = h.pop("_body", "")
+    return h, body
+
+
+def track_progress(hdr, now_price):
+    """직전 목표 대비 진척. price→target 구간에서 지금 몇 %를 갔는가.
+    ★도달률은 방향을 보존한다 — 매도 예측(목표<현재)이면 하락이 진척이다."""
+    if not hdr or now_price is None:
+        return None
+    p0, tgt = hdr.get("price"), hdr.get("target")
+    if not p0 or not tgt:
+        return None
+    span = tgt - p0
+    if span == 0:
+        return None
+    moved = now_price - p0
+    return {
+        "prevDate":   hdr.get("date"),
+        "prevPrice":  p0,
+        "prevTarget": tgt,
+        "prevThesis": hdr.get("thesis"),
+        "prevGrade":  hdr.get("grade"),
+        "horizon":    hdr.get("horizon"),
+        "now":        now_price,
+        "reachedPct": round(moved / span * 100, 1),          # 목표까지 몇 % 갔나(음수=반대로 감)
+        "gapPct":     round((tgt / now_price - 1) * 100, 1), # 지금부터 목표까지 남은 폭
+        "expired":    bool(hdr.get("horizon") and
+                           str(hdr["horizon"]) < now_kst().strftime("%Y-%m-%d")),
+    }
+
+
 def write_report_file(code, name, market, supply, raw, price_block,
                       week_block=None, month_block=None, supply_detail=None,
                       idx_rel=None):
@@ -798,6 +877,20 @@ def write_report_file(code, name, market, supply, raw, price_block,
         "news":               g("news",               lambda: parse_news(raw["news"]) if raw.get("news") else None),
         "_errors": errs,
     }
+
+    # [추적] 직전 리포트를 실어 다음 회차가 백지에서 시작하지 않게 한다.
+    if str(code) in TRACK_CODES:
+        try:
+            hdr, body = load_prev_report(code)
+            if hdr:
+                payload["prev_report"] = {
+                    "header": {k: v for k, v in hdr.items()},
+                    "body": body,
+                }
+                payload["prev_track"] = track_progress(
+                    hdr, (price_block or {}).get("now"))
+        except Exception as e:
+            errs["prev_report"] = f"{type(e).__name__}: {e}"
 
     os.makedirs(REPORT_DIR, exist_ok=True)
     final = os.path.join(REPORT_DIR, f"{code}.json")
@@ -930,6 +1023,39 @@ def enrich_stock(code, name="", market="", supply=None):
             out["_newsErr"] = str(e)
     return out
 
+def fetch_us_quote(ticker):
+    """[추적] 미국 개별 종가. 수급은 원천이 없지만 ★가격은 받을 수 있다.
+    목표 도달률을 대조하려면 종가가 매일 쌓여야 하므로 여기서만 받는다.
+    나스닥 API 1순위, 실패 시 야후(지수·특수티커 대비)."""
+    t = str(ticker or "").strip()
+    if not t or t.startswith("^"):
+        return None                     # 지수는 추적 대상이 아니다
+    try:
+        r = requests.get(
+            f"https://api.nasdaq.com/api/quote/{t}/info?assetclass=stocks",
+            headers={"User-Agent": UA}, timeout=10)
+        d = (r.json() or {}).get("data") or {}
+        p = ((d.get("primaryData") or {}).get("lastSalePrice") or "").replace("$", "").replace(",", "")
+        chg = ((d.get("primaryData") or {}).get("percentageChange") or "").replace("%", "")
+        if p:
+            return {"now": float(p),
+                    "changePct": (float(chg) if chg not in ("", None) else None),
+                    "src": "nasdaq"}
+    except Exception:
+        pass
+    try:
+        r = requests.get(
+            f"https://query1.finance.yahoo.com/v8/finance/chart/{t}?range=5d&interval=1d",
+            headers={"User-Agent": UA}, timeout=10)
+        res = (((r.json() or {}).get("chart") or {}).get("result") or [None])[0] or {}
+        cl = [x for x in ((res.get("indicators") or {}).get("quote") or [{}])[0].get("close", []) if x]
+        if cl:
+            return {"now": float(cl[-1]), "changePct": None, "src": "yahoo"}
+    except Exception:
+        pass
+    return None
+
+
 def latest_trade_date():
     """기준 종목(삼성전자) 토스 최신 baseDate = 최신 거래일. 실패 시 None."""
     try:
@@ -984,6 +1110,18 @@ def main():
                     entry["us_ticker"] = it.get("us_ticker", "")
                     entry["us_kind"] = it.get("us_kind", "stock")   # index면 지수처럼 분석
                     entry["supply"] = None
+                    # [추적] 기초자산 종가만 받아 카드·도달률에 쓴다(수급은 여전히 없음).
+                    tk = it.get("us_ticker", "")
+                    if str(tk) in TRACK_CODES:
+                        q = fetch_us_quote(tk)
+                        if q:
+                            entry["enrich"] = dict(q)
+                            try:
+                                hdr, body = load_prev_report(tk)
+                                if hdr:
+                                    entry["enrich"]["prevTrack"] = track_progress(hdr, q["now"])
+                            except Exception:
+                                pass
                     ok = True
                     break
                 if ptype == "sector":
