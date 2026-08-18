@@ -133,12 +133,14 @@ def _is_earnings_season():
 EARNINGS_REFRESH_DAYS = 7
 
 
-def _cache_stale(upd):
-    """캐시 갱신 필요 여부. 평시 100일, 실적시즌(2·5·8·11월)엔 EARNINGS_REFRESH_DAYS."""
+def _cache_stale(upd, days=None):
+    """캐시 갱신 필요 여부. 평시 100일, 실적시즌(2·5·8·11월)엔 days(기본 7일).
+    ★두 캐시(펀더멘털·분기재무)가 ★같은 실행에서 동시에 갱신되면 800x2=1,600 호출이 된다.
+      주기를 어긋나게 줘서 한 실행에 하나만 갱신되도록 한다."""
     age = datetime.now() - upd
     if age > timedelta(days=100):
         return True
-    return _is_earnings_season() and age > timedelta(days=EARNINGS_REFRESH_DAYS)
+    return _is_earnings_season() and age > timedelta(days=(days or EARNINGS_REFRESH_DAYS))
 
 
 def fetch_fundamentals(symbol_codes, force=False):
@@ -151,7 +153,7 @@ def fetch_fundamentals(symbol_codes, force=False):
         try:
             upd = datetime.fromisoformat(cache["updated"])
             # 실적 시즌이고 이번 달에 아직 안 받았으면 갱신
-            need = _cache_stale(upd)          # [C6] 실적시즌엔 주 1회로 좁힌다
+            need = _cache_stale(upd, 7)       # [C6] 펀더멘털: 실적시즌 7일 주기
             # ★스키마 변경 감지 — shares/bps 없는 구버전 캐시면 무조건 다시 받는다.
             #   (이걸 빼면 시총 계산이 통째로 비어 스크리너 결과가 0이 된다)
             _d = cache.get("data") or {}
@@ -397,15 +399,19 @@ def fetch_financials(symbol_codes, force=False):
     if cache and not force:
         try:
             upd = datetime.fromisoformat(cache["updated"])
-            need = _cache_stale(upd)          # [C6] 실적시즌엔 주 1회로 좁힌다
-            # ★스키마 변경 감지 — shares/bps 없는 구버전 캐시면 무조건 다시 받는다.
-            #   (이걸 빼면 시총 계산이 통째로 비어 스크리너 결과가 0이 된다)
+            need = _cache_stale(upd, 9)       # [C6] 분기재무: 9일 주기 — 펀더멘털(7일)과 어긋내 동시 갱신을 피한다
+            # ★스키마 변경 감지 — 이 캐시의 값은 ★리스트다([{date,eps,op,sales,roe} x4]).
+            #   [버그수정] 종전엔 fundamentals용 검사("shares" not in _s)가 그대로 복사돼 있었는데,
+            #   리스트에 그 검사를 하면 ★항상 True가 되어 캐시가 무력화됐다(매 실행 800종목 재수집).
+            #   리스트이고 첫 원소에 date/eps가 있으면 정상 스키마로 본다.
             _d = cache.get("data") or {}
             if _d:
-                _s = next(iter(_d.values())) or {}
-                if "shares" not in _s or "bps" not in _s:
+                _s = next(iter(_d.values()))
+                bad = not isinstance(_s, list) or (_s and not isinstance(_s[0], dict)) \
+                      or (_s and "date" not in _s[0])
+                if bad:
                     need = True
-                    print("  [캐시] 스키마 변경 감지 → 강제 갱신", flush=True)
+                    print("  [캐시] 분기재무 스키마 변경 감지 → 강제 갱신", flush=True)
             if not need:
                 return cache["data"]
         except Exception:
