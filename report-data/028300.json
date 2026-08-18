@@ -2,12 +2,12 @@
   "code": "028300",
   "name": "HLB",
   "market": "KOSDAQ",
-  "updated": "2026-08-18 14:54",
+  "updated": "2026-08-18 16:13",
   "supply_10d": {
-    "foreign_net_10d": 1609004,
+    "foreign_net_10d": 1710279,
     "foreign_buydays": "9/10",
-    "pension_net_10d": 36233,
-    "pension_buydays": "7/10"
+    "pension_net_10d": 39607,
+    "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
@@ -15,17 +15,17 @@
         "date": "2026-08-18",
         "close": 43150,
         "foreignRatio": 20.17,
-        "개인": 0,
-        "외국인": 71517,
-        "기관계": 0,
-        "금융투자": 0,
-        "투신": 0,
-        "사모": 0,
+        "개인": 10549,
+        "외국인": 172792,
+        "기관계": -185195,
+        "금융투자": -204172,
+        "투신": 2744,
+        "사모": 12859,
         "보험": 0,
         "은행": 0,
         "기타금융": 0,
-        "연기금": 0,
-        "기타법인": 13000
+        "연기금": 3374,
+        "기타법인": 1576
       },
       {
         "date": "2026-08-14",
@@ -973,43 +973,43 @@
       }
     ],
     "cum_5d": {
-      "개인": -89835,
-      "외국인": 545225,
-      "기관계": -356014,
-      "금융투자": -227321,
-      "투신": 1271,
-      "사모": -136704,
+      "개인": -79286,
+      "외국인": 646500,
+      "기관계": -541209,
+      "금융투자": -431493,
+      "투신": 4015,
+      "사모": -123845,
       "보험": -34,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 6774,
-      "기타법인": -13640
+      "연기금": 10148,
+      "기타법인": -25064
     },
     "cum_20d": {
-      "개인": -1433808,
-      "외국인": 1644103,
-      "기관계": 73633,
-      "금융투자": 317566,
-      "투신": -5554,
-      "사모": -243708,
+      "개인": -1423259,
+      "외국인": 1745378,
+      "기관계": -111562,
+      "금융투자": 113394,
+      "투신": -2810,
+      "사모": -230849,
       "보험": 25,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 5304,
-      "기타법인": -175684
+      "연기금": 8678,
+      "기타법인": -187108
     },
     "cum_60d": {
-      "개인": 890057,
-      "외국인": -1001938,
-      "기관계": 256845,
-      "금융투자": 1448142,
-      "투신": -579954,
-      "사모": -320568,
+      "개인": 900606,
+      "외국인": -900663,
+      "기관계": 71650,
+      "금융투자": 1243970,
+      "투신": -577210,
+      "사모": -307709,
       "보험": -8446,
       "은행": 0,
       "기타금융": -1,
-      "연기금": -282328,
-      "기타법인": -37971
+      "연기금": -278954,
+      "기타법인": -49395
     },
     "foreign_ratio_trend": [
       {
@@ -1255,23 +1255,23 @@
     ]
   },
   "price_daily": {
-    "now": 43200,
+    "now": 43150,
     "prevClose": 43150,
-    "changePct": 0.12,
+    "changePct": 0.0,
     "ma": {
-      "ma5": 42530.0,
-      "ma20": 34982.5,
-      "ma60": 43017.5,
-      "ma120": 48791.2,
+      "ma5": 42520.0,
+      "ma20": 34980.0,
+      "ma60": 43016.7,
+      "ma120": 48790.8,
       "aligned": false,
       "vs": {
-        "ma5": 1.58,
-        "ma20": 23.49,
-        "ma60": 0.42,
-        "ma120": -11.46
+        "ma5": 1.48,
+        "ma20": 23.36,
+        "ma60": 0.31,
+        "ma120": -11.56
       }
     },
-    "trend20": 41.41,
+    "trend20": 41.24,
     "pocket": [
       {
         "low": 45705,
@@ -1294,27 +1294,27 @@
     "peakClose": 68200,
     "peakDate": "2026-04-15",
     "ddFromPeak": -36.7,
-    "idxSincePeak": -27.4,
-    "excessDd": -9.2,
-    "m1": 22.4,
-    "m1Idx": 5.6,
-    "m1Excess": 16.7,
-    "m6": -18.0,
-    "m6Idx": -25.8,
-    "m6Excess": 7.8
+    "idxSincePeak": -27.6,
+    "excessDd": -9.1,
+    "m1": 22.2,
+    "m1Idx": 5.3,
+    "m1Excess": 16.9,
+    "m6": -18.1,
+    "m6Idx": -26.0,
+    "m6Excess": 7.9
   },
   "price_weekly": {
-    "now": 43200,
+    "now": 43150,
     "ma": {
-      "ma5": 37110.0,
-      "ma10": 40160.0,
-      "ma20": 47530.0,
-      "ma60": 47261.7
+      "ma5": 37100.0,
+      "ma10": 40155.0,
+      "ma20": 47527.5,
+      "ma60": 47260.8
     },
     "aligned": false,
     "rangeHigh": 90900,
     "rangeLow": 30600,
-    "posPct": 20.9,
+    "posPct": 20.8,
     "recent": [
       {
         "d": "2026-02-23",
@@ -1418,21 +1418,21 @@
       },
       {
         "d": "2026-08-18",
-        "c": 43200
+        "c": 43150
       }
     ]
   },
   "price_monthly": {
-    "now": 43200,
+    "now": 43150,
     "ma": {
-      "ma6": 48000.0,
-      "ma12": 48295.8,
-      "ma24": 56137.5
+      "ma6": 47991.7,
+      "ma12": 48291.7,
+      "ma24": 56135.4
     },
     "aligned": false,
     "rangeHigh": 89800,
     "rangeLow": 30600,
-    "posPct": 21.3,
+    "posPct": 21.2,
     "recent": [
       {
         "d": "2024-09-02",
@@ -1528,7 +1528,7 @@
       },
       {
         "d": "2026-08-03",
-        "c": 43200
+        "c": 43150
       }
     ]
   },
@@ -1571,17 +1571,17 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,192,694"
+      "value": "1,336,417"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "524억"
+      "value": "585억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "5조 7,542억"
+      "value": "5조 7,475억"
     },
     {
       "code": "foreignRate",
@@ -1623,7 +1623,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "13.83배",
+      "value": "13.82배",
       "valueDesc": "2026.03."
     },
     {
@@ -1653,17 +1653,17 @@
       "reutersCode": "214450",
       "stockName": "파마리서치",
       "sosok": "1",
-      "closePrice": "394,500",
-      "compareToPreviousClosePrice": "-3,500",
+      "closePrice": "393,000",
+      "compareToPreviousClosePrice": "-5,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.88",
+      "fluctuationsRatio": "-1.26",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,098,716",
+      "marketValue": "4,083,131",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1690,17 +1690,17 @@
       "reutersCode": "214150",
       "stockName": "클래시스",
       "sosok": "1",
-      "closePrice": "34,900",
-      "compareToPreviousClosePrice": "-2,600",
+      "closePrice": "34,700",
+      "compareToPreviousClosePrice": "-2,800",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-6.93",
+      "fluctuationsRatio": "-7.47",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,276,724",
+      "marketValue": "2,263,677",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1727,17 +1727,17 @@
       "reutersCode": "290650",
       "stockName": "엘앤씨바이오",
       "sosok": "1",
-      "closePrice": "53,300",
-      "compareToPreviousClosePrice": "-1,400",
+      "closePrice": "52,800",
+      "compareToPreviousClosePrice": "-1,900",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.56",
+      "fluctuationsRatio": "-3.47",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,437,485",
+      "marketValue": "1,424,000",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1764,17 +1764,17 @@
       "reutersCode": "491000",
       "stockName": "리브스메드",
       "sosok": "1",
-      "closePrice": "38,550",
-      "compareToPreviousClosePrice": "-7,350",
+      "closePrice": "38,850",
+      "compareToPreviousClosePrice": "-7,050",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-16.01",
+      "fluctuationsRatio": "-15.36",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "973,590",
+      "marketValue": "981,167",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1801,17 +1801,17 @@
       "reutersCode": "041830",
       "stockName": "인바디",
       "sosok": "1",
-      "closePrice": "61,700",
-      "compareToPreviousClosePrice": "-2,700",
+      "closePrice": "61,100",
+      "compareToPreviousClosePrice": "-3,300",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-4.19",
+      "fluctuationsRatio": "-5.12",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "831,770",
+      "marketValue": "823,681",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1838,17 +1838,17 @@
       "reutersCode": "137310",
       "stockName": "에스디바이오센서",
       "sosok": "0",
-      "closePrice": "6,090",
-      "compareToPreviousClosePrice": "-460",
+      "closePrice": "6,150",
+      "compareToPreviousClosePrice": "-400",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-7.02",
+      "fluctuationsRatio": "-6.11",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "735,362",
+      "marketValue": "742,606",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -3096,18 +3096,18 @@
     "pattern": {
       "외국인": "반전(복원중)",
       "연기금": "반전(복원중)",
-      "기관계": "당일이탈",
+      "기관계": "혼조",
       "개인": "혼조",
       "사모": "일관매도",
       "금융투자": "당일이탈"
     },
-    "foreign_avg_price": 26897,
-    "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 60.4,
-    "foreign_buy_qty": 3894716,
+    "foreign_avg_price": null,
+    "foreign_avg_note": "산출값이 기간 종가 범위 밖 → 무효",
+    "foreign_avg_vs_now_pct": null,
+    "foreign_buy_qty": 3995991,
     "foreign_sell_qty": 4896654,
-    "foreign_net_qty": -1001938,
-    "foreign_net_ratio_pct": 25.7,
+    "foreign_net_qty": -900663,
+    "foreign_net_ratio_pct": 22.5,
     "close_range": {
       "low": 25650,
       "high": 55500
@@ -3118,7 +3118,7 @@
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
-    "pbr": 13.83,
+    "pbr": 13.82,
     "roe_pct": -44.32,
     "roe_used_pct": -44.32,
     "roe_capped": false,
@@ -3133,10 +3133,16 @@
     "avg20": 992630,
     "avg60": 1037131,
     "ratio_20_60": 0.96,
-    "today": 714286,
-    "today_vs_60": 0.69
+    "today": 828598,
+    "today_vs_60": 0.8
   },
   "news": [
+    {
+      "title": "HLB 담관암 약 FDA 허가 발표 임박···간암약 악재 극복 기로",
+      "office": "더팩트",
+      "date": "202608181500",
+      "url": "https://n.news.naver.com/mnews/article/629/0000525286"
+    },
     {
       "title": "유가·금리 상승세에 발목…'내림세 전환' 코스피 6900선 후퇴[장중시...",
       "office": "뉴스1",
@@ -3166,12 +3172,6 @@
       "office": "뉴스1",
       "date": "202608180926",
       "url": "https://n.news.naver.com/mnews/article/421/0009118167"
-    },
-    {
-      "title": "HLB 핵심 계열사 동반성장…제약·이노베이션 상반기 실적 개선",
-      "office": "블로터",
-      "date": "202608172000",
-      "url": "https://n.news.naver.com/mnews/article/293/0000089157"
     }
   ],
   "_errors": {}
