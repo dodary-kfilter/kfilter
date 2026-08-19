@@ -118,8 +118,23 @@ REPORT_DIR = "report-data"
 #   여기서 읽어 ① 다음 회차 리포트에 직전 판단을 실어주고(연속성) ② 목표 도달률을 매일 갱신한다.
 #   대상은 관심종목 개별만 — 지수·섹터는 매크로 판단이라 예측 검증 대상이 아니다.
 REPORTS_DIR = "reports"
-TRACK_CODES = {"005930", "000660", "440110", "402340", "009150",   # 국내 개별
-               "MRVL", "MU", "SNDK"}                                # 미국 개별(기초자산)
+# [추적] 예측 기록을 남긴 종목. reports/{code}/*.md 가 있으면 자동으로 추적 대상이 된다.
+#   → 손으로 목록을 관리할 필요가 없다. 리포트를 한 번 쓰면 그때부터 추적된다.
+#   → 아래 SEED는 reports/ 를 못 읽는 상황(권한·경로 오류)에서도 보장할 최소 집합이다.
+TRACK_SEED = {"005930", "000660", "440110", "402340", "009150",   # 국내 개별
+              "MRVL", "MU", "SNDK"}                                # 미국 개별(기초자산)
+
+def tracked_codes():
+    """reports/ 아래에 .md 가 하나라도 있는 디렉터리명 ∪ TRACK_SEED."""
+    out = set(TRACK_SEED)
+    try:
+        for d in os.listdir(REPORTS_DIR):
+            full = os.path.join(REPORTS_DIR, d)
+            if os.path.isdir(full) and any(f.endswith(".md") for f in os.listdir(full)):
+                out.add(d)
+    except Exception:
+        pass
+    return out
 
 def nhdr(code):
     return {"User-Agent": UA,
@@ -879,7 +894,7 @@ def write_report_file(code, name, market, supply, raw, price_block,
     }
 
     # [추적] 직전 리포트를 실어 다음 회차가 백지에서 시작하지 않게 한다.
-    if str(code) in TRACK_CODES:
+    if str(code) in tracked_codes():
         try:
             hdr, body = load_prev_report(code)
             if hdr:
@@ -1112,7 +1127,7 @@ def main():
                     entry["supply"] = None
                     # [추적] 기초자산 종가만 받아 카드·도달률에 쓴다(수급은 여전히 없음).
                     tk = it.get("us_ticker", "")
-                    if str(tk) in TRACK_CODES:
+                    if str(tk) in tracked_codes():
                         q = fetch_us_quote(tk)
                         if q:
                             entry["enrich"] = dict(q)
@@ -1219,6 +1234,31 @@ def main():
             if err:
                 print(f"  enrich 실패 {b['code']}: {err}", flush=True)
 
+    # [추적 종목 갱신] 예측 기록이 있는데 이번 회차에 안 걸린 국내 종목의 데이터를 새로 받는다.
+    #   → keep만 하고 갱신을 안 하면 파일이 남되 낡은 채로 굳는다. 낡은 스냅샷으로
+    #     다음 리포트를 쓰면 판단이 어긋나므로, 탈락했어도 추적 대상이면 매 회차 갱신한다.
+    _done = {b["code"] for b in both} | {(it.get("ref") or it["code"]) for it in PORTFOLIO
+                                         if it["ptype"] not in ("us", "sector")}
+    _stale = sorted(c for c in tracked_codes() if str(c).isdigit() and c not in _done)
+    # 이름·시장은 유니버스(kept)에서 찾고, 없으면 포트폴리오에서, 그래도 없으면 기본값.
+    _meta = {c: (n, m) for c, n, m in kept}
+    for _it in PORTFOLIO:
+        _c = _it.get("ref") or _it["code"]
+        _meta.setdefault(_c, (_it["name"], _it.get("market", "KOSPI")))
+    if _stale:
+        print(f"추적 종목 {len(_stale)}개 갱신(필터 탈락분)… {', '.join(_stale)}", flush=True)
+        def refresh_one(code):
+            try:
+                nm, mk = _meta.get(code, (code, "KOSPI"))
+                enrich_stock(code, nm, mk, {})
+                return code, None
+            except Exception as e:
+                return code, e
+        with ThreadPoolExecutor(max_workers=ENRICH_WORKERS) as ex:
+            for code, err in ex.map(refresh_one, _stale):
+                if err:
+                    print(f"  추적 갱신 실패 {code}: {err}", flush=True)
+
     # [#2 정리] report-data 는 '현재 0순위(both) + 보유종목'만 유지.
     #   → 0순위에서 탈락한 종목의 옛 파일은 삭제(스테일 스냅샷 제거). .tmp 잔해도 제거.
     # [기술적 필터] 저가매수형·모멘텀형 — 수급과 별개로 동작. 수급은 '라벨'로만 붙인다.
@@ -1241,6 +1281,9 @@ def main():
             print(f"  [경고] 기술적 필터 실패: {e}", flush=True)
 
     keep = {b["code"] for b in both}
+    # [추적] 예측 기록이 있는 종목의 데이터 파일은 필터에서 탈락해도 지우지 않는다.
+    #   → 지우면 다음 리포트를 만들 재료가 사라져 추적이 끊긴다.
+    keep |= {c for c in tracked_codes() if str(c).isdigit()}
     for it in PORTFOLIO:
         if it["ptype"] == "us":
             continue                              # 미국: 데이터 파일 없음 → keep 불필요
