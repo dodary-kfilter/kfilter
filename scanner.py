@@ -996,7 +996,8 @@ def write_report_file(code, name, market, supply, raw, price_block,
         if _h.get("horizon") and _h.get("date"):
             from datetime import date as _d
             _hz = (_d.fromisoformat(str(_h["horizon"])) - _d.fromisoformat(str(_h["date"]))).days
-        ctx = compute_target_context(_c, _hz)
+        _cand = parse_candles(raw["candles"]) if raw.get("candles") else None
+        ctx = compute_target_context(_cand, _hz)
         if ctx:
             if _h.get("price") and _h.get("target"):
                 ctx["prevTargetCheck"] = target_percentile(
@@ -1082,7 +1083,7 @@ def enrich_stock(code, name="", market="", supply=None):
     # 일봉 가격블록
     price_block = None
     idx_rel = None
-    _c = None                      # ★target_context가 나중에 참조하므로 미리 초기화
+    _c = None                      # 캔들 파싱 실패 시에도 이후 참조가 안전하도록 초기화
     if raw.get("candles"):
         try:
             _c = parse_candles(raw["candles"])
