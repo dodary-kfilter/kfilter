@@ -2,7 +2,7 @@
   "code": "006360",
   "name": "GS건설",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 696148,
     "foreign_buydays": "7/10",
@@ -2786,102 +2786,7 @@
       }
     ]
   },
-  "financials_confirmed": {
-    "quarter": [
-      {
-        "date": "2026-06-01",
-        "sales": 2779365000000.0,
-        "operatingProfit": 91354000000.0,
-        "netIncome": 14371000000.0,
-        "eps": 29.983,
-        "roe": 0.00053,
-        "debtRatio": 229.043,
-        "dps": null,
-        "opm": 3.29
-      },
-      {
-        "date": "2026-03-01",
-        "sales": 2400539000000.0,
-        "operatingProfit": 73468000000.0,
-        "netIncome": 10707000000.0,
-        "eps": 0.643,
-        "roe": 1e-05,
-        "debtRatio": 231.267,
-        "dps": null,
-        "opm": 3.06
-      },
-      {
-        "date": "2025-12-01",
-        "sales": 2983386860390.0,
-        "operatingProfit": 56897986760.0,
-        "netIncome": 44690956310.0,
-        "eps": 443.143,
-        "roe": 0.00811,
-        "debtRatio": 234.202,
-        "dps": 500,
-        "opm": 1.91
-      },
-      {
-        "date": "2025-09-01",
-        "sales": 3207971834290.0,
-        "operatingProfit": 148473179060.0,
-        "netIncome": 122058195840.0,
-        "eps": 1050.998,
-        "roe": 0.01998,
-        "debtRatio": 239.892,
-        "dps": null,
-        "opm": 4.63
-      }
-    ],
-    "annual": [
-      {
-        "date": "2025-12-01",
-        "sales": 12450347000000.0,
-        "operatingProfit": 437809000000.0,
-        "netIncome": 93423000000.0,
-        "eps": 1092.736,
-        "roe": 0.02031,
-        "debtRatio": 234.202,
-        "dps": 500,
-        "opm": 3.52
-      },
-      {
-        "date": "2024-12-01",
-        "sales": 12863811000000.0,
-        "operatingProfit": 285954000000.0,
-        "netIncome": 263924000000.0,
-        "eps": 2869.406,
-        "roe": 0.05627,
-        "debtRatio": 249.968,
-        "dps": 300,
-        "opm": 2.22
-      },
-      {
-        "date": "2023-12-01",
-        "sales": 13436684904470.0,
-        "operatingProfit": -387945401080.0,
-        "netIncome": -419500544880.0,
-        "eps": -5631.412,
-        "roe": -0.10539,
-        "debtRatio": 262.471,
-        "dps": 0,
-        "opm": -2.89
-      },
-      {
-        "date": "2022-12-01",
-        "sales": 12299196214750.0,
-        "operatingProfit": 554834830510.0,
-        "netIncome": 441211560540.0,
-        "eps": 3964.335,
-        "roe": 0.07175,
-        "debtRatio": 216.392,
-        "dps": 1300,
-        "opm": 4.51
-      }
-    ],
-    "source": "daum(확정치)",
-    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
-  },
+  "financials_confirmed": null,
   "disclosures": [
     {
       "title": "지에스건설(주) 단일판매ㆍ공급계약체결",
@@ -3216,10 +3121,22 @@
   },
   "news": [
     {
+      "title": "GS건설·현대엘리베이터 맞손…초고층 승강기 소음·문 작동 문제 잡는...",
+      "office": "뉴스1",
+      "date": "202608201623",
+      "url": "https://n.news.naver.com/mnews/article/421/0009124363"
+    },
+    {
       "title": "현대엘리베이터, GS건설과 초고층 승강기 '연돌효과' 해법 찾는다",
       "office": "데일리안",
       "date": "202608201615",
       "url": "https://n.news.naver.com/mnews/article/119/0003123582"
+    },
+    {
+      "title": "현대엘리베이터·GS건설, 초고층 승강기 기술공동 개발 '맞손'",
+      "office": "더팩트",
+      "date": "202608201526",
+      "url": "https://n.news.naver.com/mnews/article/629/0000526083"
     },
     {
       "title": "\"삽만 들던 건설업은 옛말\"…AI·모듈러 특허전쟁 '활활'",
@@ -3238,21 +3155,20 @@
       "office": "조선일보",
       "date": "202608200956",
       "url": "https://n.news.naver.com/mnews/article/023/0003993952"
-    },
-    {
-      "title": "AI 에이전트 시대 데이터 해법은…'AI Ready Data 2026' 9월 3일 개최",
-      "office": "전자신문",
-      "date": "202608200909",
-      "url": "https://n.news.naver.com/mnews/article/030/0003458771"
-    },
-    {
-      "title": "이제는 지수 말고 '종목'의 시간…순환매, 어디로 갈까",
-      "office": "뉴시스",
-      "date": "202608200700",
-      "url": "https://n.news.naver.com/mnews/article/003/0014136797"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 11.7,
+    "p75": 15.5,
+    "p90": 53.8,
+    "max": 92.8,
+    "recentN": 5,
+    "recentMedian": 11.1,
+    "recentP75": 15.0,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

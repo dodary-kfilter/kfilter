@@ -2,7 +2,7 @@
   "code": "051900",
   "name": "LG생활건강",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 107318,
     "foreign_buydays": "8/10",
@@ -1571,12 +1571,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "63,426"
+      "value": "63,467"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "193억"
+      "value": "194억"
     },
     {
       "code": "marketValue",
@@ -3264,7 +3264,18 @@
       "url": "https://n.news.naver.com/mnews/article/009/0005723175"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 5.1,
+    "p75": 11.1,
+    "p90": 13.2,
+    "max": 18.2,
+    "recentN": 5,
+    "recentMedian": 4.7,
+    "recentP75": 6.9,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

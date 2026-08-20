@@ -2,7 +2,7 @@
   "code": "008930",
   "name": "한미사이언스",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 233376,
     "foreign_buydays": "7/10",
@@ -1571,7 +1571,7 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "296,149"
+      "value": "296,150"
     },
     {
       "code": "accumulatedTradingValue",
@@ -3195,6 +3195,12 @@
       "url": "https://n.news.naver.com/mnews/article/296/0000103863"
     },
     {
+      "title": "한미 JVM, 6년 특허분쟁 승소…자동조제 핵심기술 지켰다",
+      "office": "조선비즈",
+      "date": "202608201358",
+      "url": "https://n.news.naver.com/mnews/article/366/0001187331"
+    },
+    {
       "title": "머리에 ‘톡톡’ 하루 두 번⋯한미약품 남성형 탈모약 ‘목시딜액5%’",
       "office": "코메디닷컴",
       "date": "202608200758",
@@ -3211,15 +3217,20 @@
       "office": "조선비즈",
       "date": "202608200601",
       "url": "https://n.news.naver.com/mnews/article/366/0001187196"
-    },
-    {
-      "title": "탈모도 '셀프케어' 시대…한미약품, 약국용 미녹시딜 시장 공략",
-      "office": "파이낸셜뉴스",
-      "date": "202608192202",
-      "url": "https://n.news.naver.com/mnews/article/014/0005563761"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 16.8,
+    "p75": 36.3,
+    "p90": 40.4,
+    "max": 67.5,
+    "recentN": 5,
+    "recentMedian": 18.4,
+    "recentP75": 28.0,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

@@ -2,7 +2,7 @@
   "code": "028300",
   "name": "HLB",
   "market": "KOSDAQ",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 465468,
     "foreign_buydays": "7/10",
@@ -1571,12 +1571,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "2,561,821"
+      "value": "2,567,022"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1,032억"
+      "value": "1,035억"
     },
     {
       "code": "marketValue",
@@ -2733,7 +2733,102 @@
       }
     ]
   },
-  "financials_confirmed": null,
+  "financials_confirmed": {
+    "quarter": [
+      {
+        "date": "2026-03-01",
+        "sales": 18689149780.0,
+        "operatingProfit": -23192956600.0,
+        "netIncome": -40896159180.0,
+        "eps": -285.513,
+        "roe": -0.0912,
+        "debtRatio": 87.386,
+        "dps": null,
+        "opm": -124.1
+      },
+      {
+        "date": "2025-12-01",
+        "sales": 28664628460.0,
+        "operatingProfit": -29370834080.0,
+        "netIncome": -29303553890.0,
+        "eps": -193.483,
+        "roe": -0.06406,
+        "debtRatio": 88.137,
+        "dps": null,
+        "opm": -102.46
+      },
+      {
+        "date": "2025-09-01",
+        "sales": 22111389950.0,
+        "operatingProfit": -23028026210.0,
+        "netIncome": -76435093460.0,
+        "eps": -556.033,
+        "roe": -0.17878,
+        "debtRatio": 55.34,
+        "dps": null,
+        "opm": -104.15
+      },
+      {
+        "date": "2025-06-01",
+        "sales": 15732443380.0,
+        "operatingProfit": -23061473110.0,
+        "netIncome": -60751604420.0,
+        "eps": -439.051,
+        "roe": -0.12094,
+        "debtRatio": 45.049,
+        "dps": null,
+        "opm": -146.59
+      }
+    ],
+    "annual": [
+      {
+        "date": "2025-12-01",
+        "sales": 84172574220.0,
+        "operatingProfit": -104217336540.0,
+        "netIncome": -235415156250.0,
+        "eps": -1676.7,
+        "roe": -0.4432,
+        "debtRatio": 88.137,
+        "dps": 0,
+        "opm": -123.81
+      },
+      {
+        "date": "2024-12-01",
+        "sales": 68125727340.0,
+        "operatingProfit": -118516152930.0,
+        "netIncome": -108026798560.0,
+        "eps": -702.328,
+        "roe": -0.16329,
+        "debtRatio": 36.084,
+        "dps": 0,
+        "opm": -173.97
+      },
+      {
+        "date": "2023-12-01",
+        "sales": 42900561190.0,
+        "operatingProfit": -125024740600.0,
+        "netIncome": -202303259350.0,
+        "eps": -1456.796,
+        "roe": -0.31574,
+        "debtRatio": 21.404,
+        "dps": 0,
+        "opm": -291.43
+      },
+      {
+        "date": "2022-12-01",
+        "sales": 179707913110.0,
+        "operatingProfit": -74664893060.0,
+        "netIncome": -98603344330.0,
+        "eps": -645.268,
+        "roe": -0.14556,
+        "debtRatio": 38.383,
+        "dps": 19,
+        "opm": -41.55
+      }
+    ],
+    "source": "daum(확정치)",
+    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
+  },
   "disclosures": [
     {
       "title": "에이치엘비(주) 증권 발행결과(자율공시)",
@@ -3049,6 +3144,12 @@
       "url": "https://n.news.naver.com/mnews/article/421/0009124310"
     },
     {
+      "title": "[속보]‘하닉 40조 자사주 소각’에 코스피 6800선 회복…삼전 27만원...",
+      "office": "이데일리",
+      "date": "202608201537",
+      "url": "https://n.news.naver.com/mnews/article/018/0006355044"
+    },
+    {
       "title": "HLB펩, 진양곤 의장 2만2000주 장내 매수",
       "office": "아시아경제",
       "date": "202608201506",
@@ -3071,15 +3172,20 @@
       "office": "뉴스1",
       "date": "202608201027",
       "url": "https://n.news.naver.com/mnews/article/421/0009122933"
-    },
-    {
-      "title": "‘믿고 있었다고’ SK하닉 40조 주주환원에 코스피 5% 가까이 급등…...",
-      "office": "헤럴드경제",
-      "date": "202608201025",
-      "url": "https://n.news.naver.com/mnews/article/016/0002686027"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 14.8,
+    "p75": 30.0,
+    "p90": 42.5,
+    "max": 49.0,
+    "recentN": 5,
+    "recentMedian": 26.9,
+    "recentP75": 47.1,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

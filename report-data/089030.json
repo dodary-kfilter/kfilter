@@ -2,7 +2,7 @@
   "code": "089030",
   "name": "테크윙",
   "market": "KOSDAQ",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 508959,
     "foreign_buydays": "8/10",
@@ -2754,102 +2754,7 @@
       }
     ]
   },
-  "financials_confirmed": {
-    "quarter": [
-      {
-        "date": "2026-03-01",
-        "sales": 52399688380.0,
-        "operatingProfit": 9702115570.0,
-        "netIncome": -6098167980.0,
-        "eps": -166.058,
-        "roe": -0.02935,
-        "debtRatio": 222.934,
-        "dps": null,
-        "opm": 18.52
-      },
-      {
-        "date": "2025-12-01",
-        "sales": 33881687210.0,
-        "operatingProfit": 582019300.0,
-        "netIncome": -4452453720.0,
-        "eps": -123.701,
-        "roe": -0.02212,
-        "debtRatio": 198.746,
-        "dps": 130,
-        "opm": 1.72
-      },
-      {
-        "date": "2025-09-01",
-        "sales": 41765843680.0,
-        "operatingProfit": 7111094930.0,
-        "netIncome": -6686894310.0,
-        "eps": -165.457,
-        "roe": -0.03047,
-        "debtRatio": 179.962,
-        "dps": null,
-        "opm": 17.03
-      },
-      {
-        "date": "2025-06-01",
-        "sales": 48893652610.0,
-        "operatingProfit": 6361081670.0,
-        "netIncome": 21722830380.0,
-        "eps": 575.577,
-        "roe": 0.11053,
-        "debtRatio": 166.717,
-        "dps": null,
-        "opm": 13.01
-      }
-    ],
-    "annual": [
-      {
-        "date": "2025-12-01",
-        "sales": 159128398400.0,
-        "operatingProfit": 15837572850.0,
-        "netIncome": 8996126440.0,
-        "eps": 252.109,
-        "roe": 0.04634,
-        "debtRatio": 198.746,
-        "dps": 130,
-        "opm": 9.95
-      },
-      {
-        "date": "2024-12-01",
-        "sales": 185507171030.0,
-        "operatingProfit": 23411077260.0,
-        "netIncome": -21970453220.0,
-        "eps": -559.018,
-        "roe": -0.10245,
-        "debtRatio": 168.832,
-        "dps": 130,
-        "opm": 12.62
-      },
-      {
-        "date": "2023-12-01",
-        "sales": 133604260260.0,
-        "operatingProfit": 3160487060.0,
-        "netIncome": -11097331440.0,
-        "eps": -249.23,
-        "roe": -0.04151,
-        "debtRatio": 125.379,
-        "dps": 130,
-        "opm": 2.37
-      },
-      {
-        "date": "2022-12-01",
-        "sales": 267491091320.0,
-        "operatingProfit": 57672910680.0,
-        "netIncome": 33237861100.0,
-        "eps": 861.861,
-        "roe": 0.14542,
-        "debtRatio": 98.834,
-        "dps": 130,
-        "opm": 21.56
-      }
-    ],
-    "source": "daum(확정치)",
-    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
-  },
+  "financials_confirmed": null,
   "disclosures": [
     {
       "title": "(주)테크윙 (정정)단일판매ㆍ공급계약체결(자율공시)",
@@ -3232,7 +3137,18 @@
       "url": "https://n.news.naver.com/mnews/article/654/0000193488"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 31.2,
+    "p75": 42.7,
+    "p90": 68.0,
+    "max": 134.4,
+    "recentN": 5,
+    "recentMedian": 30.0,
+    "recentP75": 57.6,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

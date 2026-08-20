@@ -2,7 +2,7 @@
   "code": "122630",
   "name": "KODEX 레버리지",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:19",
+  "updated": "2026-08-20 16:25",
   "supply_10d": {
     "foreign_net_10d": 1174290,
     "foreign_buydays": "5/10",
@@ -2216,7 +2216,18 @@
       "url": "https://n.news.naver.com/mnews/article/658/0000152296"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 24.9,
+    "p75": 48.0,
+    "p90": 127.0,
+    "max": 131.0,
+    "recentN": 5,
+    "recentMedian": 44.8,
+    "recentP75": 109.5,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

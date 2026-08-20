@@ -2,7 +2,7 @@
   "code": "214450",
   "name": "파마리서치",
   "market": "KOSDAQ",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 285147,
     "foreign_buydays": "7/10",
@@ -1571,7 +1571,7 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "226,520"
+      "value": "226,665"
     },
     {
       "code": "accumulatedTradingValue",
@@ -1658,7 +1658,7 @@
       "nm": "파마리서치",
       "bnm": "미래에셋증권",
       "tit": "아시아 견문록: 다각화의 힘은 더 강해질 것",
-      "rcnt": "3282",
+      "rcnt": "3283",
       "wdt": "20260818"
     },
     {
@@ -1667,7 +1667,7 @@
       "nm": "파마리서치",
       "bnm": "교보증권",
       "tit": "2Q26 Review; 가이던스 부담 없고, 밸류 매력도는 높다",
-      "rcnt": "7611",
+      "rcnt": "7612",
       "wdt": "20260810"
     },
     {
@@ -1676,7 +1676,7 @@
       "nm": "파마리서치",
       "bnm": "유안타증권",
       "tit": "성장은 이어진다. 눈높이만 낮추면",
-      "rcnt": "3794",
+      "rcnt": "3795",
       "wdt": "20260810"
     },
     {
@@ -2786,102 +2786,7 @@
       }
     ]
   },
-  "financials_confirmed": {
-    "quarter": [
-      {
-        "date": "2026-03-01",
-        "sales": 146100260510.0,
-        "operatingProfit": 57292342570.0,
-        "netIncome": 48748490610.0,
-        "eps": 4113.536,
-        "roe": 0.06864,
-        "debtRatio": 48.179,
-        "dps": null,
-        "opm": 39.21
-      },
-      {
-        "date": "2025-12-01",
-        "sales": 143345290040.0,
-        "operatingProfit": 51913925410.0,
-        "netIncome": 39330841190.0,
-        "eps": 2816.264,
-        "roe": 0.04824,
-        "debtRatio": 44.208,
-        "dps": 3700,
-        "opm": 36.22
-      },
-      {
-        "date": "2025-09-01",
-        "sales": 135426411000.0,
-        "operatingProfit": 61870558180.0,
-        "netIncome": 50852909680.0,
-        "eps": 4234.388,
-        "roe": 0.07697,
-        "debtRatio": 43.487,
-        "dps": null,
-        "opm": 45.69
-      },
-      {
-        "date": "2025-06-01",
-        "sales": 140607447470.0,
-        "operatingProfit": 55877690380.0,
-        "netIncome": 42044835190.0,
-        "eps": 4061.814,
-        "roe": 0.08063,
-        "debtRatio": 44.827,
-        "dps": null,
-        "opm": 39.74
-      }
-    ],
-    "annual": [
-      {
-        "date": "2025-12-01",
-        "sales": 536289118810.0,
-        "operatingProfit": 214395758570.0,
-        "netIncome": 168255434870.0,
-        "eps": 14208.643,
-        "roe": 0.26877,
-        "debtRatio": 44.208,
-        "dps": 3700,
-        "opm": 39.98
-      },
-      {
-        "date": "2024-12-01",
-        "sales": 350115068640.0,
-        "operatingProfit": 126050757120.0,
-        "netIncome": 88943035620.0,
-        "eps": 8608.46,
-        "roe": 0.18929,
-        "debtRatio": 50.27,
-        "dps": 1100,
-        "opm": 36.0
-      },
-      {
-        "date": "2023-12-01",
-        "sales": 261010910560.0,
-        "operatingProfit": 92257786630.0,
-        "netIncome": 77264652450.0,
-        "eps": 7480.663,
-        "roe": 0.19714,
-        "debtRatio": 15.813,
-        "dps": 950,
-        "opm": 35.35
-      },
-      {
-        "date": "2022-12-01",
-        "sales": 194758643930.0,
-        "operatingProfit": 65916151830.0,
-        "netIncome": 43434103890.0,
-        "eps": 4012.755,
-        "roe": 0.12505,
-        "debtRatio": 28.628,
-        "dps": 660,
-        "opm": 33.85
-      }
-    ],
-    "source": "daum(확정치)",
-    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
-  },
+  "financials_confirmed": null,
   "disclosures": [
     {
       "title": "(주)파마리서치 연결재무제표 기준 영업(잠정)실적(공정공시)",
@@ -3267,7 +3172,18 @@
       "url": "https://n.news.naver.com/mnews/article/031/0001051007"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 26.7,
+    "p75": 50.2,
+    "p90": 52.4,
+    "max": 53.2,
+    "recentN": 5,
+    "recentMedian": 7.6,
+    "recentP75": 19.2,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

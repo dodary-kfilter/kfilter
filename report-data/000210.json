@@ -2,7 +2,7 @@
   "code": "000210",
   "name": "DL",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:22",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 55915,
     "foreign_buydays": "8/10",
@@ -3210,7 +3210,18 @@
       "url": "https://n.news.naver.com/mnews/article/016/0002678916"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 17.4,
+    "p75": 26.3,
+    "p90": 41.0,
+    "max": 71.7,
+    "recentN": 5,
+    "recentMedian": 22.0,
+    "recentP75": 26.9,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

@@ -2,7 +2,7 @@
   "code": "112610",
   "name": "씨에스윈드",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 580069,
     "foreign_buydays": "7/10",
@@ -2786,102 +2786,7 @@
       }
     ]
   },
-  "financials_confirmed": {
-    "quarter": [
-      {
-        "date": "2026-03-01",
-        "sales": 711127395290.0,
-        "operatingProfit": 74288927730.0,
-        "netIncome": 43857048490.0,
-        "eps": 1020.92,
-        "roe": 0.03651,
-        "debtRatio": 173.032,
-        "dps": null,
-        "opm": 10.45
-      },
-      {
-        "date": "2025-12-01",
-        "sales": 782737263340.0,
-        "operatingProfit": 70160570250.0,
-        "netIncome": -152164954260.0,
-        "eps": -3657.062,
-        "roe": -0.12647,
-        "debtRatio": 167.676,
-        "dps": 1000,
-        "opm": 8.96
-      },
-      {
-        "date": "2025-09-01",
-        "sales": 597021110920.0,
-        "operatingProfit": 65689835740.0,
-        "netIncome": 57933550930.0,
-        "eps": 1325.646,
-        "roe": 0.04509,
-        "debtRatio": 154.266,
-        "dps": null,
-        "opm": 11.0
-      },
-      {
-        "date": "2025-06-01",
-        "sales": 650003261040.0,
-        "operatingProfit": 59265110660.0,
-        "netIncome": 38918944880.0,
-        "eps": 903.802,
-        "roe": 0.03169,
-        "debtRatio": 168.361,
-        "dps": null,
-        "opm": 9.12
-      }
-    ],
-    "annual": [
-      {
-        "date": "2025-12-01",
-        "sales": 2931648581440.0,
-        "operatingProfit": 320323178300.0,
-        "netIncome": 40133098930.0,
-        "eps": 822.867,
-        "roe": 0.03015,
-        "debtRatio": 167.676,
-        "dps": 1000,
-        "opm": 10.93
-      },
-      {
-        "date": "2024-12-01",
-        "sales": 3072529196690.0,
-        "operatingProfit": 255481950330.0,
-        "netIncome": 143668438530.0,
-        "eps": 3374.185,
-        "roe": 0.13916,
-        "debtRatio": 200.724,
-        "dps": 1000,
-        "opm": 8.32
-      },
-      {
-        "date": "2023-12-01",
-        "sales": 1520162115490.0,
-        "operatingProfit": 104196455260.0,
-        "netIncome": 18442241960.0,
-        "eps": 459.574,
-        "roe": 0.02183,
-        "debtRatio": 203.982,
-        "dps": 500,
-        "opm": 6.85
-      },
-      {
-        "date": "2022-12-01",
-        "sales": 1374893318000.0,
-        "operatingProfit": 42121940310.0,
-        "netIncome": -6941229040.0,
-        "eps": 45.23,
-        "roe": 0.00215,
-        "debtRatio": 92.334,
-        "dps": 500,
-        "opm": 3.06
-      }
-    ],
-    "source": "daum(확정치)",
-    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
-  },
+  "financials_confirmed": null,
   "disclosures": [
     {
       "title": "씨에스윈드(주) 기업설명회(IR) 개최(안내공시)",
@@ -3266,9 +3171,7 @@
       "url": "https://n.news.naver.com/mnews/article/079/0004172011"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
-  },
+  "_errors": {},
   "prev_report": {
     "header": {
       "date": "2026-08-19",
@@ -3293,5 +3196,23 @@
     "reachedPct": 15.3,
     "gapPct": 28.1,
     "expired": false
+  },
+  "target_context": {
+    "holdDays": 56,
+    "windowNote": "56거래일 창, 비중첩",
+    "n": 8,
+    "median": 20.6,
+    "p75": 43.2,
+    "p90": 51.1,
+    "max": 59.6,
+    "recentN": 4,
+    "recentMedian": 12.6,
+    "recentP75": 38.4,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다.",
+    "prevTargetCheck": {
+      "askedPct": 34.9,
+      "band": "상위 25~50%",
+      "vsMedian": 14.3
+    }
   }
 }

@@ -2,7 +2,7 @@
   "code": "073240",
   "name": "금호타이어",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:21",
+  "updated": "2026-08-20 16:27",
   "supply_10d": {
     "foreign_net_10d": 3200189,
     "foreign_buydays": "8/10",
@@ -1571,12 +1571,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "11,374,827"
+      "value": "11,409,316"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "857억"
+      "value": "860억"
     },
     {
       "code": "marketValue",
@@ -1656,7 +1656,7 @@
       "nm": "금호타이어",
       "bnm": "한화투자증권",
       "tit": "믹스 개선 중심 물량 배분으로 수익성 방어",
-      "rcnt": "11003",
+      "rcnt": "11004",
       "wdt": "20260731"
     },
     {
@@ -2784,102 +2784,7 @@
       }
     ]
   },
-  "financials_confirmed": {
-    "quarter": [
-      {
-        "date": "2026-03-01",
-        "sales": 1167810102390.0,
-        "operatingProfit": 147026893730.0,
-        "netIncome": 103424236690.0,
-        "eps": 330.704,
-        "roe": 0.0445,
-        "debtRatio": 143.517,
-        "dps": null,
-        "opm": 12.59
-      },
-      {
-        "date": "2025-12-01",
-        "sales": 1160070248770.0,
-        "operatingProfit": 145626507380.0,
-        "netIncome": 176680650690.0,
-        "eps": 588.656,
-        "roe": 0.08733,
-        "debtRatio": 147.444,
-        "dps": null,
-        "opm": 12.55
-      },
-      {
-        "date": "2025-09-01",
-        "sales": 1113745691720.0,
-        "operatingProfit": 108507089060.0,
-        "netIncome": 91547780580.0,
-        "eps": 288.299,
-        "roe": 0.0468,
-        "debtRatio": 161.646,
-        "dps": null,
-        "opm": 9.74
-      },
-      {
-        "date": "2025-06-01",
-        "sales": 1221253035000.0,
-        "operatingProfit": 175174609520.0,
-        "netIncome": 5543145450.0,
-        "eps": -3.393,
-        "roe": -0.00056,
-        "debtRatio": 176.013,
-        "dps": null,
-        "opm": 14.34
-      }
-    ],
-    "annual": [
-      {
-        "date": "2025-12-01",
-        "sales": 4701282075490.0,
-        "operatingProfit": 575859298290.0,
-        "netIncome": 376772981390.0,
-        "eps": 1209.33,
-        "roe": 0.18528,
-        "debtRatio": 147.444,
-        "dps": 0,
-        "opm": 12.25
-      },
-      {
-        "date": "2024-12-01",
-        "sales": 4532177923970.0,
-        "operatingProfit": 588591711860.0,
-        "netIncome": 351617959520.0,
-        "eps": 1130.938,
-        "roe": 0.21768,
-        "debtRatio": 181.54,
-        "dps": 0,
-        "opm": 12.99
-      },
-      {
-        "date": "2023-12-01",
-        "sales": 4041412157680.0,
-        "operatingProfit": 411010498490.0,
-        "netIncome": 171848469730.0,
-        "eps": 549.237,
-        "roe": 0.132,
-        "debtRatio": 245.303,
-        "dps": null,
-        "opm": 10.17
-      },
-      {
-        "date": "2022-12-01",
-        "sales": 3559158461840.0,
-        "operatingProfit": 23135670520.0,
-        "netIncome": -77469716120.0,
-        "eps": -274.923,
-        "roe": -0.0687,
-        "debtRatio": 277.242,
-        "dps": null,
-        "opm": 0.65
-      }
-    ],
-    "source": "daum(확정치)",
-    "note": "미공시 분기는 없음. 네이버 financials는 최신 분기를 컨센으로 채우므로 실적 판단은 이 필드 기준."
-  },
+  "financials_confirmed": null,
   "disclosures": [
     {
       "title": "금호타이어(주) 타인에대한담보제공결정",
@@ -3264,7 +3169,18 @@
       "url": "https://n.news.naver.com/mnews/article/119/0003122557"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
+  "_errors": {},
+  "target_context": {
+    "holdDays": 42,
+    "windowNote": "42거래일 창, 비중첩",
+    "n": 11,
+    "median": 11.5,
+    "p75": 15.1,
+    "p90": 23.8,
+    "max": 35.8,
+    "recentN": 5,
+    "recentMedian": 8.0,
+    "recentP75": 26.4,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }

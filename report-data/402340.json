@@ -2,7 +2,7 @@
   "code": "402340",
   "name": "SK스퀘어",
   "market": "KOSPI",
-  "updated": "2026-08-20 16:19",
+  "updated": "2026-08-20 16:24",
   "supply_10d": {
     "foreign_net_10d": 50680,
     "foreign_buydays": "7/10",
@@ -1573,12 +1573,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,291,833"
+      "value": "1,292,834"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "1조 4,088억"
+      "value": "1조 4,099억"
     },
     {
       "code": "marketValue",
@@ -3214,6 +3214,12 @@
   },
   "news": [
     {
+      "title": "40조 쏜 SK하닉 “주주환원 재원 245조”...SK스퀘어도 달린다",
+      "office": "디지털타임스",
+      "date": "202608201622",
+      "url": "https://n.news.naver.com/mnews/article/029/0003043390"
+    },
+    {
       "title": "“주주환원이 쏘아올린 공” 코스피, 6% 급등에 6850선 회복…SK하이닉...",
       "office": "헤럴드경제",
       "date": "202608201614",
@@ -3226,7 +3232,7 @@
       "url": "https://n.news.naver.com/mnews/article/138/0002238448"
     },
     {
-      "title": "삼전닉스 주주환원에 6800선 회복한 코스피…상승 계속될까?",
+      "title": "100조 쏘고, 40조 태운다...삼전닉스 역대급 주주환원에 6800피 회복",
       "office": "머니투데이",
       "date": "202608201611",
       "url": "https://n.news.naver.com/mnews/article/008/0005402582"
@@ -3242,17 +3248,9 @@
       "office": "디지털타임스",
       "date": "202608201606",
       "url": "https://n.news.naver.com/mnews/article/029/0003043380"
-    },
-    {
-      "title": "반도체 '불기둥'에 코스피 6800선 회복…SK하이닉스 12% 폭등",
-      "office": "뉴시스",
-      "date": "202608201605",
-      "url": "https://n.news.naver.com/mnews/article/003/0014138872"
     }
   ],
-  "_errors": {
-    "target_context": "NameError: name '_c' is not defined"
-  },
+  "_errors": {},
   "prev_report": {
     "header": {
       "date": "2026-08-19",
@@ -3277,5 +3275,23 @@
     "reachedPct": 40.2,
     "gapPct": 15.8,
     "expired": false
+  },
+  "target_context": {
+    "holdDays": 65,
+    "windowNote": "65거래일 창, 비중첩",
+    "n": 7,
+    "median": 105.6,
+    "p75": 126.2,
+    "p90": 155.3,
+    "max": 191.0,
+    "recentN": 3,
+    "recentMedian": 130.3,
+    "recentP75": 131.5,
+    "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다.",
+    "prevTargetCheck": {
+      "askedPct": 29.5,
+      "band": "중앙값 이하",
+      "vsMedian": -76.1
+    }
   }
 }
