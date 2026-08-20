@@ -2,15 +2,31 @@
   "code": "000370",
   "name": "한화손해보험",
   "market": "KOSPI",
-  "updated": "2026-08-19 20:26",
+  "updated": "2026-08-20 10:59",
   "supply_10d": {
-    "foreign_net_10d": 515540,
+    "foreign_net_10d": 469589,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 540745,
-    "pension_buydays": "7/10"
+    "pension_net_10d": 541745,
+    "pension_buydays": "8/10"
   },
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-08-20",
+        "close": 7310,
+        "foreignRatio": 13.4,
+        "개인": 0,
+        "외국인": 55882,
+        "기관계": 1000,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 1000,
+        "기타법인": 0
+      },
       {
         "date": "2026-08-19",
         "close": 7300,
@@ -954,64 +970,52 @@
         "기타금융": 0,
         "연기금": 0,
         "기타법인": -997
-      },
-      {
-        "date": "2026-05-22",
-        "close": 7190,
-        "foreignRatio": 11.99,
-        "개인": -151534,
-        "외국인": 91907,
-        "기관계": 23498,
-        "금융투자": -3976,
-        "투신": -326,
-        "사모": 27800,
-        "보험": 0,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": 0,
-        "기타법인": 24065
       }
     ],
     "cum_5d": {
-      "개인": -1261239,
-      "외국인": 371743,
-      "기관계": 924405,
-      "금융투자": 50359,
-      "투신": 107286,
-      "사모": 237472,
-      "보험": 14805,
+      "개인": -1349372,
+      "외국인": 512255,
+      "기관계": 920201,
+      "금융투자": 51810,
+      "투신": 106975,
+      "사모": 245037,
+      "보험": -151,
       "은행": 0,
       "기타금융": -40,
-      "연기금": 514523,
-      "기타법인": -25323
+      "연기금": 516570,
+      "기타법인": -16616
     },
     "cum_20d": {
-      "개인": -1953238,
-      "외국인": 986440,
-      "기관계": 916092,
-      "금융투자": 55952,
-      "투신": 153230,
-      "사모": 237974,
-      "보험": 65490,
+      "개인": -1860641,
+      "외국인": 943426,
+      "기관계": 922620,
+      "금융투자": 57119,
+      "투신": 153248,
+      "사모": 238373,
+      "보험": 65500,
       "은행": 0,
       "기타금융": -40,
-      "연기금": 403486,
-      "기타법인": 68163
+      "연기금": 408420,
+      "기타법인": 68934
     },
     "cum_60d": {
-      "개인": -4054203,
-      "외국인": 1640356,
-      "기관계": 2059989,
-      "금융투자": 3983,
-      "투신": 221991,
-      "사모": 188750,
+      "개인": -3902669,
+      "외국인": 1604331,
+      "기관계": 2037491,
+      "금융투자": 7959,
+      "투신": 222317,
+      "사모": 160950,
       "보험": 57893,
       "은행": 0,
       "기타금융": -40,
-      "연기금": 1587412,
-      "기타법인": 369846
+      "연기금": 1588412,
+      "기타법인": 345781
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-08-20",
+        "ratio": 13.4
+      },
       {
         "date": "2026-08-19",
         "ratio": 13.4
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-05-26",
         "ratio": 12.14
-      },
-      {
-        "date": "2026-05-22",
-        "ratio": 11.99
       }
     ]
   },
   "price_daily": {
-    "now": 7300,
-    "prevClose": 7020,
-    "changePct": 3.99,
+    "now": 7310,
+    "prevClose": 7300,
+    "changePct": 0.14,
     "ma": {
-      "ma5": 6784.0,
-      "ma20": 6021.5,
-      "ma60": 6119.2,
-      "ma120": 6480.5,
+      "ma5": 7006.0,
+      "ma20": 6108.5,
+      "ma60": 6121.2,
+      "ma120": 6474.3,
       "aligned": false,
       "vs": {
-        "ma5": 7.61,
-        "ma20": 21.23,
-        "ma60": 19.3,
-        "ma120": 12.65
+        "ma5": 4.34,
+        "ma20": 19.67,
+        "ma60": 19.42,
+        "ma120": 12.91
       }
     },
-    "trend20": 31.53,
+    "trend20": 31.24,
     "pocket": [
       {
         "low": 5356,
@@ -1286,35 +1286,35 @@
       {
         "low": 7046,
         "high": 7328,
-        "volPct": 10.9
+        "volPct": 11.0
       }
     ]
   },
   "idxRel": {
     "peakClose": 9300,
     "peakDate": "2026-02-20",
-    "ddFromPeak": -21.5,
-    "idxSincePeak": 11.4,
-    "excessDd": -32.9,
-    "m1": 29.7,
-    "m1Idx": -0.7,
-    "m1Excess": 30.4,
-    "m6": 0.1,
-    "m6Idx": 22.1,
-    "m6Excess": -21.9
+    "ddFromPeak": -21.4,
+    "idxSincePeak": 18.1,
+    "excessDd": -39.5,
+    "m1": 31.7,
+    "m1Idx": 1.7,
+    "m1Excess": 30.0,
+    "m6": -0.1,
+    "m6Idx": 28.2,
+    "m6Excess": -28.3
   },
   "price_weekly": {
-    "now": 7300,
+    "now": 7310,
     "ma": {
-      "ma5": 6354.0,
-      "ma10": 6224.0,
-      "ma20": 6403.0,
-      "ma60": 6171.5
+      "ma5": 6356.0,
+      "ma10": 6225.0,
+      "ma20": 6403.5,
+      "ma60": 6171.7
     },
     "aligned": false,
     "rangeHigh": 9300,
     "rangeLow": 3795,
-    "posPct": 63.7,
+    "posPct": 63.9,
     "recent": [
       {
         "d": "2026-02-23",
@@ -1418,21 +1418,21 @@
       },
       {
         "d": "2026-08-18",
-        "c": 7300
+        "c": 7310
       }
     ]
   },
   "price_monthly": {
-    "now": 7300,
+    "now": 7310,
     "ma": {
-      "ma6": 6361.7,
-      "ma12": 6141.7,
-      "ma24": 5412.3
+      "ma6": 6363.3,
+      "ma12": 6142.5,
+      "ma24": 5412.7
     },
     "aligned": true,
     "rangeHigh": 7610,
     "rangeLow": 3825,
-    "posPct": 91.8,
+    "posPct": 92.1,
     "recent": [
       {
         "d": "2024-09-02",
@@ -1528,7 +1528,7 @@
       },
       {
         "d": "2026-08-03",
-        "c": 7300
+        "c": 7310
       }
     ]
   },
@@ -1536,12 +1536,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "7,020"
+      "value": "7,300"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "6,910",
+      "value": "7,230",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1551,7 +1551,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "7,540",
+      "value": "7,590",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1561,7 +1561,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "6,880",
+      "value": "7,170",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1571,12 +1571,12 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "1,810,816"
+      "value": "342,132"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "133억"
+      "value": "25.3억"
     },
     {
       "code": "marketValue",
@@ -1586,7 +1586,7 @@
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "13.21%"
+      "value": "13.40%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1645,7 +1645,7 @@
   ],
   "consensus": {
     "itemCode": "000370",
-    "createDate": "2026-08-18",
+    "createDate": "2026-08-19",
     "recommMean": "3.88",
     "priceTargetMean": "8,788"
   },
@@ -1656,7 +1656,7 @@
       "nm": "한화손해보험",
       "bnm": "하나증권",
       "tit": "2Q26 Re - 계리가정 반영에도 견조한 CSM",
-      "rcnt": "5043",
+      "rcnt": "5087",
       "wdt": "20260813"
     },
     {
@@ -1665,7 +1665,7 @@
       "nm": "한화손해보험",
       "bnm": "교보증권",
       "tit": "2Q26 Review: 2026년에도 여성 특화 보험은 성장 지속 중",
-      "rcnt": "4374",
+      "rcnt": "4412",
       "wdt": "20260813"
     },
     {
@@ -1674,7 +1674,7 @@
       "nm": "한화손해보험",
       "bnm": "신한투자증권",
       "tit": "27F PER 1.8x, 배당만 남았다",
-      "rcnt": "2984",
+      "rcnt": "3035",
       "wdt": "20260813"
     },
     {
@@ -1683,7 +1683,7 @@
       "nm": "한화손해보험",
       "bnm": "iM증권",
       "tit": "예실차 개선세 긍정적이나 제도 이슈 상존",
-      "rcnt": "2738",
+      "rcnt": "2772",
       "wdt": "20260813"
     },
     {
@@ -1692,7 +1692,7 @@
       "nm": "한화손해보험",
       "bnm": "키움증권",
       "tit": "2Q26 Re: 보험손익 회복 기조 지속",
-      "rcnt": "2068",
+      "rcnt": "2105",
       "wdt": "20260813"
     }
   ],
@@ -1704,17 +1704,17 @@
       "reutersCode": "000810",
       "stockName": "삼성화재",
       "sosok": "0",
-      "closePrice": "613,000",
-      "compareToPreviousClosePrice": "-13,000",
+      "closePrice": "621,000",
+      "compareToPreviousClosePrice": "8,000",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "-2.08",
+      "fluctuationsRatio": "1.31",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "27,368,900",
+      "marketValue": "27,726,080",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1741,17 +1741,17 @@
       "reutersCode": "005830",
       "stockName": "DB손해보험",
       "sosok": "0",
-      "closePrice": "187,500",
-      "compareToPreviousClosePrice": "5,500",
+      "closePrice": "180,000",
+      "compareToPreviousClosePrice": "-7,500",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "3.02",
+      "fluctuationsRatio": "-4.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "12,281,315",
+      "marketValue": "11,790,062",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1778,17 +1778,17 @@
       "reutersCode": "001450",
       "stockName": "현대해상",
       "sosok": "0",
-      "closePrice": "50,000",
-      "compareToPreviousClosePrice": "300",
+      "closePrice": "48,550",
+      "compareToPreviousClosePrice": "-1,450",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.60",
+      "fluctuationsRatio": "-2.90",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,262,412",
+      "marketValue": "4,138,802",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1815,17 +1815,17 @@
       "reutersCode": "031210",
       "stockName": "서울보증보험",
       "sosok": "0",
-      "closePrice": "43,400",
-      "compareToPreviousClosePrice": "-900",
+      "closePrice": "43,050",
+      "compareToPreviousClosePrice": "-350",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.03",
+      "fluctuationsRatio": "-0.81",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "3,030,257",
+      "marketValue": "3,005,819",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1852,17 +1852,17 @@
       "reutersCode": "003690",
       "stockName": "코리안리",
       "sosok": "0",
-      "closePrice": "14,930",
-      "compareToPreviousClosePrice": "-300",
+      "closePrice": "14,490",
+      "compareToPreviousClosePrice": "-440",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.97",
+      "fluctuationsRatio": "-2.95",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,638,444",
+      "marketValue": "2,560,687",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1889,17 +1889,17 @@
       "reutersCode": "000400",
       "stockName": "롯데손해보험",
       "sosok": "0",
-      "closePrice": "2,075",
-      "compareToPreviousClosePrice": "50",
+      "closePrice": "2,035",
+      "compareToPreviousClosePrice": "-40",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "2.47",
+      "fluctuationsRatio": "-1.93",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "643,947",
+      "marketValue": "631,534",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -3173,17 +3173,17 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -2100965,
-      "외국인": 653916,
-      "기관계": 1143897,
-      "금융투자": -51969,
-      "투신": 68761,
-      "사모": -49224,
-      "보험": -7597,
+      "개인": -2042028,
+      "외국인": 660905,
+      "기관계": 1114871,
+      "금융투자": -49160,
+      "투신": 69069,
+      "사모": -77423,
+      "보험": -7607,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 1183926,
-      "기타법인": 301683
+      "연기금": 1179992,
+      "기타법인": 276847
     },
     "pattern": {
       "외국인": "꾸준매집",
@@ -3193,20 +3193,20 @@
       "사모": "혼조",
       "금융투자": "혼조"
     },
-    "foreign_avg_price": 7110,
+    "foreign_avg_price": 7112,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 2.7,
-    "foreign_buy_qty": 3723764,
+    "foreign_avg_vs_now_pct": 2.8,
+    "foreign_buy_qty": 3687739,
     "foreign_sell_qty": 2083408,
-    "foreign_net_qty": 1640356,
-    "foreign_net_ratio_pct": 44.1,
+    "foreign_net_qty": 1604331,
+    "foreign_net_ratio_pct": 43.5,
     "close_range": {
       "low": 5270,
-      "high": 7300
+      "high": 7310
     },
-    "foreign_ratio_delta_60d": 1.41,
+    "foreign_ratio_delta_60d": 1.26,
     "foreign_ratio_max": 13.4,
-    "foreign_ratio_min": 11.99,
+    "foreign_ratio_min": 12.14,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3244,13 +3244,19 @@
     "verdict": "저평가"
   },
   "volume_stats": {
-    "avg20": 512745,
-    "avg60": 592247,
-    "ratio_20_60": 0.87,
-    "today": 1808996,
-    "today_vs_60": 3.05
+    "avg20": 588143,
+    "avg60": 598036,
+    "ratio_20_60": 0.98,
+    "today": 341683,
+    "today_vs_60": 0.57
   },
   "news": [
+    {
+      "title": "생보사 '빅3' 상반기 순익 44% 증가…본업 부진 속 존재감 커진 '자회...",
+      "office": "뉴스1",
+      "date": "202608200625",
+      "url": "https://n.news.naver.com/mnews/article/421/0009122463"
+    },
     {
       "title": "美 장기금리 뛰자 韓 국채 상승 압력⋯보험株 '반사이익' 기대감",
       "office": "아이뉴스24",
@@ -3280,12 +3286,6 @@
       "office": "뉴스1",
       "date": "202608190546",
       "url": "https://n.news.naver.com/mnews/article/421/0009119995"
-    },
-    {
-      "title": "'성장세 따져보니' 삼성 제치고…한화생명·현대해상 두각",
-      "office": "비즈워치",
-      "date": "202608181612",
-      "url": "https://n.news.naver.com/mnews/article/648/0000049921"
     }
   ],
   "_errors": {}
