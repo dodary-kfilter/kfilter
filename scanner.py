@@ -635,6 +635,87 @@ def compute_derived_valuation(total_infos, fin_a):
     except Exception as e:
         return {"_err": f"{type(e).__name__}: {e}"}
 
+def compute_target_context(candles, horizon_days=None):
+    """[목표가 자각용] 같은 보유기간 창에서 과거에 실제로 오른 폭의 분포.
+
+    목표가를 ★정하는 데 쓰라는 게 아니다. 부른 뒤에 "내가 지금 과거 어디쯤의
+    값을 부르고 있나"를 알려주는 검산용이다. 과거가 낮다고 앞으로 못 간다는
+    뜻이 아니며(국면·실적·수급이 바뀌면 과거 창에 없던 폭도 나온다), 반대로
+    과거가 높다고 그만큼 불러도 된다는 뜻도 아니다.
+
+    ★비중첩(non-overlapping) 창만 센다. 하루씩 밀어가며 겹쳐 세면 표본이
+      수십 배로 부풀어 없는 확신이 생긴다.
+    ★국면을 갈라 함께 준다. 전 구간 하나만 주면 대세장/침체장 어느 한쪽으로
+      오독한다.
+    """
+    if not candles or len(candles) < 40:
+        return None
+    rows = []
+    for r in candles:
+        try:
+            rows.append((str(r[0])[:10], float(r[2]), float(r[4])))   # (날짜, 고가, 종가)
+        except Exception:
+            continue
+    if len(rows) < 40:
+        return None
+    hold = max(5, int((horizon_days or 60) * 5 / 7))                  # 달력일 → 거래일 근사
+
+    def gains(seq):
+        """비중첩 창마다 '시작 종가 대비 창 안 최고가까지 몇 %' """
+        out = []
+        for i in range(0, len(seq) - hold, hold):
+            p0 = seq[i][2]
+            win = seq[i + 1:i + 1 + hold]
+            if not win or not p0:
+                continue
+            out.append((max(x[1] for x in win) / p0 - 1) * 100)
+        return sorted(out)
+
+    def q(v, r):
+        if not v:
+            return None
+        k = (len(v) - 1) * r
+        f = int(k)
+        return round(v[f] if f + 1 >= len(v) else v[f] + (v[f + 1] - v[f]) * (k - f), 1)
+
+    allg = gains(rows)
+    if not allg:
+        return None
+    half = rows[len(rows) // 2:]
+    recent = gains(half)
+
+    return {
+        "holdDays":   hold,
+        "windowNote": f"{hold}거래일 창, 비중첩",
+        "n":          len(allg),
+        "median":     q(allg, 0.50),
+        "p75":        q(allg, 0.75),
+        "p90":        q(allg, 0.90),
+        "max":        round(allg[-1], 1),
+        "recentN":    len(recent),
+        "recentMedian": q(recent, 0.50),
+        "recentP75":  q(recent, 0.75),
+        "caveat": ("표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — "
+                   "부른 값이 과거 분포 어디쯤인지 자각하는 용도다."),
+    }
+
+
+def target_percentile(ctx, up_pct):
+    """부른 상승률이 과거 분포의 상위 몇 %인가. ctx는 compute_target_context 결과."""
+    if not ctx or up_pct is None:
+        return None
+    ref = [x for x in (ctx.get("median"), ctx.get("p75"), ctx.get("p90"), ctx.get("max")) if x is not None]
+    if not ref:
+        return None
+    if up_pct <= ctx["median"]:      band = "중앙값 이하"
+    elif up_pct <= (ctx.get("p75") or 1e9):  band = "상위 25~50%"
+    elif up_pct <= (ctx.get("p90") or 1e9):  band = "상위 10~25%"
+    elif up_pct <= ctx["max"]:       band = "상위 10% 이내"
+    else:                            band = "과거 창에 없던 폭"
+    return {"askedPct": round(up_pct, 1), "band": band,
+            "vsMedian": round(up_pct - ctx["median"], 1)}
+
+
 def compute_volume_stats(candles):
     """거래량 에너지. 20일/60일 비율 + 당일 배수. 얇은 거래량 급등=매물소진 판별용."""
     try:
@@ -907,6 +988,23 @@ def write_report_file(code, name, market, supply, raw, price_block,
         except Exception as e:
             errs["prev_report"] = f"{type(e).__name__}: {e}"
 
+    # [목표가 자각] 같은 보유기간 창에서 과거에 실제로 오른 폭의 분포.
+    #   목표를 여기 맞추라는 게 아니라, 부른 값이 과거 어디쯤인지 알고 부르게 하는 검산이다.
+    try:
+        _hz = None
+        _h = (payload.get("prev_report") or {}).get("header") or {}
+        if _h.get("horizon") and _h.get("date"):
+            from datetime import date as _d
+            _hz = (_d.fromisoformat(str(_h["horizon"])) - _d.fromisoformat(str(_h["date"]))).days
+        ctx = compute_target_context(_c, _hz)
+        if ctx:
+            if _h.get("price") and _h.get("target"):
+                ctx["prevTargetCheck"] = target_percentile(
+                    ctx, (_h["target"] / _h["price"] - 1) * 100)
+            payload["target_context"] = ctx
+    except Exception as e:
+        errs["target_context"] = f"{type(e).__name__}: {e}"
+
     os.makedirs(REPORT_DIR, exist_ok=True)
     final = os.path.join(REPORT_DIR, f"{code}.json")
     tmp = final + ".tmp"
@@ -984,6 +1082,7 @@ def enrich_stock(code, name="", market="", supply=None):
     # 일봉 가격블록
     price_block = None
     idx_rel = None
+    _c = None                      # ★target_context가 나중에 참조하므로 미리 초기화
     if raw.get("candles"):
         try:
             _c = parse_candles(raw["candles"])
@@ -991,6 +1090,7 @@ def enrich_stock(code, name="", market="", supply=None):
             idx_rel = compute_index_relative(_c, market)      # ★지수 대비 위치
         except Exception:
             price_block = None
+            _c = None
     # 주봉/월봉 블록
     week_block = month_block = None
     try:
