@@ -2,10 +2,10 @@
   "code": "006040",
   "name": "동원산업",
   "market": "KOSPI",
-  "updated": "2026-08-21 14:03",
+  "updated": "2026-08-21 14:56",
   "supply_10d": {
-    "foreign_net_10d": 93037,
-    "foreign_buydays": "8/10",
+    "foreign_net_10d": 91233,
+    "foreign_buydays": "7/10",
     "pension_net_10d": 39540,
     "pension_buydays": "7/10"
   },
@@ -13,10 +13,10 @@
     "recent_daily": [
       {
         "date": "2026-08-21",
-        "close": 37650,
+        "close": 37800,
         "foreignRatio": 4.48,
         "개인": 0,
-        "외국인": 512,
+        "외국인": -1335,
         "기관계": 0,
         "금융투자": 0,
         "투신": 0,
@@ -974,7 +974,7 @@
     ],
     "cum_5d": {
       "개인": -45795,
-      "외국인": 19888,
+      "외국인": 18041,
       "기관계": 24185,
       "금융투자": 8859,
       "투신": -7051,
@@ -987,7 +987,7 @@
     },
     "cum_20d": {
       "개인": -204966,
-      "외국인": 187375,
+      "외국인": 185528,
       "기관계": 13096,
       "금융투자": 7494,
       "투신": -41934,
@@ -1000,7 +1000,7 @@
     },
     "cum_60d": {
       "개인": -230054,
-      "외국인": 374511,
+      "외국인": 372664,
       "기관계": 259023,
       "금융투자": 30261,
       "투신": 71810,
@@ -1255,24 +1255,29 @@
     ]
   },
   "price_daily": {
-    "now": 37650,
+    "now": 37800,
     "prevClose": 37950,
-    "changePct": -0.79,
+    "changePct": -0.4,
     "ma": {
-      "ma5": 37590.0,
-      "ma20": 36465.0,
-      "ma60": 34404.2,
-      "ma120": 36492.9,
+      "ma5": 37620.0,
+      "ma20": 36472.5,
+      "ma60": 34406.7,
+      "ma120": 36494.2,
       "aligned": false,
       "vs": {
-        "ma5": 0.16,
-        "ma20": 3.25,
-        "ma60": 9.43,
-        "ma120": 3.17
+        "ma5": 0.48,
+        "ma20": 3.64,
+        "ma60": 9.86,
+        "ma120": 3.58
       }
     },
-    "trend20": 9.61,
+    "trend20": 10.04,
     "pocket": [
+      {
+        "low": 37490,
+        "high": 38660,
+        "volPct": 7.7
+      },
       {
         "low": 41000,
         "high": 42170,
@@ -1282,39 +1287,34 @@
         "low": 42170,
         "high": 43340,
         "volPct": 9.8
-      },
-      {
-        "low": 45680,
-        "high": 46850,
-        "volPct": 7.7
       }
     ]
   },
   "idxRel": {
     "peakClose": 50000,
     "peakDate": "2025-10-27",
-    "ddFromPeak": -24.7,
-    "idxSincePeak": 71.0,
-    "excessDd": -95.7,
-    "m1": 12.6,
+    "ddFromPeak": -24.4,
+    "idxSincePeak": 70.9,
+    "excessDd": -95.3,
+    "m1": 13.0,
     "m1Idx": 1.7,
-    "m1Excess": 10.9,
-    "m6": -14.1,
-    "m6Idx": 25.2,
-    "m6Excess": -39.3
+    "m1Excess": 11.3,
+    "m6": -13.8,
+    "m6Idx": 25.1,
+    "m6Excess": -38.9
   },
   "price_weekly": {
-    "now": 37650,
+    "now": 37800,
     "ma": {
-      "ma5": 36700.0,
-      "ma10": 34870.0,
-      "ma20": 36112.5,
-      "ma60": 41351.7
+      "ma5": 36730.0,
+      "ma10": 34885.0,
+      "ma20": 36120.0,
+      "ma60": 41354.2
     },
     "aligned": false,
     "rangeHigh": 49650,
     "rangeLow": 29850,
-    "posPct": 39.4,
+    "posPct": 40.2,
     "recent": [
       {
         "d": "2026-02-23",
@@ -1418,21 +1418,21 @@
       },
       {
         "d": "2026-08-18",
-        "c": 37650
+        "c": 37800
       }
     ]
   },
   "price_monthly": {
-    "now": 37650,
+    "now": 37800,
     "ma": {
-      "ma6": 36191.7,
-      "ma12": 40241.7,
-      "ma24": 39591.7
+      "ma6": 36216.7,
+      "ma12": 40254.2,
+      "ma24": 39597.9
     },
     "aligned": false,
     "rangeHigh": 48450,
     "rangeLow": 30350,
-    "posPct": 40.3,
+    "posPct": 41.2,
     "recent": [
       {
         "d": "2024-09-02",
@@ -1528,7 +1528,7 @@
       },
       {
         "d": "2026-08-03",
-        "c": 37650
+        "c": 37800
       }
     ]
   },
@@ -1571,17 +1571,17 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "25,652"
+      "value": "34,229"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "9.59억"
+      "value": "12.8억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "1조 6,619억"
+      "value": "1조 6,685억"
     },
     {
       "code": "foreignRate",
@@ -1601,7 +1601,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "3.84배",
+      "value": "3.85배",
       "valueDesc": "2026.06."
     },
     {
@@ -1613,7 +1613,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "4.29배"
+      "value": "4.31배"
     },
     {
       "code": "cnsEps",
@@ -1635,7 +1635,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "3.05%",
+      "value": "3.04%",
       "valueDesc": "2026.03."
     },
     {
@@ -1679,17 +1679,17 @@
       "reutersCode": "003230",
       "stockName": "삼양식품",
       "sosok": "0",
-      "closePrice": "1,383,000",
-      "compareToPreviousClosePrice": "-14,000",
+      "closePrice": "1,371,000",
+      "compareToPreviousClosePrice": "-26,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.00",
+      "fluctuationsRatio": "-1.86",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "10,418,159",
+      "marketValue": "10,327,763",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1716,17 +1716,17 @@
       "reutersCode": "271560",
       "stockName": "오리온",
       "sosok": "0",
-      "closePrice": "124,300",
-      "compareToPreviousClosePrice": "-300",
+      "closePrice": "124,400",
+      "compareToPreviousClosePrice": "-200",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.24",
+      "fluctuationsRatio": "-0.16",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,913,428",
+      "marketValue": "4,917,381",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1753,17 +1753,17 @@
       "reutersCode": "097950",
       "stockName": "CJ제일제당",
       "sosok": "0",
-      "closePrice": "184,200",
-      "compareToPreviousClosePrice": "-600",
+      "closePrice": "183,800",
+      "compareToPreviousClosePrice": "-1,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.32",
+      "fluctuationsRatio": "-0.54",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,772,981",
+      "marketValue": "2,766,959",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1790,17 +1790,17 @@
       "reutersCode": "004370",
       "stockName": "농심",
       "sosok": "0",
-      "closePrice": "437,500",
-      "compareToPreviousClosePrice": "-3,500",
+      "closePrice": "433,000",
+      "compareToPreviousClosePrice": "-8,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.79",
+      "fluctuationsRatio": "-1.81",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,661,155",
+      "marketValue": "2,633,783",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1827,17 +1827,17 @@
       "reutersCode": "026960",
       "stockName": "동서",
       "sosok": "0",
-      "closePrice": "25,700",
-      "compareToPreviousClosePrice": "200",
+      "closePrice": "25,550",
+      "compareToPreviousClosePrice": "50",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
         "name": "RISING"
       },
-      "fluctuationsRatio": "0.78",
+      "fluctuationsRatio": "0.20",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,562,290",
+      "marketValue": "2,547,335",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1864,17 +1864,17 @@
       "reutersCode": "140410",
       "stockName": "메지온",
       "sosok": "1",
-      "closePrice": "62,800",
-      "compareToPreviousClosePrice": "-1,000",
+      "closePrice": "62,700",
+      "compareToPreviousClosePrice": "-1,100",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.57",
+      "fluctuationsRatio": "-1.72",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,922,056",
+      "marketValue": "1,918,995",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -3148,13 +3148,13 @@
       "사모": "혼조",
       "금융투자": "꾸준매집"
     },
-    "foreign_avg_price": 34226,
+    "foreign_avg_price": 34209,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 10.0,
-    "foreign_buy_qty": 594349,
-    "foreign_sell_qty": 219838,
-    "foreign_net_qty": 374511,
-    "foreign_net_ratio_pct": 63.0,
+    "foreign_avg_vs_now_pct": 10.5,
+    "foreign_buy_qty": 593837,
+    "foreign_sell_qty": 221173,
+    "foreign_net_qty": 372664,
+    "foreign_net_ratio_pct": 62.8,
     "close_range": {
       "low": 30050,
       "high": 38000
@@ -3202,8 +3202,8 @@
     "avg20": 52924,
     "avg60": 61485,
     "ratio_20_60": 0.86,
-    "today": 20134,
-    "today_vs_60": 0.33
+    "today": 28408,
+    "today_vs_60": 0.46
   },
   "news": [
     {
