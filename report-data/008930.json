@@ -2,30 +2,46 @@
   "code": "008930",
   "name": "한미사이언스",
   "market": "KOSPI",
-  "updated": "2026-08-20 19:56",
+  "updated": "2026-08-21 11:05",
   "supply_10d": {
-    "foreign_net_10d": 233376,
+    "foreign_net_10d": 188047,
     "foreign_buydays": "7/10",
-    "pension_net_10d": 64264,
-    "pension_buydays": "8/10"
+    "pension_net_10d": 53512,
+    "pension_buydays": "7/10"
   },
   "supply_detail": {
     "recent_daily": [
       {
+        "date": "2026-08-21",
+        "close": 44350,
+        "foreignRatio": 1.17,
+        "개인": 0,
+        "외국인": 3025,
+        "기관계": 0,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 0,
+        "기타법인": 1000
+      },
+      {
         "date": "2026-08-20",
         "close": 44250,
-        "foreignRatio": 1.27,
-        "개인": 27792,
-        "외국인": -40183,
-        "기관계": 12305,
-        "금융투자": -26704,
+        "foreignRatio": 1.17,
+        "개인": 51494,
+        "외국인": -67134,
+        "기관계": 15749,
+        "금융투자": -29881,
         "투신": 11378,
-        "사모": 18562,
+        "사모": 25183,
         "보험": -47,
         "은행": 283,
         "기타금융": 935,
         "연기금": 7898,
-        "기타법인": 52
+        "기타법인": 9
       },
       {
         "date": "2026-08-19",
@@ -954,67 +970,55 @@
         "기타금융": 0,
         "연기금": -39,
         "기타법인": 1872
-      },
-      {
-        "date": "2026-05-26",
-        "close": 33150,
-        "foreignRatio": 2.05,
-        "개인": 28993,
-        "외국인": -16119,
-        "기관계": -3081,
-        "금융투자": -353,
-        "투신": -2123,
-        "사모": 6,
-        "보험": -223,
-        "은행": 0,
-        "기타금융": 0,
-        "연기금": -388,
-        "기타법인": -9989
       }
     ],
     "cum_5d": {
-      "개인": -183995,
-      "외국인": 6288,
-      "기관계": 182685,
-      "금융투자": -40296,
-      "투신": 83684,
-      "사모": 123927,
-      "보험": -502,
+      "개인": -92546,
+      "외국인": -30692,
+      "기관계": 132334,
+      "금융투자": -50312,
+      "투신": 68432,
+      "사모": 100412,
+      "보험": -200,
       "은행": 766,
-      "기타금융": 839,
-      "연기금": 14267,
-      "기타법인": -3107
+      "기타금융": 1069,
+      "연기금": 12167,
+      "기타법인": -3250
     },
     "cum_20d": {
-      "개인": -1637352,
-      "외국인": 148096,
-      "기관계": 1492203,
-      "금융투자": 68359,
-      "투신": 220068,
-      "사모": 1130154,
-      "보험": 4594,
+      "개인": -1578184,
+      "외국인": 136878,
+      "기관계": 1450154,
+      "금융투자": 30538,
+      "투신": 210850,
+      "사모": 1135188,
+      "보험": 4508,
       "은행": 767,
       "기타금융": 365,
-      "연기금": 67896,
-      "기타법인": 454
+      "연기금": 67938,
+      "기타법인": -1026
     },
     "cum_60d": {
-      "개인": -1400386,
-      "외국인": -697628,
-      "기관계": 2078219,
-      "금융투자": -22732,
-      "투신": 482635,
-      "사모": 1484085,
-      "보험": 1541,
+      "개인": -1405677,
+      "외국인": -705435,
+      "기관계": 2084744,
+      "금융투자": -25556,
+      "투신": 484758,
+      "사모": 1490700,
+      "보험": 1764,
       "은행": 767,
       "기타금융": -672,
-      "연기금": 132595,
-      "기타법인": 23540
+      "연기금": 132983,
+      "기타법인": 34486
     },
     "foreign_ratio_trend": [
       {
+        "date": "2026-08-21",
+        "ratio": 1.17
+      },
+      {
         "date": "2026-08-20",
-        "ratio": 1.27
+        "ratio": 1.17
       },
       {
         "date": "2026-08-19",
@@ -1247,31 +1251,27 @@
       {
         "date": "2026-05-27",
         "ratio": 2.05
-      },
-      {
-        "date": "2026-05-26",
-        "ratio": 2.05
       }
     ]
   },
   "price_daily": {
-    "now": 44250,
-    "prevClose": 45150,
-    "changePct": -1.99,
+    "now": 44300,
+    "prevClose": 44250,
+    "changePct": 0.11,
     "ma": {
-      "ma5": 44530.0,
-      "ma20": 40245.0,
-      "ma60": 34097.5,
-      "ma120": 35960.0,
+      "ma5": 44520.0,
+      "ma20": 40742.5,
+      "ma60": 34283.3,
+      "ma120": 35940.0,
       "aligned": false,
       "vs": {
-        "ma5": -0.63,
-        "ma20": 9.95,
-        "ma60": 29.77,
-        "ma120": 23.05
+        "ma5": -0.49,
+        "ma20": 8.73,
+        "ma60": 29.22,
+        "ma120": 23.26
       }
     },
-    "trend20": 33.08,
+    "trend20": 28.97,
     "pocket": [
       {
         "low": 35840,
@@ -1293,28 +1293,28 @@
   "idxRel": {
     "peakClose": 50700,
     "peakDate": "2026-02-24",
-    "ddFromPeak": -12.7,
-    "idxSincePeak": 14.8,
-    "excessDd": -27.5,
-    "m1": 34.1,
-    "m1Idx": 1.6,
-    "m1Excess": 32.5,
-    "m6": 5.0,
-    "m6Idx": 28.0,
-    "m6Excess": -23.0
+    "ddFromPeak": -12.6,
+    "idxSincePeak": 15.2,
+    "excessDd": -27.8,
+    "m1": 33.2,
+    "m1Idx": 1.2,
+    "m1Excess": 32.0,
+    "m6": 5.7,
+    "m6Idx": 24.6,
+    "m6Excess": -18.8
   },
   "price_weekly": {
-    "now": 44250,
+    "now": 44300,
     "ma": {
-      "ma5": 40730.0,
-      "ma10": 35730.0,
-      "ma20": 35617.5,
-      "ma60": 38789.2
+      "ma5": 40740.0,
+      "ma10": 35735.0,
+      "ma20": 35620.0,
+      "ma60": 38790.0
     },
     "aligned": false,
     "rangeHigh": 49850,
     "rangeLow": 25750,
-    "posPct": 76.8,
+    "posPct": 77.0,
     "recent": [
       {
         "d": "2026-02-23",
@@ -1418,21 +1418,21 @@
       },
       {
         "d": "2026-08-18",
-        "c": 44250
+        "c": 44300
       }
     ]
   },
   "price_monthly": {
-    "now": 44250,
+    "now": 44300,
     "ma": {
-      "ma6": 36133.3,
-      "ma12": 38025.0,
-      "ma24": 36731.2
+      "ma6": 36141.7,
+      "ma12": 38029.2,
+      "ma24": 36733.3
     },
     "aligned": false,
     "rangeHigh": 50700,
     "rangeLow": 26350,
-    "posPct": 73.5,
+    "posPct": 73.7,
     "recent": [
       {
         "d": "2024-09-02",
@@ -1528,7 +1528,7 @@
       },
       {
         "d": "2026-08-03",
-        "c": 44250
+        "c": 44300
       }
     ]
   },
@@ -1536,22 +1536,22 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "45,150"
+      "value": "44,250"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "46,600",
+      "value": "44,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       }
     },
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "49,200",
+      "value": "44,450",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1561,7 +1561,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "43,500",
+      "value": "43,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1571,22 +1571,22 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "303,494"
+      "value": "58,097"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "137억"
+      "value": "25.2억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "3조 263억"
+      "value": "3조 366억"
     },
     {
       "code": "foreignRate",
       "key": "외인소진율",
-      "value": "1.27%"
+      "value": "1.17%"
     },
     {
       "code": "highPriceOf52Weeks",
@@ -1601,7 +1601,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "22.25배",
+      "value": "22.32배",
       "valueDesc": "2026.03."
     },
     {
@@ -1623,7 +1623,7 @@
     {
       "code": "pbr",
       "key": "PBR",
-      "value": "3.00배",
+      "value": "3.01배",
       "valueDesc": "2026.03."
     },
     {
@@ -1655,17 +1655,17 @@
       "reutersCode": "207940",
       "stockName": "삼성바이오로직스",
       "sosok": "0",
-      "closePrice": "1,574,000",
-      "compareToPreviousClosePrice": "30,000",
+      "closePrice": "1,534,000",
+      "compareToPreviousClosePrice": "-40,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "1.94",
+      "fluctuationsRatio": "-2.54",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "72,861,956",
+      "marketValue": "71,010,318",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1692,17 +1692,17 @@
       "reutersCode": "068270",
       "stockName": "셀트리온",
       "sosok": "0",
-      "closePrice": "194,100",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "188,800",
+      "compareToPreviousClosePrice": "-5,300",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "-2.73",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "45,150,993",
+      "marketValue": "43,918,122",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1729,17 +1729,17 @@
       "reutersCode": "0126Z0",
       "stockName": "삼성에피스홀딩스",
       "sosok": "0",
-      "closePrice": "379,000",
-      "compareToPreviousClosePrice": "15,500",
+      "closePrice": "358,250",
+      "compareToPreviousClosePrice": "-20,750",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "4.26",
+      "fluctuationsRatio": "-5.47",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "9,430,675",
+      "marketValue": "8,914,352",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1762,58 +1762,21 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "326030",
-      "reutersCode": "326030",
-      "stockName": "SK바이오팜",
-      "sosok": "0",
-      "closePrice": "86,500",
-      "compareToPreviousClosePrice": "1,200",
-      "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
-      },
-      "fluctuationsRatio": "1.41",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "6,774,096",
-      "nav": "N/A",
-      "threeMonthEarningRate": "N/A",
-      "stockExchangeType": {
-        "code": "KS",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스피",
-        "nameEng": "KOSPI",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSPI"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/326030"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
       "itemCode": "000100",
       "reutersCode": "000100",
       "stockName": "유한양행",
       "sosok": "0",
-      "closePrice": "83,400",
-      "compareToPreviousClosePrice": "3,800",
+      "closePrice": "81,000",
+      "compareToPreviousClosePrice": "-2,400",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "4.77",
+      "fluctuationsRatio": "-2.88",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "6,642,609",
+      "marketValue": "6,451,455",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1836,21 +1799,58 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
+      "itemCode": "326030",
+      "reutersCode": "326030",
+      "stockName": "SK바이오팜",
+      "sosok": "0",
+      "closePrice": "82,200",
+      "compareToPreviousClosePrice": "-4,300",
+      "compareToPreviousPrice": {
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
+      },
+      "fluctuationsRatio": "-4.97",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "6,437,349",
+      "nav": "N/A",
+      "threeMonthEarningRate": "N/A",
+      "stockExchangeType": {
+        "code": "KS",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스피",
+        "nameEng": "KOSPI",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSPI"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/326030"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
       "itemCode": "128940",
       "reutersCode": "128940",
       "stockName": "한미약품",
       "sosok": "0",
-      "closePrice": "399,000",
-      "compareToPreviousClosePrice": "10,500",
+      "closePrice": "397,000",
+      "compareToPreviousClosePrice": "-2,000",
       "compareToPreviousPrice": {
-        "code": "2",
-        "text": "상승",
-        "name": "RISING"
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
       },
-      "fluctuationsRatio": "2.70",
+      "fluctuationsRatio": "-0.50",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "5,111,585",
+      "marketValue": "5,085,963",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -3104,17 +3104,17 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": 236966,
-      "외국인": -845724,
-      "기관계": 586016,
-      "금융투자": -91091,
-      "투신": 262567,
-      "사모": 353931,
-      "보험": -3053,
+      "개인": 172507,
+      "외국인": -842313,
+      "기관계": 634590,
+      "금융투자": -56094,
+      "투신": 273908,
+      "사모": 355512,
+      "보험": -2744,
       "은행": 0,
       "기타금융": -1037,
-      "연기금": 64699,
-      "기타법인": 23086
+      "연기금": 65045,
+      "기타법인": 35512
     },
     "pattern": {
       "외국인": "반전(복원중)",
@@ -3124,24 +3124,24 @@
       "사모": "꾸준매집",
       "금융투자": "반전(복원중)"
     },
-    "foreign_avg_price": 28436,
+    "foreign_avg_price": 28864,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 55.6,
-    "foreign_buy_qty": 599954,
-    "foreign_sell_qty": 1297582,
-    "foreign_net_qty": -697628,
-    "foreign_net_ratio_pct": 116.3,
+    "foreign_avg_vs_now_pct": 53.7,
+    "foreign_buy_qty": 602979,
+    "foreign_sell_qty": 1308414,
+    "foreign_net_qty": -705435,
+    "foreign_net_ratio_pct": 117.0,
     "close_range": {
       "low": 26100,
       "high": 46200
     },
-    "foreign_ratio_delta_60d": -0.78,
+    "foreign_ratio_delta_60d": -0.88,
     "foreign_ratio_max": 2.07,
     "foreign_ratio_min": 0.82,
     "foreign_ratio_is_60d_high": false
   },
   "valuation_derived": {
-    "pbr": 3.0,
+    "pbr": 3.01,
     "roe_pct": 13.13,
     "roe_used_pct": 13.13,
     "roe_capped": false,
@@ -3153,35 +3153,41 @@
       "coe": 0.08,
       "g": 0.03,
       "theo_pbr": 2.03,
-      "premium_pct": 48.1
+      "premium_pct": 48.6
     },
     "g5": {
       "coe": 0.08,
       "g": 0.05,
       "theo_pbr": 2.71,
-      "premium_pct": 10.7
+      "premium_pct": 11.1
     },
     "coe9": {
       "coe": 0.09,
       "g": 0.03,
       "theo_pbr": 1.69,
-      "premium_pct": 77.7
+      "premium_pct": 78.3
     },
     "theo_band": {
       "low": 1.69,
       "high": 2.71
     },
-    "band_pos": 10.7,
+    "band_pos": 11.1,
     "verdict": "고평가"
   },
   "volume_stats": {
-    "avg20": 217309,
-    "avg60": 177595,
+    "avg20": 216769,
+    "avg60": 178399,
     "ratio_20_60": 1.22,
-    "today": 161063,
-    "today_vs_60": 0.91
+    "today": 31369,
+    "today_vs_60": 0.18
   },
   "news": [
+    {
+      "title": "한미사이언스, 약국 화장품 '프로-캄' EGF 제품군 3종 구축",
+      "office": "머니투데이",
+      "date": "202608211054",
+      "url": "https://n.news.naver.com/mnews/article/008/0005402945"
+    },
     {
       "title": "제이브이엠, 자동포장 특허 분쟁서 6년만에 승소",
       "office": "SBS Biz",
@@ -3195,10 +3201,10 @@
       "url": "https://n.news.naver.com/mnews/article/031/0001051228"
     },
     {
-      "title": "한미 JVM, 의약품 자동포장 특허침해 소송 승소",
-      "office": "아시아경제",
-      "date": "202608201612",
-      "url": "https://n.news.naver.com/mnews/article/277/0005805383"
+      "title": "한미 JVM, 6년 특허분쟁 승소…자동조제 핵심기술 지켰다",
+      "office": "조선비즈",
+      "date": "202608201358",
+      "url": "https://n.news.naver.com/mnews/article/366/0001187331"
     },
     {
       "title": "머리에 ‘톡톡’ 하루 두 번⋯한미약품 남성형 탈모약 ‘목시딜액5%’",
@@ -3211,12 +3217,6 @@
       "office": "조선비즈",
       "date": "202608200601",
       "url": "https://n.news.naver.com/mnews/article/366/0001187196"
-    },
-    {
-      "title": "탈모도 '셀프케어' 시대…한미약품, 약국용 미녹시딜 시장 공략",
-      "office": "파이낸셜뉴스",
-      "date": "202608192202",
-      "url": "https://n.news.naver.com/mnews/article/014/0005563761"
     }
   ],
   "_errors": {},
@@ -3224,13 +3224,13 @@
     "holdDays": 42,
     "windowNote": "42거래일 창, 비중첩",
     "n": 11,
-    "median": 16.8,
-    "p75": 36.3,
-    "p90": 40.4,
-    "max": 67.5,
+    "median": 7.0,
+    "p75": 34.9,
+    "p90": 56.8,
+    "max": 63.0,
     "recentN": 5,
-    "recentMedian": 18.4,
-    "recentP75": 28.0,
+    "recentMedian": 18.8,
+    "recentP75": 30.4,
     "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }
