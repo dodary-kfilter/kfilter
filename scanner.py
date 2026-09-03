@@ -1089,6 +1089,7 @@ def write_report_file(code, name, market, supply, raw, price_block,
         "code": code, "name": name, "market": market,
         "updated": now_kst().strftime("%Y-%m-%d %H:%M"),
         "supply_10d": supply,                                  # 외인/연기금 최근10일 (토스)
+        "splits": raw.get("splits") or [],                     # ★권리락 이력(액면분할·대규모 무상증자). 주가는 이미 보정돼 있다
         "supply_detail": supply_detail,                        # 투자자별 세부 + 외인보유율 추이
         "price_daily": price_block,                            # 일봉
         # ★지수 대비 — 변화점검·정밀분석이 "수급 파일 idxRel에 있다"고 지시하므로 여기 실어야 한다
@@ -1178,7 +1179,7 @@ def enrich_sector(sector_key, sector_name, members):
         # 상세(일별 수급·가격) 수집 — 총괄 분석용 원본
         try:
             raw = fetch_all(c)
-            detail = {}
+            detail = {"splits": raw.get("splits") or []}   # ★권리락 이력. 주가는 이미 보정돼 있다
             if raw.get("candles"):
                 try:
                     _c2 = parse_candles(raw["candles"])
