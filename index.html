@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-09-03a (예측 채점 — 궤적 기록 track_path · 시계열 파생값 검산 규칙) / 이전: 2026-08-21a (검색 한글명) -->
+<!-- build: 2026-09-03b (기록용 블록을 실물 전 경로에 부착 · 복사 출처 명시 · 전수 감사 도구) / 이전: 2026-09-03a (예측 채점) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -354,7 +354,7 @@ function cardBoth(it,i){
           <b style="color:var(--foreign)">외 ${volShort(it.f_net)} ${it.f_buydays}</b>
           <b style="color:var(--pension)">연 ${volShort(it.p_net)} ${it.p_buydays}</b></span>
       </div>
-      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
+      <button class="copybtn" onclick="copyPrompt(event,'${it.code}','both')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
       <span class="chev">⌄</span>
     </div>
     <div class="card-b">${renderEnrich(it.enrich)}</div>
@@ -410,7 +410,7 @@ function cardPort(it,i){
           <span class="tag port">${badge}</span></span>
         <span class="cs">${supHtml}${sub?`<span class="psub">${sub}</span>`:''}</span>
       </div>
-      <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
+      <button class="copybtn" onclick="copyPrompt(event,'${it.code}','port')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
       <span class="chev">⌄</span>
     </div>
     <div class="card-b">${body}</div>
@@ -885,6 +885,30 @@ ${RULE_COMMON}
 ## 무엇이 확인되면 틀린 것인가
 "X가 확인되면 이 판단은 틀린 것이다" — 한두 줄.
 ★가격을 미리 정하지 마라. 내려가면 그때 시장 전체가 빠진 것인지 이 대상만 빠진 것인지를 보고 다시 판단한다.
+
+## 기록용 블록
+★★[★골격]의 4다. 이 블록까지 있어야 리포트가 완성된다.
+★★★위치가 정해져 있다 — 리포트 ★★맨 앞이다. 제목보다도 위, ★파일의 첫 글자가 구분선(---)이어야 한다.
+   ★맨 끝에 붙이지 마라. 읽는 프로그램이 첫 줄만 보고 판단해서, 아래에 있으면 ★통째로 못 읽는다.
+   에러도 안 나고 조용히 무시되므로 ★틀려도 아무도 모른다. 그래서 위치가 내용보다 먼저다.
+★출력 순서 — ①이 블록 ②빈 줄 ③「# 종목명(코드)」제목 ④본문.
+★값만 채우고 키 이름·순서·구분선(---)은 바꾸지 마라. 숫자에 쉼표·원·달러 기호를 넣지 마라.
+
+---
+date: (오늘 날짜 YYYY-MM-DD)
+code: ${T}
+name: ${T}
+price: (현재가, 숫자만)
+target: (목표가, 숫자만. 못 불렀으면 비워둔다)
+horizon: (판정일 YYYY-MM-DD)
+thesis: (한 줄)
+grade: (매수/중립/매도)
+---
+
+★horizon은 ★반드시 날짜다. "10월 말"·"3분기 실적까지"로 쓰지 마라 — 그 시점의 실제 날짜를 적는다.
+★thesis는 ★「무엇이 확인되면 틀린 것인가」에 쓴 축을 그대로 옮긴다. 새로 만들지 마라.
+  그게 틀리면 목표가 통째로 무너지는 ★하나다. 여러 팩터를 종합해 불렀어도 가장 무거운 것 하나만 적는다.
+★목표를 못 불렀으면 target을 비우고 grade에 중립을 적는다. 블록은 그래도 붙인다.
 `;
 }
 
@@ -968,6 +992,30 @@ ${RULE_COMMON}
 ## 무엇이 확인되면 틀린 것인가
 "X가 확인되면 이 판단은 틀린 것이다" — 한두 줄.
 ★가격을 미리 정하지 마라. 내려가면 그때 시장 전체가 빠진 것인지 이 대상만 빠진 것인지를 보고 다시 판단한다.
+
+## 기록용 블록
+★★[★골격]의 4다. 이 블록까지 있어야 리포트가 완성된다.
+★★★위치가 정해져 있다 — 리포트 ★★맨 앞이다. 제목보다도 위, ★파일의 첫 글자가 구분선(---)이어야 한다.
+   ★맨 끝에 붙이지 마라. 읽는 프로그램이 첫 줄만 보고 판단해서, 아래에 있으면 ★통째로 못 읽는다.
+   에러도 안 나고 조용히 무시되므로 ★틀려도 아무도 모른다. 그래서 위치가 내용보다 먼저다.
+★출력 순서 — ①이 블록 ②빈 줄 ③「# 종목명(코드)」제목 ④본문.
+★값만 채우고 키 이름·순서·구분선(---)은 바꾸지 마라. 숫자에 쉼표·원·달러 기호를 넣지 마라.
+
+---
+date: (오늘 날짜 YYYY-MM-DD)
+code: ${code}
+name: ${name}
+price: (현재가, 숫자만)
+target: (목표가, 숫자만. 못 불렀으면 비워둔다)
+horizon: (판정일 YYYY-MM-DD)
+thesis: (한 줄)
+grade: (매수/중립/매도)
+---
+
+★horizon은 ★반드시 날짜다. "10월 말"·"3분기 실적까지"로 쓰지 마라 — 그 시점의 실제 날짜를 적는다.
+★thesis는 ★「무엇이 확인되면 틀린 것인가」에 쓴 축을 그대로 옮긴다. 새로 만들지 마라.
+  그게 틀리면 목표가 통째로 무너지는 ★하나다. 여러 팩터를 종합해 불렀어도 가장 무거운 것 하나만 적는다.
+★목표를 못 불렀으면 target을 비우고 grade에 중립을 적는다. 블록은 그래도 붙인다.
 `;
 }
 
@@ -1071,6 +1119,30 @@ ${RULE_COMMON}
 ## 무엇이 확인되면 틀린 것인가
 "X가 확인되면 이 판단은 틀린 것이다" — 한두 줄.
 ★가격을 미리 정하지 마라. 내려가면 그때 시장 전체가 빠진 것인지 이 대상만 빠진 것인지를 보고 다시 판단한다.
+
+## 기록용 블록
+★★[★골격]의 4다. 이 블록까지 있어야 리포트가 완성된다.
+★★★위치가 정해져 있다 — 리포트 ★★맨 앞이다. 제목보다도 위, ★파일의 첫 글자가 구분선(---)이어야 한다.
+   ★맨 끝에 붙이지 마라. 읽는 프로그램이 첫 줄만 보고 판단해서, 아래에 있으면 ★통째로 못 읽는다.
+   에러도 안 나고 조용히 무시되므로 ★틀려도 아무도 모른다. 그래서 위치가 내용보다 먼저다.
+★출력 순서 — ①이 블록 ②빈 줄 ③「# 종목명(코드)」제목 ④본문.
+★값만 채우고 키 이름·순서·구분선(---)은 바꾸지 마라. 숫자에 쉼표·원·달러 기호를 넣지 마라.
+
+---
+date: (오늘 날짜 YYYY-MM-DD)
+code: ${x.code}
+name: ${x.name}
+price: (현재가, 숫자만)
+target: (목표가, 숫자만. 못 불렀으면 비워둔다)
+horizon: (판정일 YYYY-MM-DD)
+thesis: (한 줄)
+grade: (매수/중립/매도)
+---
+
+★horizon은 ★반드시 날짜다. "10월 말"·"3분기 실적까지"로 쓰지 마라 — 그 시점의 실제 날짜를 적는다.
+★thesis는 ★「무엇이 확인되면 틀린 것인가」에 쓴 축을 그대로 옮긴다. 새로 만들지 마라.
+  그게 틀리면 목표가 통째로 무너지는 ★하나다. 여러 팩터를 종합해 불렀어도 가장 무거운 것 하나만 적는다.
+★목표를 못 불렀으면 target을 비우고 grade에 중립을 적는다. 블록은 그래도 붙인다.
 `;
 }
 
@@ -1155,6 +1227,30 @@ A~F 중 무엇 + 실제 재료. 재료일과 정배열 진입일의 선후 — �
 ## 무엇이 확인되면 틀린 것인가
 "X가 확인되면 이 판단은 틀린 것이다" — 한두 줄.
 ★가격을 미리 정하지 마라. 내려가면 그때 시장 전체가 빠진 것인지 이 대상만 빠진 것인지를 보고 다시 판단한다.
+
+## 기록용 블록
+★★[★골격]의 4다. 이 블록까지 있어야 리포트가 완성된다.
+★★★위치가 정해져 있다 — 리포트 ★★맨 앞이다. 제목보다도 위, ★파일의 첫 글자가 구분선(---)이어야 한다.
+   ★맨 끝에 붙이지 마라. 읽는 프로그램이 첫 줄만 보고 판단해서, 아래에 있으면 ★통째로 못 읽는다.
+   에러도 안 나고 조용히 무시되므로 ★틀려도 아무도 모른다. 그래서 위치가 내용보다 먼저다.
+★출력 순서 — ①이 블록 ②빈 줄 ③「# 종목명(코드)」제목 ④본문.
+★값만 채우고 키 이름·순서·구분선(---)은 바꾸지 마라. 숫자에 쉼표·원·달러 기호를 넣지 마라.
+
+---
+date: (오늘 날짜 YYYY-MM-DD)
+code: ${x.code}
+name: ${x.name}
+price: (현재가, 숫자만)
+target: (목표가, 숫자만. 못 불렀으면 비워둔다)
+horizon: (판정일 YYYY-MM-DD)
+thesis: (한 줄)
+grade: (매수/중립/매도)
+---
+
+★horizon은 ★반드시 날짜다. "10월 말"·"3분기 실적까지"로 쓰지 마라 — 그 시점의 실제 날짜를 적는다.
+★thesis는 ★「무엇이 확인되면 틀린 것인가」에 쓴 축을 그대로 옮긴다. 새로 만들지 마라.
+  그게 틀리면 목표가 통째로 무너지는 ★하나다. 여러 팩터를 종합해 불렀어도 가장 무거운 것 하나만 적는다.
+★목표를 못 불렀으면 target을 비우고 grade에 중립을 적는다. 블록은 그래도 붙인다.
 `;
 }
 
@@ -2321,11 +2417,19 @@ grade: (매수/중립/매도)
 ★목표를 못 불렀으면 target을 비우고 grade에 중립을 적는다. 블록은 그래도 붙인다.
 `;
 }
-function copyPrompt(ev, code){
+function copyPrompt(ev, code, src){
   ev.stopPropagation();
-  const pool=[...(DATA&&DATA.portfolio||[]), ...(DATA&&DATA.both||[])];
-  const it=pool.find(x=>x.code===code);
-  if(!it) return;
+  // ★출처를 명시받는다. 같은 코드가 portfolio와 both에 동시에 있으면
+  //   find가 앞선 배열만 집어 엉뚱한 종목 프롬프트가 복사되기 때문이다.
+  const arr = src==='both' ? (DATA&&DATA.both||[])
+            : src==='port' ? (DATA&&DATA.portfolio||[])
+            : [...(DATA&&DATA.portfolio||[]), ...(DATA&&DATA.both||[])];
+  const it=arr.find(x=>x.code===code);
+  if(!it){
+    // ★조용히 끝내면 클립보드에 직전 내용이 남아 다른 종목이 붙는다. 반드시 알린다.
+    try{ alert('종목 데이터를 찾지 못했습니다. 화면을 새로고침한 뒤 다시 눌러주세요. (' + code + ')'); }catch(e){}
+    return;
+  }
   const text=buildPrompt(it);
   const btn=ev.currentTarget;
   const done=()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
@@ -2349,7 +2453,10 @@ function copyOne(ev, code, isV){
   ev.stopPropagation();
   const pool = isV ? (DATA&&DATA.value_pick||[]) : (DATA&&DATA.momentum||[]);
   const it = pool.find(x=>x.code===code);
-  if(!it) return;
+  if(!it){
+    try{ alert('종목 데이터를 찾지 못했습니다. 화면을 새로고침한 뒤 다시 눌러주세요. (' + code + ')'); }catch(e){}
+    return;
+  }
   const text = isV ? buildValueOne(it) : buildMomentumOne(it);
   const btn=ev.currentTarget;
   const done=()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
