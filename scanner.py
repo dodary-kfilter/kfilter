@@ -897,9 +897,102 @@ def load_prev_report(code):
     return h, body
 
 
-def track_progress(hdr, now_price):
+def fetch_us_candles(ticker, rng="1y"):
+    """[예측 채점용] 미국 종목 일봉. 야후 chart API — 실패해도 None만 돌려 본류를 막지 않는다.
+    ★야후 등락률은 거래일 누락으로 부호까지 틀리는 사례가 있어 시세 표기에는 쓰지 않는다.
+      여기서는 궤적 계산(고가·저가·종가)에만 쓴다."""
+    try:
+        u = (f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+             f"?range={rng}&interval=1d")
+        r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=12)
+        res = (r.json().get("chart") or {}).get("result") or []
+        if not res:
+            return None
+        ts = res[0].get("timestamp") or []
+        q = ((res[0].get("indicators") or {}).get("quote") or [{}])[0]
+        out = []
+        for i, t in enumerate(ts):
+            c = (q.get("close") or [None])[i] if i < len(q.get("close") or []) else None
+            if c is None:
+                continue
+            dt = datetime.fromtimestamp(t, timezone.utc).strftime("%Y-%m-%d")
+            out.append([dt, (q.get("open") or [None])[i], (q.get("high") or [None])[i],
+                        (q.get("low") or [None])[i], c, (q.get("volume") or [None])[i]])
+        return out or None
+    except Exception:
+        return None
+
+
+def track_path(hdr, candles):
+    """[예측 채점] 진입일 이후 실제 궤적. 저장하지 않고 일봉에서 매번 계산한다.
+
+    ★reachedPct 하나만으로는 '목표는 맞았는데 못 버텼다'와 '애초에 방향이 틀렸다'가
+      구분되지 않는다. 목표를 넘겼다 되돌아온 예측이 판정일에 0%면 완전 실패로
+      기록되는데, 실제로는 방향이 맞았고 타이밍이 문제였던 것이다. 그 둘을 가른다.
+    ★소급 계산이라 나중에 채점 기준을 바꿔도 과거 예측이 전부 새 기준으로 다시 매겨진다.
+    """
+    if not hdr or not candles:
+        return None
+    p0, tgt, d0 = hdr.get("price"), hdr.get("target"), str(hdr.get("date") or "")
+    if not p0 or not tgt or not d0:
+        return None
+    span = tgt - p0
+    if span == 0:
+        return None
+    up = span > 0                       # 상방 예측이면 고가, 하방이면 저가가 진척이다
+
+    rows = []
+    for r in candles:
+        try:
+            dt = str(r[0])[:10]
+            if dt < d0:
+                continue
+            rows.append((dt, float(r[2]), float(r[3]), float(r[4])))   # 날짜, 고, 저, 종
+        except Exception:
+            continue
+    if not rows:
+        return None
+
+    best = worst = None
+    hit_i = None
+    for i, (dt, hi, lo, cl) in enumerate(rows):
+        fav = hi if up else lo          # 예측 방향으로 가장 멀리 간 값
+        adv = lo if up else hi          # 반대로 가장 멀리 간 값
+        rf = (fav - p0) / span * 100
+        ra = (adv - p0) / span * 100
+        if best is None or rf > best[1]:
+            best = (dt, rf, fav)
+        if worst is None or ra < worst[1]:
+            worst = (dt, ra, adv)
+        if hit_i is None and rf >= 100:
+            hit_i = i
+
+    cur = (rows[-1][3] - p0) / span * 100
+    if hit_i is not None:               verdict = "도달"
+    elif best[1] >= 50:                 verdict = "부분"
+    elif worst[1] <= -50:               verdict = "역행"
+    else:                               verdict = "미달"
+
+    return {
+        "bars":           len(rows),
+        "maxReached":     round(best[1], 1),
+        "maxReachedDate": best[0],
+        "maxPrice":       best[2],
+        "minReached":     round(worst[1], 1),
+        "minReachedDate": worst[0],
+        "curReached":     round(cur, 1),
+        "hitTarget":      hit_i is not None,
+        "daysToTarget":   (hit_i + 1) if hit_i is not None else None,
+        "verdict":        verdict,
+        "note": ("maxReached는 장중 고가(하방 예측이면 저가) 기준이다. "
+                 "종가 기준 curReached와 크게 벌어지면 목표에 닿았다 되돌아온 것이다."),
+    }
+
+
+def track_progress(hdr, now_price, candles=None):
     """직전 목표 대비 진척. price→target 구간에서 지금 몇 %를 갔는가.
-    ★도달률은 방향을 보존한다 — 매도 예측(목표<현재)이면 하락이 진척이다."""
+    ★도달률은 방향을 보존한다 — 매도 예측(목표<현재)이면 하락이 진척이다.
+    ★candles를 주면 진입일 이후 궤적(최고/최저 도달률·목표 터치 여부)까지 붙는다."""
     if not hdr or now_price is None:
         return None
     p0, tgt = hdr.get("price"), hdr.get("target")
@@ -909,7 +1002,7 @@ def track_progress(hdr, now_price):
     if span == 0:
         return None
     moved = now_price - p0
-    return {
+    out = {
         "prevDate":   hdr.get("date"),
         "prevPrice":  p0,
         "prevTarget": tgt,
@@ -922,6 +1015,13 @@ def track_progress(hdr, now_price):
         "expired":    bool(hdr.get("horizon") and
                            str(hdr["horizon"]) < now_kst().strftime("%Y-%m-%d")),
     }
+    try:
+        path = track_path(hdr, candles) if candles else None
+        if path:
+            out["path"] = path
+    except Exception:
+        pass
+    return out
 
 
 def write_report_file(code, name, market, supply, raw, price_block,
@@ -983,8 +1083,9 @@ def write_report_file(code, name, market, supply, raw, price_block,
                     "header": {k: v for k, v in hdr.items()},
                     "body": body,
                 }
+                _pc = parse_candles(raw["candles"]) if raw.get("candles") else None
                 payload["prev_track"] = track_progress(
-                    hdr, (price_block or {}).get("now"))
+                    hdr, (price_block or {}).get("now"), _pc)
         except Exception as e:
             errs["prev_report"] = f"{type(e).__name__}: {e}"
 
@@ -1235,7 +1336,8 @@ def main():
                             try:
                                 hdr, body = load_prev_report(tk)
                                 if hdr:
-                                    entry["enrich"]["prevTrack"] = track_progress(hdr, q["now"])
+                                    entry["enrich"]["prevTrack"] = track_progress(
+                                        hdr, q["now"], fetch_us_candles(tk))
                             except Exception:
                                 pass
                     ok = True
