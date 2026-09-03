@@ -1140,9 +1140,10 @@ def enrich_sector(sector_key, sector_name, members):
                 try:
                     _c2 = parse_candles(raw["candles"])
                     detail["price"] = compute_price_block(_c2)
-                    detail["idxRel"] = compute_index_relative(_c2, member.get("market") if isinstance(member, dict) else "KOSPI")
-                except Exception:
-                    pass
+                    detail["idxRel"] = compute_index_relative(_c2, m.get("market", "KOSPI"))
+                except Exception as e:
+                    # 조용히 넘기면 idxRel 누락을 아무도 모른다(실제로 NameError가 계속 삼켜졌다)
+                    print(f"  섹터 지표 계산 실패 {c}: {type(e).__name__}: {e}", flush=True)
             if raw.get("toss"):
                 try:
                     detail["supply_detail"] = build_supply_detail(raw["toss"])
