@@ -669,7 +669,8 @@ const RULE_COMMON = `[★이 리포트는 무엇을 위한 것인가]
   · 지수만큼 빠지고 지수만큼 올랐다 → 지금 반등은 방어력이 아니라 되돌림이다
   ★값은 "몇 %p"로 재지 말고 위 셋 중 어느 경우인지로 말하라.
 ★★수급도 같다. 한 구간만 보고 판정 문장을 쓰지 마라.
-  수급 파일에 5·20·60일 누적이 ★이미 계산돼 있다(cum_5d·cum_20d·cum_60d). 읽기만 하면 된다.
+  ★위에 수급 파일 링크가 있으면 5·20·60일 누적이 ★이미 계산돼 있다(cum_5d·cum_20d·cum_60d). 읽기만 하면 된다.
+  ★링크가 없으면 그 파일은 이 종목에 존재하지 않는다. 찾지 말고 investor/days 60일을 받아 직접 구간을 잘라라.
   · 세 구간이 같은 방향 → 방향이 굳었다
   · 긴 구간은 매도인데 짧은 구간이 매수 → ★전환 중이다. 이걸 "수급이 안 따라온다"로 쓰지 마라
   · 긴 구간은 매수인데 짧은 구간이 매도 → 차익 실현 국면이다
@@ -1606,11 +1607,13 @@ const RULE_KR = `[데이터 취득]
    · 수급  /api/investor/days?symbolCode=A{코드}&perPage=60&page=1 — 외국인·기관 60일(개인 없음)
    · 재무  /api/quote/A{코드}/financials — 확정치만(data.QUARTER / data.YEAR)
    · 공시  /api/disclosures?symbolCode=A{코드}&perPage=40&page=1 — ★40건이어야 분기 단위 원인(「매출액또는손익구조 변경」)이 잡힌다
-★ 2차(다음이 안 주는 것) — 컨센·목표주가·증권사리포트·뉴스는 수급 파일에 이미 있다(consensus / researches / news / peers). 없을 때만 한경컨센서스(consensus.hankyung.com).
+★ 2차(다음이 안 주는 것) — 컨센·목표주가·증권사리포트·뉴스.
+   ★위에 수급 파일 링크가 있으면 거기 다 있다(consensus / researches / news / industry_peers).
+   ★링크가 없으면 그 파일은 이 종목에 없다. 찾지 말고 한경컨센서스(consensus.hankyung.com)와 검색으로 대체하라.
    공시 본문은 DART(dsaf001/main.do?rcpNo= → dcmNo → report/viewer.do, cp949).
 ★★검색 전에 이미 가진 것부터 봐라 — 원인의 대부분은 공시에 있다.
    1  공시(disclosures) — 실적·수주·증자·소송·권리락. 제목만 봐도 원인이 보인다.
-   2  수급 파일 — news / researches / consensus / peers
+   2  수급 파일 — news / researches / consensus / industry_peers. ★위에 링크가 있을 때만이다. 없으면 이 단계를 건너뛴다
    3  companySummary — 사업 구조. 검색 불필요.
    4  ★여기까지 없으면 그때 검색. 대상은 업황·전방 수요·정책·원자재뿐이다.
    ★검색은 최대 2회로 묶어라. 한 번 확보한 결과는 여러 항목에 재사용하고, 같은 내용을 다시 찾지 마라.
