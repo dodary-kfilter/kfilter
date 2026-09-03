@@ -96,6 +96,22 @@ const check = (grp, it, text, needBlock) => {
     // ★매크로(지수·섹터)는 대상 이름으로만 쓰고 티커/코드는 안 쓴다(설계). 이름으로 검사한다.
     const idKey = isMacro(it) ? exp.name : exp.code;
     if (!text.includes(String(idKey))) problems.push(`본문에 ${idKey} 없음`);
+
+    // ★★프롬프트가 지시하는 데이터가 실제로 손에 들어오는지 검사한다.
+    //   2026-09-03에 배경 섹션을 넣으며 industry_peers/researches/news/consensus를
+    //   조건 없이 "읽어라"로 시켰는데, 저가매수·모멘텀·검색 종목은 report-data 파일이
+    //   대부분 없어(20개 중 1개, 59개 중 3개) 그 자리가 통째로 비었다.
+    //   → "블록이 있나"만 보는 검사로는 이 유형을 못 잡는다.
+    const refsFile = /industry_peers|researches|consensus|prev_track|target_context/.test(text);
+    if (refsFile) {
+      const conditional = text.includes('수급 파일이 있으면') || text.includes('있으면');
+      if (!conditional) problems.push('수급 파일 필드를 조건 없이 지시');
+      // 국내 개별 경로는 파일 경로를 알려줘야 열어볼 수 있다
+      // ★미국 종목은 report-data가 아예 생성되지 않는다(수급 원천 없음). 경로를 줄 수 없다.
+      const isUS = it.ptype==='us' || /^[A-Z.^]+$/.test(String(it.code));
+      const needLink = !isUS && ['동시수급','저가매수','모멘텀','검색-국내','관심종목'].includes(grp);
+      if (needLink && !text.includes('report-data/')) problems.push('수급 파일 경로 미제공');
+    }
   }
   rows.push({ grp, code:it.code, name:it.name, len: text?text.length:0, problems });
 };
