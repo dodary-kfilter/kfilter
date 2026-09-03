@@ -128,6 +128,41 @@ const P = new Set((DATA.portfolio||[]).map(x=>x.code));
 const B = new Set((DATA.both||[]).map(x=>x.code));
 const dup = [...P].filter(c=>B.has(c));
 
+// ★★프롬프트 내부 정합 검사 — 2026-09-03 전량 정독에서 충돌 7건이 나온 뒤 추가.
+//   "블록이 있나 / 종목이 맞나"만 보는 검사로는 아래 유형을 못 잡는다.
+const CONFLICT = [
+  ['현재가 출처 상충', ['다시 받지 마라. 해석만', '이 대상의 데이터를 새로 받아라']],
+  ['배경 분량 상충',   ['0과 1이 길어지면']],
+  ['깨진 참조',        ['[스캔 지표] 항목에 적힌']],
+  ['섹션 제목 중복',   ['[★1 — ', '[★2 — ']],
+];
+const structRows = [];
+for (const [name, text] of [['공통', Object.values({}).length ? '' : null]].filter(()=>false)) {}
+{
+  // 대표 경로 하나씩 뽑아 내부 정합을 본다
+  const samples = {
+    '동시수급-개별': (DATA.both||[])[0] && viaPrompt(DATA.both[0].code,'both'),
+    '저가매수-개별': (DATA.value_pick||[])[0] && viaOne(DATA.value_pick[0].code,true),
+    '모멘텀-개별':   (DATA.momentum||[])[0] && viaOne(DATA.momentum[0].code,false),
+    '검색-국내':     buildSearchOne('051900','테스트'),
+    '검색-미국':     buildSearchUS('NVDA'),
+  };
+  for (const [nm, txt] of Object.entries(samples)) {
+    if (!txt) continue;
+    const probs = [];
+    for (const [label, pats] of CONFLICT)
+      for (const pt of pats) if (txt.includes(pt)) probs.push(`${label}(${pt.slice(0,14)})`);
+    if (txt.includes('${')) probs.push('템플릿 미치환');
+    for (const w of ['undefined','NaN']) if (txt.includes(w)) probs.push(w);
+    // 같은 [섹션] 제목 중복
+    const secs = txt.split('\n').filter(l=>/^\[.+\]$/.test(l));
+    const dup = secs.filter((v,i)=>secs.indexOf(v)!==i);
+    if (dup.length) probs.push('중복섹션 '+[...new Set(dup)].join(','));
+    if (probs.length) structRows.push({ grp:'내부정합', code:nm, name:nm, problems:probs });
+  }
+}
+rows.push(...structRows);
+
 const bad = rows.filter(r=>r.problems.length);
 const byGrp = {};
 for (const r of rows) {
