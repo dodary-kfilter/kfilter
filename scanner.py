@@ -209,6 +209,45 @@ def parse_candles(raw):
 
 _IDX_CACHE = {}
 
+def adjust_splits(day, shares):
+    """[권리락 보정] 액면분할·대규모 무상증자로 끊긴 주가 시계열을 잇는다.
+
+    ★두 조건을 ★모두 만족할 때만 보정한다.
+      ① 상장주식수가 1.5배 이상 늘거나 0.67배 이하로 줄었다(screener의 VP_SHARE 기준과 동일)
+      ② 그날 시가총액이 연속이다 — 가격배율 × 주식수배율이 0.7~1.3
+    ★②가 없으면 ETF 설정·환매를 권리락으로 오인한다. KODEX 레버리지는 좌수가
+      매일 5~12% 오르내리지만 가격은 그대로라 ②에서 전부 걸러진다(실측 100여 건).
+    ★가격만 급락하고 주식수가 그대로면 실제 하락이므로 건드리지 않는다.
+
+    day/shares: 오래된→최신, 같은 길이. 반환 (보정된 day, 이벤트 목록)
+    """
+    n = len(day)
+    if n < 2 or len(shares) != n:
+        return day, []
+    events, factor, f = [], [1.0] * n, 1.0
+    for i in range(n - 1, 0, -1):
+        a, b = shares[i - 1], shares[i]
+        pa, pb = day[i - 1][4], day[i][4]
+        if a and b and pa and pb:
+            r = b / a
+            if (r >= 1.5 or r <= 0.67) and 0.7 <= (pb / pa) * r <= 1.3:
+                f *= a / b
+                events.append({"date": day[i][0], "shareRatio": round(r, 4)})
+        factor[i - 1] = f
+    if not events:
+        return day, []
+    out = []
+    for i, d in enumerate(day):
+        k = factor[i]
+        if k == 1.0:
+            out.append(d)
+            continue
+        out.append([d[0]]
+                   + [(round(v * k, 2) if isinstance(v, (int, float)) else v) for v in d[1:5]]
+                   + [(round(d[5] / k) if isinstance(d[5], (int, float)) else d[5])])
+    return out, events
+
+
 def _index_days(market="KOSPI"):
     """코스피·코스닥 일봉 {날짜: 종가}. 프로세스당 1회만 받는다."""
     mk = "KOSDAQ" if str(market).upper() == "KOSDAQ" else "KOSPI"
@@ -818,7 +857,11 @@ def fetch_all(code):
         day = [[(x.get("date") or "")[:10], x.get("openingPrice"), x.get("highPrice"),
                 x.get("lowPrice"), x.get("tradePrice"), x.get("accTradeVolume")]
                for x in reversed(rows) if x.get("tradePrice")]
+        shr = [x.get("listedSharesCount")
+               for x in reversed(rows) if x.get("tradePrice")]
+        day, splits = adjust_splits(day, shr)
         out["candles"]   = day
+        out["splits"]    = splits
         out["candles_w"] = _resample(day, "W")
         out["candles_m"] = _resample(day, "M")
     except Exception as e:

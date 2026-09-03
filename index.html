@@ -2311,13 +2311,22 @@ function copyPrompt(ev, code){
   const pool=[...(DATA&&DATA.portfolio||[]), ...(DATA&&DATA.both||[])];
   const it=pool.find(x=>x.code===code);
   if(!it) return;
-  const text=buildPrompt(it);
   const btn=ev.currentTarget;
+  let text;
+  try{ text=buildPrompt(it); }catch(e){ copyFailed(btn,e); return; }
   const done=()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
     setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
   }else{ fallbackCopy(text,done); }
+}
+function copyFailed(btn, err, isHtml){
+  // ★조용히 죽지 않게 한다 — 예전엔 빌더가 터지면 버튼이 무반응이라 원인을 알 수 없었다.
+  console.error('프롬프트 생성 실패:', err);
+  const o = isHtml ? btn.innerHTML : btn.textContent;
+  const set = v => { if(isHtml) btn.innerHTML=v; else btn.textContent=v; };
+  set('생성 실패 — ↻ 새로고침'); btn.classList.add('copied');
+  setTimeout(()=>{ set(o); btn.classList.remove('copied'); }, 3000);
 }
 function fallbackCopy(text, done){
   const ta=document.createElement('textarea'); ta.value=text;
@@ -2335,8 +2344,9 @@ function copyOne(ev, code, isV){
   const pool = isV ? (DATA&&DATA.value_pick||[]) : (DATA&&DATA.momentum||[]);
   const it = pool.find(x=>x.code===code);
   if(!it) return;
-  const text = isV ? buildValueOne(it) : buildMomentumOne(it);
   const btn=ev.currentTarget;
+  let text;
+  try{ text = isV ? buildValueOne(it) : buildMomentumOne(it); }catch(e){ copyFailed(btn,e); return; }
   const done=()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
     setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
   if(navigator.clipboard && navigator.clipboard.writeText){
@@ -2345,10 +2355,11 @@ function copyOne(ev, code, isV){
 }
 function copyScreen(ev){
   ev.stopPropagation();
-  const text = CUR==='value_pick' ? buildValuePrompt()
-             : CUR==='momentum'   ? buildMomentumPrompt()
-             : buildScreenPrompt();
   const btn=ev.currentTarget;
+  let text;
+  try{ text = CUR==='value_pick' ? buildValuePrompt()
+             : CUR==='momentum'   ? buildMomentumPrompt()
+             : buildScreenPrompt(); }catch(e){ copyFailed(btn,e,true); return; }
   const done=()=>{ const o=btn.innerHTML; btn.innerHTML='복사됨 ✓'; btn.classList.add('copied');
     setTimeout(()=>{btn.innerHTML=o; btn.classList.remove('copied');},1600); };
   if(navigator.clipboard && navigator.clipboard.writeText){
@@ -2568,8 +2579,9 @@ function doSearch(){
 
 function copySearchUS(ev, ticker){
   ev.stopPropagation();
-  const text = buildSearchUS(ticker);
   const btn = ev.currentTarget;
+  let text;
+  try{ text = buildSearchUS(ticker); }catch(e){ copyFailed(btn,e); return; }
   const done = ()=>{ const t=btn.textContent; btn.textContent='복사됨'; setTimeout(()=>btn.textContent=t,1200); };
   if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, ()=>fallbackCopy(text, done)); }
   else fallbackCopy(text, done);
@@ -2577,8 +2589,9 @@ function copySearchUS(ev, ticker){
 
 function copySearch(ev, code, name){
   ev.stopPropagation();
-  const text = buildSearchOne(code, name);
   const btn = ev.currentTarget;
+  let text;
+  try{ text = buildSearchOne(code, name); }catch(e){ copyFailed(btn,e); return; }
   const done = ()=>{ const o=btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
     setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
   if(navigator.clipboard && navigator.clipboard.writeText){
