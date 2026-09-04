@@ -355,7 +355,7 @@ def compute_price_block(candles):
         "pocket": pocket,
     }
 
-def parse_integration(obj, now_price=None):
+def parse_integration(obj, now_price=None, code=None):
     ti = {d.get("code"): d.get("value") for d in (obj.get("totalInfos") or [])}
     high52, low52 = parse_num(ti.get("highPriceOf52Weeks")), parse_num(ti.get("lowPriceOf52Weeks"))
     pos = None
@@ -378,7 +378,8 @@ def parse_integration(obj, now_price=None):
             "pbr": parse_num(ti.get("pbr")), "eps": parse_num(ti.get("eps")),
             "fwdEps": parse_num(ti.get("cnsEps")), "bps": parse_num(ti.get("bps")),
             "divYield": parse_num(ti.get("dividendYieldRatio")),
-            "foreignRate": parse_num(ti.get("foreignRate")),
+            # ★네이버 foreignRate는 옛 주식수를 쓰는 경우가 있어 다음 실측을 우선한다(daum_foreign_rate 주석 참고)
+            "foreignRate": (daum_foreign_rate(code) if code else None) or parse_num(ti.get("foreignRate")),
             "marketCap": parse_num(ti.get("marketValue")),   # ★문자열이면 시총이 0으로 잡힌다(실측 7종목)
         },
         "pos52w": {"high": high52, "low": low52, "pct": pos},
@@ -387,6 +388,30 @@ def parse_integration(obj, now_price=None):
         "reports": reports,
         "peers": peers[:4],
     }
+
+DAUM_QUOTES_URL = "https://finance.daum.net/api/quotes/A{code}?summary=false&changeStatistics=true"
+
+
+def daum_foreign_rate(code):
+    """[정정] 외국인 지분율을 다음의 보유주식÷상장주식으로 직접 계산한다.
+
+    ★네이버 integration의 foreignRate는 ★옛 상장주식수를 쓰는 경우가 있다.
+      실측 — 대한항공 48.05%(실제 24.02%, 주식수 2.000배 차이),
+             한국가스공사 43.50%(실제 13.05%, 3.333배). 합병·증자로 주식수가 바뀐 종목에서 난다.
+      13종목 중 2종목이 틀렸고 나머지 11종목은 소수점까지 일치했다.
+    ★두 배로 틀리면 "외국인이 절반을 들었다"가 되어 판단이 통째로 바뀐다.
+    반환: 퍼센트(예: 24.02) 또는 None
+    """
+    try:
+        r = requests.get(DAUM_QUOTES_URL.format(code=code), headers=HDR_DAUM, timeout=12)
+        d = r.json() or {}
+        fo, ls = d.get("foreignOwnShares"), d.get("listedShareCount")
+        if fo and ls:
+            return round(fo / ls * 100, 2)
+    except Exception:
+        pass
+    return None
+
 
 def parse_news(obj):
     items = []
@@ -1275,7 +1300,7 @@ def enrich_stock(code, name="", market="", supply=None):
         out["supplyCum"] = _cum
     if raw.get("integ"):
         try:
-            out.update(parse_integration(raw["integ"], now_price))
+            out.update(parse_integration(raw["integ"], now_price, code))
         except Exception as e:
             out["_integErr"] = str(e)
     if raw.get("news"):
