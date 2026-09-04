@@ -39,6 +39,13 @@ ENRICH_DELAY = 0.4        # enrich: 종목당 간격(초, both만이라 소수)
 CANDLE_DAYS = 220         # 일봉 조회 일수(이평120 + 여유)
 POCKET_BINS = 20          # 매물대 가격대 구간 수
 POCKET_TOP  = 3           # 매물대 상위 N구간
+POCKET_DAYS = 120         # ★매물대 집계 구간(거래일). 전체(2년)를 쓰면 오래된 가격대가 구간을 지배한다.
+                          #   특히 권리락 보정 종목은 보정된 옛 가격이 하한을 크게 끌어내려
+                          #   상위 구간이 전부 현재가 아래로 몰린다(실측 — LS ELECTRIC 1:5 분할 후
+                          #   현재가 195,200인데 매물대가 26,260~70,096으로 잡혔다).
+                          #   ★120일 실측 — LS ELECTRIC 178,580~266,030(현재가의 0.91~1.36배),
+                          #   삼성전자 255,085~284,380(1.00~1.11배). 250일이면 삼성전자마저 102,800이 잡힌다.
+                          #   매물대는 "위로 어디서 막히는지"를 보는 값이라 반년이면 충분하다.
 HIST_DAYS   = 60          # 수급·외인소진율 일별 이력 보관 일수(토스 size=60 → "외국인 비중 길게")
 
 # 내 보유 종목(포트폴리오) — 수급 필터와 무관하게 항상 처리/표시
@@ -333,12 +340,22 @@ def compute_price_block(candles):
     aligned = all(x is not None for x in (m5, m20, m60, m120)) and m5 > m20 > m60 > m120
     trend20 = round((now - closes[-21]) / closes[-21] * 100, 2) if len(closes) >= 21 else None
     # 매물대: (종가,거래량) 가격대 빈으로 집계 → 상위 구간
+    # ★최근 POCKET_DAYS 구간만 쓴다. "위로 어디서 막히는지"를 보는 값이라 오래된 가격대는 방해만 된다.
+    # ★★그리고 현재가에서 크게 벗어난 구간은 뺀다. 권리락 보정 종목은 보정된 옛 가격이
+    #   한참 아래에 깔려 상위 구간을 다 가져간다(실측 — LS ELECTRIC 현재가 195,200에 매물대 26,260).
+    #   현재가의 0.4~2.5배 밖은 "지금 값을 막거나 받치는 물량"이 아니므로 집계에서 제외한다.
     pocket = []
-    lo, hi = min(closes), max(closes)
+    _c, _v = closes[-POCKET_DAYS:], vols[-POCKET_DAYS:]
+    _band = [(c, v) for c, v in zip(_c, _v) if now * 0.4 <= c <= now * 2.5]
+    if len(_band) >= 20:
+        pc, pv = [x[0] for x in _band], [x[1] for x in _band]
+    else:
+        pc, pv = _c, _v
+    lo, hi = min(pc), max(pc)
     if hi > lo:
         size = (hi - lo) / POCKET_BINS
         bins = [0.0] * POCKET_BINS
-        for c, v in zip(closes, vols):
+        for c, v in zip(pc, pv):
             k = min(int((c - lo) / size), POCKET_BINS - 1)
             bins[k] += v
         tot = sum(bins) or 1
