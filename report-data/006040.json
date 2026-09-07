@@ -2,16 +2,32 @@
   "code": "006040",
   "name": "동원산업",
   "market": "KOSPI",
-  "updated": "2026-09-06 15:29",
+  "updated": "2026-09-07 13:59",
   "supply_10d": {
-    "foreign_net_10d": 50502,
+    "foreign_net_10d": 47569,
     "foreign_buydays": "8/10",
-    "pension_net_10d": 21831,
+    "pension_net_10d": 20086,
     "pension_buydays": "8/10"
   },
   "splits": [],
   "supply_detail": {
     "recent_daily": [
+      {
+        "date": "2026-09-07",
+        "close": 37750,
+        "foreignRatio": 4.64,
+        "개인": 0,
+        "외국인": 477,
+        "기관계": 1000,
+        "금융투자": 0,
+        "투신": 0,
+        "사모": 0,
+        "보험": 0,
+        "은행": 0,
+        "기타금융": 0,
+        "연기금": 1000,
+        "기타법인": -1000
+      },
       {
         "date": "2026-09-04",
         "close": 38100,
@@ -955,64 +971,52 @@
         "기타금융": -2,
         "연기금": 16706,
         "기타법인": -37131
-      },
-      {
-        "date": "2026-06-11",
-        "close": 32300,
-        "foreignRatio": 3.76,
-        "개인": -2060,
-        "외국인": 29690,
-        "기관계": -7580,
-        "금융투자": -335,
-        "투신": -1989,
-        "사모": -10982,
-        "보험": 482,
-        "은행": 0,
-        "기타금융": 33,
-        "연기금": 5211,
-        "기타법인": -20061
       }
     ],
     "cum_5d": {
-      "개인": -29805,
-      "외국인": 19126,
-      "기관계": 16552,
-      "금융투자": -2549,
-      "투신": -83,
-      "사모": 7650,
-      "보험": 510,
+      "개인": -13012,
+      "외국인": 14449,
+      "기관계": 4723,
+      "금융투자": -3624,
+      "투신": -1987,
+      "사모": -219,
+      "보험": -39,
       "은행": 0,
       "기타금융": 0,
-      "연기금": 11024,
-      "기타법인": -4180
+      "연기금": 10592,
+      "기타법인": -5080
     },
     "cum_20d": {
-      "개인": -157650,
-      "외국인": 146581,
-      "기관계": 7774,
-      "금융투자": -4080,
-      "투신": -45596,
-      "사모": -8254,
-      "보험": -6189,
+      "개인": -137807,
+      "외국인": 131241,
+      "기관계": 3853,
+      "금융투자": -8988,
+      "투신": -44714,
+      "사모": -6965,
+      "보험": -6274,
       "은행": 2,
       "기타금융": 0,
-      "연기금": 71891,
-      "기타법인": -13742
+      "연기금": 70792,
+      "기타법인": -13332
     },
     "cum_60d": {
-      "개인": -334109,
-      "외국인": 375292,
-      "기관계": 276482,
-      "금융투자": 39060,
-      "투신": 47562,
-      "사모": 39354,
-      "보험": -6715,
+      "개인": -332049,
+      "외국인": 346079,
+      "기관계": 285062,
+      "금융투자": 39395,
+      "투신": 49551,
+      "사모": 50336,
+      "보험": -7197,
       "은행": -596,
-      "기타금융": 3643,
-      "연기금": 154174,
-      "기타법인": -370853
+      "기타금융": 3610,
+      "연기금": 149963,
+      "기타법인": -351792
     },
     "foreign_ratio_trend": [
+      {
+        "date": "2026-09-07",
+        "ratio": 4.64
+      },
       {
         "date": "2026-09-04",
         "ratio": 4.64
@@ -1248,41 +1252,37 @@
       {
         "date": "2026-06-12",
         "ratio": 3.82
-      },
-      {
-        "date": "2026-06-11",
-        "ratio": 3.76
       }
     ]
   },
   "price_daily": {
-    "now": 38100,
-    "prevClose": 37850,
-    "changePct": 0.66,
+    "now": 37750,
+    "prevClose": 38100,
+    "changePct": -0.92,
     "ma": {
-      "ma5": 38030.0,
+      "ma5": 37890.0,
       "ma20": 37805.0,
-      "ma60": 35099.2,
-      "ma120": 36390.0,
+      "ma60": 35190.0,
+      "ma120": 36384.2,
       "aligned": false,
       "vs": {
-        "ma5": 0.18,
-        "ma20": 0.78,
-        "ma60": 8.55,
-        "ma120": 4.7
+        "ma5": -0.37,
+        "ma20": -0.15,
+        "ma60": 7.27,
+        "ma120": 3.75
       }
     },
-    "trend20": 2.97,
+    "trend20": 0.0,
     "pocket": [
       {
         "low": 37575,
         "high": 38112,
-        "volPct": 10.2
+        "volPct": 10.7
       },
       {
         "low": 38112,
         "high": 38650,
-        "volPct": 11.2
+        "volPct": 10.5
       },
       {
         "low": 38650,
@@ -1294,33 +1294,29 @@
   "idxRel": {
     "peakClose": 50000,
     "peakDate": "2025-10-27",
-    "ddFromPeak": -23.8,
-    "idxSincePeak": 65.4,
-    "excessDd": -89.2,
-    "m1": 5.2,
-    "m1Idx": 1.3,
-    "m1Excess": 3.9,
-    "m6": 1.3,
-    "m6Idx": 31.3,
-    "m6Excess": -30.0
+    "ddFromPeak": -24.5,
+    "idxSincePeak": 72.2,
+    "excessDd": -96.7,
+    "m1": 2.0,
+    "m1Idx": 10.6,
+    "m1Excess": -8.6,
+    "m6": -3.2,
+    "m6Idx": 24.7,
+    "m6Excess": -27.9
   },
   "price_weekly": {
-    "now": 38100,
+    "now": 37750,
     "ma": {
       "ma5": 37960.0,
-      "ma10": 36190.0,
-      "ma20": 36055.0,
-      "ma60": 40997.5
+      "ma10": 36600.0,
+      "ma20": 36002.5,
+      "ma60": 40825.8
     },
     "aligned": false,
     "rangeHigh": 49650,
     "rangeLow": 29850,
-    "posPct": 41.7,
+    "posPct": 39.9,
     "recent": [
-      {
-        "d": "2026-03-09",
-        "c": 38450
-      },
       {
         "d": "2026-03-16",
         "c": 40800
@@ -1420,20 +1416,24 @@
       {
         "d": "2026-08-31",
         "c": 38100
+      },
+      {
+        "d": "2026-09-07",
+        "c": 37750
       }
     ]
   },
   "price_monthly": {
-    "now": 38100,
+    "now": 37750,
     "ma": {
-      "ma6": 36358.3,
-      "ma12": 39695.8,
-      "ma24": 39920.8
+      "ma6": 36300.0,
+      "ma12": 39666.7,
+      "ma24": 39906.2
     },
     "aligned": false,
     "rangeHigh": 48450,
     "rangeLow": 30350,
-    "posPct": 42.8,
+    "posPct": 40.9,
     "recent": [
       {
         "d": "2024-10-02",
@@ -1529,7 +1529,7 @@
       },
       {
         "d": "2026-09-01",
-        "c": 38100
+        "c": 37750
       }
     ]
   },
@@ -1537,12 +1537,12 @@
     {
       "code": "lastClosePrice",
       "key": "전일",
-      "value": "37,850"
+      "value": "38,100"
     },
     {
       "code": "openPrice",
       "key": "시가",
-      "value": "37,950",
+      "value": "38,300",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1552,7 +1552,7 @@
     {
       "code": "highPrice",
       "key": "고가",
-      "value": "38,350",
+      "value": "38,550",
       "compareToPreviousPrice": {
         "code": "2",
         "text": "상승",
@@ -1562,7 +1562,7 @@
     {
       "code": "lowPrice",
       "key": "저가",
-      "value": "37,700",
+      "value": "37,500",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
@@ -1572,17 +1572,17 @@
     {
       "code": "accumulatedTradingVolume",
       "key": "거래량",
-      "value": "34,748"
+      "value": "40,754"
     },
     {
       "code": "accumulatedTradingValue",
       "key": "대금",
-      "value": "13.2억"
+      "value": "15.4억"
     },
     {
       "code": "marketValue",
       "key": "시총",
-      "value": "1조 6,818억"
+      "value": "1조 6,685억"
     },
     {
       "code": "foreignRate",
@@ -1602,7 +1602,7 @@
     {
       "code": "per",
       "key": "PER",
-      "value": "3.88배",
+      "value": "3.85배",
       "valueDesc": "2026.06."
     },
     {
@@ -1614,7 +1614,7 @@
     {
       "code": "cnsPer",
       "key": "추정PER",
-      "value": "4.34배"
+      "value": "4.31배"
     },
     {
       "code": "cnsEps",
@@ -1636,7 +1636,7 @@
     {
       "code": "dividendYieldRatio",
       "key": "배당수익률",
-      "value": "3.02%",
+      "value": "3.04%",
       "valueDesc": "2026.03."
     },
     {
@@ -1648,7 +1648,7 @@
   ],
   "consensus": {
     "itemCode": "006040",
-    "createDate": "2026-09-03",
+    "createDate": "2026-09-04",
     "recommMean": "4.00",
     "priceTargetMean": "55,667"
   },
@@ -1659,7 +1659,7 @@
       "nm": "동원산업",
       "bnm": "하나증권",
       "tit": "2Q26 Pre: 비식품 선방",
-      "rcnt": "5011",
+      "rcnt": "5023",
       "wdt": "20260720"
     },
     {
@@ -1668,7 +1668,7 @@
       "nm": "동원산업",
       "bnm": "하나증권",
       "tit": "1Q26 Pre: 식품 호조 VS. 비식품 부진",
-      "rcnt": "9264",
+      "rcnt": "9274",
       "wdt": "20260403"
     }
   ],
@@ -1680,17 +1680,17 @@
       "reutersCode": "003230",
       "stockName": "삼양식품",
       "sosok": "0",
-      "closePrice": "1,417,000",
-      "compareToPreviousClosePrice": "-7,000",
+      "closePrice": "1,316,000",
+      "compareToPreviousClosePrice": "-101,000",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-0.49",
+      "fluctuationsRatio": "-7.13",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "10,674,282",
+      "marketValue": "9,913,447",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1718,17 +1718,17 @@
       "reutersCode": "271560",
       "stockName": "오리온",
       "sosok": "0",
-      "closePrice": "126,300",
-      "compareToPreviousClosePrice": "-3,000",
+      "closePrice": "122,400",
+      "compareToPreviousClosePrice": "-3,900",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-2.32",
+      "fluctuationsRatio": "-3.09",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "4,992,485",
+      "marketValue": "4,838,323",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1756,17 +1756,17 @@
       "reutersCode": "097950",
       "stockName": "CJ제일제당",
       "sosok": "0",
-      "closePrice": "183,400",
-      "compareToPreviousClosePrice": "-2,500",
+      "closePrice": "182,700",
+      "compareToPreviousClosePrice": "-700",
       "compareToPreviousPrice": {
         "code": "5",
         "text": "하락",
         "name": "FALLING"
       },
-      "fluctuationsRatio": "-1.34",
+      "fluctuationsRatio": "-0.38",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "2,760,937",
+      "marketValue": "2,750,399",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -1790,56 +1790,18 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
-      "itemCode": "004370",
-      "reutersCode": "004370",
-      "stockName": "농심",
-      "sosok": "0",
-      "closePrice": "430,000",
-      "compareToPreviousClosePrice": "-500",
-      "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
-      },
-      "fluctuationsRatio": "-0.12",
-      "accumulatedTradingVolume": "-",
-      "accumulatedTradingValue": "-",
-      "marketValue": "2,615,536",
-      "nav": "N/A",
-      "threeMonthEarningRate": "N/A",
-      "stockExchangeType": {
-        "code": "KS",
-        "zoneId": "Asia/Seoul",
-        "nationType": "KOR",
-        "delayTime": 0,
-        "startTime": "0900",
-        "endTime": "1530",
-        "closePriceSendTime": "1630",
-        "nameKor": "코스피",
-        "nameEng": "KOSPI",
-        "stockType": "domestic",
-        "nationCode": "KOR",
-        "nationName": "대한민국",
-        "name": "KOSPI"
-      },
-      "endUrl": "https://m.stock.naver.com/domestic/stock/004370",
-      "newPcUrl": "https://stock.naver.com/domestic/stock/004370"
-    },
-    {
-      "stockType": "domestic",
-      "stockEndType": "stock",
       "itemCode": "026960",
       "reutersCode": "026960",
       "stockName": "동서",
       "sosok": "0",
       "closePrice": "25,450",
-      "compareToPreviousClosePrice": "-250",
+      "compareToPreviousClosePrice": "0",
       "compareToPreviousPrice": {
-        "code": "5",
-        "text": "하락",
-        "name": "FALLING"
+        "code": "3",
+        "text": "보합",
+        "name": "UNCHANGED"
       },
-      "fluctuationsRatio": "-0.97",
+      "fluctuationsRatio": "0.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
       "marketValue": "2,537,365",
@@ -1866,21 +1828,59 @@
     {
       "stockType": "domestic",
       "stockEndType": "stock",
+      "itemCode": "004370",
+      "reutersCode": "004370",
+      "stockName": "농심",
+      "sosok": "0",
+      "closePrice": "413,000",
+      "compareToPreviousClosePrice": "-17,000",
+      "compareToPreviousPrice": {
+        "code": "5",
+        "text": "하락",
+        "name": "FALLING"
+      },
+      "fluctuationsRatio": "-3.95",
+      "accumulatedTradingVolume": "-",
+      "accumulatedTradingValue": "-",
+      "marketValue": "2,512,131",
+      "nav": "N/A",
+      "threeMonthEarningRate": "N/A",
+      "stockExchangeType": {
+        "code": "KS",
+        "zoneId": "Asia/Seoul",
+        "nationType": "KOR",
+        "delayTime": 0,
+        "startTime": "0900",
+        "endTime": "1530",
+        "closePriceSendTime": "1630",
+        "nameKor": "코스피",
+        "nameEng": "KOSPI",
+        "stockType": "domestic",
+        "nationCode": "KOR",
+        "nationName": "대한민국",
+        "name": "KOSPI"
+      },
+      "endUrl": "https://m.stock.naver.com/domestic/stock/004370",
+      "newPcUrl": "https://stock.naver.com/domestic/stock/004370"
+    },
+    {
+      "stockType": "domestic",
+      "stockEndType": "stock",
       "itemCode": "140410",
       "reutersCode": "140410",
       "stockName": "메지온",
       "sosok": "1",
-      "closePrice": "65,000",
-      "compareToPreviousClosePrice": "0",
+      "closePrice": "66,300",
+      "compareToPreviousClosePrice": "1,300",
       "compareToPreviousPrice": {
-        "code": "3",
-        "text": "보합",
-        "name": "UNCHANGED"
+        "code": "2",
+        "text": "상승",
+        "name": "RISING"
       },
-      "fluctuationsRatio": "0.00",
+      "fluctuationsRatio": "2.00",
       "accumulatedTradingVolume": "-",
       "accumulatedTradingValue": "-",
-      "marketValue": "1,990,408",
+      "marketValue": "2,030,216",
       "nav": "N/A",
       "threeMonthEarningRate": "N/A",
       "stockExchangeType": {
@@ -2864,6 +2864,12 @@
   },
   "disclosures": [
     {
+      "title": "동원산업(주) (정정)현금ㆍ현물 배당 결정",
+      "datetime": "2026-09-07 13:18:26",
+      "author": "KOSCOM",
+      "id": "20260907094401"
+    },
+    {
       "title": "동원산업(주) (정정)타인에대한채무보증결정",
       "datetime": "2026-09-02 17:32:32",
       "author": "KOSCOM",
@@ -3096,12 +3102,6 @@
       "datetime": "2026-02-11 14:28:26",
       "author": "KOSCOM",
       "id": "20260211013156"
-    },
-    {
-      "title": "동원산업(주) 매출액또는손익구조30%(대규모법인은15%)이상변경",
-      "datetime": "2026-02-11 14:27:44",
-      "author": "KOSCOM",
-      "id": "20260211013155"
     }
   ],
   "earnings_alert": {
@@ -3122,10 +3122,6 @@
       {
         "title": "동원산업(주) 연결재무제표기준영업(잠정)실적(공정공시)",
         "datetime": "2026-05-08 16:02:04"
-      },
-      {
-        "title": "동원산업(주) 매출액또는손익구조30%(대규모법인은15%)이상변경",
-        "datetime": "2026-02-11 14:27:44"
       }
     ],
     "consensus_cols": [
@@ -3135,40 +3131,40 @@
   },
   "supply_derived": {
     "cum_21_60d": {
-      "개인": -176459,
-      "외국인": 228711,
-      "기관계": 268708,
-      "금융투자": 43140,
-      "투신": 93158,
-      "사모": 47608,
-      "보험": -526,
+      "개인": -194242,
+      "외국인": 214838,
+      "기관계": 281209,
+      "금융투자": 48383,
+      "투신": 94265,
+      "사모": 57301,
+      "보험": -923,
       "은행": -598,
-      "기타금융": 3643,
-      "연기금": 82283,
-      "기타법인": -357111
+      "기타금융": 3610,
+      "연기금": 79171,
+      "기타법인": -338460
     },
     "pattern": {
       "외국인": "꾸준매집",
       "연기금": "꾸준매집",
       "기관계": "꾸준매집",
       "개인": "일관매도",
-      "사모": "U자형",
+      "사모": "혼조",
       "금융투자": "혼조"
     },
-    "foreign_avg_price": 35289,
+    "foreign_avg_price": 35549,
     "foreign_avg_note": null,
-    "foreign_avg_vs_now_pct": 8.0,
-    "foreign_buy_qty": 546484,
+    "foreign_avg_vs_now_pct": 6.2,
+    "foreign_buy_qty": 517271,
     "foreign_sell_qty": 171192,
-    "foreign_net_qty": 375292,
-    "foreign_net_ratio_pct": 68.7,
+    "foreign_net_qty": 346079,
+    "foreign_net_ratio_pct": 66.9,
     "close_range": {
       "low": 30050,
       "high": 38800
     },
-    "foreign_ratio_delta_60d": 0.88,
+    "foreign_ratio_delta_60d": 0.82,
     "foreign_ratio_max": 4.64,
-    "foreign_ratio_min": 3.76,
+    "foreign_ratio_min": 3.82,
     "foreign_ratio_is_60d_high": true
   },
   "valuation_derived": {
@@ -3206,11 +3202,11 @@
     "verdict": "저평가"
   },
   "volume_stats": {
-    "avg20": 47557,
-    "avg60": 56999,
-    "ratio_20_60": 0.83,
-    "today": 29379,
-    "today_vs_60": 0.52
+    "avg20": 46548,
+    "avg60": 56507,
+    "ratio_20_60": 0.82,
+    "today": 34559,
+    "today_vs_60": 0.61
   },
   "news": [
     {
@@ -3255,13 +3251,13 @@
     "holdDays": 42,
     "windowNote": "42거래일 창, 비중첩",
     "n": 11,
-    "median": 11.6,
-    "p75": 17.8,
-    "p90": 22.7,
-    "max": 26.6,
+    "median": 11.8,
+    "p75": 20.9,
+    "p90": 25.6,
+    "max": 36.6,
     "recentN": 5,
-    "recentMedian": 10.8,
-    "recentP75": 11.3,
+    "recentMedian": 8.6,
+    "recentP75": 10.4,
     "caveat": "표본이 적고 과거 국면에 좌우된다. 목표를 이 값에 맞추지 마라 — 부른 값이 과거 분포 어디쯤인지 자각하는 용도다."
   }
 }
