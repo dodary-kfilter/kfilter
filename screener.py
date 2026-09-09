@@ -391,6 +391,12 @@ def index_at(idx, market, date):
 
 
 # ───────────────────── 6. 분기 재무 캐시 (분기 갱신) ─────────────────────
+def _latest_quarter(data):
+    """캐시 전체에서 가장 앞선 분기(YYYY-MM). 이보다 뒤처진 종목이 갱신 대상이다."""
+    ds = [(v[0].get("date") or "")[:7] for v in data.values() if v]
+    return max(ds) if ds else ""
+
+
 def fetch_financials(symbol_codes, force=False):
     """QUARTER 4건을 캐시. ★매일 부르면 613회다 — 분기 캐시로 흡수해 호출 0회.
     캐시: {symbolCode: [{date, eps, op, sales, roe}, ...4건]}
@@ -400,6 +406,31 @@ def fetch_financials(symbol_codes, force=False):
         try:
             upd = datetime.fromisoformat(cache["updated"])
             need = _cache_stale(upd, 9)       # [C6] 분기재무: 9일 주기 — 펀더멘털(7일)과 어긋내 동시 갱신을 피한다
+            # ★★실적 시즌 보정 — 분기 확정치는 종목마다 공시 시점이 다르다.
+            #   캐시를 만든 날 아직 안 올라온 종목은 ★직전 분기가 최신으로 남고, 9일간 그대로 쓰인다.
+            #   실측 2026-09-09 — 798종목 중 160개(20%)가 2026-06 대신 2026-03을 최신으로 갖고 있었고,
+            #   솔브레인홀딩스는 영업이익률이 "0.8%"(1Q)로 나가 실제 2Q 15.3%와 ★방향이 반대였다.
+            #   → 캐시 전체가 아니라 ★뒤처진 종목만 다시 받는다. 호출은 그만큼만 는다.
+            _lag = [k for k, v in (cache.get("data") or {}).items()
+                    if v and (v[0].get("date") or "")[:7] < _latest_quarter(cache["data"])]
+            if _lag and not need:
+                print(f"  [캐시] 분기재무 뒤처진 {len(_lag)}종목만 갱신", flush=True)
+                _fresh = {}
+                def _one(sc):
+                    try:
+                        q = (_get(f"{DAUM}/quote/{sc}/financials", timeout=12).get("data") or {}).get("QUARTER") or []
+                        return sc, [{"date": r.get("date"), "eps": r.get("eps"),
+                                     "op": r.get("operatingProfit"), "sales": r.get("sales"),
+                                     "roe": r.get("roe")} for r in q[:4]]
+                    except Exception:
+                        return sc, None
+                with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+                    for sc, v in ex.map(_one, _lag):
+                        if v: _fresh[sc] = v
+                if _fresh:
+                    cache["data"].update(_fresh)
+                    _save(FIN_CACHE, {"updated": cache.get("updated"), "data": cache["data"]})
+                return cache["data"]
             # ★스키마 변경 감지 — 이 캐시의 값은 ★리스트다([{date,eps,op,sales,roe} x4]).
             #   [버그수정] 종전엔 fundamentals용 검사("shares" not in _s)가 그대로 복사돼 있었는데,
             #   리스트에 그 검사를 하면 ★항상 True가 되어 캐시가 무력화됐다(매 실행 800종목 재수집).
