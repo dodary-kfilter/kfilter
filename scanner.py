@@ -1109,6 +1109,83 @@ def track_progress(hdr, now_price, candles=None):
     return out
 
 
+# ───────────── 무손실 감축(S1) ─────────────
+# 리포트 1건이 파일만으로 27~33k 토큰을 먹어 대화가 2~3건 만에 찼다.
+# 아래는 ★값을 하나도 버리지 않는 변환만 모은 것이다. 판단 재료는 전량 보존된다.
+#   ① recent_daily : 13개 키가 60번 반복 → 컬럼 1회 + 값 배열 (역변환으로 원본 복원 확인)
+#   ② foreign_ratio_trend : recent_daily의 date+foreignRatio와 60/60 완전 일치 → 삭제
+#   ③ industry_peers : 18필드 중 전 종목 동일(상수)·중복·URL 12개 제거
+#   ④ disclosures.author : 전건 KOSCOM 상수 → 최상위에 1회만
+#   ⑤ financials columns : {"value":"-2,071","cx":"minus"} 에서 cx는 value 부호에서
+#      도출되는 표시용 클래스다. ★부호와 일치할 때만 벗기고, 어긋나면 정보이므로 보존한다.
+
+PEER_KEEP = ["itemCode", "stockName", "closePrice", "marketValue",
+             "fluctuationsRatio", "sosok"]
+
+
+def _slim_supply(sd):
+    """recent_daily 컬럼화 + foreign_ratio_trend 중복 제거(일치 확인된 경우만)."""
+    if not isinstance(sd, dict):
+        return sd
+    out = dict(sd)
+    rd = out.get("recent_daily")
+    if isinstance(rd, list) and rd and isinstance(rd[0], dict):
+        cols = list(rd[0].keys())
+        out["recent_daily"] = {"cols": cols,
+                               "rows": [[r.get(c) for c in cols] for r in rd]}
+    frt = sd.get("foreign_ratio_trend")
+    if isinstance(frt, list) and isinstance(rd, list) and len(frt) == len(rd):
+        if all(a.get("date") == b.get("date") and a.get("foreignRatio") == b.get("ratio")
+               for a, b in zip(rd, frt)):
+            out.pop("foreign_ratio_trend", None)
+    return out
+
+
+def _slim_fin(b):
+    """financials columns 셀의 {value, cx} 래퍼 평탄화. cx가 파생값일 때만."""
+    if not isinstance(b, dict) or not isinstance(b.get("rowList"), list):
+        return b
+    out, rows = dict(b), []
+    for r in b["rowList"]:
+        if not isinstance(r, dict):
+            rows.append(r); continue
+        flat = {}
+        for k, c in (r.get("columns") or {}).items():
+            if isinstance(c, dict) and set(c.keys()) <= {"value", "cx"}:
+                cx, v = c.get("cx"), c.get("value")
+                if cx is None or (cx == "minus" and str(v).strip().startswith("-")):
+                    flat[k] = v
+                    continue
+            flat[k] = c
+        rows.append({**{k: v for k, v in r.items() if k != "columns"}, "columns": flat})
+    out["rowList"] = rows
+    return out
+
+
+def slim_payload(p):
+    """저장 직전 무손실 감축. 어느 단계가 깨져도 원본을 그대로 저장한다."""
+    try:
+        o = dict(p)
+        if isinstance(o.get("supply_detail"), dict):
+            o["supply_detail"] = _slim_supply(o["supply_detail"])
+        ip = o.get("industry_peers")
+        if isinstance(ip, list) and ip:
+            o["industry_peers"] = [{k: x.get(k) for k in PEER_KEEP if k in x}
+                                   for x in ip if isinstance(x, dict)]
+        dis = o.get("disclosures")
+        if isinstance(dis, list) and dis and all(isinstance(x, dict) for x in dis):
+            auth = {x.get("author") for x in dis}
+            if len(auth) == 1:
+                o["disclosures"] = [{k: v for k, v in x.items() if k != "author"} for x in dis]
+                o["disclosures_author"] = auth.pop()
+        for k in ("financials_annual", "financials_quarter"):
+            if o.get(k):
+                o[k] = _slim_fin(o[k])
+        return o
+    except Exception:
+        return p
+
+
 def write_report_file(code, name, market, supply, raw, price_block,
                       week_block=None, month_block=None, supply_detail=None,
                       idx_rel=None):
@@ -1197,7 +1274,9 @@ def write_report_file(code, name, market, supply, raw, price_block,
     final = os.path.join(REPORT_DIR, f"{code}.json")
     tmp = final + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2, default=str)   # default=str: 직렬화 불가 값도 안전
+        # ★indent 제거 + 무손실 감축. 이 파일은 사람이 읽는 게 아니라 리포트가 먹는 입력이다.
+        json.dump(slim_payload(payload), f, ensure_ascii=False,
+                  separators=(",", ":"), default=str)   # default=str: 직렬화 불가 값도 안전
     os.replace(tmp, final)   # 원자적 교체(부분쓰기 방지)
 
 def enrich_sector(sector_key, sector_name, members):
@@ -1612,7 +1691,7 @@ def main():
         "screen_stats": screen.get("stats", {}),
     }
     with open("data.json", "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False, indent=2)
+        json.dump(result, f, ensure_ascii=False, separators=(",", ":"))
     print(f"완료. 외국인 {len(foreign_pass)} / 연기금 {len(pension_pass)} / 동시 {len(both)} / 포트 {len(portfolio)}"
           f" / 저가매수 {len(screen.get('value_pick', []))} / 모멘텀 {len(screen.get('momentum', []))} → data.json", flush=True)
 
