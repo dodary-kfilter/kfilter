@@ -462,6 +462,11 @@ const RULE_APIWARN = `[★★API 함정 — 받은 값을 그대로 믿으면 �
 ★★수급 파일의 news는 ★73%가 종목과 무관한 시황 기사다(실측 108건 중 79건).
    6종목은 6건 전부 "코스피 1.6% 상승" 류였다. ★제목에 종목명이 없으면 버려라.
    ★시황 기사를 이 종목의 재료로 읽으면 없는 원인을 만들게 된다.
+★★★quotesv4(멀티 조회)는 ★changePrice가 부호 없는 절댓값이다. changeRate에는 부호가 있다.
+   ❌실측 — 대한항공 change=FALL, changeRate=-0.0099인데 ★changePrice=300(양수)로 온다.
+     개별 quotes는 같은 종목에 -350으로 온다. ★그대로 읽으면 하락을 상승으로 읽는다.
+   ★멀티 조회에서 등락은 ★changeRate나 change 필드로 판단하라. changePrice 부호를 믿지 마라.
+   ★그리고 quotesv4의 code는 ★ISIN(KR7003490000)이다. 종목코드는 ★symbolCode(A003490)에 있다.
 ★★비율 필드는 단위를 확인하라. 다음 quotes의 foreignRatio·changeRate·debtRatio는 ★0~1 소수다.
    ★외국인 지분율은 ★보유주식÷상장주식으로 직접 나눠 대조하라. 두 값 다 같은 응답에 있다.`;
 const RULE_COMMON = `${RULE_LIMIT}
