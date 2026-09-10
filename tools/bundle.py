@@ -623,7 +623,7 @@ def nq(path):
 
 def ychart(sym, rng='2y'):
     d = jget('https://query1.finance.yahoo.com/v8/finance/chart/%s?range=%s&interval=1d&events=div,splits'
-             % (urllib.parse.quote(sym.replace('.', '-')), rng))            # 야후는 클래스 주식을 BRK-B처럼 하이픈으로 받는다
+             % (urllib.parse.quote(sym), rng))
     try:
         r = d['chart']['result'][0]
         q = r['indicators']['quote'][0]
@@ -814,7 +814,7 @@ def us_bundle(tk):
              'ins': '/company/%s/institutional-holdings?limit=5&type=TOTAL', 'sh': '/quote/%s/short-interest?assetClass=stocks',
              'it': '/company/%s/insider-trades?limit=6&type=ALL', 'sec': '/company/%s/sec-filings?limit=40&sortColumn=filed&sortOrder=desc'}
     f = {k: EX.submit(nq, v % tk) for k, v in paths.items()}
-    fy = EX.submit(ychart, tk, '2y')
+    fy = EX.submit(ychart, tk.replace('.', '-'), '2y')     # 야후는 클래스 주식을 BRK-B처럼 하이픈으로 받는다(지수 심볼은 그대로)
     ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, tk), None, True)
     info = f['info'].result() or {}
     fn = EX.submit(gnews_en, tk, info.get('companyName') or tk)
