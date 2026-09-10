@@ -328,38 +328,78 @@ def mark_consensus(fin):
         return fin
 
 
-FILE_MAP = '''#수급파일 키 지도 — 대부분 이미 계산돼 있다
-price_daily: ma 이평 · ma.vs 이격 · pocket 매물대 구간별 거래비중 · trend20 | price_weekly·price_monthly: ma · posPct · rangeHigh/rangeLow · recent
-volume_stats: ratio_20_60 · today_vs_60 거래량 배수 | idxRel: ddFromPeak · idxSincePeak · excessDd · m1Excess · m6Excess 지수·고점 대비
-supply_detail: cum_5d·cum_20d·cum_60d 11개 주체 누적(연기금·개인 포함) · recent_daily {cols,rows} 최신순 60행, foreignRatio는 이미 %
-supply_derived: cum_21_60d 21~60일 구간(60일에서 20일을 빼지 말 것) · pattern 주체별 판정 · foreign_avg_price · foreign_avg_vs_now_pct | supply_10d: 최근 10거래일 외국인·연기금
-valuation_derived: theo_pbr · premium_pct · verdict (roe_capped=true면 ROE 상한 적용 — roe_used_pct) | valuation: 네이버 밸류 원본
-financials_confirmed: 확정 실적 분기·연간(실적 판단 기준) | financials_annual·financials_quarter: 네이버 원본, 열 이름 끝 E = 컨센서스 추정치, 값은 문자열
-earnings_alert: 잠정실적 공시 유무 | consensus·researches: 컨센서스 목표가·증권사 리포트 제목 | industry_peers: 동종 시총·현재가·등락률 | news: 제목에 종목명 있는 것만
-target_context: 이 종목이 같은 기간에 실제로 오른 폭의 분포 | prev_report·prev_track: 직전 리포트 전문·그 목표의 진척 | splits: 권리락 이력(파일 안 주가는 이미 보정)'''
+FILE_MAP = '''#수급파일 키 지도 — 속독층이 요약한 값(컨센·과거 상승폭·직전 진척·거래량·잠정실적)은 뺐다. 원문 확인용만 남겼다
+price_daily: ma 이평 · ma.vs 이격 · pocket 매물대 구간별 거래비중 | idxRel: 고점·지수 대비
+supply_detail: cum_5d·cum_20d·cum_60d 11개 주체 누적(연기금·개인 포함) · recent_daily {cols,rows} 최신순 20행, foreignRatio는 이미 %
+supply_derived: cum_21_60d 21~60일 구간 · pattern 주체별 판정 · foreign_avg_price | supply_10d: 최근 10거래일 외국인·연기금
+valuation_derived: PBR 판정 | financials_confirmed: 확정 실적(분기·연간) | consensus_est: 네이버 컨센 추정(E)
+industry_peers: 동종 시총·현재가·등락률 | prev_report: 직전 리포트 앞부분 | splits: 권리락 이력(파일 안 주가는 이미 보정)'''
 
-HEAVY_SHALLOW = ('prev_report', 'price_weekly', 'price_monthly', 'financials_annual', 'financials_quarter',
-                 'industry_peers', 'news', 'researches', 'target_context', 'valuation')
+DROP_DEEP = ('disclosures', 'disclosures_author', 'code', 'name', 'valuation', 'researches', 'news', 'price_weekly',
+             'price_monthly', 'volume_stats', 'consensus', 'target_context', 'prev_track', 'earnings_alert',
+             'financials_annual', 'financials_quarter')
+HEAVY_SHALLOW = ('prev_report', 'industry_peers', 'valuation_derived', 'consensus_est')
+
+
+def consensus_est(fin):
+    """네이버 연간 재무에서 컨센서스 추정 열(E)만 — 매출·영업이익·순이익·EPS"""
+    try:
+        cons = [t['key'] for t in fin['trTitleList'] if t.get('isConsensus') == 'Y']
+        out = {}
+        for r in fin['rowList']:
+            title = r.get('title') or r.get('name') or ''
+            if not re.search(r'매출액|영업이익|당기순이익|EPS', title) or re.search(r'률|증가', title):
+                continue
+            cols = r.get('columns') if isinstance(r.get('columns'), dict) else {}
+            vals = {k + 'E': cols.get(k) for k in cons if cols.get(k) not in (None, '', '-')}
+            if vals:
+                out[title] = vals
+        return out or None
+    except (KeyError, TypeError):
+        return None
 
 
 def slim_file(f, name, deep):
-    f = dict(f)
-    for k in ('disclosures', 'disclosures_author', 'code', 'name'):
-        f.pop(k, None)                         # 공시는 #공시목록이 대신한다
-    if not f.get('_errors'):
-        f.pop('_errors', None)
-    for key in ('financials_annual', 'financials_quarter'):
-        if f.get(key):
-            f[key] = mark_consensus(f[key])
-    if isinstance(f.get('news'), list):
-        f['news'] = [x for x in f['news'] if name_in(name, x.get('title', ''))]
+    out = {k: v for k, v in f.items() if k not in DROP_DEEP}
+    if not out.get('_errors'):
+        out.pop('_errors', None)
+    ce = consensus_est(f.get('financials_annual'))
+    if ce:
+        out['consensus_est'] = ce
+    sd = out.get('supply_detail')
+    if isinstance(sd, dict):
+        sd = dict(sd)
+        rd = sd.get('recent_daily')
+        if deep and isinstance(rd, dict):
+            sd['recent_daily'] = dict(rd, rows=(rd.get('rows') or [])[:20])
+        elif not deep:
+            sd.pop('recent_daily', None)
+        out['supply_detail'] = sd
+    pr = out.get('prev_report')
+    if isinstance(pr, dict):                      # {header, body} — header는 속독의 직전 판단 줄과 같다
+        pr = pr.get('body') if isinstance(pr.get('body'), str) else None
+        if pr is None:
+            out.pop('prev_report', None)
+    if isinstance(pr, str):
+        m = re.match(r'\s*---.*?\n---\s*\n', pr, re.S)           # 앞머리 기록 블록은 속독의 직전 판단 줄에 있다
+        pr = pr[m.end():] if m else pr
+        out['prev_report'] = pr[:1200] + (' …(이하 생략)' if len(pr) > 1200 else '')
+    fc = out.get('financials_confirmed')
+    if isinstance(fc, dict):
+        def rows(key):
+            return [[(r.get('date') or '')[:7], eok(r.get('sales')), eok(r.get('operatingProfit')), eok(r.get('netIncome')),
+                     n(round(r['eps'])) if isinstance(r.get('eps'), (int, float)) else r.get('eps'), r.get('debtRatio')]
+                    for r in (fc.get(key) or [])]
+        out['financials_confirmed'] = {'열': '기간,매출억,영업이익억,순이익억,EPS,부채비율%', '분기': rows('quarter'), '연간': rows('annual')}
+    if isinstance(out.get('valuation_derived'), dict):
+        vd = out['valuation_derived']
+        out['valuation_derived'] = {k: vd.get(k) for k in ('verdict', 'pbr', 'roe_used_pct', 'roe_capped') if k in vd}
+        if isinstance(vd.get('base'), dict):
+            out['valuation_derived']['theo_pbr·premium_pct'] = [vd['base'].get('theo_pbr'), vd['base'].get('premium_pct')]
     if not deep:
         for k in HEAVY_SHALLOW:
-            f.pop(k, None)
-        sd = f.get('supply_detail')
-        if isinstance(sd, dict):
-            f['supply_detail'] = {k: v for k, v in sd.items() if k != 'recent_daily'}
-    return f
+            out.pop(k, None)
+    return out
 
 
 # ───────────────────────────── 공시
@@ -410,7 +450,7 @@ PRIO = [(0, re.compile(r'대량보유|최대주주|특수관계|전환사채|신
 PER_GROUP = [(re.compile(r'공급계약|수주'), 4), (re.compile(r'대량보유'), 3)]
 
 
-def pick_docs(items, k=10, days=150):
+def pick_docs(items, k=8, days=150):
     cutoff = (NOW - timedelta(days=days)).strftime('%Y-%m-%d')
     count, cand = {}, []
     for it in items:                                   # 최신순으로 들어온다
@@ -489,7 +529,7 @@ def dart_view(rcp, nd):
 SKIP_NODE = re.compile(r'확인서|대표이사\s*등의\s*확인|전문가의\s*확인')
 
 
-def doc_text(it, k=900):
+def doc_text(it, k=700):
     nodes = dart_nodes(it['rcp'])
     buf = []
     for nd in [x for x in nodes if not SKIP_NODE.search(x.get('text', ''))][:3]:
@@ -504,16 +544,16 @@ def doc_text(it, k=900):
 
 
 SECTIONS = [
-    ('매출·수주', [r'매출\s*및\s*수주', r'영업의\s*현황'], 1800, None),          # 금융업 서식은 '영업의 현황'
-    ('재무상태표(발췌)', [r'연결\s*재무상태표', r'^\s*\d-\d\.\s*재무상태표'], 1000,
+    ('매출·수주', [r'매출\s*및\s*수주', r'영업의\s*현황'], 1200, None),          # 금융업 서식은 '영업의 현황'
+    ('재무상태표(발췌)', [r'연결\s*재무상태표', r'^\s*\d-\d\.\s*재무상태표'], 700,
      r'단위|현금|재고|차입|사채|전환|파생|총계|잉여금|결손|자본금'),
-    ('손익계산서(발췌)', [r'연결\s*포괄손익계산서', r'연결\s*손익계산서', r'^\s*\d-\d\.\s*포괄손익계산서', r'^\s*\d-\d\.\s*손익계산서'], 900,
+    ('손익계산서(발췌)', [r'연결\s*포괄손익계산서', r'연결\s*손익계산서', r'^\s*\d-\d\.\s*포괄손익계산서', r'^\s*\d-\d\.\s*손익계산서'], 700,
      r'단위|매출|영업수익|영업비용|영업이익|영업손실|금융수익|금융비용|금융원가|파생|지분법|법인세|당기순|반기순|분기순|주당'),
-    ('기타 재무', [r'기타\s*재무에\s*관한'], 900, None),
-    ('재무건전성', [r'재무건전성'], 1000, None),                                   # 금융업 서식에만 있다
-    ('주주', [r'주주에\s*관한\s*사항'], 1000, None),
-    ('우발부채·소송', [r'우발부채'], 900, None),
-    ('작성기준일 이후', [r'작성기준일\s*이후'], 1000, None),
+    ('기타 재무', [r'기타\s*재무에\s*관한'], 600, None),
+    ('재무건전성', [r'재무건전성'], 700, None),                                   # 금융업 서식에만 있다
+    ('주주', [r'주주에\s*관한\s*사항'], 700, None),
+    ('우발부채·소송', [r'우발부채'], 600, None),
+    ('작성기준일 이후', [r'작성기준일\s*이후'], 700, None),
 ]
 
 
@@ -541,7 +581,7 @@ def periodic(items):
 
 
 # ───────────────────────────── 뉴스
-def gnews(name, k=8):
+def gnews(name, k=6):
     url = ('https://news.google.com/rss/search?q=%s+when:14d&hl=ko&gl=KR&ceid=KR:ko'
            % urllib.parse.quote('"%s"' % name))
     s = fetch(url) or ''
@@ -602,8 +642,8 @@ def kr_bundle(code, deep):
         ctx['fin'] = fn_all.result()
     shown = items if deep else items[:10]
     out.append('#공시목록 출처 %s · 최근 180일 · 최신순 · 날짜|제목|제출인 (%d건 중 %d건)'
-               % (src, len(items), min(len(shown), 60)))
-    out.extend('%s|%s|%s' % (it['date'], it['title'], it['by']) for it in shown[:60])
+               % (src, len(items), min(len(shown), 30)))
+    out.extend('%s|%s|%s' % (it['date'], it['title'], it['by']) for it in shown[:30])
     if deep:
         docs = pick_docs(items)
         ctx['docs'] = docs
@@ -1216,27 +1256,33 @@ def main(argv):
             fm = top.submit(us_market_all)
             parts, ctxs = list(top.map(safe_us, codes)), []
         mk, gl = fm.result()
-    head = '깊게' if deep else '얕게 %d종목' % len(codes)
-    print('#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
-          % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M:%S'), head))
+    head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
+    head = ['#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
+            % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M:%S'), head_note)]
     if mode == 'kr' and deep and ctxs and ctxs[0]:
         try:
             dg = digest_kr(ctxs[0], mk)
             ctxs[0]['digest_n'] = len(dg)
-            print(toc_kr(ctxs[0]))
-            print('#속독 — 코드가 원자료에서 계산했다. 판단의 출발점이고, 원문은 이 줄들을 뒤집을 신호를 확인할 때만 연다')
-            print('\n'.join(dg))
+            head.append(toc_kr(ctxs[0]))
+            head.append('#속독 — 코드가 원자료에서 계산했다. 판단의 출발점이고, 원문은 이 줄들을 뒤집을 신호를 확인할 때만 연다')
+            head.extend(dg)
         except Exception as e:
             ERR.append('속독층 계산 실패 — %s: %s' % (type(e).__name__, str(e)[:100]))
-            print('#속독 계산 실패 — 원문 블록으로 판단한다')
+            head.append('#속독 계산 실패 — 원문 블록으로 판단한다')
     if mode == 'kr':
-        print('#시장 ' + J(mk))
-        print('#해외·환율 ' + J(gl))
+        head += ['#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
     else:
-        print('#미국시장 ' + J(mk))
-        print('#환율·유가 ' + J(gl))
-    for part in parts:
-        print('\n'.join(part))
+        head += ['#미국시장 ' + J(mk), '#환율·유가 ' + J(gl)]
+    MAXB = int(os.environ.get('BUNDLE_MAX_BYTES', '40000'))
+    body = [ln for part in parts for ln in part]
+    size = lambda ls: sum(len(ln.encode('utf-8')) + 1 for ln in ls)
+    used, cut = size(head) + size(body) + 400, 0          # 400 = 오류·수집시간 줄 몫
+    while used > MAXB and len(body) > 5:                   # 넘으면 뒤쪽 원문(뉴스·정기보고서·공시본문)부터 줄 단위로
+        used -= len(body.pop().encode('utf-8')) + 1
+        cut += 1
+    print('\n'.join(head + body))
+    if cut:
+        print('#출력 상한(%d바이트)으로 뒤 %d줄 생략 — 생략분은 확인 불가' % (MAXB, cut))
     print('#오류 ' + (J(ERR) if ERR else '없음'))
     print('#수집시간 %.1f초' % (time.time() - t0))
     sys.stdout.flush()
