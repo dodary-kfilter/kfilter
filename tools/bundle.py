@@ -1218,7 +1218,7 @@ def main(argv):
         mk, gl = fm.result()
     head = '깊게' if deep else '얕게 %d종목' % len(codes)
     print('#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
-          % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M'), head))
+          % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M:%S'), head))
     if mode == 'kr' and deep and ctxs and ctxs[0]:
         try:
             dg = digest_kr(ctxs[0], mk)
