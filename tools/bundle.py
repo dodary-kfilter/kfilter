@@ -30,7 +30,7 @@ DART = 'https://dart.fss.or.kr'
 RAW = 'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main'
 ERR = []
 EX = ThreadPoolExecutor(max_workers=16)      # 개별 조회
-DART_GATE = threading.BoundedSemaphore(5)    # DART 동시 접속 상한
+DART_GATE = threading.BoundedSemaphore(3)    # DART 동시 접속 상한 — 몰아치면 접속 제한에 걸린다
 
 
 # ───────────────────────────── 조회 공통
@@ -53,6 +53,8 @@ def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False):
         hd['Referer'] = ref
     data = urllib.parse.urlencode(form).encode() if form else None
     gate = DART_GATE if url.startswith(DART) else None
+    if gate:
+        tries = max(tries, 3)
     last = None
     for i in range(tries):
         try:
@@ -71,7 +73,7 @@ def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False):
                 if quiet404:
                     return None
                 break
-            time.sleep(0.8 * (i + 1))
+            time.sleep((1.5 if gate else 0.8) * (i + 1))
     ERR.append('%s → %s' % (url.split('?')[0][-60:], str(last)[:80]))
     return None
 
@@ -356,20 +358,25 @@ def dart_list(code, name, days=180):
         m = re.search(r'rcpNo=(\d+)', tr)
         if not m:
             continue
-        cells = [strip_tags(c) for c in re.findall(r'(?s)<td[^>]*>(.*?)</td>', tr)]
+        raw = re.findall(r'(?s)<td[^>]*>(.*?)</td>', tr)
+        cells = [strip_tags(c) for c in raw]
         if len(cells) < 5:
             continue
-        corp = re.sub(r'^[유코넥기]\s+', '', cells[1]).replace(' ', '')
+        cc = re.search(r"openCorpInfoNew\(\s*'(\d+)'", raw[1])      # DART 고유번호 — 회사명 칸엔 IR 배지 글자가 섞인다
+        corp = cc.group(1) if cc else re.sub(r'^[유코넥기]\s+', '', cells[1]).replace(' ', '')
         key = (cells[4], cells[2])
         if key in seen:
             continue
         seen.add(key)
         rows.append((corp, {'rcp': m.group(1), 'date': cells[4].replace('.', '-'),
-                            'title': re.sub(r'\s+', ' ', cells[2]), 'by': cells[3]}))
+                            'title': re.sub(r'\s+', ' ', cells[2]), 'by': cells[3],
+                            'corp': re.sub(r'^[유코넥기]\s+|\s*IR$', '', cells[1])}))
     if rows:
         names = [c for c, _ in rows]
         main = max(set(names), key=names.count)
-        return [it for c, it in rows if c == main], 'DART(%s)' % main
+        keep = [it for c, it in rows if c == main]
+        return keep, 'DART(%s)' % keep[0]['corp']
+    items = []
     d = daum('/api/disclosures?symbolCode=A%s&perPage=40&page=1' % code)     # DART 검색 실패 시 거래소 공시만
     for it in (d or {}).get('data') or []:
         items.append({'rcp': None, 'date': (it.get('createdAt') or '')[:10],
@@ -481,12 +488,13 @@ def doc_text(it, k=900):
 
 
 SECTIONS = [
-    ('매출·수주', [r'매출\s*및\s*수주'], 1800, None),
+    ('매출·수주', [r'매출\s*및\s*수주', r'영업의\s*현황'], 1800, None),          # 금융업 서식은 '영업의 현황'
     ('재무상태표(발췌)', [r'연결\s*재무상태표', r'^\s*\d-\d\.\s*재무상태표'], 1000,
      r'단위|현금|재고|차입|사채|전환|파생|총계|잉여금|결손|자본금'),
     ('손익계산서(발췌)', [r'연결\s*포괄손익계산서', r'연결\s*손익계산서', r'^\s*\d-\d\.\s*포괄손익계산서', r'^\s*\d-\d\.\s*손익계산서'], 900,
-     r'단위|매출|영업이익|영업손실|금융수익|금융비용|금융원가|파생|법인세|당기순|반기순|분기순|주당'),
+     r'단위|매출|영업수익|영업비용|영업이익|영업손실|금융수익|금융비용|금융원가|파생|지분법|법인세|당기순|반기순|분기순|주당'),
     ('기타 재무', [r'기타\s*재무에\s*관한'], 900, None),
+    ('재무건전성', [r'재무건전성'], 1000, None),                                   # 금융업 서식에만 있다
     ('주주', [r'주주에\s*관한\s*사항'], 1000, None),
     ('우발부채·소송', [r'우발부채'], 900, None),
     ('작성기준일 이후', [r'작성기준일\s*이후'], 1000, None),
@@ -497,7 +505,7 @@ def section_text(rcp, nd, k, rowf):
     t = dart_view(rcp, nd)
     if rowf:
         lines = t.split('\n')
-        t = '\n'.join(lines[:2] + [ln for ln in lines[2:] if re.search(rowf, ln)])
+        t = '\n'.join(lines[:2] + [ln for ln in lines[2:] if re.search(rowf, ln.replace(' ', ''))])  # 재무표는 '영 업 이 익'처럼 띄어 쓰는 회사가 있다
     return cap(t, k)
 
 
@@ -593,6 +601,14 @@ def kr_bundle(code, deep):
     return out
 
 
+def safe_bundle(code, deep):
+    try:
+        return kr_bundle(code, deep)
+    except Exception as e:      # 한 종목이 깨져도 나머지는 낸다
+        ERR.append('%s 처리 실패 — %s: %s' % (code, type(e).__name__, str(e)[:80]))
+        return ['', '==== %s ====' % code, '#처리 실패 — #오류 참조']
+
+
 def main(argv):
     if len(argv) < 2 or argv[0] != 'kr':
         print(__doc__)
@@ -602,7 +618,7 @@ def main(argv):
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=5) as top:
         fm = top.submit(market_all)
-        parts = list(top.map(lambda c: kr_bundle(c, deep), codes))
+        parts = list(top.map(lambda c: safe_bundle(c, deep), codes))
         mk, gl = fm.result()
     print('#번들 kfilter · 수집 %s KST · %s · 이 출력이 자료의 전부다'
           % (NOW.strftime('%Y-%m-%d %H:%M'), '깊게' if deep else '얕게 %d종목' % len(codes)))
