@@ -17,6 +17,8 @@ import json
 import html
 import time
 import threading
+import os
+from concurrent.futures import TimeoutError as FutTimeout
 import urllib.request
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
@@ -30,6 +32,17 @@ DAUM = 'https://finance.daum.net'
 DART = 'https://dart.fss.or.kr'
 RAW = 'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main'
 ERR = []
+T_START = time.time()
+DEADLINE = T_START + float(os.environ.get('BUNDLE_DEADLINE', '15'))   # 수집 마감 — 리포트 5분 예산에서 수집 몫
+
+
+def wait(fu, what, default=None):
+    """마감까지만 기다린다. 늦은 조회는 버리고 #오류에 적는다"""
+    try:
+        return fu.result(timeout=max(0.1, DEADLINE - time.time()))
+    except FutTimeout:
+        ERR.append('%s — 수집 마감(%.0f초) 초과로 생략' % (what, DEADLINE - T_START))
+        return default
 EX = ThreadPoolExecutor(max_workers=16)      # 개별 조회
 DART_GATE = threading.BoundedSemaphore(3)    # DART 동시 접속 상한 — 몰아치면 접속 제한에 걸린다
 
@@ -524,7 +537,7 @@ def periodic(items):
             if hit:
                 jobs.append((label, hit.get('text', ''), EX.submit(section_text, rep['rcp'], hit, k, rowf)))
                 break
-    return rep, [(label, title, fu.result()) for label, title, fu in jobs]
+    return rep, [(label, title, wait(fu, '정기보고서 %s' % label, '(수집 마감 초과로 생략)')) for label, title, fu in jobs]
 
 
 # ───────────────────────────── 뉴스
@@ -562,35 +575,46 @@ def kr_bundle(code, deep):
     fl = EX.submit(dart_list, code, name)
     fg = EX.submit(gnews, name) if deep else None
     out = ['', '==== %s(%s) %s ====' % (name, code, q.get('market') or '')]
+    ctx = {'q': q, 'name': name, 'code': code}
+    fn_all = EX.submit(daum, '/api/quote/A%s/financials' % code) if deep else None
     out.append('#시세 ' + (J(quote_block(q)) if q else '조회 실패'))
     f = ff.result()
+    ctx['file'] = f
     if f:
         out.append('#수급파일 kfilter report-data · 갱신 %s · 스캔 시점 값(실시간 아님)' % f.get('updated'))
         if deep:
             out.append(FILE_MAP)
-        out.append(J(slim_file(f, name, deep)))
+        fj = J(slim_file(f, name, deep))
+        ctx['file_chars'] = len(fj)
+        out.append(fj)
     else:
         fd = EX.submit(daum, '/api/quote/A%s/days?perPage=250&page=1' % code)
         fi = EX.submit(daum, '/api/investor/days?symbolCode=A%s&perPage=60&page=1' % code)
-        fn = EX.submit(daum, '/api/quote/A%s/financials' % code)
+        fn = fn_all or EX.submit(daum, '/api/quote/A%s/financials' % code)
         out.append('#수급파일 없음 — 아래 셋은 다음에서 직접 계산했다')
-        out.append('#가격 ' + J(price_block(fd.result())))
-        out.append('#수급 ' + J(supply_block(fi.result())))
-        out.append('#재무확정 ' + J(fin_block(fn.result())))
+        ctx['pb'], ctx['sb'], ctx['fin'] = price_block(fd.result()), supply_block(fi.result()), fn.result()
+        out.append('#가격 ' + J(ctx['pb']))
+        out.append('#수급 ' + J(ctx['sb']))
+        out.append('#재무확정 ' + J(fin_block(ctx['fin'])))
     items, src = fl.result()
+    ctx['items'], ctx['src'] = items, src
+    if fn_all is not None and 'fin' not in ctx:
+        ctx['fin'] = fn_all.result()
     shown = items if deep else items[:10]
     out.append('#공시목록 출처 %s · 최근 180일 · 최신순 · 날짜|제목|제출인 (%d건 중 %d건)'
                % (src, len(items), min(len(shown), 60)))
     out.extend('%s|%s|%s' % (it['date'], it['title'], it['by']) for it in shown[:60])
     if deep:
         docs = pick_docs(items)
+        ctx['docs'] = docs
         futs = [(it, EX.submit(doc_text, it)) for it in docs]
         fp = EX.submit(periodic, items)
         out.append('#공시본문 주요공시 %d건 · 건당 앞부분만' % len(docs))
         for it, fu in futs:
             out.append('▶ %s %s · %s' % (it['date'], it['title'], it['by']))
-            out.append(fu.result() or '(본문 없음)')
-        rep, secs = fp.result()
+            out.append(wait(fu, '공시 본문 %s %s' % (it['date'], it['title'][:20]), '(수집 마감 초과로 생략)') or '(본문 없음)')
+        rep, secs = wait(fp, '정기보고서 발췌', (None, []))
+        ctx['rep'], ctx['secs'] = rep, secs
         if rep:
             out.append('#정기보고서 %s · 접수 %s · 절별 발췌' % (rep['title'], rep['date']))
             for label, title, txt in secs:
@@ -598,10 +622,11 @@ def kr_bundle(code, deep):
                 out.append(txt or '(내용 없음)')
         else:
             out.append('#정기보고서 최근 180일 안에 없음')
-        news = fg.result()
+        news = wait(fg, '뉴스', [])
+        ctx['news'] = news
         out.append('#뉴스 최근 14일 · 제목에 종목명 있는 것만 · %d건' % len(news))
         out.extend(news)
-    return out
+    return out, ctx
 
 
 # ───────────────────────────── 미국 (나스닥 = 시세·재무·실적·수급 대용, 야후 = 시계열만)
@@ -853,12 +878,327 @@ def safe_us(tk):
         return ['', '==== %s ====' % tk, '#처리 실패 — #오류 참조']
 
 
+# ───────────────────────────── 목차·속독층 (책 읽기: 목차로 1차 이해 → 속독으로 2차 이해 → 원문은 발췌 정독)
+def _md(d):
+    d = str(d or '')[:10].replace('.', '-')
+    if len(d) == 8 and d.isdigit():
+        d = '%s-%s-%s' % (d[:4], d[4:6], d[6:])
+    try:
+        return '%d월 %d일' % (int(d[5:7]), int(d[8:10]))
+    except ValueError:
+        return d
+
+
+def _sd(d):
+    d = str(d or '')[:10]
+    try:
+        return '%d/%d' % (int(d[5:7]), int(d[8:10]))
+    except ValueError:
+        return d
+
+
+def _c(n):
+    return '{:,}'.format(int(round(n))) if isinstance(n, (int, float)) else str(n)
+
+
+def _pct(v, nd=1, sign=True):
+    return ('%+.*f%%' if sign else '%.*f%%') % (nd, v) if isinstance(v, (int, float)) else '확인 불가'
+
+
+def _chg(cur, prev):
+    """두 값의 변화를 말로 — 흑자·적자 전환은 %로 쓰지 않는다"""
+    if cur is None or prev is None:
+        return '비교 불가'
+    if prev <= 0 < cur:
+        return '흑자전환'
+    if cur <= 0 < prev:
+        return '적자전환'
+    if cur < 0 and prev < 0:
+        return '적자 지속(폭 %s)' % ('축소' if cur > prev else '확대')
+    return _pct((cur / prev - 1) * 100, 0) if prev else '비교 불가'
+
+
+def _streak(rows, col):
+    """최근 같은 부호가 이어진 일수와 그 첫날 — 방향이 꺾인 날"""
+    if not rows:
+        return None
+    v0 = rows[0][col]
+    if not v0:
+        return None
+    n = 0
+    for r in rows:
+        if r[col] and (r[col] > 0) == (v0 > 0):
+            n += 1
+        else:
+            break
+    return ('순매수' if v0 > 0 else '순매도'), n, rows[n - 1][0]
+
+
+DOC_CAT = [('지분', r'대량보유|최대주주|특수관계|소유상황|소유주식|주요주주|임원'),
+           ('자금조달', r'전환사채|신주인수권|교환사채|유상증자|무상증자|감자|자기주식|주식소각'),
+           ('실적', r'잠정|손익구조|파생상품|손실발생'), ('계약', r'공급계약|판매ㆍ공급|수주'),
+           ('소송·제재', r'소송|불성실|횡령|배임|제재'), ('시장조치', r'투자경고|투자주의|투자위험|거래정지|관리종목|단기과열|공매도')]
+
+
+def _cat(title):
+    return next((c for c, rx in DOC_CAT if re.search(rx, title)), '기타')
+
+
+def digest_kr(x, mk):
+    q, f, name = x.get('q') or {}, x.get('file'), x.get('name')
+    L = []
+    price = q.get('tradePrice')
+    st = q.get('marketStatus')
+    L.append('기준: %s %s · 현재가 %s원(%s)' % (_md(q.get('tradeDate')), STATUS.get(st, '장 상태 확인 불가').split(' — ')[0],
+                                         _c(price), _pct(signed_rate(q.get('changeRate'), q.get('change')), 2)))
+    # 시장 대비 — 20일 기준 판정은 모든 종목에 같은 기준
+    m = (mk or {}).get(q.get('market') or '') or {}
+    s5 = s20 = None
+    if f:
+        rows = ((f.get('supply_detail') or {}).get('recent_daily') or {}).get('rows') or []
+        closes = [r[1] for r in rows]
+        if closes and price:
+            closes[0] = price
+            s5 = (closes[0] / closes[5] - 1) * 100 if len(closes) > 5 else None
+            s20 = (closes[0] / closes[20] - 1) * 100 if len(closes) > 20 else None
+    elif x.get('pb'):
+        s5, s20 = x['pb'].get('수익률5일%'), x['pb'].get('수익률20일%')
+    i20 = m.get('20일%')
+    if isinstance(s20, (int, float)) and isinstance(i20, (int, float)):
+        gap = s20 - i20
+        if i20 <= -2 and s20 >= 2:
+            v = '시장이 빠질 때 올랐다 — 자기 재료가 있다'
+        elif i20 >= 2 and s20 <= -2:
+            v = '시장이 오를 때 혼자 빠졌다 — 이 종목만의 사유가 있다'
+        elif abs(gap) < 3:
+            v = '시장과 같이 움직였다'
+        else:
+            v = '시장보다 %s' % ('강했다' if gap > 0 else '약했다')
+        line = '시장 대비: %s 20일 %s · 이 종목 20일 %s → %s' % (q.get('market'), _pct(i20), _pct(s20), v)
+        ir = (f or {}).get('idxRel') or {}
+        if ir.get('m6Excess') is not None:
+            line += ' · 지수 대비 초과 1개월 %s%%p · 6개월 %s%%p' % (('%+.1f' % ir['m1Excess']), ('%+.1f' % ir['m6Excess']))
+        L.append(line)
+    else:
+        L.append('시장 대비: 확인 불가')
+    # 가격 위치
+    parts = []
+    if f and f.get('price_daily'):
+        vs = ((f['price_daily'].get('ma') or {}).get('vs')) or {}
+        for k, lab in (('ma20', '20일선'), ('ma60', '60일선'), ('ma120', '120일선')):
+            if vs.get(k) is not None:
+                parts.append('%s보다 %s' % (lab, ('%.0f%% 위' % vs[k]) if vs[k] >= 0 else ('%.0f%% 아래' % -vs[k])))
+        ir = f.get('idxRel') or {}
+        if ir.get('peakClose'):
+            parts.append('고점(%s 종가 %s원) 대비 %s' % (_md(ir.get('peakDate')), _c(ir['peakClose']), _pct(ir.get('ddFromPeak'), 0)))
+    elif x.get('pb'):
+        pb = x['pb']
+        for k, lab in (('이평20_이격%', '20일선'), ('이평60_이격%', '60일선'), ('이평120_이격%', '120일선')):
+            if pb.get(k):
+                g = pb[k][1]
+                parts.append('%s보다 %s' % (lab, ('%.0f%% 위' % g) if g >= 0 else ('%.0f%% 아래' % -g)))
+        if pb.get('고점대비%') is not None:
+            parts.append('1년 종가 고점 대비 %s' % _pct(pb['고점대비%'], 0))
+    hi, lo = q.get('high52wPrice'), q.get('low52wPrice')
+    if price and hi and lo and hi > lo:
+        parts.append('52주 최고·최저 사이 %d%% 지점' % round((price - lo) / (hi - lo) * 100))
+    L.append('가격 위치: ' + (' · '.join(parts) if parts else '확인 불가'))
+    # 거래량
+    vsx = (f or {}).get('volume_stats') or {}
+    if vsx.get('ratio_20_60') is not None:
+        L.append('거래량: 최근 20일 평균이 60일 평균의 %.2f배 · 오늘은 60일 평균의 %.1f배%s' % (
+            vsx['ratio_20_60'], vsx.get('today_vs_60') or 0, ' (장중이라 오늘 값은 덜 찼다)' if STATUS.get(st, '').startswith('장중') else ''))
+    elif x.get('pb') and x['pb'].get('거래량배수_20대60·당일대60'):
+        a, b = x['pb']['거래량배수_20대60·당일대60']
+        L.append('거래량: 최근 20일 평균이 60일 평균의 %.2f배 · 오늘은 60일 평균의 %.1f배' % (a, b))
+    # 수급
+    listed = q.get('listedShareCount')
+    if f and f.get('supply_detail'):
+        sd, sdv = f['supply_detail'], f.get('supply_derived') or {}
+        pat = sdv.get('pattern') or {}
+        seg = ['%s %s' % (k, pat[k]) for k in ('외국인', '기관계', '연기금', '개인') if pat.get(k)]
+        c20 = sd.get('cum_20d') or {}
+        rd = sd.get('recent_daily') or {}
+        cols, rows = rd.get('cols') or [], rd.get('rows') or []
+        extra = []
+        for who in ('외국인', '기관계'):
+            if who in c20:
+                extra.append('%s 20일 %s %s주' % (who, '순매수' if c20[who] >= 0 else '순매도', _c(abs(c20[who]))))
+            if who in cols:
+                ci = cols.index(who)
+                sk = _streak(rows, ci)
+                if sk and sk[1] == 1:
+                    if len(rows) > 1 and rows[1][ci]:
+                        extra.append('%s %s %s로 돌아섰다' % (who, _md(sk[2]), sk[0]))
+                elif sk:
+                    extra.append('%s 최근 %d거래일 연속 %s(%s부터)' % (who, sk[1], sk[0], _md(sk[2])))
+        fa = sdv.get('foreign_avg_price')
+        if fa and price:
+            g = (price / fa - 1) * 100
+            extra.append('외국인 평균 매수단가 %s원 — 현재가가 %s' % (_c(fa), ('%.0f%% 위' % g) if g >= 0 else ('%.0f%% 아래' % -g)))
+        L.append('수급(11개 주체, 수급파일 %s 기준): %s · %s' % (_sd(f.get('updated')), ' · '.join(seg) or '판정 없음', ' · '.join(extra)))
+        if 'foreignRatio' in cols and '외국인' in cols and len(rows) > 20 and listed:
+            fr = cols.index('foreignRatio')
+            dshare = (rows[0][fr] - rows[20][fr]) / 100 * listed
+            onm = sum(r[cols.index('외국인')] for r in rows[:20])
+            if abs(dshare - onm) > max(0.15 * max(abs(dshare), abs(onm)), 0.001 * listed):
+                L.append('지분율·순매수 어긋남: 외국인 지분율이 20거래일간 %+.2f%%p(약 %s주) 변했는데 장내 순매수 합은 %s주 — 차이 약 %s주는 시간외·블록딜 등 장외 이동 가능, 사유 확인 불가' % (
+                    rows[0][fr] - rows[20][fr], _c(dshare), _c(onm), _c(dshare - onm)))
+    elif x.get('sb'):
+        sb = x['sb']
+        fv, iv = sb.get('외국인순매수주_5·20·60일') or [], sb.get('기관순매수주_5·20·60일') or []
+        seg = []
+        if len(fv) > 1:
+            seg.append('외국인 20일 %s %s주' % ('순매수' if fv[1] >= 0 else '순매도', _c(abs(fv[1]))))
+        if len(iv) > 1:
+            seg.append('기관 20일 %s %s주' % ('순매수' if iv[1] >= 0 else '순매도', _c(abs(iv[1]))))
+        L.append('수급(장내 외국인·기관만, 개인·연기금 없음): ' + (' · '.join(seg) or '확인 불가'))
+        fr = sb.get('외국인지분율%_오늘·20일전·60일전') or []
+        if len(fr) > 1 and None not in fr[:2] and listed and len(fv) > 1:
+            dshare = (fr[0] - fr[1]) / 100 * listed
+            if abs(dshare - fv[1]) > max(0.15 * max(abs(dshare), abs(fv[1])), 0.001 * listed):
+                L.append('지분율·순매수 어긋남: 외국인 지분율 20거래일 %+.2f%%p(약 %s주) vs 장내 순매수 %s주 — 차이 약 %s주는 시간외·블록딜 등 장외 이동 가능, 사유 확인 불가' % (
+                    fr[0] - fr[1], _c(dshare), _c(fv[1]), _c(dshare - fv[1])))
+    else:
+        L.append('수급: 확인 불가')
+    # 실적 — 다음 확정 분기(연결)
+    Q = ((x.get('fin') or {}).get('data') or {}).get('QUARTER') or []
+    if Q:
+        q0 = Q[0]
+        q1 = Q[1] if len(Q) > 1 else {}
+        yoy = next((r for r in Q[1:] if (r.get('date') or '')[:7] == '%d%s' % (int(q0['date'][:4]) - 1, q0['date'][4:7])), None)
+        def one(k, lab):
+            v = q0.get(k)
+            t = '%s %s억' % (lab, _c((v or 0) / 1e8)) if v is not None else '%s 확인 불가' % lab
+            t += '(전분기 %s' % _chg(v, q1.get(k))
+            t += ', 전년 동기 %s)' % _chg(v, yoy.get(k)) if yoy else ')'
+            return t
+        fin_co = bool(re.search(r'은행|보험|증권|금융|카드|캐피탈', q.get('wicsSectorName') or ''))
+        L.append('실적(확정, %s년 %d월 분기): %s · %s · %s' % (q0['date'][:4], int(q0['date'][5:7]), one('sales', '영업수익' if fin_co else '매출'),
+                                                    one('operatingProfit', '영업이익'), one('netIncome', '순이익')))
+        flags = []
+        op, ni, sa = q0.get('operatingProfit'), q0.get('netIncome'), q0.get('sales')
+        if op is not None and ni is not None and op > 0 > ni:
+            flags.append('영업이익은 흑자인데 순손실 — 영업외 손익이 갈랐다')
+        if q1 and sa and q1.get('sales') and op and q1.get('operatingProfit') and op > 0 and q1['operatingProfit'] > 0:
+            if sa > q1['sales'] * 1.05 and op < q1['operatingProfit'] * 0.95:
+                flags.append('매출은 늘었는데 영업이익이 줄었다')
+        if q1 and op and ni and q1.get('operatingProfit') and q1.get('netIncome') and min(op, ni, q1['operatingProfit'], q1['netIncome']) > 0:
+            if op > q1['operatingProfit'] * 1.05 and ni < q1['netIncome'] * 0.95:
+                flags.append('영업이익은 늘었는데 순이익이 줄었다')
+        if flags:
+            L.append('손익 어긋남: ' + ' · '.join(flags))
+    else:
+        L.append('실적: 확인 불가')
+    pre = next((it for it in x.get('items') or [] if '잠정' in it['title']), None)
+    if pre:
+        L.append('잠정실적 공시: %s%s' % (_md(pre['date']), ' — 확정 재무보다 새로우니 공시 본문으로 본다' if Q and pre['date'][:7] > (Q[0]['date'][:4] + '-' + '%02d' % min(12, int(Q[0]['date'][5:7]) + 1)) else ''))
+    # 밸류
+    eps = [r.get('eps') for r in Q[:4]]
+    vparts = []
+    if len(eps) == 4 and None not in eps and price:
+        ttm = sum(eps)
+        vparts.append(('최근 4분기 PER %.1f배' % (price / ttm)) if ttm > 0 else ('최근 4분기 EPS 합 %s원(적자)이라 PER 없음' % _c(ttm)))
+        a2 = (eps[0] + eps[1]) * 2
+        vparts.append(('최근 2분기 연환산 PER %.1f배' % (price / a2)) if a2 > 0 else '최근 2분기 연환산도 적자')
+        if ttm <= 0 < eps[0]:
+            vparts.append('최근 분기는 흑자, 4분기 합은 적자')
+    sp = q.get('sectorPer')
+    if isinstance(sp, (int, float)):
+        vparts.append(('업종 PER %.1f배' % sp) if 0 < sp <= 200 else ('업종 PER %.1f배 — 비교 무효' % sp))
+    vd = (f or {}).get('valuation_derived') or {}
+    if vd.get('verdict'):
+        vparts.append('PBR 판정: %s%s' % (vd['verdict'], ' (ROE 상한 적용 %s%%)' % vd.get('roe_used_pct') if vd.get('roe_capped') else ''))
+    L.append('밸류: ' + (' · '.join(vparts) if vparts else '확인 불가'))
+    # 목표를 부른 뒤에만 볼 줄 둘
+    con = (f or {}).get('consensus') or {}
+    try:
+        tgt = float(str(con.get('priceTargetMean')).replace(',', ''))
+    except ValueError:
+        tgt = None
+    if tgt and price:
+        L.append('컨센(목표를 부른 뒤에만 본다): 목표가 평균 %s원 — 현재가 대비 %s · 투자의견 %s (%s)' % (
+            _c(tgt), _pct((tgt / price - 1) * 100), con.get('recommMean'), _md(con.get('createDate'))))
+    tc = (f or {}).get('target_context') or {}
+    if tc.get('n'):
+        L.append('과거 상승폭(목표를 부른 뒤에만 본다): %s거래일 창 %s개 표본 — 중앙 %s · 상위 25%% %s · 상위 10%% %s · 최대 %s' % (
+            tc.get('holdDays'), tc.get('n'), _pct(tc.get('median')), _pct(tc.get('p75')), _pct(tc.get('p90')), _pct(tc.get('max'))))
+    # 직전 판단
+    pt = (f or {}).get('prev_track') or {}
+    if pt.get('prevDate'):
+        path = pt.get('path') or {}
+        cur, mx = path.get('curReached', pt.get('reachedPct')), path.get('maxReached')
+        if path.get('hitTarget'):
+            w = '목표를 %s거래일 만에 찍었고 지금은 목표폭의 %.0f%% 지점 — 방향은 맞았다' % (path.get('daysToTarget'), cur or 0)
+        elif isinstance(cur, (int, float)) and cur >= 100:
+            w = '목표를 넘어섰다'
+        elif isinstance(cur, (int, float)) and cur < 0:
+            w = '반대로 갔다' + ('' if cur < -100 else '(목표폭의 %.0f%%)' % cur)
+        elif isinstance(cur, (int, float)):
+            w = '목표폭의 %.0f%% 지점%s' % (cur, '(장중 최대 %.0f%%)' % mx if isinstance(mx, (int, float)) else '')
+        else:
+            w = '진척 확인 불가'
+        try:
+            left = (datetime.strptime(pt['horizon'][:10], '%Y-%m-%d').date() - NOW.date()).days
+            lt = ('판정일 %s(%d일 남음)' % (_md(pt['horizon']), left)) if left >= 0 else ('판정일 %s 지남' % _md(pt['horizon']))
+        except (KeyError, ValueError, TypeError):
+            lt = '판정일 확인 불가'
+        L.append('직전 판단: %s %s · 목표 %s원(당시 %s원) · %s · %s · 판정 %s · 그때 근거 "%s"' % (
+            _md(pt['prevDate']), pt.get('prevGrade'), _c(pt.get('prevTarget')), _c(pt.get('prevPrice')), lt, w,
+            path.get('verdict') or '-', pt.get('prevThesis')))
+    else:
+        L.append('직전 판단: 없음')
+    # 변화 신호 — 최근 30일 공시
+    cut = (NOW - timedelta(days=30)).strftime('%Y-%m-%d')
+    got = {}
+    for it in x.get('items') or []:
+        if it['date'] >= cut:
+            c = _cat(it['title'])
+            if c != '기타':
+                got.setdefault(c, []).append(_sd(it['date']))
+    sig = ['%s %d건(%s)' % (c, len(v), ', '.join(sorted(set(v), key=lambda d: v.index(d))[:3])) for c, v in got.items()]
+    warn = (q.get('stockState') or {}).get('marketWarning')
+    if warn and warn != 'NONE':
+        sig.append('시장경보 표시(%s)' % warn)
+    far = ['%s %s' % (_sd(it['date']), '손익구조 변경' if '손익구조' in it['title'] else '파생상품 손실')
+           for it in x.get('items') or [] if re.search(r'손익구조|파생상품거래손실', it['title'].replace(' ', ''))]
+    L.append('변화 신호(최근 30일 공시): ' + (' · '.join(sig) if sig else '주요 공시 없음') +
+             (' · 180일 안 손익구조 변경·파생손실 공시: ' + ', '.join(far[:4]) if far else ''))
+    spl = (f or {}).get('splits')
+    if spl:
+        L.append('권리락: 있음 — 파일 안 주가는 보정됐고 공시·뉴스 속 과거 주가는 보정 전이다 · ' + J(spl)[:160])
+    gaps = []
+    if not f:
+        gaps.append('수급파일 없음(11개 주체 수급·컨센·직전 판단 없음)')
+    if not str(x.get('src', '')).startswith('DART'):
+        gaps.append('DART 목록 실패(거래소 공시만)')
+    if not x.get('rep'):
+        gaps.append('정기보고서 없음')
+    if ERR:
+        gaps.append('조회 실패 %d건(#오류)' % len(ERR))
+    L.append('빈칸: ' + (' · '.join(gaps) if gaps else '없음'))
+    return L
+
+
+def toc_kr(x):
+    docs = x.get('docs') or []
+    cnt = {}
+    for it in docs:
+        c = _cat(it['title'])
+        cnt[c] = cnt.get(c, 0) + 1
+    return ('#목차 ①속독 %d줄 ②시장·해외 ③시세 ④수급파일 %s ⑤공시목록 %d건 ⑥공시본문 %d건(%s) ⑦정기보고서 %s ⑧뉴스 %d건 ⑨오류 %d건'
+            % (x.get('digest_n', 0), ('%s자(키 지도 포함)' % _c(x.get('file_chars', 0))) if x.get('file') else '없음 — 가격·수급·재무확정으로 대신',
+               len(x.get('items') or []), len(docs), ' · '.join('%s %d' % kv for kv in cnt.items()) or '없음',
+               ('%s 절 %d개' % (x['rep']['title'], len(x.get('secs') or []))) if x.get('rep') else '없음',
+               len(x.get('news') or []), len(ERR)))
+
+
 def safe_bundle(code, deep):
     try:
         return kr_bundle(code, deep)
     except Exception as e:      # 한 종목이 깨져도 나머지는 낸다
         ERR.append('%s 처리 실패 — %s: %s' % (code, type(e).__name__, str(e)[:80]))
-        return ['', '==== %s ====' % code, '#처리 실패 — #오류 참조']
+        return ['', '==== %s ====' % code, '#처리 실패 — #오류 참조'], {}
 
 
 def main(argv):
@@ -871,14 +1211,24 @@ def main(argv):
     with ThreadPoolExecutor(max_workers=5) as top:
         if mode == 'kr':
             fm = top.submit(market_all)
-            parts = list(top.map(lambda c: safe_bundle(c, deep), codes))
+            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep), codes))
         else:
             fm = top.submit(us_market_all)
-            parts = list(top.map(safe_us, codes))
+            parts, ctxs = list(top.map(safe_us, codes)), []
         mk, gl = fm.result()
     head = '깊게' if deep else '얕게 %d종목' % len(codes)
     print('#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
           % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M'), head))
+    if mode == 'kr' and deep and ctxs and ctxs[0]:
+        try:
+            dg = digest_kr(ctxs[0], mk)
+            ctxs[0]['digest_n'] = len(dg)
+            print(toc_kr(ctxs[0]))
+            print('#속독 — 코드가 원자료에서 계산했다. 판단의 출발점이고, 원문은 이 줄들을 뒤집을 신호를 확인할 때만 연다')
+            print('\n'.join(dg))
+        except Exception as e:
+            ERR.append('속독층 계산 실패 — %s: %s' % (type(e).__name__, str(e)[:100]))
+            print('#속독 계산 실패 — 원문 블록으로 판단한다')
     if mode == 'kr':
         print('#시장 ' + J(mk))
         print('#해외·환율 ' + J(gl))
@@ -889,7 +1239,8 @@ def main(argv):
         print('\n'.join(part))
     print('#오류 ' + (J(ERR) if ERR else '없음'))
     print('#수집시간 %.1f초' % (time.time() - t0))
-    return 0
+    sys.stdout.flush()
+    os._exit(0)          # 마감으로 버린 조회가 종료를 붙잡지 않게
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

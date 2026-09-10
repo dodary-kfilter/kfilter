@@ -89,12 +89,18 @@ def one(t):
     has_per = '#정기보고서 ' in o and '안에 없음' not in o
     miss = [s for s in SECS if s not in secs] if has_per else []
     short = [s for s in SECS if s in secs and len(secs[s]) < 60 and '해당' not in secs[s]]
+    dg = re.search(r'(?s)#속독[^\n]*\n(.*?)\n#시장', o)
+    dlines = [ln for ln in (dg.group(1).split('\n') if dg else []) if ln.strip()]
+    dflag = '속독없음' if not dg else ('속독빈약%d줄' % len(dlines) if len(dlines) < 9 else '')
+    if dg and re.search(r'None|nan|확인 불가 확인 불가', dg.group(1)):
+        dflag = (dflag + ' 속독빈값').strip()
     m = re.search(r'#공시목록 출처 (\S+) .*?\((\d+)건', o)
     er = re.search(r'#오류 (.*)', o)
     nerr = 0 if not er or er.group(1) == '없음' else len(json.loads(er.group(1)))
     return dict(c=c, n=(q.get('name') or '')[:8], lab=lab, tg='·'.join(tg) or '-', file='#수급파일 kfilter' in o, dt=dt, sz=len(o),
                 src=(m.group(1)[:4] if m else '-'), cnt=int(m.group(2)) if m else 0, doc=len(docs),
-                empty=sum(1 for b in docs if len(b) < 80), per=has_per, miss=miss, short=short, err=nerr, code=r.returncode)
+                empty=sum(1 for b in docs if len(b) < 80), per=has_per, miss=miss, short=short, err=nerr, code=r.returncode,
+                dflag=(dflag if tg != ['업종없음'] else ''))
 
 
 def main():
@@ -129,6 +135,7 @@ def main():
         if x['miss']: flag.append('절없음:' + ','.join(x['miss']))
         if x['short']: flag.append('절빈약:' + ','.join(x['short']))
         if x['empty']: flag.append('빈본문%d' % x['empty'])
+        if x.get('dflag'): flag.append(x['dflag'])
         print('%s %-8s %-3s [%s] 파일%s %4.1fs %3dK자 공시%3d(%s) 본문%2d 정기%s %s' % (
             x['c'], x['n'], x['lab'], x['tg'], 'O' if x['file'] else 'X', x['dt'], x['sz'] // 1000, x['cnt'], x['src'],
             x['doc'], 'O' if x['per'] else 'X', ' '.join(flag) or '정상'), flush=True)
