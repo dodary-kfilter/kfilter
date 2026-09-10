@@ -3,10 +3,45 @@
 ★한 종목에서만 나온 문제로는 번들 규칙을 고치지 않는다. 여기서 반복되는 실패만 고친다.
   사용(저장소 루트): python3 tools/bundle_check.py [추가코드,추가코드] [--part 1/2]
   --part k/n = 표본을 n등분해 k번째만 — 한 번에 오래 걸리는 환경에서 나눠 돌린다
+  --us       = 미장: 사이트 미국 종목 사전(index.html)에서 개별 종목을 일정 간격으로 뽑는다. EXCLUDE_US는 설계에 쓴 티커
 표본 = data.json의 보유 전부 + 동시수급·저가매수·모멘텀 목록 앞에서 4개씩 + 추가 코드.
 EXCLUDE = 번들 설계·수정 때 대조에 쓴 종목. 판정에서 뺀다."""
 import json, re, subprocess, sys, time, urllib.request
 EXCLUDE = {'440110', '005930', '001820'}
+EXCLUDE_US = {'MU'}
+
+
+def sample_us(k=10):
+    h = open('index.html', encoding='utf-8').read()
+    tk = [m.group(1) for m in re.finditer(r'\[\s*["\']([A-Z][A-Z.\-]*)["\']\s*,\s*["\']stocks["\']', h)]
+    tk = [x for i, x in enumerate(tk) if x not in tk[:i] and x not in EXCLUDE_US]
+    step = max(1, len(tk) // k)
+    return [(x, '미장') for x in tk[::step][:k]], len(tk)
+
+
+def one_us(t):
+    tk, lab = t
+    t0 = time.time()
+    r = subprocess.run([sys.executable, 'tools/bundle.py', 'us', tk], capture_output=True, text=True, timeout=180)
+    o, dt = r.stdout, time.time() - t0
+    def line(tag):
+        m = re.search(r'(?m)^' + re.escape(tag) + r'.*$', o)
+        return m.group(0) if m else ''
+    er = re.search(r'#오류 (.*)', o)
+    nerr = 0 if not er or er.group(1) == '없음' else len(json.loads(er.group(1)))
+    sec = re.search(r'#SEC 최근 공시 (\d+)건', o); nw = re.search(r'#뉴스 .*?(\d+)건', o)
+    sur = re.search(r'EPS서프라이즈[^:]*:(\[.*?\]\])', line('#실적·컨센·목표가'))
+    flag = []
+    if r.returncode: flag.append('비정상종료')
+    if not line('#시세') or '조회 실패' in line('#시세'): flag.append('시세없음')
+    if not line('#가격'): flag.append('가격없음')
+    if '"손익"' not in line('#재무'): flag.append('재무없음')
+    if not sur: flag.append('실적없음')
+    if '"기관보유":{}' in line('#기관·공매도·내부자'): flag.append('기관없음')
+    if nerr: flag.append('오류%d' % nerr)
+    name = re.search(r'==== \S+ (.*) ====', o)
+    return '%-5s %-22s %4.1fs %2dK자 SEC%2s 뉴스%s %s' % (tk, (name.group(1) if name else '')[:22], dt, len(o) // 1000,
+            sec.group(1) if sec else '-', nw.group(1) if nw else '-', ' '.join(flag) or '정상'), bool(flag)
 SECS = ['매출·수주', '재무상태표(발췌)', '손익계산서(발췌)', '기타 재무', '주주', '우발부채·소송', '작성기준일 이후']
 H = {'User-Agent': 'Mozilla/5.0', 'Referer': 'https://finance.daum.net/'}
 
@@ -64,6 +99,17 @@ def one(t):
 
 def main():
     args = [a for a in sys.argv[1:]]
+    if '--us' in args:
+        pick, total = sample_us()
+        print('미장 표본 %d개 — 사전 개별 종목 %d개에서 일정 간격 (설계에 쓴 %s 제외)' % (len(pick), total, ','.join(sorted(EXCLUDE_US))))
+        bad = 0
+        for p in pick:
+            ln, b = one_us(p)
+            print(ln, flush=True)
+            bad += b
+            time.sleep(1.5)
+        print('문제 종목 %d/%d' % (bad, len(pick)))
+        return 0
     part = None
     if '--part' in args:
         i = args.index('--part'); part = tuple(int(v) for v in args[i + 1].split('/')); del args[i:i + 2]

@@ -5,6 +5,7 @@
 리포트 방은 이 명령 하나만 실행하고, 출력만 보고 판단한다.
   국장 1종목(깊게)    : curl -s https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py | python3 - kr 440110
   국장 여러 종목(얕게): ... | python3 - kr 005930 000660 042700
+  미장 1종목         : ... | python3 - us MU
 
 깊게 = 시세 · 수급파일(없으면 다음에서 직접 계산) · 공시 목록 · 주요공시 본문 · 최신 정기보고서 발췌 · 뉴스 · 시장
 얕게 = 시세 · 수급파일 요약 · 공시 제목 10건 (본문·정기보고서·뉴스 생략)
@@ -47,8 +48,9 @@ def decode(b, ct=''):
         return b.decode('cp949' if enc.startswith('utf') else 'utf-8', 'ignore')
 
 
-def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False):
+def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False, extra=None):
     hd = {'User-Agent': UA}
+    hd.update(extra or {})
     if ref:
         hd['Referer'] = ref
     data = urllib.parse.urlencode(form).encode() if form else None
@@ -226,7 +228,8 @@ def market_all():
 
 
 # ───────────────────────────── 수급파일이 없을 때 직접 계산
-def price_block(d):
+def price_block(d, nd=0):
+    rnd = (lambda v: round(v, nd)) if nd else round            # 미국 주가는 소수점이 있다
     rows = [r for r in ((d or {}).get('data') or []) if r.get('accTradeVolume')]  # 장전 더미행(거래량 0) 제거
     if len(rows) < 5:
         return None
@@ -236,7 +239,7 @@ def price_block(d):
     for k in (5, 20, 60, 120):
         if len(c) >= k:
             m = sum(c[:k]) / k
-            out['이평%d_이격%%' % k] = [round(m), round((c[0] / m - 1) * 100, 1)]
+            out['이평%d_이격%%' % k] = [rnd(m), round((c[0] / m - 1) * 100, 1)]
     for k in (5, 20, 60, 120, 240):
         if len(c) > k:
             out['수익률%d일%%' % k] = round((c[0] / c[k] - 1) * 100, 1)
@@ -256,7 +259,7 @@ def price_block(d):
                 vol[min(int((p - lo2) / w), 9)] += q
             tot = sum(vol) or 1
             top = sorted(range(10), key=lambda i: -vol[i])[:4]
-            out['매물대120일_하단·상단·비중%'] = [[round(lo2 + i * w), round(lo2 + (i + 1) * w),
+            out['매물대120일_하단·상단·비중%'] = [[rnd(lo2 + i * w), rnd(lo2 + (i + 1) * w),
                                            round(vol[i] * 100 / tot)] for i in sorted(top)]
     return out
 
@@ -601,6 +604,255 @@ def kr_bundle(code, deep):
     return out
 
 
+# ───────────────────────────── 미국 (나스닥 = 시세·재무·실적·수급 대용, 야후 = 시계열만)
+NASDAQ = 'https://api.nasdaq.com/api'
+NQ_HEAD = {'Accept': 'application/json, text/plain, */*', 'Origin': 'https://www.nasdaq.com'}
+
+
+def nq(path):
+    s = fetch(NASDAQ + path, 'https://www.nasdaq.com/', extra=NQ_HEAD)
+    if not s:
+        return None
+    try:
+        j = json.loads(s)
+    except ValueError:
+        ERR.append('나스닥 JSON 해석 실패 ' + path.split('?')[0])
+        return None
+    return j.get('data') if isinstance(j, dict) else None
+
+
+def ychart(sym, rng='2y'):
+    d = jget('https://query1.finance.yahoo.com/v8/finance/chart/%s?range=%s&interval=1d&events=div,splits'
+             % (urllib.parse.quote(sym.replace('.', '-')), rng))            # 야후는 클래스 주식을 BRK-B처럼 하이픈으로 받는다
+    try:
+        r = d['chart']['result'][0]
+        q = r['indicators']['quote'][0]
+    except (TypeError, KeyError, IndexError):
+        ERR.append('야후 시계열 없음 ' + sym)
+        return None
+    rows = []
+    for i, t in enumerate(r.get('timestamp') or []):
+        c = q['close'][i]
+        if c is None:
+            continue
+        rows.append({'date': datetime.fromtimestamp(t, timezone.utc).strftime('%Y-%m-%d'),
+                     'tradePrice': round(c, 4), 'accTradeVolume': q['volume'][i] or 0})
+    rows.reverse()
+    return rows, (r.get('events') or {})
+
+
+def idx_series(sym):
+    y = ychart(sym, '6mo')
+    if not y or not y[0]:
+        return None
+    c = [r['tradePrice'] for r in y[0]]
+
+    def ch(k):
+        return round((c[0] / c[k] - 1) * 100, 2) if len(c) > k and c[k] else None
+    return [round(c[0], 2), ch(5), ch(20), ch(60)]
+
+
+US_IDX = [('S&P500', '^GSPC', '미국 S&P 500'), ('나스닥', '^IXIC', '미국 나스닥 종합'),
+          ('필라델피아반도체', '^SOX', '미국 필라델피아 반도체'), ('VIX', '^VIX', None),
+          ('미국10년물금리', '^TNX', None), ('달러인덱스', 'DX-Y.NYB', None)]
+
+
+def us_market_all():
+    fut = [(nm, EX.submit(idx_series, sym), gk) for nm, sym, gk in US_IDX]
+    g = global_block()
+    mk = {}
+    for nm, fu, gk in fut:
+        v = fu.result()
+        if not v:
+            continue
+        d = {'수준': v[0], '5일%': v[1], '20일%': v[2], '60일%': v[3]}
+        if gk and gk in g:
+            d['1일%'] = g[gk][1]
+            d['기준일'] = g[gk][2]
+        mk[nm] = d
+    return mk, {k: v for k, v in g.items() if re.search(r'USD/KRW|WTI', k)}
+
+
+US_STATUS = {'Open': '정규장 중 — 확정 종가 아님', 'Pre-Market': '프리마켓 — 정규장 시세는 전일 종가',
+             'After-Hours': '애프터마켓 — 정규장 종가 확정, 장외 시세는 장외 항목', 'Closed': '장 마감 — 확정 종가'}
+
+
+def clean_name(nm):
+    nm = re.sub(r'\s+(Common Stock|Class [A-C].*|Ordinary Shares.*|American Depositary.*|ADS.*)$', '', nm or '')
+    return re.sub(r',?\s+(Inc\.?|Incorporated|Corporation|Corp\.?|Co\.?|Ltd\.?|Limited|plc|PLC|N\.V\.|S\.A\.|Holdings?)$', '',
+                  nm).strip()
+
+
+def us_quote(info, summ):
+    p = info.get('primaryData') or {}
+    sd = {k: (v or {}).get('value') for k, v in ((summ or {}).get('summaryData') or {}).items()}
+    st = info.get('marketStatus')
+    try:
+        cap_ = round(int(str(sd.get('MarketCap')).replace(',', '')) / 1e8)
+    except (TypeError, ValueError):
+        cap_ = None
+    vol = re.sub(r'\.\d+$', '', str(p.get('volume') or ''))
+    out = {'종목': info.get('companyName'), '거래소': info.get('exchange'),
+           '장상태': '%s (%s)' % (st, US_STATUS.get(st, '장 상태 확인 불가')),
+           '시각ET': p.get('lastTradeTimestamp'), '실시간': p.get('isRealTime'),
+           '현재가': p.get('lastSalePrice'), '전일대비': p.get('netChange'), '등락률': p.get('percentageChange'),
+           '거래량': vol, '평균거래량': sd.get('AverageVolume'), '전일종가': sd.get('PreviousClose'),
+           '당일고저': sd.get('TodayHighLow'), '52주고저': sd.get('FiftTwoWeekHighLow'), '시총억달러': cap_,
+           '업종': sd.get('Sector'), '산업': sd.get('Industry'), '나스닥1년목표': sd.get('OneYrTarget'),
+           '배당_연간·수익률·배당락일': [sd.get('AnnualizedDividend'), sd.get('Yield'), sd.get('ExDividendDate')]}
+    s2 = info.get('secondaryData')
+    if isinstance(s2, dict):
+        out['장외'] = {k: s2.get(k) for k in ('lastSalePrice', 'netChange', 'percentageChange', 'lastTradeTimestamp')
+                     if s2.get(k)}
+    return out
+
+
+FIN_ROWS = [('incomeStatementTable', '손익', r'^(Total Revenue|Gross Profit|Research and Development|Operating Income|Net Income)$'),
+            ('balanceSheetTable', '재무상태', r'^(Cash and Cash Equivalents|Short-Term Investments|Inventory|Total Assets|'
+                                          r'Short-Term Debt / Current Portion of Long-Term Debt|Long-Term Debt|Total Liabilities|Total Equity)$'),
+            ('cashFlowTable', '현금흐름', r'^(Net Cash Flow-Operating|Capital Expenditures|Sale and Purchase of Stock|Net Borrowings)$'),
+            ('financialRatiosTable', '비율', r'^(Gross Margin|Operating Margin|Profit Margin|After Tax ROE|Current Ratio)$')]
+
+
+def fin_tables(f, only=None):
+    out = {}
+    for key, label, rx in FIN_ROWS:
+        if only and label not in only:
+            continue
+        tb = (f or {}).get(key) or {}
+        hd = tb.get('headers') or {}
+        cols = [hd[k] for k in sorted(hd, key=lambda x: int(re.sub(r'\D', '', x) or 0)) if k != 'value1']
+        rows = {}
+        for r in tb.get('rows') or []:
+            if re.search(rx, r.get('value1') or ''):
+                rows[r['value1']] = [r.get('value%d' % i) for i in range(2, 2 + len(cols))]
+        if rows:
+            out[label] = dict([('기간', cols)] + list(rows.items()))
+    return out
+
+
+def us_earn(su, fo, tg):
+    out = {'EPS서프라이즈_분기·발표일·실제·컨센·서프%': [
+        [r.get('fiscalQtrEnd'), r.get('dateReported'), r.get('eps'), r.get('consensusForecast'), r.get('percentageSurprise')]
+        for r in (((su or {}).get('earningsSurpriseTable') or {}).get('rows') or [])[:4]]}
+    for key, lab in (('quarterlyForecast', '컨센EPS_분기'), ('yearlyForecast', '컨센EPS_연도')):
+        out[lab + '·평균·최고·최저·추정수·상향·하향'] = [
+            [r.get('fiscalEnd'), r.get('consensusEPSForecast'), r.get('highEPSForecast'), r.get('lowEPSForecast'),
+             r.get('noOfEstimates'), r.get('up'), r.get('down')] for r in (((fo or {}).get(key) or {}).get('rows') or [])[:3]]
+    co = (tg or {}).get('consensusOverview') or {}
+    out['목표가'] = {'평균': co.get('priceTarget'), '최저': co.get('lowPriceTarget'), '최고': co.get('highPriceTarget'),
+                  '매수·보유·매도': [co.get('buy'), co.get('hold'), co.get('sell')],
+                  '의견추이_날짜·매수·보유·매도': [[(h.get('z') or {}).get('date'), (h.get('z') or {}).get('buy'),
+                                          (h.get('z') or {}).get('hold'), (h.get('z') or {}).get('sell')]
+                                         for h in ((tg or {}).get('historicalConsensus') or [])[-3:]]}
+    return out
+
+
+def us_flow(ins, sh, it):
+    ins, sh, it = ins or {}, sh or {}, it or {}
+    out = {'기관보유': {v.get('label'): v.get('value') for v in (ins.get('ownershipSummary') or {}).values() if isinstance(v, dict)}}
+    pos = {}
+    for key in ('activePositions', 'newSoldOutPositions'):
+        for r in ((ins.get(key) or {}).get('rows') or []):
+            pos[r.get('positions')] = [r.get('holders'), r.get('shares')]
+    out['기관포지션_기관수·주식수'] = pos
+    out['공매도_결제일·잔고·일평균거래량·커버일수'] = [
+        [r.get('settlementDate'), r.get('interest'), r.get('avgDailyShareVolume'), r.get('daysToCover')]
+        for r in ((sh.get('shortInterestTable') or {}).get('rows') or [])[:3]]
+    for key, lab in (('numberOfTrades', '내부자거래건수'), ('numberOfSharesTraded', '내부자거래주식수')):
+        out[lab + '_3개월·12개월'] = {r.get('insiderTrade'): [r.get('months3'), r.get('months12')]
+                                    for r in ((it.get(key) or {}).get('rows') or [])}
+    tt = it.get('transactionTable') or {}
+    out['내부자최근_이름·관계·날짜·유형·주식수·가격'] = [
+        [r.get('insider'), r.get('relation'), r.get('lastDate'), r.get('transactionType'), r.get('sharesTraded'), r.get('lastPrice')]
+        for r in (((tt.get('table') or {}).get('rows')) or tt.get('rows') or [])[:6]]
+    return out
+
+
+SEC_SKIP = {'3', '4', '5', '144', '3/A', '4/A', '5/A', '144/A'}
+
+
+def rss_titles(url, ok, k=8):
+    s = fetch(url) or ''
+    out, seen = [], set()
+    for it in re.findall(r'(?s)<item>(.*?)</item>', s):
+        tm = re.search(r'(?s)<title>(.*?)</title>', it)
+        dm = re.search(r'<pubDate>(.*?)</pubDate>', it)
+        title = strip_tags(html.unescape(tm.group(1))) if tm else ''
+        if not ok(title):
+            continue
+        try:
+            dt = datetime.strptime(dm.group(1)[:25], '%a, %d %b %Y %H:%M:%S').replace(tzinfo=timezone.utc).astimezone(KST)
+        except (AttributeError, ValueError):
+            continue
+        key = re.sub(r'\s+-\s+[^-]+$', '', title)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append((dt, title))
+    out.sort(key=lambda x: x[0], reverse=True)
+    return ['%s %s' % (dt.strftime('%m-%d %H:%M'), t) for dt, t in out[:k]]
+
+
+GENERIC = {'Advanced', 'American', 'Applied', 'United', 'General', 'First', 'International', 'Global', 'National', 'The',
+           'Taiwan', 'Texas', 'Southern', 'Western', 'Eastern', 'Northern', 'Bank', 'Royal', 'Marvell', 'Palo'}
+
+
+def gnews_en(tk, name):
+    w = clean_name(name).split()
+    key = ' '.join(w[:2]) if w and w[0] in GENERIC else (w[0] if w else tk)
+    url = ('https://news.google.com/rss/search?q=%s&hl=en-US&gl=US&ceid=US:en'
+           % urllib.parse.quote('"%s" OR %s when:14d' % (key, tk)))
+    return rss_titles(url, lambda t: bool(re.search(r'\b%s\b' % re.escape(tk), t)) or key.lower() in t.lower())
+
+
+def us_bundle(tk):
+    tk = tk.strip().upper()
+    paths = {'info': '/quote/%s/info?assetclass=stocks', 'summ': '/quote/%s/summary?assetclass=stocks',
+             'finq': '/company/%s/financials?frequency=2', 'finy': '/company/%s/financials?frequency=1',
+             'sur': '/company/%s/earnings-surprise', 'fore': '/analyst/%s/earnings-forecast', 'tgt': '/analyst/%s/targetprice',
+             'ins': '/company/%s/institutional-holdings?limit=5&type=TOTAL', 'sh': '/quote/%s/short-interest?assetClass=stocks',
+             'it': '/company/%s/insider-trades?limit=6&type=ALL', 'sec': '/company/%s/sec-filings?limit=40&sortColumn=filed&sortOrder=desc'}
+    f = {k: EX.submit(nq, v % tk) for k, v in paths.items()}
+    fy = EX.submit(ychart, tk, '2y')
+    ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, tk), None, True)
+    info = f['info'].result() or {}
+    fn = EX.submit(gnews_en, tk, info.get('companyName') or tk)
+    out = ['', '==== %s %s ====' % (tk, clean_name(info.get('companyName')))]
+    out.append('#시세 ' + (J(us_quote(info, f['summ'].result())) if info else '조회 실패'))
+    y = fy.result()
+    if y:
+        ev = y[1]
+        spl = sorted([datetime.fromtimestamp(int(v['date']), timezone.utc).strftime('%Y-%m-%d'), v.get('splitRatio')]
+                     for v in (ev.get('splits') or {}).values())
+        div = sorted([datetime.fromtimestamp(int(v['date']), timezone.utc).strftime('%Y-%m-%d'), v.get('amount')]
+                     for v in (ev.get('dividends') or {}).values())[-4:]
+        out.append('#가격 야후 일봉 2년으로 계산 · 오늘 등락은 #시세만 ' + J(price_block({'data': y[0]}, nd=2)))
+        out.append('#분할·배당 ' + J({'분할': spl or '없음', '최근배당': div or '없음'}))
+    fo = ff.result()
+    if fo:
+        out.append('#수급파일 kfilter report-data(미국 — 국내와 구조가 다르다) ' + J(fo))
+    out.append('#재무 분기 · 단위 천 달러 ' + J(fin_tables(f['finq'].result())))
+    out.append('#연간손익 · 단위 천 달러 ' + J(fin_tables(f['finy'].result(), only=('손익',))))
+    out.append('#실적·컨센·목표가 ' + J(us_earn(f['sur'].result(), f['fore'].result(), f['tgt'].result())))
+    out.append('#기관·공매도·내부자 ' + J(us_flow(f['ins'].result(), f['sh'].result(), f['it'].result())))
+    sec = [r for r in ((f['sec'].result() or {}).get('rows') or []) if (r.get('formType') or '') not in SEC_SKIP][:15]
+    out.append('#SEC 최근 공시 %d건 · 제출일|양식|기간 (내부자 소유 보고 Form 3·4·5·144는 뺐다)' % len(sec))
+    out.extend('%s|%s|%s' % (r.get('filed'), r.get('formType'), r.get('period')) for r in sec)
+    news = fn.result()
+    out.append('#뉴스 최근 14일 · 영문 제목 · %d건' % len(news))
+    out.extend(news)
+    return out
+
+
+def safe_us(tk):
+    try:
+        return us_bundle(tk)
+    except Exception as e:
+        ERR.append('%s 처리 실패 — %s: %s' % (tk, type(e).__name__, str(e)[:80]))
+        return ['', '==== %s ====' % tk, '#처리 실패 — #오류 참조']
+
+
 def safe_bundle(code, deep):
     try:
         return kr_bundle(code, deep)
@@ -610,26 +862,34 @@ def safe_bundle(code, deep):
 
 
 def main(argv):
-    if len(argv) < 2 or argv[0] != 'kr':
+    if len(argv) < 2 or argv[0] not in ('kr', 'us'):
         print(__doc__)
         return 1
-    codes = argv[1:]
+    mode, codes = argv[0], argv[1:]
     deep = len(codes) == 1
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=5) as top:
-        fm = top.submit(market_all)
-        parts = list(top.map(lambda c: safe_bundle(c, deep), codes))
+        if mode == 'kr':
+            fm = top.submit(market_all)
+            parts = list(top.map(lambda c: safe_bundle(c, deep), codes))
+        else:
+            fm = top.submit(us_market_all)
+            parts = list(top.map(safe_us, codes))
         mk, gl = fm.result()
-    print('#번들 kfilter · 수집 %s KST · %s · 이 출력이 자료의 전부다'
-          % (NOW.strftime('%Y-%m-%d %H:%M'), '깊게' if deep else '얕게 %d종목' % len(codes)))
-    print('#시장 ' + J(mk))
-    print('#해외·환율 ' + J(gl))
-    for p in parts:
-        print('\n'.join(p))
+    head = '깊게' if deep else '얕게 %d종목' % len(codes)
+    print('#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
+          % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M'), head))
+    if mode == 'kr':
+        print('#시장 ' + J(mk))
+        print('#해외·환율 ' + J(gl))
+    else:
+        print('#미국시장 ' + J(mk))
+        print('#환율·유가 ' + J(gl))
+    for part in parts:
+        print('\n'.join(part))
     print('#오류 ' + (J(ERR) if ERR else '없음'))
     print('#수집시간 %.1f초' % (time.time() - t0))
     return 0
-
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
