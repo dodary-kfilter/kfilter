@@ -30,7 +30,7 @@ const RULES=[
  ['단정없음',      t=>!t.includes('수급 파일에 이미 있다')],
  ['두세줄없음',    t=>!t.includes('— 두세 줄')],
  ['파일↔링크',     t=>(t.includes('report-data/'))===(t.includes('수급 파일은 종목당'))],
-  ['번들1',        t=>!t.includes('bundle.py') || ((t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length===1 && !/\/api\/quote|dsaf001|detailSearch|api\.nasdaq\.com|query1\.finance|stockanalysis\.com|웹 검색으로 보충|검색은 2회|DART 원문이 기본|새로 받아라|받을 것을 미리 정해|0~1 소수|수급 파일\(누적 데이터\)/.test(t))],
+  ['번들1',        t=>!t.includes('bundle.py') || ((t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length===1 && !/\/api\/quote|dsaf001|detailSearch|api\.nasdaq\.com|query1\.finance|stockanalysis\.com|웹 검색으로 보충|검색어는 두 번|추가로 받을 것|병렬로 받아라|\[데이터 취득\]|검색은 2회|DART 원문이 기본|새로 받아라|받을 것을 미리 정해|0~1 소수|수급 파일\(누적 데이터\)/.test(t))],
  ['path↔직전',     t=>(t.includes('직전 리포트'))===(t.includes('prev_track.path'))],
 ];
 const dump=process.env.KF_DUMP; if(dump) _fs.mkdirSync(dump,{recursive:true});

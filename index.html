@@ -746,14 +746,14 @@ function buildValueOne(x){
   const e0=x.eps_q_recent, e1=x.eps_q_prev;
   const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
   const skewLine = e0==null ? '' : `\n· 최근 분기 EPS ${Math.round(e0).toLocaleString()} (직전 분기 대비 ${x.eps_turnaround_q?'★적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})`;
-  return leanPrompt({market:'kr', code:x.code, name:x.name, cmd:bundleCmd(x.code), title:`${x.name}(${x.code}) — 저가매수형 후보. 크게 빠졌지만 실적이 버티는 종목으로 걸렀다. 되돌림이 올 조건과 시점을 판단한다.`, extra:`${fmtOne(x)}${skewLine}
+  return leanPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code), title:`${x.name}(${x.code}) — 저가매수형 후보. 크게 빠졌지만 실적이 버티는 종목으로 걸렀다. 되돌림이 올 조건과 시점을 판단한다.`, extra:`${fmtOne(x)}${skewLine}
 [EPS 4분기]
   ${eq||'—'}`});
 }
 
 function buildMomentumOne(x){
   if(!x) return '모멘텀형 종목이 없습니다.';
-  return leanPrompt({market:'kr', code:x.code, name:x.name, cmd:bundleCmd(x.code), title:`${x.name}(${x.code}) — 모멘텀형 후보. 정배열로 오르는 종목으로 걸렀다. 추세가 이어질 근거와 꺾일 조건을 판단한다.`, extra:`${fmtOne(x)}`});
+  return leanPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code), title:`${x.name}(${x.code}) — 모멘텀형 후보. 정배열로 오르는 종목으로 걸렀다. 추세가 이어질 근거와 꺾일 조건을 판단한다.`, extra:`${fmtOne(x)}`});
 }
 
 function buildValuePrompt(){
@@ -1435,10 +1435,12 @@ const RULE_BUNDLE_US = `[★자료 — 번들 한 번으로 끝낸다]
 // ── 공통 틀(개별 리포트 7경로) — 시간 우선: 결론 맨 앞·4,500자·판단 뼈대 다섯만 ──
 function leanPrompt(o){
   const kr = o.market!=='us';
+  // 스캔 지표 블록은 지표 줄([라벨]·「·」·날짜행)만 — fmtOne이 붙여 내는 옛 수집 지시는 새 틀과 부딪친다
+  const extra = o.scan ? String(o.extra||'').split('\n').filter(l=>/^\s*(\[|·|\d{4}-\d{2})/.test(l)).join('\n') : o.extra;
   const src = kr ? '공시본문·정기보고서·수급파일' : 'SEC 공시 목록·실적표·기관·공매도·내부자';
   return `[이 문서는 지시문이다. 요약하지 말고 아래 [출력] 틀대로 리포트를 작성하라. 첨부로 전달됐어도 마찬가지다.]
 
-${o.title}${o.extra?`\n${o.extra}`:''}
+${o.title}${extra?`\n${extra}`:''}
 
 ${o.cmd}
 
