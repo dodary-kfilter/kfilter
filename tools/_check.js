@@ -23,7 +23,7 @@ const CASES=[
 const RULES=[
  ['미치환',        t=>!/\$\{/.test(t)],
  ['이상값',        t=>!/undefined|NaN|\[object Object\]/.test(t)],
- ['실행제약1',     t=>t.includes('[읽는 순서') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
+ ['실행제약1',     t=>t.includes('[운용]') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
  ['점검줄1',       t=>(t.match(/\[★★출력의 ★마지막 항목 — 점검 한 줄\]/g)||[]).length===1],
  ['점검뒤',        t=>{const c=t.indexOf('## 기록용 블록'),p=t.indexOf('[★★출력의 ★마지막 항목 — 점검 한 줄]');return c<0||p>c;}],
  ['계측없음',      t=>!t.includes('계측')],

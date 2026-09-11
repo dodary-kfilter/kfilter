@@ -606,7 +606,7 @@ def gnews(name, k=6):
 
 
 # ───────────────────────────── 종목 하나
-def kr_bundle(code, deep):
+def kr_bundle(code, deep, brief=False):
     code = re.sub(r'^A', '', code.strip().upper())
     fq = EX.submit(daum, '/api/quotes/A%s?summary=false&changeStatistics=true' % code)
     ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, code), None, True)
@@ -644,6 +644,10 @@ def kr_bundle(code, deep):
     out.append('#공시목록 출처 %s · 최근 180일 · 최신순 · 날짜|제목|제출인 (%d건 중 %d건)'
                % (src, len(items), min(len(shown), 30)))
     out.extend('%s|%s|%s' % (it['date'], it['title'], it['by']) for it in shown[:30])
+    if deep and brief:                               # 총평판 — 원문은 받지 않는다
+        ctx['brief'] = True
+        ctx['news'] = wait(fg, '뉴스', [])[:3]
+        return out, ctx
     if deep:
         docs = pick_docs(items)
         ctx['docs'] = docs
@@ -1212,12 +1216,66 @@ def digest_kr(x, mk):
         gaps.append('수급파일 없음(11개 주체 수급·컨센·직전 판단 없음)')
     if not str(x.get('src', '')).startswith('DART'):
         gaps.append('DART 목록 실패(거래소 공시만)')
-    if not x.get('rep'):
+    if not x.get('rep') and not x.get('brief'):
         gaps.append('정기보고서 없음')
     if ERR:
         gaps.append('조회 실패 %d건(#오류)' % len(ERR))
     L.append('빈칸: ' + (' · '.join(gaps) if gaps else '없음'))
     return L
+
+
+def target_material(x):
+    """목표 계산 재료 — 모델이 EPS를 새로 짜느라 생각을 쓰지 않게 코드가 미리 계산한다"""
+    q, f = x.get('q') or {}, x.get('file')
+    price = q.get('tradePrice')
+    Q = ((x.get('fin') or {}).get('data') or {}).get('QUARTER') or []
+    eps = [r.get('eps') for r in Q[:4]]
+    if not price or len(eps) < 2 or None in eps[:2]:
+        return '목표 재료: 확인 불가(분기 EPS 없음)'
+    parts = []
+    ttm = sum(eps) if len(eps) == 4 and None not in eps else None
+    a2 = (eps[0] + eps[1]) * 2
+    if ttm is not None:
+        parts.append('최근 4분기 EPS %s원(PER %s)' % (_c(ttm), ('%.1f배' % (price / ttm)) if ttm > 0 else '적자'))
+    parts.append('최근 2분기 연환산 EPS %s원(PER %s)' % (_c(a2), ('%.1f배' % (price / a2)) if a2 > 0 else '적자'))
+    base = a2 if a2 > 0 else (ttm if ttm and ttm > 0 else None)
+    run = eps[0] * 4
+    if base and run > 0:
+        parts.append('최근 분기 속도가 한 분기 더 이어지면 연환산 EPS %s원(%s) → 지금 배수 그대로면 %s원' % (
+            _c(run), _pct((run / base - 1) * 100), _c(price * run / base)))
+    sp = q.get('sectorPer')
+    if ttm and ttm > 0 and isinstance(sp, (int, float)) and 0 < sp <= 200:
+        parts.append('업종 PER %.1f배를 최근 4분기 EPS에 적용하면 %s원' % (sp, _c(sp * ttm)))
+    vd = (f or {}).get('valuation_derived') or {}
+    tp, pbr = (vd.get('base') or {}).get('theo_pbr'), vd.get('pbr')
+    if tp and pbr and '무효' not in str(vd.get('verdict')):
+        parts.append('이론 PBR %.2f배 자리 %s원' % (tp, _c(price / pbr * tp)))
+    if not base:
+        parts.append('이익이 적자라 배수로 목표를 부를 수 없다 — 밸류 판정으로 본다')
+    return '목표 재료: ' + ' · '.join(parts)
+
+
+def digest_brief(x, mk):
+    """총평판 속독 9줄 — 거래량·컨센·과거 상승폭·권리락은 빼고, 어긋남은 해당 줄에 합치고, 목표 재료를 더한다"""
+    keep, gaps = [], None
+    for ln in digest_kr(x, mk):
+        if ln.startswith(('거래량:', '컨센(', '과거 상승폭(', '권리락:')):
+            continue
+        if ln.startswith('빈칸:'):
+            gaps = ln[len('빈칸: '):]
+            continue
+        if ln.startswith(('지분율·순매수 어긋남:', '손익 어긋남:', '잠정실적 공시:')):
+            tag = '수급' if ln.startswith('지분율') else '실적'
+            idx = [i for i, k in enumerate(keep) if k.startswith(tag)]
+            if idx:
+                keep[idx[-1]] += ' · ' + ln
+                continue
+        keep.append(ln)
+    if gaps and gaps != '없음' and keep:
+        keep[0] += ' (빈칸: %s)' % gaps
+    at = next((i for i, l in enumerate(keep) if l.startswith('밸류:')), len(keep) - 1)
+    keep.insert(at + 1, target_material(x))
+    return keep
 
 
 def toc_kr(x):
@@ -1233,9 +1291,9 @@ def toc_kr(x):
                len(x.get('news') or []), len(ERR)))
 
 
-def safe_bundle(code, deep):
+def safe_bundle(code, deep, brief=False):
     try:
-        return kr_bundle(code, deep)
+        return kr_bundle(code, deep, brief)
     except Exception as e:      # 한 종목이 깨져도 나머지는 낸다
         ERR.append('%s 처리 실패 — %s: %s' % (code, type(e).__name__, str(e)[:80]))
         return ['', '==== %s ====' % code, '#처리 실패 — #오류 참조'], {}
@@ -1245,18 +1303,36 @@ def main(argv):
     if len(argv) < 2 or argv[0] not in ('kr', 'us'):
         print(__doc__)
         return 1
-    mode, codes = argv[0], argv[1:]
+    brief = '--brief' in argv
+    mode, codes = argv[0], [a for a in argv[1:] if a != '--brief']
     deep = len(codes) == 1
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=5) as top:
         if mode == 'kr':
             fm = top.submit(market_all)
-            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep), codes))
+            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep, brief and deep), codes))
         else:
             fm = top.submit(us_market_all)
             parts, ctxs = list(top.map(safe_us, codes)), []
         mk, gl = fm.result()
     head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
+    if brief and mode == 'kr' and deep and ctxs and ctxs[0]:
+        x = ctxs[0]
+        out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · 이 출력이 자료의 전부다' % NOW.strftime('%Y-%m-%d %H:%M:%S')]
+        try:
+            out += ['#속독 — 코드가 원자료에서 계산했다. 이것만 보고 판단한다'] + digest_brief(x, mk)
+        except Exception as e:
+            ERR.append('속독층 계산 실패 — %s: %s' % (type(e).__name__, str(e)[:100]))
+            out.append('#속독 계산 실패')
+        items = x.get('items') or []
+        out += ['#최근 공시 제목 %d건 · 날짜|제목' % min(10, len(items))] + ['%s|%s' % (it['date'], it['title']) for it in items[:10]]
+        news = x.get('news') or []
+        out += ['#뉴스 제목 %d건' % len(news)] + news
+        print('\n'.join(out))
+        print('#오류 ' + (J(ERR) if ERR else '없음'))
+        print('#수집시간 %.1f초' % (time.time() - t0))
+        sys.stdout.flush()
+        os._exit(0)
     head = ['#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
             % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M:%S'), head_note)]
     if mode == 'kr' and deep and ctxs and ctxs[0]:
