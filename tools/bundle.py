@@ -606,14 +606,14 @@ def gnews(name, k=6):
 
 
 # ───────────────────────────── 종목 하나
-def kr_bundle(code, deep, brief=False):
+def kr_bundle(code, deep, brief=False):   # brief=총평판(판단 카드만)
     code = re.sub(r'^A', '', code.strip().upper())
     fq = EX.submit(daum, '/api/quotes/A%s?summary=false&changeStatistics=true' % code)
     ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, code), None, True)
     q = fq.result() or {}
     name = q.get('name') or code
     fl = EX.submit(dart_list, code, name)
-    fg = EX.submit(gnews, name) if deep else None
+    fg = EX.submit(gnews, name) if (deep and not brief) else None
     out = ['', '==== %s(%s) %s ====' % (name, code, q.get('market') or '')]
     ctx = {'q': q, 'name': name, 'code': code}
     fn_all = EX.submit(daum, '/api/quote/A%s/financials' % code) if deep else None
@@ -644,9 +644,8 @@ def kr_bundle(code, deep, brief=False):
     out.append('#공시목록 출처 %s · 최근 180일 · 최신순 · 날짜|제목|제출인 (%d건 중 %d건)'
                % (src, len(items), min(len(shown), 30)))
     out.extend('%s|%s|%s' % (it['date'], it['title'], it['by']) for it in shown[:30])
-    if deep and brief:                               # 총평판 — 원문은 받지 않는다
+    if deep and brief:                               # 총평판 — 판단 카드에 쓸 공시 본문만 본다
         ctx['brief'] = True
-        ctx['news'] = wait(fg, '뉴스', [])[:3]
         return out, ctx
     if deep:
         docs = pick_docs(items)
@@ -1278,6 +1277,119 @@ def digest_brief(x, mk):
     return keep
 
 
+# ───────────────────────────── 판단 카드 (총평판) — 줄마다 판정 한 마디 + 숫자 하나
+def _num(t):
+    m = re.search(r'(-?[\d,]{4,})', t or '')
+    return int(m.group(1).replace(',', '')) if m else None
+
+
+def _row(txt, label):
+    for ln in txt.split('\n'):
+        if ln.startswith(label) or re.match(r'^\d?\.?\s*' + re.escape(label), ln):
+            return ln
+    return ''
+
+
+def event_line(it, txt):
+    """주요 공시 한 줄 — 금액이 정해진 자리에 있는 것만 숫자로, 나머지는 제목만"""
+    t = it['title']
+    if re.search(r'단일판매|공급계약|수주', t):
+        amt, pct = _num(_row(txt, '2. 계약내역')), None
+        m = re.search(r'매출액대비\(%\)\s*\|\s*([\d.]+)', txt)
+        term = re.search(r'시작일\s*\|\s*([\d-]+).*?종료일\s*\|\s*([\d-]+)', txt, re.S)
+        if amt:
+            return '공급계약 %s억%s%s' % (_c(amt / 1e8), ' · 매출 대비 %s%%' % m.group(1) if m else '',
+                                     ' · %s~%s 공급' % (term.group(1)[:7], term.group(2)[:7]) if term else '')
+    if re.search(r'잠정|손익구조', t):
+        got = []
+        for k, lab in (('영업이익', '영업이익'), ('매출액', '매출')):
+            ln = _row(txt, k)
+            v = re.findall(r'\|\s*(-?[\d,]{3,})\s*\|', ln)
+            pc = re.findall(r'\|\s*(-?[\d.]+)\s*\|', ln)
+            if v:
+                got.append('%s %s억%s' % (lab, _c(int(v[0].replace(',', '')) / 100), ' (전분기 %s%%)' % pc[0] if pc else ''))
+        if got:
+            return '잠정실적 ' + ' · '.join(got)
+    if re.search(r'자기주식', t):
+        amt = _num(_row(txt, '1. 계약금액')) or _num(_row(txt, '2. 취득예정금액'))
+        if amt:
+            return '자기주식 %s억%s' % (_c(amt / 1e8), ' (소각 아님 — 주식 수 안 줄어듦)' if '소각' not in txt else ' (소각)')
+    if re.search(r'차입', t):
+        amt = _num(_row(txt, '1. 단기차입내역')) or _num(_row(txt, '차입금액'))
+        if amt:
+            return '차입 %s억' % _c(amt / 1e8)
+    return re.sub(r'\[[^\]]*\]|\s', '', t)[:26]
+
+
+EV_PICK = re.compile(r'단일판매|공급계약|수주|잠정|손익구조|자기주식|전환사채|유상증자|차입|대량보유|최대주주|소송|파생상품거래손실')
+
+
+def events(items, days=45, k=4):
+    cut = (NOW - timedelta(days=days)).strftime('%Y-%m-%d')
+    picked = [it for it in items if it.get('rcp') and it['date'] >= cut and EV_PICK.search(it['title'])
+              and not SKIP.search(it['title'])][:k]
+    futs = [(it, EX.submit(doc_text, it, 1400)) for it in picked]
+    out = []
+    for it, fu in futs:
+        try:
+            out.append('%s %s' % (_sd(it['date']), event_line(it, wait(fu, '공시 %s' % it['title'][:16], '') or '')))
+        except Exception:
+            out.append('%s %s' % (_sd(it['date']), re.sub(r'\s', '', it['title'])[:26]))
+    return out
+
+
+def digest_card(x, mk):
+    """판단 카드 7줄 — 판정 한 마디 + 숫자 하나. 세부 수치는 목표 재료 줄에만 둔다"""
+    src = {re.split(r'[(:]', ln)[0].strip(): ln for ln in digest_kr(x, mk)}
+    q = x.get('q') or {}
+    out = []
+    base = src.get('기준', '')
+    gap = src.get('빈칸', '빈칸: 없음')[len('빈칸: '):]
+    out.append(base + ('' if gap == '없음' else ' · 빈칸 %s' % gap))
+    m = re.search(r'→ (.+?)(?: ·|$)', src.get('시장 대비', ''))
+    i20 = re.search(r'(\S+) 20일 (\S+) · 이 종목 20일 (\S+)', src.get('시장 대비', ''))
+    out.append('시장 대비: %s (20일 지수 %s vs 종목 %s)' % (m.group(1) if m else '확인 불가',
+                                                  i20.group(2) if i20 else '?', i20.group(3) if i20 else '?'))
+    pos = src.get('가격 위치', '')
+    keep = [p for p in pos[len('가격 위치: '):].split(' · ') if re.search(r'20일선|고점|52주', p)]
+    out.append('가격 위치: ' + (' · '.join(keep) if keep else '확인 불가'))
+    sup = src.get('수급', '')
+    body = sup.split('): ', 1)[1] if '): ' in sup else ''
+    pats = [p for p in body.split(' · ') if re.match(r'^(외국인|기관계|연기금|개인) \S+$', p)]
+    turn = [p for p in body.split(' · ') if '돌아섰다' in p]
+    if pats or turn:
+        out.append('수급(20일): %s%s%s' % (' · '.join(pats) or '판정 없음',
+                                        ' · ' + ' · '.join(turn) if turn else '',
+                                        ' · 장외 이동 의심' if '어긋남' in sup else ''))
+    else:
+        out.append('수급: 확인 불가' if not body else '수급(20일): ' + body[:150])
+    fin = src.get('실적', '')
+    body = fin.split('): ', 1)[1] if '): ' in fin else ''
+    qm = re.search(r'실적\(확정, (\S+년 \d+월) 분기\)', fin)
+    if body:
+        parts, tail = [], []
+        for p in body.split(' · '):
+            if p.startswith(('손익 어긋남', '잠정실적 공시')):
+                tail.append(p)
+            else:
+                parts.append(re.sub(r'\(전분기 ([^,)]+)(?:, 전년 동기 [^)]+)?\)', r'(전분기 \1)', p))
+        out.append('실적(%s): %s%s' % (qm.group(1) if qm else '확정', ' · '.join(parts),
+                                     ' · ' + ' · '.join(tail) if tail else ''))
+    else:
+        out.append('실적: 확인 불가')
+    out.append(target_material(x))
+    prev = src.get('직전 판단', '직전 판단: 없음')
+    pm = re.search(r'직전 판단: (\S+) (\S+) · 목표 (\S+)원.+?· (판정일[^·]+)· (.+?) · 판정', prev)
+    out.append('직전 판단: %s %s 목표 %s원 · %s· %s' % (pm.group(1), pm.group(2), pm.group(3), pm.group(4), pm.group(5))
+               if pm else prev)
+    ev = events(x.get('items') or [])
+    out.append('최근 공시(45일): ' + (' | '.join(ev) if ev else '주요 공시 없음'))
+    warn = src.get('변화 신호', '')
+    if '시장경보' in warn or '손익구조' in warn:
+        out.append('경보: ' + ' · '.join(p for p in warn.split(' · ') if re.search(r'시장경보|손익구조|파생', p)))
+    return out
+
+
 def toc_kr(x):
     docs = x.get('docs') or []
     cnt = {}
@@ -1320,14 +1432,10 @@ def main(argv):
         x = ctxs[0]
         out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · 이 출력이 자료의 전부다' % NOW.strftime('%Y-%m-%d %H:%M:%S')]
         try:
-            out += ['#속독 — 코드가 원자료에서 계산했다. 이것만 보고 판단한다'] + digest_brief(x, mk)
+            out += ['#판단 카드 — 코드가 원자료에서 계산했다. 이것만 보고 판단한다'] + digest_card(x, mk)
         except Exception as e:
-            ERR.append('속독층 계산 실패 — %s: %s' % (type(e).__name__, str(e)[:100]))
-            out.append('#속독 계산 실패')
-        items = x.get('items') or []
-        out += ['#최근 공시 제목 %d건 · 날짜|제목' % min(10, len(items))] + ['%s|%s' % (it['date'], it['title']) for it in items[:10]]
-        news = x.get('news') or []
-        out += ['#뉴스 제목 %d건' % len(news)] + news
+            ERR.append('판단 카드 계산 실패 — %s: %s' % (type(e).__name__, str(e)[:100]))
+            out.append('#판단 카드 계산 실패')
         print('\n'.join(out))
         print('#오류 ' + (J(ERR) if ERR else '없음'))
         print('#수집시간 %.1f초' % (time.time() - t0))
