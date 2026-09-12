@@ -1333,6 +1333,11 @@ def digest_card(x, mk):
     out = []
     base = src.get('기준', '')
     gap = src.get('빈칸', '빈칸: 없음')[len('빈칸: '):]
+    cap_ = q.get('marketCap')
+    if cap_:
+        base += ' · 시총 %s억' % _c(cap_ / 1e8)
+        if q.get('listedShareCount'):
+            base += ' · 상장주식 %s주' % _c(q['listedShareCount'])
     out.append(base + ('' if gap == '없음' else ' · 빈칸 %s' % gap))
     biz = re.sub(r'\s+', ' ', (q.get('companySummary') or '')).strip()
     if biz:
