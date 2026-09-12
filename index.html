@@ -954,11 +954,11 @@ ${o.data}
 2. 그 구성에서 흐름을 정하는 것
 3. 그것의 현재 상태
 4. 이에 대한 본인의 견해
-5. 예상 주가
+5. 예상 지수
 
 대상을 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 매수하며, 매수하지 않기로 판단했다면 목표를 제시하지 않고 그 이유를 밝힌 뒤 마칩니다.
 
-예상 주가는 추종 상품의 실제 주가 기준으로 제시합니다. 지수를 임의로 환산해 만들지 않습니다. 본인의 견해에 해당하는 하나의 값으로 제시하고, 그 견해가 틀렸을 때 어디까지 내려가는지를 함께 밝힙니다. 여러 갈래의 시나리오를 나열하지 않습니다.
+예상 지수는 본인의 견해에 해당하는 하나의 값으로 제시하고, 그 견해가 틀렸을 때 어디까지 내려가는지를 함께 밝힙니다. 여러 갈래의 시나리오를 나열하지 않습니다.
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다.
 
@@ -971,8 +971,8 @@ start: ${stamp}
 end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: ${o.code}
 name: ${o.name}
-price: (추종 상품의 현재 주가, 숫자만)
-target: (예상 주가, 숫자만. 매수하지 않기로 했다면 비워 둡니다)
+price: (현재 지수 수준, 숫자만)
+target: (예상 지수, 숫자만. 매수하지 않기로 했다면 비워 둡니다)
 grade: (매수/중립/매도)
 ---
 `;
@@ -1204,19 +1204,19 @@ function buildPrompt(it){
     return briefPrompt({market:'kr', code:analCode, name:analName, cmd:bundleCmd(analCode)+' --brief', title:`${analName}(${analCode}) — 보유 중이거나 지켜보고 있는 종목입니다.`, extra:(it.ref?`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${analName} 자체입니다. 파생상품의 가격·거래량·유동성은 다루지 않으며, 모든 지표는 ${analName} 기준으로 작성합니다.`:'')});
   }
   if(it.ptype==='index'){
-    return indexPrompt({code:analCode, name:analName, title:`${it.basis} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:(it.ref?`추종 상품이 아니라 ${it.basis} 자체를 분석합니다. 상품의 가격·거래량·괴리율은 대상이 아닙니다.`:''), data:`수급·지수 데이터: ${url}\n추종 상품(${it.name}) 시세: curl -s ${BUNDLE_URL} | python3 - kr ${it.code} --brief`});
+    return indexPrompt({code:analCode, name:it.basis, title:`${it.basis} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:(it.ref?`추종 상품이 아니라 ${it.basis} 자체를 분석합니다. 상품의 가격·거래량·괴리율은 대상이 아닙니다.`:''), data:`수급·지수 데이터: ${url}`});
   }
   if(it.ptype==='us'){
     const tgt=txt(it.us_target||''), tk=txt(it.us_ticker||'');
     if(it.us_kind==='index'){
-      return indexPrompt({code:analCode, name:tgt, title:`${tgt} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:`추종 상품이 아니라 ${tgt} 자체를 분석합니다. 상품의 가격·거래량·괴리율·환헤지는 대상이 아닙니다.`, data:`다음 금융 global/today와 exchanges, 나스닥 API에서 지수 수준과 등락을 받습니다.`});
+      return indexPrompt({code:analCode, name:tgt, title:`${tgt} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:`분석 대상은 ${tgt} 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.`, data:`다음 금융 global/today와 exchanges, 나스닥 API에서 지수 수준과 등락을 받습니다.`});
     }
     return briefPrompt({market:'us', code:tk, name:tgt, cmd:bundleCmdUS(tk), title:`${tgt}(${tk}) — 보유 중이거나 지켜보고 있는 종목입니다.`, extra:`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${tgt} 자체입니다. 파생상품의 가격·거래량·괴리율은 다루지 않으며, 모든 지표는 ${tgt} 기준으로 작성합니다.`});
   }
   if(it.ptype==='sector'){
     const surl=D(it.sector_key);
     const members=((it.supply&&it.supply.sector_members)||[]).map(m=>esc(m.name)+'('+m.code+')').join(', ');
-    return indexPrompt({code:analCode, name:analName, title:`${it.basis} 섹터 — 구성종목 ${members}를 묶어 섹터 단위로 분석합니다. 개별 종목 리포트를 따로 쓰지 않습니다.`, note:'', data:`구성종목 수급 데이터: ${surl}\n추종 상품(${it.name}) 시세: curl -s ${BUNDLE_URL} | python3 - kr ${it.code} --brief`});
+    return indexPrompt({code:analCode, name:it.basis+' 섹터', title:`${it.basis} 섹터 — 구성종목 ${members}를 묶어 섹터 단위로 분석합니다. 개별 종목 리포트를 따로 쓰지 않습니다.`, note:'분석 대상은 구성종목을 묶은 섹터 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.', data:`구성종목 수급 데이터: ${surl}`});
   }
 
   // ── 동시(수급 종목) = 분석 모드 (처음 보는 후보 → 풀 9섹션 분석) ──
