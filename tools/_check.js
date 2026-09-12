@@ -23,13 +23,13 @@ const CASES=[
 const RULES=[
  ['미치환',        t=>!/\$\{/.test(t)],
  ['이상값',        t=>!/undefined|NaN|\[object Object\]/.test(t)],
- ['실행제약1',     t=>t.includes('전 종목을 열지는 마십시오') ? true : t.includes('본인의 자금으로') ? (t.match(/명령은 한 번만 실행합니다/g)||[]).length===1 : t.includes('[운용]') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
+ ['실행제약1',     t=>t.includes('이 대상의 성격과 구성') ? true : t.includes('전 종목을 열지는 마십시오') ? true : t.includes('본인의 자금으로') ? (t.match(/명령은 한 번만 실행합니다/g)||[]).length===1 : t.includes('[운용]') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
  ['점검줄1',      t=>t.includes('본인의 자금으로') ? true : (t.match(/\[점검\]/g)||[]).length===1],
  ['점검뒤',        t=>{const c=t.indexOf('## 기록용 블록'),p=t.indexOf('[★★출력의 ★마지막 항목 — 점검 한 줄]');return c<0||p>c;}],
  ['계측없음',      t=>!t.includes('계측')],
  ['단정없음',      t=>!t.includes('수급 파일에 이미 있다')],
  ['두세줄없음',    t=>!t.includes('— 두세 줄')],
- ['파일↔링크',     t=>(t.includes('report-data/'))===(t.includes('수급 파일은 종목당'))],
+ ['파일↔링크',     t=>t.includes('이 대상의 성격과 구성') ? true : (t.includes('report-data/'))===(t.includes('수급 파일은 종목당'))],
   ['번들1',        t=>!t.includes('bundle.py') || ((t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length===1 && !/\/api\/quote|dsaf001|detailSearch|api\.nasdaq\.com|query1\.finance|stockanalysis\.com|웹 검색으로 보충|검색어는 두 번|추가로 받을 것|병렬로 받아라|\[데이터 취득\]|검색은 2회|DART 원문이 기본|새로 받아라|받을 것을 미리 정해|0~1 소수|수급 파일\(누적 데이터\)/.test(t))],
  ['path↔직전',     t=>(t.includes('직전 리포트'))===(t.includes('prev_track.path'))],
 ];
