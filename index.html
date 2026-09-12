@@ -1204,7 +1204,7 @@ function buildPrompt(it){
     return briefPrompt({market:'kr', code:analCode, name:analName, cmd:bundleCmd(analCode)+' --brief', title:`${analName}(${analCode}) — 보유 중이거나 지켜보고 있는 종목입니다.`, extra:(it.ref?`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${analName} 자체입니다. 파생상품의 가격·거래량·유동성은 다루지 않으며, 모든 지표는 ${analName} 기준으로 작성합니다.`:'')});
   }
   if(it.ptype==='index'){
-    return indexPrompt({code:analCode, name:it.basis, title:`${it.basis} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:(it.ref?`추종 상품이 아니라 ${it.basis} 자체를 분석합니다. 상품의 가격·거래량·괴리율은 대상이 아닙니다.`:''), data:`수급·지수 데이터: ${url}`});
+    return indexPrompt({code:analCode, name:it.basis, title:`${it.basis} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:`분석 대상은 ${it.basis} 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.`, data:`수급·지수 데이터: ${url}`});
   }
   if(it.ptype==='us'){
     const tgt=txt(it.us_target||''), tk=txt(it.us_ticker||'');
