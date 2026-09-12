@@ -653,7 +653,7 @@ ${RULE_APIWARN}
 function fmtScreenList(items, isV){
   return items.map((x,i)=>{
     const s=(x.labels&&x.labels.supply)||null, v=(x.labels&&x.labels.valuation)||{};
-    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / 연 ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' ★동시수급':''}` : '최근 10거래일 기준 조건 미달(누적>0 + 매수일 70%) — 더 긴 구간은 직접 확인하라';
+    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / 연 ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' 동시수급':''}` : '최근 10거래일 기준 조건 미달(누적>0 + 매수일 70%) — 더 긴 구간은 직접 확인이 필요합니다';
     const per = x.per!=null ? x.per.toFixed(1)+'배' : '—';
     const sec = v.sector_valid ? `업종 ${v.sectorPer.toFixed(1)}배` : '업종PER 무효';
     const base = `${i+1}. ${x.name}(${x.code}) · ${x.sector||''} · ${Math.round(x.cur).toLocaleString()}원 ${(x.changeRate>=0?'+':'')+x.changeRate.toFixed(2)}%
@@ -665,17 +665,17 @@ function fmtScreenList(items, isV){
       const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
       const warn='';
       return base+`
-   ★52주 고점 대비 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} · 고점일 이후 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} → ★지수 대비 ${x.excess_dd!=null?x.excess_dd.toFixed(1)+'%p':'—'} · 업종 대비 ${x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(1)+'%p':(x.vs_sector_note||'—')}${x.sector_median_dd!=null?`(업종 중앙 ${x.sector_median_dd.toFixed(1)}%)`:''}
+   52주 고점 대비 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} · 고점일 이후 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} → 지수 대비 ${x.excess_dd!=null?x.excess_dd.toFixed(1)+'%p':'—'} · 업종 대비 ${x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(1)+'%p':(x.vs_sector_note||'—')}${x.sector_median_dd!=null?`(업종 중앙 ${x.sector_median_dd.toFixed(1)}%)`:''}
    매출 ${x.sales_growth!=null?(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)+'%':'—'} · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'}(직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'}(연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}
    52주 고점 ${x.peak_date||'—'}(${x.peak_days!=null?x.peak_days+'일 전':'—'})
-   1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap!=null?(x.ma20_gap>=0?'+':'')+x.ma20_gap.toFixed(1)+'%':'—'} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2)+'배':'—'} · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${(x.r1!=null&&x.r1<=-15)?'  ★1개월 급락 중 — 5일선만 갓 회복한 상태다. 되돌림인지 바닥인지 반드시 구분하라':''}
-   최근 분기 EPS ${e0!=null?Math.round(e0).toLocaleString():'—'} (직전 분기 대비 ${x.eps_turnaround_q?'★적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})${warn}
+   1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap!=null?(x.ma20_gap>=0?'+':'')+x.ma20_gap.toFixed(1)+'%':'—'} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2)+'배':'—'} · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${(x.r1!=null&&x.r1<=-15)?'  1개월 급락 중 — 5일선만 갓 회복한 상태입니다. 되돌림인지 바닥인지 구분이 필요합니다':''}
+   최근 분기 EPS ${e0!=null?Math.round(e0).toLocaleString():'—'} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})${warn}
    EPS 4분기: ${eq||'—'}`;
     }
     return base+`
-   정배열 ${x.entry_days}일차 · 1개월 ${x.r1.toFixed(1)}%${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap.toFixed(1)}%${x.ma20_gap>25?' ★과열':''} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2):'—'}배 · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${x.sales_growth!=null?`
+   정배열 ${x.entry_days}일차 · 1개월 ${x.r1.toFixed(1)}%${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap.toFixed(1)}%${x.ma20_gap>25?' 과열':''} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2):'—'}배 · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${x.sales_growth!=null?`
    매출 ${(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)}% · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'}(직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'}(연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}
-   최근 분기 EPS ${x.eps_q_recent!=null?Math.round(x.eps_q_recent).toLocaleString():'—'} (직전 분기 대비 ${x.eps_turnaround_q?'★적자→흑자':(x.eps_still_loss?'적자 지속':(x.eps_q_prev!=null&&x.eps_q_prev>0&&x.eps_q_recent!=null?((x.eps_q_recent/x.eps_q_prev-1)*100>=0?'+':'')+((x.eps_q_recent/x.eps_q_prev-1)*100).toFixed(0)+'%':'—'))})`:''}`;
+   최근 분기 EPS ${x.eps_q_recent!=null?Math.round(x.eps_q_recent).toLocaleString():'—'} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(x.eps_q_prev!=null&&x.eps_q_prev>0&&x.eps_q_recent!=null?((x.eps_q_recent/x.eps_q_prev-1)*100>=0?'+':'')+((x.eps_q_recent/x.eps_q_prev-1)*100).toFixed(0)+'%':'—'))})`:''}`;
   }).join('\n');
 }
 
@@ -688,8 +688,8 @@ function fmtBothList(items){
     const num=(z,d)=> (z==null||isNaN(z)) ? '—' : (d?(+z).toFixed(d):Math.round(z).toLocaleString());
     const pct=(z)=> (z==null||isNaN(z)) ? '—' : ((z>=0?'+':'')+(+z).toFixed(1)+'%');
     return `${i+1}. ${x.name}(${x.code}) · ${x.market||''} · ${num(e.now)}원 ${pct(e.changePct)}
-   ★수급 10일 외국인 ${x.f_buydays||'-'} ${num(x.f_net)}주 / 연기금 ${x.p_buydays||'-'} ${num(x.p_net)}주
-   ★구간 외국인 5일 ${num(sc.f5d)} · 20일 ${num(sc.f20d)} · 60일 ${num(sc.f60d)} → ${sc.fdir||'—'} / 연기금 20일 ${num(sc.p20d)} · 60일 ${num(sc.p60d)}
+   수급 10일 외국인 ${x.f_buydays||'-'} ${num(x.f_net)}주 / 연기금 ${x.p_buydays||'-'} ${num(x.p_net)}주
+   구간 외국인 5일 ${num(sc.f5d)} · 20일 ${num(sc.f20d)} · 60일 ${num(sc.f60d)} → ${sc.fdir||'—'} / 연기금 20일 ${num(sc.p20d)} · 60일 ${num(sc.p60d)}
    밸류 PER ${v.per!=null?num(v.per,1)+'배':'—(적자 또는 산출 불가)'} · 추정PER ${v.fwdPer!=null?num(v.fwdPer,1)+'배':'—'} · PBR ${v.pbr!=null?num(v.pbr,2)+'배':'—'} · 배당수익률 ${v.divYield!=null?num(v.divYield,2)+'%':'—'} · 외국인 지분율 ${v.foreignRate!=null?num(v.foreignRate,2)+'%':'—'}
    위치 20일선과의 거리 ${pct(ma.ma20)} · 60일선 ${pct(ma.ma60)} · 52주 내 위치 ${e.pos52w&&e.pos52w.pct!=null?num(e.pos52w.pct,0)+'%':'—'}
    지수 대비 52주 고점 ${ir.peakDate||'—'} 이후 ${pct(ir.ddFromPeak)} (같은 기간 지수 ${pct(ir.idxSincePeak)}) · 1개월 ${pct(ir.m1)} (지수 대비 ${pct(ir.m1Excess)}) · 6개월 ${pct(ir.m6)} (지수 대비 ${pct(ir.m6Excess)})`;
@@ -706,12 +706,12 @@ function fmtOne(x){
   return `[스캔 지표 — ${DATA&&DATA.updated?DATA.updated+' 기준':''}]
 · 현재가 ${Math.round(x.cur).toLocaleString()}원 (${(x.changeRate>=0?'+':'')+x.changeRate.toFixed(2)}%) · 시총 ${x.mcap?Math.round(x.mcap/1e8).toLocaleString()+'억':'—'} · ${x.sector||''}
 · 20일선 ${Math.round(x.ma20).toLocaleString()}원 · 20일선과의 거리 ${x.ma20_gap.toFixed(1)}% · 일봉 정배열 ${x.daily_aligned?'○ (진입 '+(x.entry_days!=null?x.entry_days:'—')+'일차)':'✗'} · 60주선(장기추세) 위 ${x.weekly_ma60_above?'○':'✗'}
-· 수익률 1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.idx_r1!=null?` (같은 기간 ${idxName(x)} ${(x.idx_r1>=0?'+':'')+x.idx_r1.toFixed(1)}% → ★${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.idx_r6!=null?` (${idxName(x)} ${(x.idx_r6>=0?'+':'')+x.idx_r6.toFixed(1)}% → ★${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 52주(장중 저~고) ${x.low52w?Math.round(x.low52w).toLocaleString():'—'}~${x.high52w?Math.round(x.high52w).toLocaleString():'—'} (위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'})
+· 수익률 1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.idx_r1!=null?` (같은 기간 ${idxName(x)} ${(x.idx_r1>=0?'+':'')+x.idx_r1.toFixed(1)}% → ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.idx_r6!=null?` (${idxName(x)} ${(x.idx_r6>=0?'+':'')+x.idx_r6.toFixed(1)}% → ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 52주(장중 저~고) ${x.low52w?Math.round(x.low52w).toLocaleString():'—'}~${x.high52w?Math.round(x.high52w).toLocaleString():'—'} (위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'})
 · 거래량 20일/60일 ${x.v2060?x.v2060.toFixed(2)+'배':'—'}
-· 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'}(다음 확정EPS 기준) · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'★업종PER 무효(음수·200초과) → 절대PER+동종 개별로 대체'} · PBR ${v.pbr!=null?(+v.pbr).toFixed(2)+'배':'—'} · DPS ${v.dps!=null?v.dps:'—'}${x.excess_dd!=null?`
+· 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'}(다음 확정EPS 기준) · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'업종PER 무효(음수·200초과) → 절대PER과 동종 개별로 대체'} · PBR ${v.pbr!=null?(+v.pbr).toFixed(2)+'배':'—'} · DPS ${v.dps!=null?v.dps:'—'}${x.excess_dd!=null?`
 · 52주 고점 종가 ${x.peak_close?Math.round(x.peak_close).toLocaleString()+'원':'—'} @ ${x.peak_date||'—'} (${x.peak_days!=null?x.peak_days+'일 전':'—'})`:''}${x.sales_growth!=null?`
 · 매출 ${(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)}% · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'} (직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'} (연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}`:''}
-· 수급 ${s?`외국인 ${s.f_buydays||'-'} (${s.f_net!=null?s.f_net.toLocaleString():'—'}) / 연기금 ${s.p_buydays||'-'} (${s.p_net!=null?s.p_net.toLocaleString():'—'})${s.is_zero_rank?' ★외국인+연기금 동시':''}`:'신호 없음 — 기술만 좋고 수급은 아직 없다(더 이른 단계일 수 있음)'}
+· 수급 ${s?`외국인 ${s.f_buydays||'-'} (${s.f_net!=null?s.f_net.toLocaleString():'—'}) / 연기금 ${s.p_buydays||'-'} (${s.p_net!=null?s.p_net.toLocaleString():'—'})${s.is_zero_rank?' 외국인+연기금 동시':''}`:'신호 없음 — 기술만 좋고 수급은 아직 없습니다(더 이른 단계일 수 있습니다)'}
 ★위 지표는 이미 계산돼 있다. 다시 받지 마라. 해석만 하면 된다.
 ★검색어는 두 번으로 묶어라 — "종목명 + 최근 주가 원인·업황" / "종목명 + 촉매·목표주가·동종 밸류"
    (검색 순서·취득처·차단 목록은 아래 [데이터 취득]에 있다)
@@ -745,7 +745,7 @@ function buildValueOne(x){
   const eq=(x.eps_quarters||[]).map(q=>`${(q.date||'').slice(0,7)}: EPS ${q.eps!=null?Math.round(q.eps).toLocaleString():'—'} · 영업익 ${q.op!=null?Math.round(q.op/1e8).toLocaleString()+'억':'—'} · 매출 ${q.sales!=null?Math.round(q.sales/1e8).toLocaleString()+'억':'—'}`).join('\n  ');
   const e0=x.eps_q_recent, e1=x.eps_q_prev;
   const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
-  const skewLine = e0==null ? '' : `\n· 최근 분기 EPS ${Math.round(e0).toLocaleString()} (직전 분기 대비 ${x.eps_turnaround_q?'★적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})`;
+  const skewLine = e0==null ? '' : `\n· 최근 분기 EPS ${Math.round(e0).toLocaleString()} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})`;
   return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.`, extra:`${fmtOne(x)}${skewLine}
 [EPS 4분기]
   ${eq||'—'}`});
