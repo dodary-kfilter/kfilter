@@ -966,7 +966,9 @@ curl -s ${BUNDLE_URL} | python3 - kr {코드} --brief
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
-prompt: ${PROMPT_VER} ${stamp}
+prompt: ${PROMPT_VER}
+start: ${stamp}
+end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: (종목코드)
 name: (종목명)
 price: (현재가, 숫자만)
@@ -1008,7 +1010,9 @@ ${o.cmd}
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
-prompt: ${PROMPT_VER} ${stamp}
+prompt: ${PROMPT_VER}
+start: ${stamp}
+end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: ${o.code}
 name: ${o.name}
 price: (현재가, 숫자만)
@@ -1063,7 +1067,9 @@ ${o.cmd}
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
-prompt: ${PROMPT_VER} ${stamp}
+prompt: ${PROMPT_VER}
+start: ${stamp}
+end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: ${o.code}
 name: ${o.name}
 price: (현재가, 숫자만)
