@@ -23,8 +23,8 @@ const CASES=[
 const RULES=[
  ['미치환',        t=>!/\$\{/.test(t)],
  ['이상값',        t=>!/undefined|NaN|\[object Object\]/.test(t)],
- ['실행제약1',     t=>t.includes('내 돈으로 이 종목을') ? (t.match(/명령은 한 번이다/g)||[]).length===1 : t.includes('[운용]') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
- ['점검줄1',      t=>t.includes('내 돈으로 이 종목을') ? true : (t.match(/\[점검\]/g)||[]).length===1],
+ ['실행제약1',     t=>t.includes('본인의 자금으로') ? (t.match(/명령은 한 번만 실행합니다/g)||[]).length===1 : t.includes('[운용]') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
+ ['점검줄1',      t=>t.includes('본인의 자금으로') ? true : (t.match(/\[점검\]/g)||[]).length===1],
  ['점검뒤',        t=>{const c=t.indexOf('## 기록용 블록'),p=t.indexOf('[★★출력의 ★마지막 항목 — 점검 한 줄]');return c<0||p>c;}],
  ['계측없음',      t=>!t.includes('계측')],
  ['단정없음',      t=>!t.includes('수급 파일에 이미 있다')],
