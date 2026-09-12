@@ -1748,5 +1748,39 @@ def main():
     print(f"완료. 외국인 {len(foreign_pass)} / 연기금 {len(pension_pass)} / 동시 {len(both)} / 포트 {len(portfolio)}"
           f" / 저가매수 {len(screen.get('value_pick', []))} / 모멘텀 {len(screen.get('momentum', []))} → data.json", flush=True)
 
+def build_us_universe():
+    """미국 종목 목록을 us_universe.json으로 저장 — 사이트 검색이 티커·영문명으로 찾는 데 쓴다"""
+    H = {"User-Agent": "Mozilla/5.0", "Accept": "application/json",
+         "Origin": "https://www.nasdaq.com", "Referer": "https://www.nasdaq.com/"}
+    out, seen = [], set()
+    for asset, url in (("stocks", "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=25&offset=0&download=true"),
+                       ("etf", "https://api.nasdaq.com/api/screener/etf?tableonly=true&limit=25&offset=0&download=true")):
+        try:
+            r = requests.get(url, headers=H, timeout=60)
+            d = (r.json() or {}).get("data") or {}
+            rows = d.get("rows") or (d.get("data") or {}).get("rows") or []
+        except Exception as e:
+            print(f"[알림] 미국 목록 실패 {asset}: {e}", flush=True)
+            continue
+        for row in rows:
+            tk = (row.get("symbol") or "").strip().upper()
+            nm = re.sub(r" (Common Stock|Class [A-Z].*|Ordinary Shares.*|Common Shares.*)$", "",
+                        (row.get("name") or row.get("companyName") or "").strip())
+            if not tk or tk in seen or not re.fullmatch(r"[A-Z][A-Z.\-]{0,6}", tk):
+                continue
+            seen.add(tk)
+            out.append([tk, nm, asset])
+    if len(out) < 1000:
+        print(f"[경고] 미국 목록 {len(out)}개 — 저장하지 않는다", flush=True)
+        return
+    with open("us_universe.json", "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, separators=(",", ":"))
+    print(f"미국 종목 목록 {len(out)}개 → us_universe.json", flush=True)
+
+
 if __name__ == "__main__":
     main()
+    try:
+        build_us_universe()
+    except Exception as e:
+        print(f"[알림] 미국 목록 생성 실패: {e}", flush=True)
