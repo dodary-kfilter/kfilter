@@ -1224,34 +1224,29 @@ def digest_kr(x, mk):
 
 
 def target_material(x):
-    """목표 계산 재료 — 모델이 EPS를 새로 짜느라 생각을 쓰지 않게 코드가 미리 계산한다"""
+    """목표 재료 한 줄 — 기준 이익 하나와 배수 유지 가격 하나만. 나머지 배수는 검산용이라 보내지 않는다"""
     q, f = x.get('q') or {}, x.get('file')
     price = q.get('tradePrice')
     Q = ((x.get('fin') or {}).get('data') or {}).get('QUARTER') or []
     eps = [r.get('eps') for r in Q[:4]]
     if not price or len(eps) < 2 or None in eps[:2]:
         return '목표 재료: 확인 불가(분기 EPS 없음)'
-    parts = []
-    ttm = sum(eps) if len(eps) == 4 and None not in eps else None
-    a2 = (eps[0] + eps[1]) * 2
-    if ttm is not None:
-        parts.append('최근 4분기 EPS %s원(PER %s)' % (_c(ttm), ('%.1f배' % (price / ttm)) if ttm > 0 else '적자'))
-    parts.append('최근 2분기 연환산 EPS %s원(PER %s)' % (_c(a2), ('%.1f배' % (price / a2)) if a2 > 0 else '적자'))
-    base = a2 if a2 > 0 else (ttm if ttm and ttm > 0 else None)
-    run = eps[0] * 4
-    if base and run > 0:
-        parts.append('최근 분기 속도가 한 분기 더 이어지면 연환산 EPS %s원(%s) → 지금 배수 그대로면 %s원' % (
-            _c(run), _pct((run / base - 1) * 100), _c(price * run / base)))
-    sp = q.get('sectorPer')
-    if ttm and ttm > 0 and isinstance(sp, (int, float)) and 0 < sp <= 200:
-        parts.append('업종 PER %.1f배를 최근 4분기 EPS에 적용하면 %s원' % (sp, _c(sp * ttm)))
+    a2 = (eps[0] + eps[1]) * 2                       # 최근 2분기 연환산 — 가장 최근 이익 속도
+    if a2 > 0:
+        run = eps[0] * 4
+        line = '목표 재료: 최근 2분기 연환산 EPS %s원 · 현재 PER %.1f배' % (_c(a2), price / a2)
+        if run > 0:
+            line += ' · 최근 분기 속도가 이어지면 EPS %s원(%s) → 배수 그대로면 %s원' % (
+                _c(run), _pct((run / a2 - 1) * 100), _c(price * run / a2))
+        return line
     vd = (f or {}).get('valuation_derived') or {}
     tp, pbr = (vd.get('base') or {}).get('theo_pbr'), vd.get('pbr')
-    if tp and pbr and '무효' not in str(vd.get('verdict')):
-        parts.append('이론 PBR %.2f배 자리 %s원' % (tp, _c(price / pbr * tp)))
-    if not base:
-        parts.append('이익이 적자라 배수로 목표를 부를 수 없다 — 밸류 판정으로 본다')
-    return '목표 재료: ' + ' · '.join(parts)
+    if pbr:
+        line = '목표 재료: 이익 적자라 배수로 부를 수 없다 · 현재 PBR %.2f배' % pbr
+        if tp and '무효' not in str(vd.get('verdict')):
+            line += ' · 이론 PBR %.2f배 자리 %s원' % (tp, _c(price / pbr * tp))
+        return line
+    return '목표 재료: 이익 적자 · 밸류 판정 확인 불가'
 
 
 def digest_brief(x, mk):
@@ -1291,7 +1286,7 @@ def _row(txt, label):
 
 
 def event_line(it, txt):
-    """주요 공시 한 줄 — 금액이 정해진 자리에 있는 것만 숫자로, 나머지는 제목만"""
+    """주요 공시 한 줄 — 금액이 정해진 자리에 있는 것만. 금액이 없으면 빈 문자열(카드에서 빠진다)"""
     t = it['title']
     if re.search(r'단일판매|공급계약|수주', t):
         amt, pct = _num(_row(txt, '2. 계약내역')), None
@@ -1318,10 +1313,12 @@ def event_line(it, txt):
         amt = _num(_row(txt, '1. 단기차입내역')) or _num(_row(txt, '차입금액'))
         if amt:
             return '차입 %s억' % _c(amt / 1e8)
-    return re.sub(r'\[[^\]]*\]|\s', '', t)[:26]
+    if re.search(r'소송|제재|횡령|배임', t):
+        return re.sub(r'\[[^\]]*\]|\s', '', t)[:26]           # 금액이 없어도 판단을 바꾸는 종류
+    return ''
 
 
-EV_PICK = re.compile(r'단일판매|공급계약|수주|잠정|손익구조|자기주식|전환사채|유상증자|차입|대량보유|최대주주|소송|파생상품거래손실')
+EV_PICK = re.compile(r'단일판매|공급계약|수주|잠정|손익구조|자기주식|전환사채|유상증자|차입|소송|파생상품거래손실')
 
 
 def events(items, days=45, k=4):
@@ -1334,8 +1331,8 @@ def events(items, days=45, k=4):
         try:
             out.append('%s %s' % (_sd(it['date']), event_line(it, wait(fu, '공시 %s' % it['title'][:16], '') or '')))
         except Exception:
-            out.append('%s %s' % (_sd(it['date']), re.sub(r'\s', '', it['title'])[:26]))
-    return out
+            pass
+    return [ln for ln in out if re.search(r'\d', ln.split(' ', 1)[1] if ' ' in ln else '')]   # 금액이 잡힌 공시만
 
 
 def digest_card(x, mk):
@@ -1350,19 +1347,32 @@ def digest_card(x, mk):
     i20 = re.search(r'(\S+) 20일 (\S+) · 이 종목 20일 (\S+)', src.get('시장 대비', ''))
     out.append('시장 대비: %s (20일 지수 %s vs 종목 %s)' % (m.group(1) if m else '확인 불가',
                                                   i20.group(2) if i20 else '?', i20.group(3) if i20 else '?'))
-    pos = src.get('가격 위치', '')
-    keep = [p for p in pos[len('가격 위치: '):].split(' · ') if re.search(r'20일선|고점|52주', p)]
+    pos = src.get('가격 위치', '')[len('가격 위치: '):]
+    keep = [p for p in pos.split(' · ') if re.search(r'^20일선|고점', p)]
     out.append('가격 위치: ' + (' · '.join(keep) if keep else '확인 불가'))
     sup = src.get('수급', '')
     body = sup.split('): ', 1)[1] if '): ' in sup else ''
-    pats = [p for p in body.split(' · ') if re.match(r'^(외국인|기관계|연기금|개인) \S+$', p)]
-    turn = [p for p in body.split(' · ') if '돌아섰다' in p]
-    if pats or turn:
-        out.append('수급(20일): %s%s%s' % (' · '.join(pats) or '판정 없음',
-                                        ' · ' + ' · '.join(turn) if turn else '',
-                                        ' · 장외 이동 의심' if '어긋남' in sup else ''))
+    pats = {}
+    for seg in body.split(' · '):                      # "외국인 일관매도" 같은 판정 조각만
+        m = re.fullmatch(r'(외국인|기관계|연기금|개인) (\S+)', seg.strip())
+        if m:
+            pats[m.group(1)] = m.group(2)
+    if not pats:                                       # 수급파일 없는 종목 — 순매수/순매도 수치에서 방향만
+        for m in re.finditer(r'(외국인|기관|기관계|연기금|개인) 20일 (순매수|순매도)', body):
+            pats[m.group(1)] = m.group(2)
+    if pats:
+        sell = [w for w, v in pats.items() if re.search(r'매도|이탈', v)]
+        buy = [w for w, v in pats.items() if re.search(r'매수|매집|유입', v)]
+        say = []
+        if sell:
+            say.append('%s 매도' % '·'.join(sell))
+        if buy:
+            say.append('%s 매수' % '·'.join(buy))
+        out.append('수급(20일): %s%s' % (', '.join(say) or '판정 없음',
+                                       ' · 장외 이동 의심' if '어긋남' in sup else ''))
     else:
-        out.append('수급: 확인 불가' if not body else '수급(20일): ' + body[:150])
+        nums = [p for p in body.split(' · ') if re.search(r'순매수|순매도', p)][:2]
+        out.append('수급(20일): ' + (' · '.join(nums) if nums else '확인 불가'))
     fin = src.get('실적', '')
     body = fin.split('): ', 1)[1] if '): ' in fin else ''
     qm = re.search(r'실적\(확정, (\S+년 \d+월) 분기\)', fin)
@@ -1379,9 +1389,15 @@ def digest_card(x, mk):
         out.append('실적: 확인 불가')
     out.append(target_material(x))
     prev = src.get('직전 판단', '직전 판단: 없음')
-    pm = re.search(r'직전 판단: (\S+) (\S+) · 목표 (\S+)원.+?· (판정일[^·]+)· (.+?) · 판정', prev)
-    out.append('직전 판단: %s %s 목표 %s원 · %s· %s' % (pm.group(1), pm.group(2), pm.group(3), pm.group(4), pm.group(5))
-               if pm else prev)
+    pm = re.search(r'직전 판단: (.+?) (\S+) · 목표 ([\d,]+)원.*?· ([^·]+) · 판정 (\S+)', prev)
+    if pm:
+        hit = re.sub(r'\(장중[^)]*\)', '', pm.group(4)).strip()
+        hit = '방향 맞음' if '방향은 맞았다' in hit or '넘어섰다' in hit else ('반대로 갔다' if '반대로' in hit else hit)
+        left = re.search(r'(\d+)일 남음', prev)
+        out.append('직전 판단: %s %s 목표 %s원 · %s%s' % (pm.group(1), pm.group(2), pm.group(3), hit,
+                                                    ' · 판정일까지 %s일' % left.group(1) if left else ''))
+    else:
+        out.append(prev)
     ev = events(x.get('items') or [])
     out.append('최근 공시(45일): ' + (' | '.join(ev) if ev else '주요 공시 없음'))
     warn = src.get('변화 신호', '')
