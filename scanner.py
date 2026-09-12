@@ -445,13 +445,48 @@ def parse_news(obj):
     return items[:6]
 
 # ───────────────────────── 네트워크 fetch ─────────────────────────
+def get_list_daum(market, want):
+    """다음 시가총액 순위 — 네이버가 막힐 때 쓰는 대체 경로"""
+    out, page = [], 1
+    while len(out) < want and page <= 40:
+        url = ("https://finance.daum.net/api/trend/market_capitalization"
+               f"?page={page}&perPage=100&market={market}&pagination=true&fieldName=marketCap&order=desc")
+        try:
+            r = requests.get(url, headers={"User-Agent": HDR_NAVER.get("User-Agent", "Mozilla/5.0"),
+                                           "Referer": "https://finance.daum.net/"}, timeout=10)
+            rows = (r.json() or {}).get("data") or []
+        except Exception as e:
+            print(f"[알림] 다음 목록 실패 {market} p{page}: {e}", flush=True)
+            break
+        if not rows:
+            break
+        for row in rows:
+            iso, name = row.get("code") or "", row.get("name") or ""
+            code = iso[3:9] if iso.startswith("KR") and len(iso) >= 9 else ""
+            if not re.fullmatch(r"\d{6}", code) or is_excluded(name):
+                continue
+            out.append((code, name))
+            if len(out) >= want:
+                break
+        page += 1
+        time.sleep(0.2)
+    return out[:want]
+
+
 def get_list(sosok, want):
     out, seen, page = [], set(), 1
     while len(out) < want and page <= 80:
         url = f"https://finance.naver.com/sise/sise_market_sum.naver?sosok={sosok}&page={page}"
-        r = requests.get(url, headers=HDR_NAVER, timeout=10); r.encoding = "euc-kr"
-        codes = re.findall(r"/item/main\.naver\?code=(\d{6})", r.text)
+        try:
+            r = requests.get(url, headers=HDR_NAVER, timeout=10); r.encoding = "euc-kr"
+            codes = re.findall(r"/item/main\.naver\?code=(\d{6})", r.text)
+        except Exception as e:
+            print(f"[알림] 네이버 목록 실패 p{page}: {e}", flush=True)
+            codes = []
         if not codes:
+            if page == 1:                      # 첫 장부터 비면 네이버가 막힌 것 — 다음으로 간다
+                print(f"[알림] 네이버 목록 차단(sosok={sosok}) → 다음 시가총액 순위로 대체", flush=True)
+                return get_list_daum("KOSPI" if sosok == 0 else "KOSDAQ", want)
             break
         names = re.findall(r'/item/main\.naver\?code=\d{6}"[^>]*>\s*([^<>]+?)\s*</a>', r.text)
         for i, code in enumerate(codes):
@@ -1533,6 +1568,9 @@ def main():
     kept  = [(c, n, "KOSPI")  for c, n in get_list(0, KOSPI_N)]
     kept += [(c, n, "KOSDAQ") for c, n in get_list(1, KOSDAQ_N)]
     print("스캔 대상(보통주):", len(kept), flush=True)
+    universe_ok = len(kept) >= (KOSPI_N + KOSDAQ_N) * 0.5    # 절반도 못 받으면 수급 결과를 믿지 않는다
+    if not universe_ok:
+        print(f"[경고] 스캔 대상 {len(kept)}개 — 목록 수집 실패로 본다. 수급 결과는 직전 값을 유지한다", flush=True)
 
     # [병렬 스캔] 종목별 수급 조회는 서로 독립이라 병렬 안전.
     #   실측: 200종목 12스레드 7.4초·실패 0 (순차 대비 5.6배). 800종목 ≈ 30초.
@@ -1676,11 +1714,26 @@ def main():
                     print(f"  report 삭제 실패 {fn}: {e}", flush=True)
     print(f"report 정리: {removed}개 삭제, 유지 {len(keep)}개", flush=True)
 
+    supply_note = ""
+    if not universe_ok:                    # 목록을 못 받은 회차 — 0으로 덮어쓰지 않고 직전 결과를 살린다
+        try:
+            with open("data.json", encoding="utf-8") as f:
+                prev = json.load(f)
+        except Exception:
+            prev = {}
+        if prev.get("foreign") or prev.get("pension") or prev.get("both"):
+            foreign_pass = prev.get("foreign", [])
+            pension_pass = prev.get("pension", [])
+            both = prev.get("both", [])
+            supply_note = f"수급 스캔 실패({now_kst().strftime('%m-%d %H:%M')}) — 이전 결과 표시"
+            print(f"[경고] {supply_note}", flush=True)
+
     result = {
         "updated": now_kst().strftime("%Y-%m-%d %H:%M"),
         "market_date": new_date,
         "window": WINDOW, "buy_ratio": int(BUY_RATIO_MIN * 100),
         "scanned": len(kept),
+        "supply_note": supply_note,
         "foreign": foreign_pass,
         "pension": pension_pass,
         "both": both,
