@@ -733,11 +733,11 @@ function fmtOne(x){
 //   투자자별 수급도 공시 목록도 없으므로 실적·가이던스·업황이 그 자리를 대신한다.
 function buildSearchUS(ticker){
   const T = (ticker||'').toUpperCase();
-  return leanPrompt({market:'us', code:T, name:((US_DICT.find(d=>d[0]===T)||[])[2]||T), cmd:bundleCmdUS(T), title:`${((US_DICT.find(d=>d[0]===T)||[])[2]||T)}(${T}) — 신규 분석. 처음 보는 종목이다. 무엇을 하는 회사인지 한두 줄로 먼저 밝히고 판단한다.`});
+  return briefPrompt({market:'us', code:T, name:((US_DICT.find(d=>d[0]===T)||[])[2]||T), cmd:bundleCmdUS(T), title:`${((US_DICT.find(d=>d[0]===T)||[])[2]||T)}(${T}) — 처음 보는 종목이다.`});
 }
 
 function buildSearchOne(code, name){
-  return leanPrompt({market:'kr', code, name, cmd:bundleCmd(code), title:`${name}(${code}) — 신규 분석. 처음 보는 종목이다. 무엇을 하는 회사인지 한두 줄로 먼저 밝히고 판단한다.`});
+  return briefPrompt({market:'kr', code, name, cmd:bundleCmd(code)+' --brief', title:`${name}(${code}) — 처음 보는 종목이다.`});
 }
 
 function buildValueOne(x){
@@ -746,14 +746,14 @@ function buildValueOne(x){
   const e0=x.eps_q_recent, e1=x.eps_q_prev;
   const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
   const skewLine = e0==null ? '' : `\n· 최근 분기 EPS ${Math.round(e0).toLocaleString()} (직전 분기 대비 ${x.eps_turnaround_q?'★적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})`;
-  return leanPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code), title:`${x.name}(${x.code}) — 저가매수형 후보. 크게 빠졌지만 실적이 버티는 종목으로 걸렀다. 되돌림이 올 조건과 시점을 판단한다.`, extra:`${fmtOne(x)}${skewLine}
+  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 크게 빠졌는데 실적은 버티는 종목으로 걸러 나왔다.`, extra:`${fmtOne(x)}${skewLine}
 [EPS 4분기]
   ${eq||'—'}`});
 }
 
 function buildMomentumOne(x){
   if(!x) return '모멘텀형 종목이 없습니다.';
-  return leanPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code), title:`${x.name}(${x.code}) — 모멘텀형 후보. 정배열로 오르는 종목으로 걸렀다. 추세가 이어질 근거와 꺾일 조건을 판단한다.`, extra:`${fmtOne(x)}`});
+  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 오르는 추세로 걸러 나왔다.`, extra:`${fmtOne(x)}`});
 }
 
 function buildValuePrompt(){
@@ -1436,29 +1436,27 @@ const RULE_BUNDLE_US = `[★자료 — 번들 한 번으로 끝낸다]
 // ── 총평판(시간 우선 시험) — 번들 --brief(속독 9줄) + 결론 네 줄 + 총평 1,200자 ──
 function briefPrompt(o){
   const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
+  const extra = o.scan ? String(o.extra||'').split('\n').filter(l=>/^\s*(\[|·|\d{4}-\d{2})/.test(l)).join('\n') : o.extra;
   return `[이 문서는 지시문이다. 아래 명령으로 자료를 받고 투자 리포트를 쓴다.]
 복사 시각: ${stamp}
 
-${o.title}${o.extra?`\n${o.extra}`:''}
+${o.title}${extra?`\n${extra}`:''}
 
 ${o.cmd}
 
 명령은 한 번이고, 그 밖의 도구는 부르지 않는다. 자료에 없는 값은 쓰지 않는다.
 
-[쓰기 전에]
-내 돈으로 이 종목을 사는지 마는지 정한다고 생각하고 쓴다. 읽는 사람이 알아야 할 것은 넷이다.
+내 돈으로 이 종목을 사는지 마는지 정한다고 생각하고 쓴다.
 · 이 회사가 무엇을 팔아 돈을 벌고, 그 수요가 지금 어디로 가고 있나.
 · 시장은 이 회사를 어떻게 보고 있나. 좋게 보고 있으면 좋은 소식은 이미 값에 들어가 있고, 나쁘게 보고 있으면 나쁜 소식이 이미 들어가 있다.
 · 나는 어떻게 보고, 그 시각이 시장과 어디에서 갈리나.
 · 맞으면 얼마를 벌고 틀리면 얼마를 잃나. 버는 쪽이 크면 사고, 아니면 사지 않는다.
-무엇을 무겁게 볼지는 이 종목과 지금 시점에 맞춰 정한다. 자료에 있다고 다 쓰지 않는다. 판단을 바꾸지 않는 것은 쓰지 않는다.
+
+무엇으로 값을 잴지는 이 종목에 맞춰 정한다. 이익이 자리를 잡은 회사는 배수로 재고, 수요가 커지는 길목에 있는 회사는 그 수요가 얼마나 커지고 이 회사가 얼마나 가져가느냐로 잰다. 배수가 안 맞는 회사에 배수를 들이대지 않는다.
+자료에 있다고 다 쓰지 않는다. 판단을 바꾸지 않는 것은 쓰지 않는다.
 사지 않기로 했으면 목표가를 만들지 않는다. 왜 사지 않는지 쓰고 끝낸다.
 
-[쓰기]
-맨 앞에 결론을 둔다. 얼마에 사서 얼마에 파는지, 사지 않는다면 사지 않는다고 먼저 쓴다. 그다음 왜 그렇게 보는지 쓴다.
-소제목은 이 종목에서 실제로 값을 정하는 것이 무엇이냐에 따라 직접 붙인다.
-존댓말 문어체로 짧게 끊는다. 전체 2,000자 안쪽이다.
-맨 앞은 기록 블록이다. 파일 첫 글자가 ---여야 한다. 값만 채우고 키·순서·구분선은 바꾸지 않으며 숫자에 쉼표·기호를 넣지 않는다.
+맨 앞은 기록 블록이다. 파일 첫 글자가 ---여야 한다. 값만 채우고 키·순서·구분선은 바꾸지 않으며 숫자에 쉼표·기호를 넣지 않는다. 그 아래 본문은 이 종목에 맞는 모양으로 쓴다.
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
@@ -1854,7 +1852,7 @@ ${RULE_COMMON}
 ★★이 줄은 ★리포트가 아니다. reports/{코드}/{날짜}.md 에 저장할 때는 ★빼고 저장한다.
 `;
     }
-    return leanPrompt({market:'us', code:tk, name:tgt, cmd:bundleCmdUS(tk), title:`${tgt}(${tk}) — 변화 점검 리포트. 이미 아는 종목이다. 최근 무엇이 바뀌었고 그게 값에 무슨 뜻인지만 쓴다.`, extra:`※ 이 분석은 ${tgt} 그 자체다. 내가 보유한 건 이를 추종하는 파생상품이지만, 파생 자체의 가격·거래량·괴리율은 분석 대상이 아니다.
+    return briefPrompt({market:'us', code:tk, name:tgt, cmd:bundleCmdUS(tk), title:`${tgt}(${tk}) — 보유 중이거나 지켜보는 종목이다.`, extra:`※ 이 분석은 ${tgt} 그 자체다. 내가 보유한 건 이를 추종하는 파생상품이지만, 파생 자체의 가격·거래량·괴리율은 분석 대상이 아니다.
    ★모든 지표는 ${tgt} 기준으로만 쓴다. 파생 얘기는 꺼내지 마라.`});
   }
   if(it.ptype==='sector'){
@@ -1999,7 +1997,7 @@ ${RULE_COMMON}
   }
 
   // ── 동시(수급 종목) = 분석 모드 (처음 보는 후보 → 풀 9섹션 분석) ──
-  return leanPrompt({market:'kr', code:it.code, name:it.name, cmd:bundleCmd(it.code), title:`${it.name}(${it.code}) — 동시수급 종목. 외국인과 연기금이 함께 산 종목으로 걸렀다. 함께 산 이유와 그 매수가 이어질지를 판단한다.`});
+  return briefPrompt({market:'kr', code:it.code, name:it.name, cmd:bundleCmd(it.code)+' --brief', title:`${it.name}(${it.code}) — 외국인과 연기금이 함께 사들인 종목으로 걸러 나왔다.`});
 }
 function copyPrompt(ev, code){
   ev.stopPropagation();

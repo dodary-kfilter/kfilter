@@ -1223,30 +1223,23 @@ def digest_kr(x, mk):
     return L
 
 
-def target_material(x):
-    """목표 재료 한 줄 — 기준 이익 하나와 배수 유지 가격 하나만. 나머지 배수는 검산용이라 보내지 않는다"""
+def valuation_facts(x):
+    """밸류는 사실만 — 목표가는 계산해 주지 않는다. 배수로 잴 종목인지는 리포트가 정한다"""
     q, f = x.get('q') or {}, x.get('file')
     price = q.get('tradePrice')
     Q = ((x.get('fin') or {}).get('data') or {}).get('QUARTER') or []
     eps = [r.get('eps') for r in Q[:4]]
-    if not price or len(eps) < 2 or None in eps[:2]:
-        return '목표 재료: 확인 불가(분기 EPS 없음)'
-    a2 = (eps[0] + eps[1]) * 2                       # 최근 2분기 연환산 — 가장 최근 이익 속도
-    if a2 > 0:
-        run = eps[0] * 4
-        line = '목표 재료: 최근 2분기 연환산 EPS %s원 · 현재 PER %.1f배' % (_c(a2), price / a2)
-        if run > 0:
-            line += ' · 최근 분기 속도가 이어지면 EPS %s원(%s) → 배수 그대로면 %s원' % (
-                _c(run), _pct((run / a2 - 1) * 100), _c(price * run / a2))
-        return line
+    out = []
+    if price and len(eps) >= 2 and None not in eps[:2]:
+        a2 = (eps[0] + eps[1]) * 2
+        out.append('최근 2분기 연환산 EPS %s원%s' % (_c(a2), ' · PER %.1f배' % (price / a2) if a2 > 0 else ' (적자)'))
     vd = (f or {}).get('valuation_derived') or {}
-    tp, pbr = (vd.get('base') or {}).get('theo_pbr'), vd.get('pbr')
-    if pbr:
-        line = '목표 재료: 이익 적자라 배수로 부를 수 없다 · 현재 PBR %.2f배' % pbr
-        if tp and '무효' not in str(vd.get('verdict')):
-            line += ' · 이론 PBR %.2f배 자리 %s원' % (tp, _c(price / pbr * tp))
-        return line
-    return '목표 재료: 이익 적자 · 밸류 판정 확인 불가'
+    if vd.get('pbr'):
+        out.append('PBR %.2f배' % vd['pbr'])
+    sp = q.get('sectorPer')
+    if isinstance(sp, (int, float)) and 0 < sp <= 200:
+        out.append('업종 PER %.1f배' % sp)
+    return '밸류: ' + (' · '.join(out) if out else '확인 불가')
 
 
 def digest_brief(x, mk):
@@ -1267,8 +1260,6 @@ def digest_brief(x, mk):
         keep.append(ln)
     if gaps and gaps != '없음' and keep:
         keep[0] += ' (빈칸: %s)' % gaps
-    at = next((i for i, l in enumerate(keep) if l.startswith('밸류:')), len(keep) - 1)
-    keep.insert(at + 1, target_material(x))
     return keep
 
 
@@ -1343,6 +1334,18 @@ def digest_card(x, mk):
     base = src.get('기준', '')
     gap = src.get('빈칸', '빈칸: 없음')[len('빈칸: '):]
     out.append(base + ('' if gap == '없음' else ' · 빈칸 %s' % gap))
+    biz = re.sub(r'\s+', ' ', (q.get('companySummary') or '')).strip()
+    if biz:
+        sent = re.split(r'(?<=[음함임다])\.\s*', biz)          # 문장 단위로 끊는다 — 중간에 잘리면 뜻이 깨진다
+        keep, n = [], 0
+        for t in sent:
+            if not t:
+                continue
+            if n + len(t) > 260 and keep:
+                break
+            keep.append(t)
+            n += len(t)
+        out.append('사업: %s.' % '. '.join(keep))
     m = re.search(r'→ (.+?)(?: ·|$)', src.get('시장 대비', ''))
     i20 = re.search(r'(\S+) 20일 (\S+) · 이 종목 20일 (\S+)', src.get('시장 대비', ''))
     out.append('시장 대비: %s (20일 지수 %s vs 종목 %s)' % (m.group(1) if m else '확인 불가',
@@ -1387,7 +1390,7 @@ def digest_card(x, mk):
                                      ' · ' + ' · '.join(tail) if tail else ''))
     else:
         out.append('실적: 확인 불가')
-    out.append(target_material(x))
+    out.append(valuation_facts(x))
     prev = src.get('직전 판단', '직전 판단: 없음')
     pm = re.search(r'직전 판단: (.+?) (\S+) · 목표 ([\d,]+)원.*?· ([^·]+) · 판정 (\S+)', prev)
     if pm:
