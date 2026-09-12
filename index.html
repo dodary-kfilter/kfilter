@@ -733,7 +733,8 @@ function fmtOne(x){
 //   투자자별 수급도 공시 목록도 없으므로 실적·가이던스·업황이 그 자리를 대신한다.
 function buildSearchUS(ticker){
   const T = (ticker||'').toUpperCase();
-  return briefPrompt({market:'us', code:T, name:((US_DICT.find(d=>d[0]===T)||[])[2]||T), cmd:bundleCmdUS(T), title:`${((US_DICT.find(d=>d[0]===T)||[])[2]||T)}(${T}) — 처음 검토하는 종목입니다.`});
+  const NM = ((US_DICT.find(d=>d[0]===T)||[])[2]) || (US_ALL && (US_ALL.find(d=>d[0]===T)||[])[1]) || T;
+  return briefPrompt({market:'us', code:T, name:NM, cmd:bundleCmdUS(T), title:`${NM}(${T}) — 처음 검토하는 종목입니다.`});
 }
 
 function buildSearchOne(code, name){
