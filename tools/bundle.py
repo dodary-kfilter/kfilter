@@ -61,7 +61,7 @@ def decode(b, ct=''):
         return b.decode('cp949' if enc.startswith('utf') else 'utf-8', 'ignore')
 
 
-def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False, extra=None):
+def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False, extra=None, quiet_err=False):
     hd = {'User-Agent': UA}
     hd.update(extra or {})
     if ref:
@@ -84,17 +84,18 @@ def fetch(url, ref=None, form=None, timeout=25, tries=2, quiet404=False, extra=N
                     gate.release()
         except Exception as e:  # 네트워크·HTTP 오류는 기록만 하고 계속
             last = e
-            if getattr(e, 'code', None) == 404:
-                if quiet404:
+            if getattr(e, 'code', None) in (404, 500):
+                if quiet404 or quiet_err:
                     return None
                 break
             time.sleep((1.5 if gate else 0.8) * (i + 1))
-    ERR.append('%s → %s' % (url.split('?')[0][-60:], str(last)[:80]))
+    if not quiet_err:
+        ERR.append('%s → %s' % (url.split('?')[0][-60:], str(last)[:80]))
     return None
 
 
-def jget(url, ref=None, quiet404=False):
-    s = fetch(url, ref, quiet404=quiet404)
+def jget(url, ref=None, quiet404=False, quiet_err=False):
+    s = fetch(url, ref, quiet404=quiet404, quiet_err=quiet_err)
     if s is None:
         return None
     try:
@@ -104,8 +105,8 @@ def jget(url, ref=None, quiet404=False):
         return None
 
 
-def daum(path, ref=DAUM + '/'):
-    return jget(DAUM + path, ref)
+def daum(path, ref=DAUM + '/', quiet=False):
+    return jget(DAUM + path, ref, quiet404=quiet, quiet_err=quiet)
 
 
 def J(o):
@@ -433,7 +434,7 @@ def dart_list(code, name, days=180):
         keep = [it for c, it in rows if c == main]
         return keep, 'DART(%s)' % keep[0]['corp']
     items = []
-    d = daum('/api/disclosures?symbolCode=A%s&perPage=40&page=1' % code)     # DART 검색 실패 시 거래소 공시만
+    d = daum('/api/disclosures?symbolCode=A%s&perPage=40&page=1' % code, quiet=True)   # DART 검색 실패 시 거래소 공시만
     for it in (d or {}).get('data') or []:
         items.append({'rcp': None, 'date': (it.get('createdAt') or '')[:10],
                       'title': re.sub(r'^\(주\)\S+\s', '', it.get('title') or ''), 'by': 'KRX'})
@@ -606,9 +607,24 @@ def gnews(name, k=6):
 
 
 # ───────────────────────────── 종목 하나
+def days_kr(code):
+    d = daum('/api/quote/A%s/days?perPage=250&page=1' % code, quiet=True)
+    if d:
+        return d
+    return daum('/api/quote/Q%s/days?perPage=250&page=1' % code, quiet=True)
+
+
+def quote_kr(code):
+    """주식은 A, ETN은 Q 접두어를 쓴다"""
+    q = daum('/api/quotes/A%s?summary=false&changeStatistics=true' % code, quiet=True)
+    if q:
+        return q
+    return daum('/api/quotes/Q%s?summary=false&changeStatistics=true' % code)
+
+
 def kr_bundle(code, deep, brief=False):   # brief=총평판(판단 카드만)
     code = re.sub(r'^A', '', code.strip().upper())
-    fq = EX.submit(daum, '/api/quotes/A%s?summary=false&changeStatistics=true' % code)
+    fq = EX.submit(quote_kr, code)
     ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, code), None, True)
     q = fq.result() or {}
     name = q.get('name') or code
@@ -616,7 +632,8 @@ def kr_bundle(code, deep, brief=False):   # brief=총평판(판단 카드만)
     fg = EX.submit(gnews, name) if (deep and not brief) else None
     out = ['', '==== %s(%s) %s ====' % (name, code, q.get('market') or '')]
     ctx = {'q': q, 'name': name, 'code': code}
-    fn_all = EX.submit(daum, '/api/quote/A%s/financials' % code) if deep else None
+    is_etp = not (q.get('wicsSectorName') or q.get('companySummary'))     # ETF·ETN은 재무·공시가 없다
+    fn_all = EX.submit(daum, '/api/quote/A%s/financials' % code, quiet=True) if (deep and not is_etp) else None
     out.append('#시세 ' + (J(quote_block(q)) if q else '조회 실패'))
     f = ff.result()
     ctx['file'] = f
@@ -628,14 +645,15 @@ def kr_bundle(code, deep, brief=False):   # brief=총평판(판단 카드만)
         ctx['file_chars'] = len(fj)
         out.append(fj)
     else:
-        fd = EX.submit(daum, '/api/quote/A%s/days?perPage=250&page=1' % code)
+        fd = EX.submit(days_kr, code)
         fi = EX.submit(daum, '/api/investor/days?symbolCode=A%s&perPage=60&page=1' % code)
-        fn = fn_all or EX.submit(daum, '/api/quote/A%s/financials' % code)
+        fn = fn_all or (None if is_etp else EX.submit(daum, '/api/quote/A%s/financials' % code, quiet=True))
         out.append('#수급파일 없음 — 아래 셋은 다음에서 직접 계산했다')
-        ctx['pb'], ctx['sb'], ctx['fin'] = price_block(fd.result()), supply_block(fi.result()), fn.result()
+        ctx['pb'], ctx['sb'], ctx['fin'] = price_block(fd.result()), supply_block(fi.result()), (fn.result() if fn else None)
         out.append('#가격 ' + J(ctx['pb']))
         out.append('#수급 ' + J(ctx['sb']))
-        out.append('#재무확정 ' + J(fin_block(ctx['fin'])))
+        if ctx['fin']:
+            out.append('#재무확정 ' + J(fin_block(ctx['fin'])))
     items, src = fl.result()
     ctx['items'], ctx['src'] = items, src
     if fn_all is not None and 'fin' not in ctx:
