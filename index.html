@@ -215,7 +215,7 @@
     <h1>수급 필터</h1>
     <div class="hd-r">
       <button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
-      <div class="meta">최종 갱신 <b id="updated">—</b></div>
+      <div class="meta">최종 갱신 <b id="updated">—</b> · 프롬프트 <b id="pver">—</b></div>
     </div>
   </header>
   <div class="rule" id="rule">판정 기준을 불러오는 중…</div>
@@ -887,7 +887,8 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v9';
+const PROMPT_VER='v10';
+document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function bundleCmd(code){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - kr ${code}`; }
 
