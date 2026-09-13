@@ -887,7 +887,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v20';
+const PROMPT_VER='v21';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function bundleCmd(code){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - kr ${code}`; }
@@ -1290,6 +1290,22 @@ function copyScreen(ev){
   }else{ fallbackCopy(text,done); }
 }
 
+// 국내 종목 한글 별칭 — 목록에 영문으로만 실린 종목을 한글로 찾기 위한 것
+const KR_ALIAS = {
+  '035420':['네이버','naver'], '035720':['카카오'], '030200':['케이티','kt'],
+  '033780':['케이티앤지','담배인삼공사'], '010950':['에스오일','s오일'], '011200':['에이치엠엠','현대상선'],
+  '003550':['엘지','lg'], '034730':['에스케이','sk'], '006260':['엘에스'], '078930':['지에스','gs'],
+  '001040':['씨제이','cj'], '012630':['에이치디씨','현대산업개발'], '027410':['비지에프'],
+  '036570':['엔씨소프트','엔씨','ncsoft'], '181710':['엔에이치엔'], '035900':['제이와이피','JYP엔터','jyp엔터테인먼트'],
+  '037270':['와이지플러스','yg플러스'], '041510':['에스엠','sm엔터','에스엠엔터테인먼트'],
+  '034120':['에스비에스'], '040300':['와이티엔'], '067160':['숲','아프리카tv'],
+  '011790':['에스케이씨'], '010120':['엘에스일렉트릭','ls일렉트릭'], '002380':['케이씨씨'],
+  '034310':['나이스'], '456040':['오씨아이'], '051390':['와이엔더블유'], '095340':['아이에스씨'],
+  '403870':['에이치피에스피'], '218410':['알에프에이치아이씨'], '056190':['에스에프에이'],
+  '114090':['지케이엘','그랜드코리아레저'], '093050':['엘에프'], '383220':['에프앤에프'],
+  '122450':['케이엑스'], '160550':['뉴'], '060250':['엔에이치엔케이씨피'], '052220':['아이엠비씨']
+};
+
 // ── 검색 탭 ──
 let UNIV = null;          // {A005930:{name,market}, ...} — 유니버스 캐시(2,735종목)
 let UNIV_ERR = false;
@@ -1478,7 +1494,9 @@ function doSearch(){
   for(const sc in UNIV){
     const nm = UNIV[sc].name || '';
     const code = sc.startsWith('A') ? sc.slice(1) : sc;
-    if(nm.toUpperCase().includes(qq) || code.includes(qq)){
+    const al = KR_ALIAS[code] || [];
+    if(nm.toUpperCase().includes(qq) || code.includes(qq)
+       || al.some(x => x.toUpperCase().includes(qq) || qq.includes(x.toUpperCase()))){
       hits.push({code, name:nm, market:UNIV[sc].market});
     }
     if(hits.length >= 60) break;
