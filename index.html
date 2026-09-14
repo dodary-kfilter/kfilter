@@ -887,7 +887,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v21';
+const PROMPT_VER='v22';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function bundleCmd(code){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - kr ${code}`; }
@@ -991,7 +991,7 @@ ${o.title} (${upd} 기준 스캔 결과입니다.)
 
 본인의 자금으로 이 가운데 무엇을 매수할지 판단한다는 전제로 작성하십시오.
 
-먼저 아래 목록만으로 훑어 살 이유가 없는 종목을 덜어냅니다. 남은 것 가운데 서너 개만 개별 자료를 받아 검토하십시오. 코드만 바꾸어 실행하며, 전 종목을 열지는 마십시오.
+먼저 아래 목록으로 각 종목을 판단해 매수할 것과 아닌 것을 가릅니다. 목록에는 실적과 배수, 수급이 함께 있으므로 그것으로 판단하며, 덜어낸 종목은 그 판단을 한 줄로 적습니다. 남은 것 가운데 서너 개만 개별 자료를 받아 검토하십시오. 코드만 바꾸어 실행하며, 전 종목을 열지는 마십시오.
 curl -s ${BUNDLE_URL} | python3 - kr {코드} --brief
 
 검토는 다음 순서로 전개합니다.
