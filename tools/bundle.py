@@ -33,7 +33,8 @@ DART = 'https://dart.fss.or.kr'
 RAW = 'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main'
 ERR = []
 T_START = time.time()
-DEADLINE = T_START + float(os.environ.get('BUNDLE_DEADLINE', '15'))   # 수집 마감 — 리포트 5분 예산에서 수집 몫
+_N_CODES = max(1, sum(1 for a in sys.argv[2:] if not a.startswith('--')))
+DEADLINE = T_START + float(os.environ.get('BUNDLE_DEADLINE', '15' if _N_CODES <= 1 else '40'))   # 수집 마감
 
 
 def wait(fu, what, default=None):
@@ -1364,7 +1365,7 @@ def digest_card(x, mk):
         for t in sent:
             if not t:
                 continue
-            if n + len(t) > 260 and keep:
+            if n + len(t) > (260 if _N_CODES <= 1 else 130) and keep:
                 break
             keep.append(t)
             n += len(t)
@@ -1464,20 +1465,28 @@ def main(argv):
     with ThreadPoolExecutor(max_workers=5) as top:
         if mode == 'kr':
             fm = top.submit(market_all)
-            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep, brief and deep), codes))
+            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep or brief, brief), codes))
         else:
             fm = top.submit(us_market_all)
             parts, ctxs = list(top.map(safe_us, codes)), []
         mk, gl = fm.result()
     head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
-    if brief and mode == 'kr' and deep and ctxs and ctxs[0]:
-        x = ctxs[0]
-        out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · 이 출력이 자료의 전부다' % NOW.strftime('%Y-%m-%d %H:%M:%S')]
-        try:
-            out += ['#판단 카드 — 코드가 원자료에서 계산했다. 이것만 보고 판단한다'] + digest_card(x, mk)
-        except Exception as e:
-            ERR.append('판단 카드 계산 실패 — %s: %s' % (type(e).__name__, str(e)[:100]))
-            out.append('#판단 카드 계산 실패')
+    if brief and mode == 'kr' and ctxs and any(ctxs):
+        out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · %d종목 · 이 출력이 자료의 전부다'
+               % (NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
+               '#판단 카드 — 코드가 원자료에서 계산했다. 이것만 보고 판단한다']
+        for x in ctxs:
+            if not x:
+                continue
+            try:
+                card = digest_card(x, mk)
+            except Exception as e:
+                ERR.append('판단 카드 계산 실패 %s — %s' % (x.get('code'), str(e)[:80]))
+                continue
+            if len(codes) > 1:
+                out.append('')
+                out.append('==== %s(%s) ====' % (x.get('name'), x.get('code')))
+            out += card
         print('\n'.join(out))
         print('#오류 ' + (J(ERR) if ERR else '없음'))
         print('#수집시간 %.1f초' % (time.time() - t0))
