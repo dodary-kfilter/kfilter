@@ -734,45 +734,46 @@ function fmtOne(x){
 function buildSearchUS(ticker){
   const T = (ticker||'').toUpperCase();
   const NM = ((US_DICT.find(d=>d[0]===T)||[])[2]) || (US_ALL && (US_ALL.find(d=>d[0]===T)||[])[1]) || T;
-  return briefPrompt({market:'us', code:T, name:NM, cmd:bundleCmdUS(T), title:`${NM}(${T}) — 처음 검토하는 종목입니다.`});
+  return reportPrompt({kind:'one', subj:'이 종목', title:`${NM}(${T}) — 처음 검토하는 종목입니다.`, cmd:cmdUS(T), data:DATA_US, code:T, name:NM});
 }
 
 function buildSearchOne(code, name){
-  return briefPrompt({market:'kr', code, name, cmd:bundleCmd(code)+' --brief', title:`${name}(${code}) — 처음 검토하는 종목입니다.`});
+  return reportPrompt({kind:'one', subj:'이 종목', title:`${name}(${code}) — 처음 검토하는 종목입니다.`, cmd:cmdKR(code,'--brief'), data:DATA_KR, code, name});
 }
 
 function buildValueOne(x){
   if(!x) return '저가매수형 종목이 없습니다.';
-  const eq=(x.eps_quarters||[]).map(q=>`${(q.date||'').slice(0,7)}: EPS ${q.eps!=null?Math.round(q.eps).toLocaleString():'—'} · 영업익 ${q.op!=null?Math.round(q.op/1e8).toLocaleString()+'억':'—'} · 매출 ${q.sales!=null?Math.round(q.sales/1e8).toLocaleString()+'억':'—'}`).join('\n  ');
-  const e0=x.eps_q_recent, e1=x.eps_q_prev;
-  const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
-  const skewLine = e0==null ? '' : `\n· 최근 분기 EPS ${Math.round(e0).toLocaleString()} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})`;
-  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.`, bg:true, extra:`${fmtOne(x)}${skewLine}
-[EPS 4분기]
-  ${eq||'—'}`});
+  return reportPrompt({kind:'one', subj:'이 종목', title:`${x.name}(${x.code}) — 주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.`, bg:true, cmd:cmdKR(x.code,'--brief'), data:DATA_KR, code:x.code, name:x.name});
 }
 
 function buildMomentumOne(x){
   if(!x) return '모멘텀형 종목이 없습니다.';
-  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 상승 추세를 이어가고 있는 종목으로 선별되었습니다.`, bg:true, extra:`${fmtOne(x)}`});
+  return reportPrompt({kind:'one', subj:'이 종목', title:`${x.name}(${x.code}) — 상승 추세를 이어가고 있는 종목으로 선별되었습니다.`, bg:true, cmd:cmdKR(x.code,'--brief'), data:DATA_KR, code:x.code, name:x.name});
+}
+
+// 일괄 — 후보 전체의 개요를 먼저 주고, 상세 자료는 모델이 고른 종목만 받는다
+function batchOf(title, items){
+  const upd = (DATA&&DATA.updated) ? DATA.updated : '';
+  return reportPrompt({kind:'batch', subj:'후보 종목', title:`${title} 후보는 ${items.length}종목이며, ${upd} 기준 스캔 결과입니다.`, bg:true,
+    cmd:`${cmdKR(items.map(x=>x.code).join(' '),'--overview')}\n${cmdKR('(종목코드)','--brief')}`, data:DATA_BATCH});
 }
 
 function buildValuePrompt(){
   const items=(DATA&&DATA.value_pick)||[];
   if(!items.length) return '오늘 저가매수형 자격을 충족한 종목이 없다. (자격 미달이면 채우지 않는다)';
-  return batchPrompt({title:'주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.', bg:true, n:items.length, codes:items.map(x=>x.code), list:fmtScreenList(items,true)});
+  return batchOf('주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.', items);
 }
 
 function buildMomentumPrompt(){
   const items=(DATA&&DATA.momentum)||[];
   if(!items.length) return '오늘 모멘텀형 조건을 충족한 종목이 없다. (개수를 맞추려 기준을 풀지 않는다)';
-  return batchPrompt({title:'상승 추세를 이어가고 있는 종목으로 선별되었습니다.', bg:true, n:items.length, codes:items.map(x=>x.code), list:fmtScreenList(items,false)});
+  return batchOf('상승 추세를 이어가고 있는 종목으로 선별되었습니다.', items);
 }
 
 function buildScreenPrompt(){
-  const n = (DATA && DATA.both) ? DATA.both.length : 0;
-  const upd = (DATA && DATA.updated) ? DATA.updated : '';
-  return batchPrompt({title:'외국인과 연기금이 동시에 순매수한 종목입니다.', bg:true, n:n, codes:((DATA&&DATA.both)||[]).map(x=>x.code), list:fmtBothList((DATA&&DATA.both)||[])});
+  const items=(DATA&&DATA.both)||[];
+  if(!items.length) return '오늘 외국인과 연기금이 동시에 순매수한 종목이 없다.';
+  return batchOf('외국인과 연기금이 동시에 순매수한 종목입니다.', items);
 }
 // ── 공통: 데이터 취득·우선순위 규칙 (국내 / 미국) ──
 const RULE_FILE = `★ 수급 파일은 종목당 26~39KB다. ★통째로 읽지 마라 — curl로 받아 python으로 필요한 키만 뽑아라.
@@ -887,10 +888,10 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v30';
+const PROMPT_VER='v31';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
-function bundleCmd(code){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - kr ${code}`; }
+function cmdKR(codes, flag){ return `curl -s ${BUNDLE_URL} | python3 - kr ${codes} ${flag}`; }
 
 const RULE_BUNDLE_KR = `[★자료 — 번들 한 번으로 끝낸다]
 ★위 명령을 ★첫 동작으로 한 번만 실행한다. 그 출력(번들)이 이 리포트 자료의 ★전부다.
@@ -915,7 +916,7 @@ const RULE_BUNDLE_KR = `[★자료 — 번들 한 번으로 끝낸다]
 ★외국인 지분율 변화와 순매수 합계가 크게 어긋나면 장외 이동이다. "장외 유입 추정, 사유 확인 불가"로 쓴다.
 ★업황·전방 수요는 번들 안(공시·정기보고서·뉴스·시장)에서만 읽는다. 판단을 바꾸는 빈칸이면 무엇이 확인되면 판단이 바뀌는지를 쓴다.`;
 
-function bundleCmdUS(tk){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - us ${tk}`; }
+function cmdUS(tk){ return `curl -s ${BUNDLE_URL} | python3 - us ${tk}`; }
 
 const RULE_BUNDLE_US = `[★자료 — 번들 한 번으로 끝낸다]
 ★위 명령을 ★첫 동작으로 한 번만 실행한다. 그 출력(번들)이 이 리포트 자료의 ★전부다.
@@ -934,152 +935,70 @@ const RULE_BUNDLE_US = `[★자료 — 번들 한 번으로 끝낸다]
 · #뉴스 — 최근 14일 영문 뉴스 제목. 제목뿐이니 번들의 수치로 확인되지 않은 내용을 사실로 단정하지 마라.
 ★가이던스 원문은 번들에 없다. 뉴스 제목과 컨센 리비전으로 읽고, 판단을 바꾸는 빈칸이면 무엇이 확인되면 판단이 바뀌는지를 쓴다.`;
 
-// ── 공통 틀(개별 리포트 7경로) — 시간 우선: 결론 맨 앞·4,500자·판단 뼈대 다섯만 ──
-// ── 총평판(시간 우선 시험) — 번들 --brief(속독 9줄) + 결론 네 줄 + 총평 1,200자 ──
-// ── 일괄(여러 종목을 한 번에 훑어 추리는 경로) ──
-// ── 지수·섹터(개별 회사가 아닌 대상) ──
-function indexPrompt(o){
+// ── 리포트 지시문 틀(v31) — 모든 경로가 이 틀 하나를 쓴다. 경로마다 다른 것은 대상 소개와 자료뿐이다 ──
+const DATA_KR = '위 명령은 종목의 사업 요약, 시세와 가격 위치, 수급, 분기 실적, 밸류, 컨센서스, 최근 공시, 시장·환율·유가를 정리해 보여 줍니다.';
+const DATA_US = '위 명령은 종목의 시세와 가격 위치, 분기 재무와 연간 손익, 실적·컨센서스·목표가, 기관·공매도·내부자 거래, 최근 SEC 공시와 뉴스 제목, 미국 시장·환율·유가를 정리해 보여 줍니다.';
+const DATA_BATCH = '첫 번째 명령은 후보 전체의 개요를 종목마다 한 줄씩 보여 줍니다. 두 번째 명령은 종목코드 자리에 넣은 종목의 상세 자료를 보여 주고, 코드는 여러 개를 함께 넣을 수 있습니다. 상세 자료에는 사업 요약, 시세와 가격 위치, 수급, 분기 실적, 밸류, 컨센서스, 최근 공시가 들어 있고, 두 명령 모두 시장·환율·유가를 함께 보여 줍니다.';
+const UNIT = {
+  stock: {move:'주가가', cur:'현재가', exp:'예상 주가', expObj:'예상 주가를', buy:'매수 가격', buyObj:'매수 가격을', curRec:'현재가', expRec:'예상 주가', buyRec:'매수 가격'},
+  index: {move:'지수가', cur:'현재 지수', exp:'예상 지수', expObj:'예상 지수를', buy:'매수할 지수', buyObj:'매수할 지수를', curRec:'현재 지수 수준', expRec:'예상 지수', buyRec:'매수할 지수 수준'},
+  etn:   {move:'가격이', cur:'현재가', exp:'예상 가격', expObj:'예상 가격을', buy:'매수 가격', buyObj:'매수 가격을', curRec:'ETN 현재가', expRec:'예상 가격', buyRec:'매수 가격'},
+};
+function reportPrompt(o){
   const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
-  return `[이 문서는 지시문입니다. 아래 자료로 시장 리포트를 작성하십시오.]
-
-${o.title}${o.note?`\n${o.note}`:''}
-
-[자료]
-${o.data}
-
-자료에 없는 사실은 지어내지 않습니다. 부족한 정보는 웹 검색으로 확인할 수 있습니다. 검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 주고, 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.
-
-본인의 자금으로 이것을 매수할지 판단한다는 전제로 작성하십시오. 종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 리포트는 다음 순서로 전개합니다.
-
-1. 이 대상의 성격과 구성 — 과거, 현재, 그리고 앞으로
+  const batch = o.kind==='batch', macro = o.kind==='macro', u = UNIT[o.unit||'stock'];
+  const steps = macro
+    ? `1. 이 대상의 성격과 구성 — 과거, 현재, 그리고 앞으로
 2. 그 구성에서 흐름을 정하는 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
 3. 그것의 현재 상태
 4. 향후 전망 — 대상이 앞으로 어떻게 진행될지에 대한 본인의 판단
-5. 결론 — 종합적 판단, 기대수익, 액션
+5. 결론 — 종합적 판단, 기대수익, 액션`
+    : `1. 회사의 정체성과 구조 — 과거, 현재, 그리고 앞으로
+2. 그 구조에서 중요한 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
+3. 그것의 현재 상태
+4. 향후 전망 — 종목이 앞으로 어떻게 진행될지에 대한 본인의 판단
+5. 결론 — 종합적 판단, 기대수익, 액션`;
+  return `[이 문서는 지시문입니다. 아래 자료를 받아 투자 리포트를 작성하십시오.]
+프롬프트 ${PROMPT_VER} · 복사 시각 ${stamp}
 
-대상을 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 가격 대기로 판단한 경우에는 매수할 지수 수준을 함께 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
+${o.title}${o.note?`\n${o.note}`:''}${o.bg?'\n선별 조건은 후보를 고른 배경일 뿐입니다.':''}
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 예상 지수를 정할 수 있으면 그대로 씁니다. 예상 지수를 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
-# **현재 (현재 지수) → 예상 (예상 지수)  (+N.N%)**
-## **지금 매수 / 가격 대기 (매수할 지수) / 매수하지 않음 / 매도**
+[목적]
+이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 합니다. 리포트에는 ${o.subj}에 대한 종합적 판단과, 그 판단에서 나온 기대수익과 액션을 담습니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.
+
+[자료]
+${o.cmd}
+${o.data}
+
+${u.move} 움직인 원인과 앞으로의 전망은 이 자료만으로는 알기 어렵습니다. 그런 정보는 웹 검색으로 확인할 수 있습니다. 검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 주고, 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다. 자료에 없는 사실은 지어내지 않습니다.
+
+[리포트]
+${batch?'매수하지 않기로 한 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다. 나머지 종목은 아래 순서로 전개하고, 기대수익 순으로 배열합니다. 전개할 종목이 없으면 한 줄 판단만 적습니다.':'리포트는 다음 순서로 전개합니다.'}
+
+${steps}
+
+${macro?'대상을':'회사를'} 잘못 파악하면 이후의 논지가 모두 어긋납니다. 가격 대기로 판단한 경우에는 ${u.buyObj} 함께 제시합니다.${batch?'':' 매수하지 않기로 했다면 그 이유를 밝힙니다.'}
+
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. ${batch?'':`매수하지 않더라도 ${u.expObj} 정할 수 있으면 그대로 씁니다. `}${u.expObj} 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
+# **현재 (${u.cur}) → 예상 (${u.exp})  (+N.N%)**
+## **${batch?`지금 매수 / 가격 대기 (${u.buy}) / 매도`:`지금 매수 / 가격 대기 (${u.buy}) / 매수하지 않음 / 매도`}**
 그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
 
-리포트 첫머리에는 아래 기록 블록을 둡니다. 파일의 첫 글자가 ---이어야 하며, 코드블록으로 감싸지 않습니다. 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
+[기록 블록]
+${batch?'검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 한 줄로 적은 종목에는 두지 않습니다.':'리포트 첫머리에는 아래 기록 블록을 두어, 리포트의 첫 글자가 ---이 되게 합니다.'} 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
 prompt: ${PROMPT_VER}
 start: ${stamp}
-end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
-code: ${o.code}
-name: ${o.name}
-price: (현재 지수 수준, 숫자만)
-target: (예상 지수, 숫자만. 액션이 매수하지 않음이면 비워 둡니다)
-entry: (매수할 지수 수준, 숫자만. 액션이 가격 대기가 아니면 비워 둡니다)
-grade: (지금 매수/가격 대기/매수하지 않음/매도)
----
-`;
-}
-
-function batchPrompt(o){
-  const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
-  const upd = (DATA&&DATA.updated) ? DATA.updated : '';
-  const codes = (o.codes||[]).join(' ');
-  o.cmd = 'curl -s ' + BUNDLE_URL + ' | python3 - kr ' + codes + ' --brief';
-  return `[이 문서는 지시문입니다. 아래 종목들을 검토하여 투자 리포트를 작성하십시오.]
-프롬프트: ${PROMPT_VER} ${stamp}
-
-${o.title} (${upd} 기준 스캔 결과입니다.)
-
-본인의 자금으로 이 가운데 무엇을 매수할지 판단한다는 전제로 작성하십시오.
-
-아래 명령으로 전 종목의 자료를 한 번에 받습니다.
-${o.cmd}
-
-자료에 없는 사실은 지어내지 않습니다. 부족한 정보는 웹 검색으로 확인할 수 있습니다. 자료 카드는 종목의 전체 모습을 요약한 것이고, 검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 줍니다. 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.
-
-${o.bg?'선별 조건은 후보를 고른 배경일 뿐입니다. ':''}목록과 자료를 함께 본 뒤, 종목마다 종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다.
-
-매수하지 않기로 한 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다. 나머지 종목은 아래 순서대로 검토를 전개합니다.
-
-1. 회사의 정체성과 구조 — 과거, 현재, 그리고 앞으로
-2. 그 구조에서 중요한 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
-3. 그것의 현재 상태
-4. 향후 전망 — 종목이 앞으로 어떻게 진행될지에 대한 본인의 판단
-5. 결론 — 종합적 판단, 기대수익, 액션
-
-회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 가격 대기로 판단한 경우에는 매수 가격을 함께 제시합니다. 검토를 전개할 종목이 없으면 한 줄 판단만 적습니다.
-
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 예상 주가를 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
-# **현재 (현재가) → 예상 (예상 주가)  (+N.N%)**
-## **지금 매수 / 가격 대기 (매수 가격) / 매도**
-그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다. 검토를 전개한 종목은 기대수익 순으로 배열합니다.
-
-리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
-
-검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다. 한 줄로 적은 종목에는 두지 않습니다.
-
----
-date: (오늘 날짜 YYYY-MM-DD)
-prompt: ${PROMPT_VER}
-start: ${stamp}
-end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
-code: (종목코드)
-name: (종목명)
-price: (현재가, 숫자만)
-target: (예상 주가, 숫자만)
-entry: (매수 가격, 숫자만. 액션이 가격 대기가 아니면 비워 둡니다)
-grade: (지금 매수/가격 대기/매도)
----
-
-[대상 ${o.n}종목]
-${o.list}`;
-}
-
-function briefPrompt(o){
-  const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
-  const extra = o.scan ? String(o.extra||'').split('\n').filter(l=>/^\s*(\[|·|\d{4}-\d{2})/.test(l)).join('\n') : o.extra;
-  return `[이 문서는 지시문입니다. 아래 명령으로 자료를 받아 투자 리포트를 작성하십시오.]
-복사 시각: ${stamp}
-
-${o.title}${extra?`\n${extra}`:''}
-
-${o.cmd}
-
-명령은 한 번만 실행합니다. 자료에 없는 사실은 지어내지 않습니다. 부족한 정보는 웹 검색으로 확인할 수 있습니다. ${o.market==='us'?'받은 자료는 종목의 전체 모습을 항목별로 보여 주고, ':'자료 카드는 종목의 전체 모습을 요약한 것이고, '}검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 줍니다. 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.
-
-본인의 자금으로 이 종목을 매수할지 판단한다는 전제로 작성하십시오. ${o.bg?'선별 조건은 후보를 고른 배경일 뿐입니다. ':''}종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 리포트는 다음 순서로 전개합니다.
-
-1. 회사의 정체성과 구조 — 과거, 현재, 그리고 앞으로
-2. 그 구조에서 중요한 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
-3. 그것의 현재 상태
-4. 향후 전망 — 종목이 앞으로 어떻게 진행될지에 대한 본인의 판단
-5. 결론 — 종합적 판단, 기대수익, 액션
-
-회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 가격 대기로 판단한 경우에는 매수 가격을 함께 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
-
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 예상 주가를 정할 수 있으면 그대로 씁니다. 예상 주가를 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
-# **현재 (현재가) → 예상 (예상 주가)  (+N.N%)**
-## **지금 매수 / 가격 대기 (매수 가격) / 매수하지 않음 / 매도**
-그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
-
-리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
-
-리포트 첫머리에는 아래 기록 블록을 둡니다. 파일의 첫 글자가 ---이어야 하며, 코드블록으로 감싸지 않습니다. 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
-
----
-date: (오늘 날짜 YYYY-MM-DD)
-prompt: ${PROMPT_VER}
-start: ${stamp}
-end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
-code: ${o.code}
-name: ${o.name}
-price: (현재가, 숫자만)
-target: (예상 주가, 숫자만. 액션이 매수하지 않음이면 비워 둡니다)
-entry: (매수 가격, 숫자만. 액션이 가격 대기가 아니면 비워 둡니다)
-grade: (지금 매수/가격 대기/매수하지 않음/매도)
+code: ${batch?'(종목코드)':o.code}
+name: ${batch?'(종목명)':o.name}
+price: (${u.curRec}, 숫자만)
+target: (${u.expRec}, 숫자만${batch?'':'. 액션이 매수하지 않음이면 비워 둡니다'})
+entry: (${u.buyRec}, 숫자만. 액션이 가격 대기가 아니면 비워 둡니다)
+grade: (${batch?'지금 매수/가격 대기/매도':'지금 매수/가격 대기/매수하지 않음/매도'})
 ---`;
 }
 
@@ -1207,39 +1126,45 @@ ${RULE_BUDGET}
 function txt(s){ return String(s==null?'':s); }
 
 function buildPrompt(it){
-  const D=(c)=>'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/report-data/'+c+'.json';
+  // 파생(레버·커버드콜)은 기초자산으로 치환해 분석한다 — ref가 있으면 데이터·분석 대상을 기초자산으로 바꾼다
+  const analCode = it.ref || it.code;
+  const analName = it.ref ? (it.ref_name || it.name) : it.name;
 
-
-
-  // ── 파생(레버·커버드콜) → 기초자산으로 치환 ──
-  //   ref가 있으면 데이터·분석 대상을 기초자산 코드로 바꿔서, 기초자산과 100% 동일한 프롬프트를 만든다.
-  //   (삼전레버 = 삼성전자, 200위클리커버드콜 = 코스피200(KODEX레버))
-  const analCode = it.ref || it.code;   // 실제 분석/데이터 대상 코드
-  const analName = it.ref ? (it.ref_name || it.name) : it.name;  // 파생이면 본주명으로 제목 통일
-  const url=D(analCode);
-
-  // ── 내 종목 = 변화 모드 (이미 아는 종목 → '최근 무엇이 바뀌었나' 중심) ──
   if(it.ptype==='stock'){
-    return briefPrompt({market:'kr', code:analCode, name:analName, cmd:bundleCmd(analCode)+' --brief', title:`${analName}(${analCode}) — 보유 중이거나 지켜보고 있는 종목입니다.`, extra:(it.ref?`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${analName} 자체입니다. 파생상품의 가격·거래량·유동성은 다루지 않으며, 모든 지표는 ${analName} 기준으로 작성합니다.`:'')});
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${analName}(${analCode}) — 보유 중이거나 지켜보고 있는 종목입니다.`,
+      note:(it.ref?`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${analName} 자체입니다. 파생상품의 가격·거래량·유동성은 다루지 않으며, 모든 지표는 ${analName} 기준으로 작성합니다.`:''),
+      cmd:cmdKR(analCode,'--brief'), data:DATA_KR, code:analCode, name:analName});
   }
   if(it.ptype==='index'){
-    return indexPrompt({code:analCode, name:it.basis, title:`${it.basis} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:`분석 대상은 ${it.basis} 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.`, data:`수급·지수 데이터: ${url}`});
+    const px = ({'코스닥':['229200','코스닥150을 따르는 KODEX 코스닥150']})[it.basis] || ['069500','코스피200을 따르는 KODEX 200'];
+    return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${it.basis} — 보유 중이거나 지켜보고 있는 지수입니다.`,
+      note:`분석 대상은 ${it.basis} 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.`,
+      cmd:cmdKR(px[0],'--brief'), data:`위 명령은 코스피·코스닥 지수의 기간별 등락과 투자자별 순매수, 해외 지수·환율·유가, 그리고 ${px[1]}의 가격 위치·거래량·수급을 정리해 보여 줍니다.`,
+      code:analCode, name:it.basis});
   }
   if(it.ptype==='us'){
     const tgt=txt(it.us_target||''), tk=txt(it.us_ticker||'');
     if(it.us_kind==='index'){
-      return indexPrompt({code:analCode, name:tgt, title:`${tgt} — 보유 중이거나 지켜보고 있는 지수입니다.`, note:`분석 대상은 ${tgt} 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.`, data:`다음 금융 global/today와 exchanges, 나스닥 API에서 지수 수준과 등락을 받습니다.`});
+      const px = ({'^GSPC':'SPY','^IXIC':'QQQ','^NDX':'QQQ','^DJI':'DIA'})[tk] || tk;
+      return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${tgt} — 보유 중이거나 지켜보고 있는 지수입니다.`,
+        note:`분석 대상은 ${tgt} 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.`,
+        cmd:cmdUS(px), data:`위 명령은 ${tgt} 지수를 따르는 ${px}의 시세와 가격 위치, 기관·공매도 자료, 미국 주요 지수와 금리·달러·환율·유가를 정리해 보여 줍니다.`,
+        code:analCode, name:tgt});
     }
-    return briefPrompt({market:'us', code:tk, name:tgt, cmd:bundleCmdUS(tk), title:`${tgt}(${tk}) — 보유 중이거나 지켜보고 있는 종목입니다.`, extra:`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${tgt} 자체입니다. 파생상품의 가격·거래량·괴리율은 다루지 않으며, 모든 지표는 ${tgt} 기준으로 작성합니다.`});
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${tgt}(${tk}) — 보유 중이거나 지켜보고 있는 종목입니다.`,
+      note:`보유 중인 것은 이를 추종하는 파생상품이지만 분석 대상은 ${tgt} 자체입니다. 파생상품의 가격·거래량·괴리율은 다루지 않으며, 모든 지표는 ${tgt} 기준으로 작성합니다.`,
+      cmd:cmdUS(tk), data:DATA_US, code:tk, name:tgt});
   }
   if(it.ptype==='sector'){
-    const surl=D(it.sector_key);
-    const members=((it.supply&&it.supply.sector_members)||[]).map(m=>esc(m.name)+'('+m.code+')').join(', ');
-    return indexPrompt({code:analCode, name:it.basis+' 섹터', title:`${it.basis} 섹터 — 구성종목 ${members}를 묶어 섹터 단위로 분석합니다. 개별 종목 리포트를 따로 쓰지 않습니다.`, note:'분석 대상은 구성종목을 묶은 섹터 자체입니다. 보유 중인 추종 상품의 구조나 가격은 다루지 않습니다.', data:`구성종목 수급 데이터: ${surl}`});
+    const ms=(it.supply&&it.supply.sector_members)||[];
+    const members=ms.map(m=>txt(m.name)+'('+m.code+')').join(', ');
+    return reportPrompt({kind:'macro', unit:'etn', subj:'이 섹터', title:`${it.basis} 섹터 — 구성종목은 ${members}입니다. 이 종목들을 묶어 섹터 단위로 분석하며, 개별 종목 리포트를 따로 쓰지 않습니다.`,
+      note:'분석 대상은 구성종목을 묶은 섹터 자체입니다. 현재가와 예상 가격은 이 섹터를 따르는 ETN의 가격으로 적습니다.',
+      cmd:cmdKR([it.code, ...ms.map(m=>m.code)].join(' '),'--brief'), data:'위 명령은 이 섹터를 따르는 ETN의 가격 위치와 거래량, 구성종목 각각의 사업 요약·시세와 가격 위치·수급·분기 실적·밸류·컨센서스·최근 공시, 시장·환율·유가를 정리해 보여 줍니다.',
+      code:analCode, name:it.basis+' 섹터'});
   }
-
-  // ── 동시(수급 종목) = 분석 모드 (처음 보는 후보 → 풀 9섹션 분석) ──
-  return briefPrompt({market:'kr', code:it.code, name:it.name, cmd:bundleCmd(it.code)+' --brief', title:`${it.name}(${it.code}) — 외국인과 연기금이 동시에 순매수한 종목으로 선별되었습니다.`, bg:true});
+  // 동시수급 개별
+  return reportPrompt({kind:'one', subj:'이 종목', title:`${it.name}(${it.code}) — 외국인과 연기금이 동시에 순매수한 종목으로 선별되었습니다.`, bg:true, cmd:cmdKR(it.code,'--brief'), data:DATA_KR, code:it.code, name:it.name});
 }
 function copyPrompt(ev, code){
   ev.stopPropagation();

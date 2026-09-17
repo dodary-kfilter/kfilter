@@ -5,6 +5,8 @@
 리포트 방은 이 명령 하나만 실행하고, 출력만 보고 판단한다.
   국장 1종목(깊게)    : curl -s https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py | python3 - kr 440110
   국장 여러 종목(얕게): ... | python3 - kr 005930 000660 042700
+  국장 자료 카드     : ... | python3 - kr 009150 --brief        (여러 종목도 된다)
+  국장 후보 개요     : ... | python3 - kr 005930 000660 --overview  (종목마다 한 줄)
   미장 1종목         : ... | python3 - us MU
 
 깊게 = 시세 · 수급파일(없으면 다음에서 직접 계산) · 공시 목록 · 주요공시 본문 · 최신 정기보고서 발췌 · 뉴스 · 시장
@@ -1345,10 +1347,11 @@ def events(items, days=45, k=4):
     return [ln for ln in out if re.search(r'\d', ln.split(' ', 1)[1] if ' ' in ln else '')]   # 금액이 잡힌 공시만
 
 
-def digest_card(x, mk):
+def digest_card(x, mk, light=False):
     """자료 카드 — 원자료에서 계산한 수치와 사실만 싣는다. 판정·지시 문구는 싣지 않는다"""
     src = {re.split(r'[(:]', ln)[0].strip(): ln for ln in digest_kr(x, mk)}
     q = x.get('q') or {}
+    is_etp = not (q.get('wicsSectorName') or q.get('companySummary'))
     out = []
     base = src.get('기준', '')
     gap = src.get('빈칸', '빈칸: 없음')[len('빈칸: '):]
@@ -1357,7 +1360,7 @@ def digest_card(x, mk):
         base += ' · 시총 %s억' % _c(cap_ / 1e8)
         if q.get('listedShareCount'):
             base += ' · 상장주식 %s주' % _c(q['listedShareCount'])
-    out.append(base + ('' if gap == '없음' else ' · 빈칸 %s' % gap))
+    out.append(base + ('' if gap == '없음' or is_etp else ' · 빈칸 %s' % gap))
     biz = re.sub(r'\s+', ' ', (q.get('companySummary') or '')).strip()
     if biz:
         out.append('사업: %s' % biz)                     # 자르지 않는다 — 회사 파악의 재료다
@@ -1381,6 +1384,8 @@ def digest_card(x, mk):
     flow = [p.strip() for p in body.split(' · ') if re.search(r'돌아섰다|연속|평균 매수단가', p)]
     if flow:
         out.append('수급 흐름: ' + ' · '.join(flow))
+    if is_etp:
+        return [ln for ln in out if ln != '수급(20일): 확인 불가']
     fin = src.get('실적', '')
     body = fin.split('): ', 1)[1] if '): ' in fin else ''
     qm = re.search(r'실적\(확정, (\S+년 \d+월) 분기\)', fin)
@@ -1417,12 +1422,53 @@ def digest_card(x, mk):
                                                     ' · 판정일까지 %s일' % left.group(1) if left else ''))
     else:
         out.append(prev)
-    ev = events(x.get('items') or [])
-    out.append('최근 공시(45일): ' + (' | '.join(ev) if ev else '주요 공시 없음'))
+    if not light:                                      # 개요는 공시 본문을 받지 않는다 — 한 줄에 싣지 않는 자료다
+        ev = events(x.get('items') or [])
+        out.append('최근 공시(45일): ' + (' | '.join(ev) if ev else '주요 공시 없음'))
     warn = src.get('변화 신호', '')
     if '시장경보' in warn or '손익구조' in warn:
         out.append('경보: ' + ' · '.join(p for p in warn.split(' · ') if re.search(r'시장경보|손익구조|파생', p)))
     return out
+
+
+def overview_line(x, card):
+    """후보 개요 한 줄 — 자료 카드에서 이름·업종·가격·20일 등락·고점 대비·영업이익·PER·수급·컨센을 뽑는다"""
+    q = x.get('q') or {}
+    get = lambda p: next((ln for ln in card if ln.startswith(p)), '')
+    parts = ['%s(%s)' % (x.get('name'), x.get('code'))]
+    if q.get('wicsSectorName'):
+        parts.append(q['wicsSectorName'])
+    b = get('기준:')
+    m = re.search(r'현재가 ([\d,]+원\([^)]*\))', b)
+    if m:
+        parts.append(m.group(1))
+    m = re.search(r'시총 ([\d,]+억)', b)
+    if m:
+        parts.append('시총 ' + m.group(1))
+    m = re.search(r'20일 지수 (\S+) · 종목 (\S+)', get('시장 대비:'))
+    if m:
+        parts.append('20일 종목 %s·지수 %s' % (m.group(2), m.group(1)))
+    m = re.search(r'고점[^·]*?대비 (-?[\d.]+%)', get('가격 위치:'))
+    if m:
+        parts.append('고점 대비 ' + m.group(1))
+    m = re.search(r'영업이익 (-?[\d,]+억\([^)]*\))', get('실적('))
+    if m:
+        parts.append('영업이익 ' + m.group(1))
+    v = get('밸류:')
+    m = re.search(r'(?<!업종 )PER ([\d.]+배)', v)
+    if m:
+        parts.append('PER ' + m.group(1))
+    elif '적자' in v:
+        parts.append('연환산 적자')
+    sup = get('수급(20일):')[len('수급(20일): '):]
+    if sup and sup != '확인 불가':
+        parts.append(sup)
+    m = re.search(r'현재가 대비 ([-+][\d.]+%)', get('컨센:'))
+    if m:
+        parts.append('컨센 목표가 ' + m.group(1))
+    if get('경보:'):
+        parts.append(get('경보:'))
+    return ' · '.join(parts)
 
 
 def toc_kr(x):
@@ -1450,8 +1496,9 @@ def main(argv):
     if len(argv) < 2 or argv[0] not in ('kr', 'us'):
         print(__doc__)
         return 1
-    brief = '--brief' in argv
-    mode, codes = argv[0], [a for a in argv[1:] if a != '--brief']
+    overview = '--overview' in argv
+    brief = '--brief' in argv or overview
+    mode, codes = argv[0], [a for a in argv[1:] if a not in ('--brief', '--overview')]
     deep = len(codes) == 1
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=5) as top:
@@ -1464,17 +1511,25 @@ def main(argv):
         mk, gl = fm.result()
     head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
     if brief and mode == 'kr' and ctxs and any(ctxs):
-        out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · %d종목'
-               % (NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
-               '#자료 카드 — 코드가 원자료에서 계산했다',
+        out = ['#번들 kfilter 국장 %s · 수집 %s KST · %d종목'
+               % ('후보 개요' if overview else '총평판', NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
+               '#후보 개요 — 종목마다 한 줄, 코드가 원자료에서 계산했다' if overview else '#자료 카드 — 코드가 원자료에서 계산했다',
                '#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
+        if overview:
+            out.append('')
         for x in ctxs:
             if not x:
                 continue
             try:
-                card = digest_card(x, mk)
+                card = digest_card(x, mk, light=overview)
             except Exception as e:
                 ERR.append('판단 카드 계산 실패 %s — %s' % (x.get('code'), str(e)[:80]))
+                continue
+            if overview:
+                try:
+                    out.append(overview_line(x, card))
+                except Exception as e:
+                    ERR.append('개요 계산 실패 %s — %s' % (x.get('code'), str(e)[:80]))
                 continue
             if len(codes) > 1:
                 out.append('')

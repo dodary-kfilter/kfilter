@@ -19,33 +19,23 @@ const CASES=[
  ['14_검색-국내',()=>buildSearchOne('005930','삼성전자')],
  ['15_검색-미국',()=>buildSearchUS('NVDA')],
 ];
-// 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다
+// 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[
- ['미치환',        t=>!/\$\{/.test(t)],
- ['이상값',        t=>!/undefined|NaN|\[object Object\]/.test(t)],
- ['실행제약1',     t=>t.includes('이 대상의 성격과 구성') ? true : t.includes('전 종목의 자료를 한 번에') ? true : t.includes('본인의 자금으로') ? (t.match(/명령은 한 번만 실행합니다/g)||[]).length===1 : t.includes('[운용]') ? (t.match(/\[운용\]/g)||[]).length===1 : (t.match(/\[★출력 도중 도구 호출 금지\]/g)||[]).length===1],
- ['점검줄1',      t=>t.includes('본인의 자금으로') ? true : (t.match(/\[점검\]/g)||[]).length===1],
- ['점검뒤',        t=>{const c=t.indexOf('## 기록용 블록'),p=t.indexOf('[★★출력의 ★마지막 항목 — 점검 한 줄]');return c<0||p>c;}],
- ['계측없음',      t=>!t.includes('계측')],
- ['단정없음',      t=>!t.includes('수급 파일에 이미 있다')],
- ['두세줄없음',    t=>!t.includes('— 두세 줄')],
- ['파일↔링크',     t=>t.includes('이 대상의 성격과 구성') ? true : (t.includes('report-data/'))===(t.includes('수급 파일은 종목당'))],
-  ['번들1',        t=>!t.includes('bundle.py') || ((t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length===1 && !/\/api\/quote|dsaf001|detailSearch|api\.nasdaq\.com|query1\.finance|stockanalysis\.com|웹 검색으로 보충|검색어는 두 번|추가로 받을 것|병렬로 받아라|\[데이터 취득\]|검색은 2회|DART 원문이 기본|새로 받아라|받을 것을 미리 정해|0~1 소수|수급 파일\(누적 데이터\)/.test(t))],
- ['path↔직전',     t=>(t.includes('직전 리포트'))===(t.includes('prev_track.path'))],
- // v24 — 종합적 판단 → 기대수익 → 액션. 필터 조건은 배경
- ['액션넷',        t=>['지금 매수','가격 대기','매수하지 않음'].every(w=>t.includes(w)) && !t.includes('중립')],
- ['종합판단',      t=>t.includes('종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다') && t.includes('5. 결론 — 종합적 판단, 기대수익, 액션') && !/같은 방식으로 판단|배수 하나로|전체를 놓고|따라오는 모습/.test(t)],
- ['선별배경',      t=>/선별되었습니다|동시에 순매수한 종목/.test(t) === t.includes('선별 조건은 후보를 고른 배경일 뿐입니다.')],
- ['기록액션',      t=>/\nentry: \((매수 가격|매수할 지수 수준), 숫자만\. 액션이 가격 대기가 아니면 비워 둡니다\)\n/.test(t) && /\ngrade: \(지금 매수\/가격 대기\/(매수하지 않음\/)?매도\)\n/.test(t)],
- ['시장참고',      t=>t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.') && !t.includes('시장과 같은 견해라면')],
- ['향후전망',      t=>/\n3\. 그것의 현재 상태\n4\. 향후 전망 — (종목|대상)이 앞으로 어떻게 진행될지에 대한 본인의 판단\n5\. 결론 — 종합적 판단, 기대수익, 액션\n/.test(t) && !t.includes('4. 결론')],
- ['잣대문구없음',  t=>!/얻을 것이 잃을 것보다|값을 부를|이 종목에 맞는 구성으로|절대PER과 동종|구분이 필요합니다|직접 확인이 필요합니다|재무제표 밖에 있는|자료에 없는 값은|한 차례|이 목록 안에서의 비교/.test(t)],
- ['검색문장',      t=>{
-   if(!t.includes('자료에 없는 사실은 지어내지 않습니다. 부족한 정보는 웹 검색으로 확인할 수 있습니다.') || !t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.') || t.includes('웹 검색으로 확인하십시오')) return false;
-   const card=t.includes('자료 카드는 종목의 전체 모습을 요약한 것이고'), got=t.includes('받은 자료는 종목의 전체 모습을 항목별로 보여 주고');
-   if(t.includes('이 대상의 성격과 구성')) return !card && !got;          // 지수·섹터 — 카드 없음
-   if(/bundle\.py \| python3 - us /.test(t)) return got && !card;      // 미국 — 항목별 번들
-   return card && !got; }],
+ ['미치환',     t=>!/\$\{/.test(t)],
+ ['이상값',     t=>!/undefined|NaN|\[object Object\]/.test(t)],
+ ['자료명령',   t=>{ const n=(t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length;
+                   return t.includes('후보 전체의 개요') ? (n===2 && /--overview\n/.test(t) && t.includes('python3 - kr (종목코드) --brief')) : n===1; }],
+ ['목적',       t=>t.includes('이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 합니다.') && t.includes('그 판단에서 나온 기대수익과 액션을 담습니다.') && t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.')],
+ ['자료설명',   t=>/(주가가|지수가|가격이) 움직인 원인과 앞으로의 전망은 이 자료만으로는 알기 어렵습니다\./.test(t) && t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.') && t.includes('자료에 없는 사실은 지어내지 않습니다.')],
+ ['자료대상',   t=>{ if(t.includes('후보 전체의 개요')) return t.includes('상세 자료에는 사업 요약');
+                   if(t.includes('이 대상의 성격과 구성')) return /위 명령은 (코스피·코스닥 지수의|\S+ 지수를 따르는|이 섹터를 따르는 ETN)/.test(t);
+                   return /python3 - us /.test(t) ? t.includes('위 명령은 종목의 시세와 가격 위치, 분기 재무') : t.includes('위 명령은 종목의 사업 요약'); }],
+ ['액션넷',     t=>['지금 매수','가격 대기','매수하지 않음'].every(w=>t.includes(w)) && !t.includes('중립')],
+ ['전개순서',   t=>/\n3\. 그것의 현재 상태\n4\. 향후 전망 — (종목|대상)이 앞으로 어떻게 진행될지에 대한 본인의 판단\n5\. 결론 — 종합적 판단, 기대수익, 액션\n/.test(t)],
+ ['선별배경',   t=>/선별되었습니다|동시에 순매수한 종목/.test(t) === t.includes('선별 조건은 후보를 고른 배경일 뿐입니다.')],
+ ['기록블록',   t=>/\n---\ndate: \(오늘 날짜 YYYY-MM-DD\)\nprompt: v\d+\nstart: [^\n]+\ncode: [^\n]+\nname: [^\n]+\nprice: \([^\n]+\)\ntarget: \([^\n]+\)\nentry: \([^\n]+\)\ngrade: \((지금 매수\/가격 대기\/매수하지 않음\/매도|지금 매수\/가격 대기\/매도)\)\n---$/.test(t) && !/\nend: /.test(t)],
+ ['단위',       t=>t.includes('이 섹터에 대한') ? t.includes('price: (ETN 현재가, 숫자만)') : t.includes('이 지수에 대한') ? t.includes('price: (현재 지수 수준, 숫자만)') : t.includes('price: (현재가, 숫자만)')],
+ ['옛문구없음', t=>!/얻을 것이 잃을 것보다|값을 부를|이 종목에 맞는 구성으로|절대PER과 동종|구분이 필요합니다|직접 확인이 필요합니다|재무제표 밖에 있는|자료에 없는 값은|한 차례|이 목록 안에서의 비교|같은 방식으로 판단|배수 하나로|전체를 놓고|따라오는 모습|시장과 같은 견해라면|명령은 한 번만|가장 먼저 아래 명령|\[대상 \d+종목\]|\[스캔 지표|report-data\/|계측|수급 파일에 이미 있다|— 두세 줄|웹 검색으로 확인하십시오|종합적 판단으로 기대수익을 정하고/.test(t)],
 ];
 const dump=process.env.KF_DUMP; if(dump) _fs.mkdirSync(dump,{recursive:true});
 let bad=0;
