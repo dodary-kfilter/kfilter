@@ -40,7 +40,12 @@ const RULES=[
  ['시장참고',      t=>t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.') && !t.includes('시장과 같은 견해라면')],
  ['향후전망',      t=>/\n3\. 그것의 현재 상태\n4\. 향후 전망 — (종목|대상)이 앞으로 어떻게 진행될지에 대한 본인의 판단\n5\. 결론 — 종합적 판단, 기대수익, 액션\n/.test(t) && !t.includes('4. 결론')],
  ['잣대문구없음',  t=>!/얻을 것이 잃을 것보다|값을 부를|이 종목에 맞는 구성으로|절대PER과 동종|구분이 필요합니다|직접 확인이 필요합니다|재무제표 밖에 있는|자료에 없는 값은|한 차례|이 목록 안에서의 비교/.test(t)],
- ['검색문장',      t=>t.includes('자료에 없는 사실은 지어내지 않습니다. 판단에 필요한 정보가 자료에 없다면 웹 검색으로 확인하십시오.')],
+ ['검색문장',      t=>{
+   if(!t.includes('자료에 없는 사실은 지어내지 않습니다. 부족한 정보는 웹 검색으로 확인할 수 있습니다.') || !t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.') || t.includes('웹 검색으로 확인하십시오')) return false;
+   const card=t.includes('자료 카드는 종목의 전체 모습을 요약한 것이고'), got=t.includes('받은 자료는 종목의 전체 모습을 항목별로 보여 주고');
+   if(t.includes('이 대상의 성격과 구성')) return !card && !got;          // 지수·섹터 — 카드 없음
+   if(/bundle\.py \| python3 - us /.test(t)) return got && !card;      // 미국 — 항목별 번들
+   return card && !got; }],
 ];
 const dump=process.env.KF_DUMP; if(dump) _fs.mkdirSync(dump,{recursive:true});
 let bad=0;
