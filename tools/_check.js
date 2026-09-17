@@ -32,6 +32,11 @@ const RULES=[
  ['파일↔링크',     t=>t.includes('이 대상의 성격과 구성') ? true : (t.includes('report-data/'))===(t.includes('수급 파일은 종목당'))],
   ['번들1',        t=>!t.includes('bundle.py') || ((t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length===1 && !/\/api\/quote|dsaf001|detailSearch|api\.nasdaq\.com|query1\.finance|stockanalysis\.com|웹 검색으로 보충|검색어는 두 번|추가로 받을 것|병렬로 받아라|\[데이터 취득\]|검색은 2회|DART 원문이 기본|새로 받아라|받을 것을 미리 정해|0~1 소수|수급 파일\(누적 데이터\)/.test(t))],
  ['path↔직전',     t=>(t.includes('직전 리포트'))===(t.includes('prev_track.path'))],
+ // v24 — 종합적 판단 → 기대수익 → 액션. 필터 조건은 배경
+ ['액션넷',        t=>['지금 매수','가격 대기','매수하지 않음'].every(w=>t.includes(w)) && !t.includes('중립')],
+ ['종합판단',      t=>t.includes('종합적으로 판단') && t.includes('4. 결론 — 종합적 판단, 기대수익, 액션') && !t.includes('같은 방식으로 판단')],
+ ['선별배경',      t=>/선별되었습니다|동시에 순매수한 종목/.test(t) === t.includes('선별 조건은 후보를 고른 배경')],
+ ['기록액션',      t=>/\nentry: \(가격 대기일 때 /.test(t) && /\ngrade: \(지금 매수\/가격 대기\/(매수하지 않음\/)?매도\)\n/.test(t)],
 ];
 const dump=process.env.KF_DUMP; if(dump) _fs.mkdirSync(dump,{recursive:true});
 let bad=0;

@@ -673,7 +673,7 @@ function fmtScreenList(items, isV){
    EPS 4분기: ${eq||'—'}`;
     }
     return base+`
-   정배열 ${x.entry_days}일차 · 1개월 ${x.r1.toFixed(1)}%${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap.toFixed(1)}%${x.ma20_gap>25?' 과열':''} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2):'—'}배 · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${x.sales_growth!=null?`
+   정배열 ${x.entry_days}일차 · 1개월 ${x.r1.toFixed(1)}%${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap.toFixed(1)}% · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2):'—'}배 · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${x.sales_growth!=null?`
    매출 ${(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)}% · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'}(직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'}(연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}
    최근 분기 EPS ${x.eps_q_recent!=null?Math.round(x.eps_q_recent).toLocaleString():'—'} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(x.eps_q_prev!=null&&x.eps_q_prev>0&&x.eps_q_recent!=null?((x.eps_q_recent/x.eps_q_prev-1)*100>=0?'+':'')+((x.eps_q_recent/x.eps_q_prev-1)*100).toFixed(0)+'%':'—'))})`:''}`;
   }).join('\n');
@@ -701,6 +701,12 @@ function fmtBothList(items){
 // ★비교 지수는 종목이 속한 시장 — 코스피와 코스닥은 흐름이 크게 다르다
 function idxName(x){ return (x&&x.market==='KOSDAQ') ? '코스닥' : '코스피'; }
 
+// ── 선별 조건은 배경(v24) — 조건에 든 사실과 그 조건이면 따라오는 모습을 매수 근거·제외 사유로 쓰지 않는다 ──
+function screenBg(ex){ return `선별 조건은 후보를 고른 배경일 뿐이며, 판단은 전체를 놓고 따로 합니다. 조건에 들었다는 사실${ex?`이나 이 조건이면 당연히 따라오는 모습(${ex})`:''}은 매수의 근거로도 제외의 사유로도 삼지 않습니다.`; }
+const BG_VALUE = screenBg('크게 내린 주가, 낮아진 배수, 이동평균선 아래의 위치');
+const BG_MOMENTUM = screenBg('이미 오른 주가, 높아진 배수, 이동평균선 위로 벌어진 거리');
+const BG_BOTH = screenBg('');
+
 function fmtOne(x){
   const s=(x.labels&&x.labels.supply)||null, v=(x.labels&&x.labels.valuation)||{};
   return `[스캔 지표 — ${DATA&&DATA.updated?DATA.updated+' 기준':''}]
@@ -711,7 +717,7 @@ function fmtOne(x){
 · 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'}(다음 확정EPS 기준) · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'업종PER 무효(음수·200초과) → 절대PER과 동종 개별로 대체'} · PBR ${v.pbr!=null?(+v.pbr).toFixed(2)+'배':'—'} · DPS ${v.dps!=null?v.dps:'—'}${x.excess_dd!=null?`
 · 52주 고점 종가 ${x.peak_close?Math.round(x.peak_close).toLocaleString()+'원':'—'} @ ${x.peak_date||'—'} (${x.peak_days!=null?x.peak_days+'일 전':'—'})`:''}${x.sales_growth!=null?`
 · 매출 ${(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)}% · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'} (직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'} (연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}`:''}
-· 수급 ${s?`외국인 ${s.f_buydays||'-'} (${s.f_net!=null?s.f_net.toLocaleString():'—'}) / 연기금 ${s.p_buydays||'-'} (${s.p_net!=null?s.p_net.toLocaleString():'—'})${s.is_zero_rank?' 외국인+연기금 동시':''}`:'신호 없음 — 기술만 좋고 수급은 아직 없습니다(더 이른 단계일 수 있습니다)'}
+· 수급 ${s?`외국인 ${s.f_buydays||'-'} (${s.f_net!=null?s.f_net.toLocaleString():'—'}) / 연기금 ${s.p_buydays||'-'} (${s.p_net!=null?s.p_net.toLocaleString():'—'})${s.is_zero_rank?' 외국인+연기금 동시':''}`:'최근 10거래일 기준 외국인·연기금 모두 순매수 조건 미달'}
 ★위 지표는 이미 계산돼 있다. 다시 받지 마라. 해석만 하면 된다.
 ★검색어는 두 번으로 묶어라 — "종목명 + 최근 주가 원인·업황" / "종목명 + 촉매·목표주가·동종 밸류"
    (검색 순서·취득처·차단 목록은 아래 [데이터 취득]에 있다)
@@ -747,32 +753,32 @@ function buildValueOne(x){
   const e0=x.eps_q_recent, e1=x.eps_q_prev;
   const qoq=(e0!=null&&e1!=null&&e1>0)?(e0/e1-1)*100:null;
   const skewLine = e0==null ? '' : `\n· 최근 분기 EPS ${Math.round(e0).toLocaleString()} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})`;
-  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.`, extra:`${fmtOne(x)}${skewLine}
+  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.`, bg:BG_VALUE, extra:`${fmtOne(x)}${skewLine}
 [EPS 4분기]
   ${eq||'—'}`});
 }
 
 function buildMomentumOne(x){
   if(!x) return '모멘텀형 종목이 없습니다.';
-  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 상승 추세를 이어가고 있는 종목으로 선별되었습니다.`, extra:`${fmtOne(x)}`});
+  return briefPrompt({market:'kr', scan:true, code:x.code, name:x.name, cmd:bundleCmd(x.code)+' --brief', title:`${x.name}(${x.code}) — 상승 추세를 이어가고 있는 종목으로 선별되었습니다.`, bg:BG_MOMENTUM, extra:`${fmtOne(x)}`});
 }
 
 function buildValuePrompt(){
   const items=(DATA&&DATA.value_pick)||[];
   if(!items.length) return '오늘 저가매수형 자격을 충족한 종목이 없다. (자격 미달이면 채우지 않는다)';
-  return batchPrompt({title:'주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.', n:items.length, codes:items.map(x=>x.code), list:fmtScreenList(items,true)});
+  return batchPrompt({title:'주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.', bg:BG_VALUE, n:items.length, codes:items.map(x=>x.code), list:fmtScreenList(items,true)});
 }
 
 function buildMomentumPrompt(){
   const items=(DATA&&DATA.momentum)||[];
   if(!items.length) return '오늘 모멘텀형 조건을 충족한 종목이 없다. (개수를 맞추려 기준을 풀지 않는다)';
-  return batchPrompt({title:'상승 추세를 이어가고 있는 종목으로 선별되었습니다.', n:items.length, codes:items.map(x=>x.code), list:fmtScreenList(items,false)});
+  return batchPrompt({title:'상승 추세를 이어가고 있는 종목으로 선별되었습니다.', bg:BG_MOMENTUM, n:items.length, codes:items.map(x=>x.code), list:fmtScreenList(items,false)});
 }
 
 function buildScreenPrompt(){
   const n = (DATA && DATA.both) ? DATA.both.length : 0;
   const upd = (DATA && DATA.updated) ? DATA.updated : '';
-  return batchPrompt({title:'외국인과 연기금이 동시에 순매수한 종목입니다.', n:n, codes:((DATA&&DATA.both)||[]).map(x=>x.code), list:fmtBothList((DATA&&DATA.both)||[])});
+  return batchPrompt({title:'외국인과 연기금이 동시에 순매수한 종목입니다.', bg:BG_BOTH, n:n, codes:((DATA&&DATA.both)||[]).map(x=>x.code), list:fmtBothList((DATA&&DATA.both)||[])});
 }
 // ── 공통: 데이터 취득·우선순위 규칙 (국내 / 미국) ──
 const RULE_FILE = `★ 수급 파일은 종목당 26~39KB다. ★통째로 읽지 마라 — curl로 받아 python으로 필요한 키만 뽑아라.
@@ -887,7 +893,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v23';
+const PROMPT_VER='v24';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function bundleCmd(code){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - kr ${code}`; }
@@ -949,19 +955,19 @@ ${o.data}
 
 자료에 없는 값은 지어내지 않습니다. 흐름을 정하는 요인이 자료 밖에 있다면 웹 검색을 한 차례 사용하여 확인하십시오.
 
-본인의 자금으로 이것을 매수할지 판단한다는 전제로 작성하십시오. 리포트는 다음 순서로 전개합니다.
+본인의 자금으로 이것을 매수할지 판단한다는 전제로 작성하십시오. 전체를 놓고 종합적으로 판단하고, 그 판단에서 기대수익을, 기대수익에서 액션을 정합니다. 무엇이 흐름을 좌우하는지는 시점에 따라 다릅니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 리포트는 다음 순서로 전개합니다.
 
 1. 이 대상의 성격과 구성 — 과거, 현재, 그리고 앞으로
 2. 그 구성에서 흐름을 정하는 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
 3. 그것의 현재 상태
-4. 결론 — 본인의 견해와 예상 지수
+4. 결론 — 종합적 판단, 기대수익, 액션
 
-대상을 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 매수합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
+대상을 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 지금 매수합니다. 지금 수준에서는 그렇지 않지만 더 낮은 수준에서 그렇다면 가격 대기로 하고 그 수준을 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다. 매도는 보유하고 있다면 팔아야 한다는 판단입니다.
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 등급만 씁니다.
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 둘째 줄에는 액션 하나만 씁니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (현재 지수) → 예상 (예상 지수)  (+N.N%)**
-## **매수 / 중립 / 매도**
-그 뒤에 왜 그 값인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
+## **지금 매수 / 가격 대기 · (매수할 지수) / 매수하지 않음 / 매도**
+그 뒤에 종합적 판단에서 그 값과 액션이 어떻게 나왔는지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 예상 지수와 틀렸을 때의 지수는 배수 하나로 계산하지 않고 종합적 판단에서 정하며, 배수는 부른 값을 검산할 때 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
 
@@ -975,8 +981,9 @@ end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: ${o.code}
 name: ${o.name}
 price: (현재 지수 수준, 숫자만)
-target: (예상 지수, 숫자만. 매수하지 않기로 했다면 비워 둡니다)
-grade: (매수/중립/매도)
+target: (예상 지수, 숫자만. 매수하지 않음일 때는 비워 둡니다)
+entry: (가격 대기일 때 매수할 지수 수준, 숫자만. 그 밖에는 비워 둡니다)
+grade: (지금 매수/가격 대기/매수하지 않음/매도)
 ---
 `;
 }
@@ -989,30 +996,32 @@ function batchPrompt(o){
   return `[이 문서는 지시문입니다. 아래 종목들을 검토하여 투자 리포트를 작성하십시오.]
 프롬프트: ${PROMPT_VER} ${stamp}
 
-${o.title} (${upd} 기준 스캔 결과입니다.)
+${o.title} (${upd} 기준 스캔 결과입니다.)${o.bg?`\n${o.bg}`:''}
 
 본인의 자금으로 이 가운데 무엇을 매수할지 판단한다는 전제로 작성하십시오.
 
-아래 명령으로 전 종목의 자료를 한 번에 받습니다. 목록과 자료를 함께 보고 모든 종목을 같은 방식으로 판단하십시오.
+아래 명령으로 전 종목의 자료를 한 번에 받습니다. 목록과 자료를 함께 보고 종목마다 판단하십시오.
 ${o.cmd}
 
-매수로 판단한 종목은 아래 순서대로 검토를 전개하고, 매수하지 않는 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다.
+종목마다 전체를 놓고 종합적으로 판단하고, 그 판단에서 기대수익을, 기대수익에서 액션을 정합니다. 무엇이 주가를 좌우하는지는 종목과 시점에 따라 다릅니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다.
+
+매수하지 않기로 한 종목은 그 판단의 결론을 한 줄로 적습니다. 한 줄이어도 지표 하나를 옮겨 적는 것으로 대신하지 않고, 왜 사지 않는지에 대한 종합적 판단을 씁니다. 지금 매수, 가격 대기, 매도로 판단한 종목은 아래 순서대로 검토를 전개합니다.
 
 1. 회사의 정체성과 구조 — 과거, 현재, 그리고 앞으로
 2. 그 구조에서 중요한 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
 3. 그것의 현재 상태
-4. 결론 — 본인의 견해와 예상 주가
+4. 결론 — 종합적 판단, 기대수익, 액션
 
-회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 매수하며, 매수할 종목이 하나도 없으면 없다고 밝히고 마칩니다.
+회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 지금 매수합니다. 지금 가격에서는 그렇지 않지만 더 낮은 가격에서 그렇다면 가격 대기로 하고 그 가격을 제시합니다. 매도는 보유하고 있다면 팔아야 한다는 판단입니다. 검토를 전개할 종목이 하나도 없으면 없다고 밝히고 한 줄 판단만 적습니다.
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 등급만 씁니다.
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 둘째 줄에는 액션 하나만 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (현재가) → 예상 (예상 주가)  (+N.N%)**
-## **매수 / 중립 / 매도**
-그 뒤에 왜 그 값인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다. 매수로 판단한 종목은 기대수익 순으로 배열하고, 덜어낸 종목은 그 이유를 한 줄씩만 적습니다.
+## **지금 매수 / 가격 대기 · (매수 가격) / 매도**
+그 뒤에 종합적 판단에서 그 값과 액션이 어떻게 나왔는지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 예상 주가와 틀렸을 때의 가격은 배수 하나로 계산하지 않고 종합적 판단에서 정하며, 배수는 부른 값을 검산할 때 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다. 검토를 전개한 종목은 지금 매수, 가격 대기, 매도 순으로 배열하고, 같은 액션 안에서는 기대수익 순으로 둡니다.
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다. 이 목록 안에서의 비교는 근거로 쓰지 않습니다.
 
-매수로 판단한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다. 덜어낸 종목에는 두지 않습니다.
+검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다. 한 줄로 적은 종목에는 두지 않습니다.
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
@@ -1022,8 +1031,9 @@ end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: (종목코드)
 name: (종목명)
 price: (현재가, 숫자만)
-target: (목표가, 숫자만)
-grade: 매수
+target: (예상 주가, 숫자만)
+entry: (가격 대기일 때 매수할 가격, 숫자만. 그 밖에는 비워 둡니다)
+grade: (지금 매수/가격 대기/매도)
 ---
 
 [대상 ${o.n}종목]
@@ -1036,25 +1046,25 @@ function briefPrompt(o){
   return `[이 문서는 지시문입니다. 아래 명령으로 자료를 받아 투자 리포트를 작성하십시오.]
 복사 시각: ${stamp}
 
-${o.title}${extra?`\n${extra}`:''}
+${o.title}${o.bg?`\n${o.bg}`:''}${extra?`\n${extra}`:''}
 
 ${o.cmd}
 
 명령은 한 번만 실행합니다. 자료에 없는 값은 지어내지 않습니다. 다만 주가를 정하는 요인이 재무제표 밖에 있는 종목이라면, 웹 검색을 한 차례 사용하여 확인하십시오.
 
-본인의 자금으로 이 종목을 매수할지 판단한다는 전제로 작성하십시오. 리포트는 다음 순서로 전개합니다.
+본인의 자금으로 이 종목을 매수할지 판단한다는 전제로 작성하십시오. 전체를 놓고 종합적으로 판단하고, 그 판단에서 기대수익을, 기대수익에서 액션을 정합니다. 무엇이 주가를 좌우하는지는 종목과 시점에 따라 다릅니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 리포트는 다음 순서로 전개합니다.
 
 1. 회사의 정체성과 구조 — 과거, 현재, 그리고 앞으로
 2. 그 구조에서 중요한 것 — 이후 판단을 가를 요인을 이 자리에서 모두 제시
 3. 그것의 현재 상태
-4. 결론 — 본인의 견해와 예상 주가
+4. 결론 — 종합적 판단, 기대수익, 액션
 
-회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 매수합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
+회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장과 같은 견해라면 수익을 낼 여지가 없습니다. 얻을 것이 잃을 것보다 클 때만 지금 매수합니다. 지금 가격에서는 그렇지 않지만 더 낮은 가격에서 그렇다면 가격 대기로 하고 그 가격을 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다. 매도는 보유하고 있다면 팔아야 한다는 판단입니다.
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 등급만 씁니다.
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 둘째 줄에는 액션 하나만 씁니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (현재가) → 예상 (예상 주가)  (+N.N%)**
-## **매수 / 중립 / 매도**
-그 뒤에 왜 그 값인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
+## **지금 매수 / 가격 대기 · (매수 가격) / 매수하지 않음 / 매도**
+그 뒤에 종합적 판단에서 그 값과 액션이 어떻게 나왔는지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 예상 주가와 틀렸을 때의 가격은 배수 하나로 계산하지 않고 종합적 판단에서 정하며, 배수는 부른 값을 검산할 때 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
 
@@ -1068,8 +1078,9 @@ end: (이 리포트를 다 쓴 지금 시각 YYYY-MM-DD HH:MM)
 code: ${o.code}
 name: ${o.name}
 price: (현재가, 숫자만)
-target: (목표가, 숫자만. 매수하지 않기로 했다면 비워 둡니다)
-grade: (매수/중립/매도)
+target: (예상 주가, 숫자만. 매수하지 않음일 때는 비워 둡니다)
+entry: (가격 대기일 때 매수할 가격, 숫자만. 그 밖에는 비워 둡니다)
+grade: (지금 매수/가격 대기/매수하지 않음/매도)
 ---`;
 }
 
@@ -1229,7 +1240,7 @@ function buildPrompt(it){
   }
 
   // ── 동시(수급 종목) = 분석 모드 (처음 보는 후보 → 풀 9섹션 분석) ──
-  return briefPrompt({market:'kr', code:it.code, name:it.name, cmd:bundleCmd(it.code)+' --brief', title:`${it.name}(${it.code}) — 외국인과 연기금이 동시에 순매수한 종목으로 선별되었습니다.`});
+  return briefPrompt({market:'kr', code:it.code, name:it.name, cmd:bundleCmd(it.code)+' --brief', title:`${it.name}(${it.code}) — 외국인과 연기금이 동시에 순매수한 종목으로 선별되었습니다.`, bg:BG_BOTH});
 }
 function copyPrompt(ev, code){
   ev.stopPropagation();
