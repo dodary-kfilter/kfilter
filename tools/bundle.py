@@ -625,14 +625,14 @@ def quote_kr(code):
     return daum('/api/quotes/Q%s?summary=false&changeStatistics=true' % code)
 
 
-def kr_bundle(code, deep, brief=False):   # brief=총평판(판단 카드만)
+def kr_bundle(code, deep, brief=False, news=True):   # brief=자료 카드, news=카드에 뉴스 제목(개요는 받지 않는다)
     code = re.sub(r'^A', '', code.strip().upper())
     fq = EX.submit(quote_kr, code)
     ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, code), None, True)
     q = fq.result() or {}
     name = q.get('name') or code
     fl = EX.submit(dart_list, code, name)
-    fg = EX.submit(gnews, name) if (deep and not brief) else None
+    fg = EX.submit(gnews, name) if (deep and (news or not brief)) else None
     out = ['', '==== %s(%s) %s ====' % (name, code, q.get('market') or '')]
     ctx = {'q': q, 'name': name, 'code': code}
     is_etp = not (q.get('wicsSectorName') or q.get('companySummary'))     # ETF·ETN은 재무·공시가 없다
@@ -665,8 +665,9 @@ def kr_bundle(code, deep, brief=False):   # brief=총평판(판단 카드만)
     out.append('#공시목록 출처 %s · 최근 180일 · 최신순 · 날짜|제목|제출인 (%d건 중 %d건)'
                % (src, len(items), min(len(shown), 30)))
     out.extend('%s|%s|%s' % (it['date'], it['title'], it['by']) for it in shown[:30])
-    if deep and brief:                               # 총평판 — 판단 카드에 쓸 공시 본문만 본다
+    if deep and brief:                               # 자료 카드 — 공시 본문은 카드가 필요한 것만 본다
         ctx['brief'] = True
+        ctx['news'] = wait(fg, '뉴스', []) if fg else []
         return out, ctx
     if deep:
         docs = pick_docs(items)
@@ -1425,10 +1426,19 @@ def digest_card(x, mk, light=False):
     if not light:                                      # 개요는 공시 본문을 받지 않는다 — 한 줄에 싣지 않는 자료다
         ev = events(x.get('items') or [])
         out.append('최근 공시(45일): ' + (' | '.join(ev) if ev else '주요 공시 없음'))
+        nw = x.get('news') or []
+        if nw:                                         # 무슨 일이 있었는지 찾아볼 색인 — 제목만 싣는다
+            out.append('최근 뉴스(14일): ' + ' | '.join(re.sub(r'^(\d\d-\d\d) \d\d:\d\d ', r'\1 ', n) for n in nw))
     warn = src.get('변화 신호', '')
     if '시장경보' in warn or '손익구조' in warn:
         out.append('경보: ' + ' · '.join(p for p in warn.split(' · ') if re.search(r'시장경보|손익구조|파생', p)))
     return out
+
+
+def market_news(fu):
+    """시장 뉴스 제목 한 줄 — 받지 못했으면 싣지 않는다"""
+    nws = wait(fu, '시장 뉴스', []) if fu else []
+    return ['#시장 뉴스(최근) ' + ' | '.join(re.sub(r'^(\d\d-\d\d) \d\d:\d\d ', r'\1 ', n) for n in nws)] if nws else []
 
 
 def overview_line(x, card):
@@ -1484,9 +1494,9 @@ def toc_kr(x):
                len(x.get('news') or []), len(ERR)))
 
 
-def safe_bundle(code, deep, brief=False):
+def safe_bundle(code, deep, brief=False, news=True):
     try:
-        return kr_bundle(code, deep, brief)
+        return kr_bundle(code, deep, brief, news)
     except Exception as e:      # 한 종목이 깨져도 나머지는 낸다
         ERR.append('%s 처리 실패 — %s: %s' % (code, type(e).__name__, str(e)[:80]))
         return ['', '==== %s ====' % code, '#처리 실패 — #오류 참조'], {}
@@ -1504,9 +1514,12 @@ def main(argv):
     with ThreadPoolExecutor(max_workers=5) as top:
         if mode == 'kr':
             fm = top.submit(market_all)
-            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep or brief, brief), codes))
+            fus = EX.submit(us_market_all) if brief else None          # 국장 카드에도 미국 금리·달러
+            fnews = EX.submit(gnews, '코스피', 8) if brief else None     # 시장에서 무슨 일이 있었는지 찾아볼 색인
+            parts, ctxs = zip(*top.map(lambda c: safe_bundle(c, deep or brief, brief, not overview), codes))
         else:
             fm = top.submit(us_market_all)
+            fus, fnews = None, EX.submit(gnews, '뉴욕증시', 8)
             parts, ctxs = list(top.map(safe_us, codes)), []
         mk, gl = fm.result()
     head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
@@ -1515,6 +1528,10 @@ def main(argv):
                % ('후보 개요' if overview else '총평판', NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
                '#후보 개요 — 종목마다 한 줄, 코드가 원자료에서 계산했다' if overview else '#자료 카드 — 코드가 원자료에서 계산했다',
                '#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
+        usr = wait(fus, '미국 금리·달러', None) if fus else None
+        if usr and usr[0]:
+            out.append('#미국 금리·달러 ' + J({k: usr[0][k] for k in ('미국10년물금리', '달러인덱스', 'VIX') if k in usr[0]}))
+        out += market_news(fnews)
         if overview:
             out.append('')
         for x in ctxs:
@@ -1555,7 +1572,7 @@ def main(argv):
     if mode == 'kr':
         head += ['#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
     else:
-        head += ['#미국시장 ' + J(mk), '#환율·유가 ' + J(gl)]
+        head += ['#미국시장 ' + J(mk), '#환율·유가 ' + J(gl)] + market_news(fnews)
     MAXB = int(os.environ.get('BUNDLE_MAX_BYTES', '40000'))
     body = [ln for part in parts for ln in part]
     size = lambda ls: sum(len(ln.encode('utf-8')) + 1 for ln in ls)
