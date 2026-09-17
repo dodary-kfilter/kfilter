@@ -37,6 +37,7 @@ const RULES=[
  ['종합판단',      t=>t.includes('종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다') && t.includes('4. 결론 — 종합적 판단, 기대수익, 액션') && !/같은 방식으로 판단|배수 하나로|전체를 놓고|따라오는 모습/.test(t)],
  ['선별배경',      t=>/선별되었습니다|동시에 순매수한 종목/.test(t) === t.includes('선별 조건은 후보를 고른 배경일 뿐입니다.')],
  ['기록액션',      t=>/\nentry: \((매수 가격|매수할 지수 수준), 숫자만\. 액션이 가격 대기가 아니면 비워 둡니다\)\n/.test(t) && /\ngrade: \(지금 매수\/가격 대기\/(매수하지 않음\/)?매도\)\n/.test(t)],
+ ['시장참고',      t=>t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.') && !t.includes('시장과 같은 견해라면')],
 ];
 const dump=process.env.KF_DUMP; if(dump) _fs.mkdirSync(dump,{recursive:true});
 let bad=0;
