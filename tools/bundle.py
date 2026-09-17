@@ -1346,7 +1346,7 @@ def events(items, days=45, k=4):
 
 
 def digest_card(x, mk):
-    """판단 카드 7줄 — 판정 한 마디 + 숫자 하나. 세부 수치는 목표 재료 줄에만 둔다"""
+    """자료 카드 — 원자료에서 계산한 수치와 사실만 싣는다. 판정·지시 문구는 싣지 않는다"""
     src = {re.split(r'[(:]', ln)[0].strip(): ln for ln in digest_kr(x, mk)}
     q = x.get('q') or {}
     out = []
@@ -1360,21 +1360,15 @@ def digest_card(x, mk):
     out.append(base + ('' if gap == '없음' else ' · 빈칸 %s' % gap))
     biz = re.sub(r'\s+', ' ', (q.get('companySummary') or '')).strip()
     if biz:
-        sent = re.split(r'(?<=[음함임다])\.\s*', biz)          # 문장 단위로 끊는다 — 중간에 잘리면 뜻이 깨진다
-        keep, n = [], 0
-        for t in sent:
-            if not t:
-                continue
-            if n + len(t) > (260 if _N_CODES <= 1 else 130) and keep:
-                break
-            keep.append(t)
-            n += len(t)
-        out.append('사업: %s.' % '. '.join(keep))
-    i20 = re.search(r'(\S+) 20일 (\S+) · 이 종목 20일 (\S+)', src.get('시장 대비', ''))
-    out.append('시장 대비: 20일 지수 %s · 종목 %s' % (i20.group(2), i20.group(3)) if i20 else '시장 대비: 확인 불가')
-    pos = src.get('가격 위치', '')[len('가격 위치: '):]
-    keep = [p for p in pos.split(' · ') if re.search(r'^20일선|고점', p)]
-    out.append('가격 위치: ' + (' · '.join(keep) if keep else '확인 불가'))
+        out.append('사업: %s' % biz)                     # 자르지 않는다 — 회사 파악의 재료다
+    mkt = src.get('시장 대비', '')
+    i20 = re.search(r'(\S+) 20일 (\S+) · 이 종목 20일 (\S+)', mkt)
+    ex = re.search(r'지수 대비 초과 1개월 (\S+) · 6개월 (\S+)', mkt)
+    out.append(('시장 대비: 20일 지수 %s · 종목 %s' % (i20.group(2), i20.group(3))
+                + (' · 지수 대비 초과 1개월 %s · 6개월 %s' % (ex.group(1), ex.group(2)) if ex else '')) if i20 else '시장 대비: 확인 불가')
+    out.append(src.get('가격 위치') or '가격 위치: 확인 불가')
+    if src.get('거래량'):
+        out.append(src['거래량'])
     sup = src.get('수급', '')
     body = sup.split('): ', 1)[1] if '): ' in sup else ''
     c20 = (((x.get('file') or {}).get('supply_detail') or {}).get('cum_20d') or {})
@@ -1384,6 +1378,9 @@ def digest_card(x, mk):
         nums = [re.sub(r' 20일 ', ' ', p.strip()) for p in body.split(' · ')
                 if re.match(r'(외국인|기관|기관계|연기금|개인) 20일 (순매수|순매도) ', p.strip())]
     out.append('수급(20일): ' + (' · '.join(nums) if nums else '확인 불가') + (' · 장외 이동 의심' if '어긋남' in sup else ''))
+    flow = [p.strip() for p in body.split(' · ') if re.search(r'돌아섰다|연속|평균 매수단가', p)]
+    if flow:
+        out.append('수급 흐름: ' + ' · '.join(flow))
     fin = src.get('실적', '')
     body = fin.split('): ', 1)[1] if '): ' in fin else ''
     qm = re.search(r'실적\(확정, (\S+년 \d+월) 분기\)', fin)
@@ -1398,7 +1395,18 @@ def digest_card(x, mk):
                                      ' · ' + ' · '.join(tail) if tail else ''))
     else:
         out.append('실적: 확인 불가')
+    Q = [r for r in (((x.get('fin') or {}).get('data') or {}).get('QUARTER') or [])
+         if str(r.get('isConsensus') or '').upper() not in ('Y', 'TRUE')][:4]
+    if Q:
+        fin_co = bool(re.search(r'은행|보험|증권|금융|카드|캐피탈', q.get('wicsSectorName') or ''))
+        cell = lambda v: _c(v / 1e8) if isinstance(v, (int, float)) else '—'
+        out.append('분기 실적 추이(억원, %s·영업이익·순이익): %s' % ('영업수익' if fin_co else '매출', ' | '.join(
+            '%s.%s %s·%s·%s' % ((r.get('date') or '')[:4], (r.get('date') or '')[5:7], cell(r.get('sales')),
+                                cell(r.get('operatingProfit')), cell(r.get('netIncome'))) for r in Q)))
     out.append(valuation_facts(x))
+    cs = src.get('컨센', '')
+    if '): ' in cs:
+        out.append('컨센: ' + cs.split('): ', 1)[1])
     prev = src.get('직전 판단', '직전 판단: 없음')
     pm = re.search(r'직전 판단: (.+?) (\S+) · 목표 ([\d,]+)원.*?· ([^·]+) · 판정 (\S+)', prev)
     if pm:
@@ -1458,7 +1466,8 @@ def main(argv):
     if brief and mode == 'kr' and ctxs and any(ctxs):
         out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · %d종목'
                % (NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
-               '#자료 카드 — 코드가 원자료에서 계산했다']
+               '#자료 카드 — 코드가 원자료에서 계산했다',
+               '#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
         for x in ctxs:
             if not x:
                 continue
