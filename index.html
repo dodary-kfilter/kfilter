@@ -653,7 +653,7 @@ ${RULE_APIWARN}
 function fmtScreenList(items, isV){
   return items.map((x,i)=>{
     const s=(x.labels&&x.labels.supply)||null, v=(x.labels&&x.labels.valuation)||{};
-    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / 연 ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' 동시수급':''}` : '최근 10거래일 기준 조건 미달(누적>0 + 매수일 70%) — 더 긴 구간은 직접 확인이 필요합니다';
+    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / 연 ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' 동시수급':''}` : '최근 10거래일 기준 외국인·연기금 모두 순매수 조건 미달';
     const per = x.per!=null ? x.per.toFixed(1)+'배' : '—';
     const sec = v.sector_valid ? `업종 ${v.sectorPer.toFixed(1)}배` : '업종PER 무효';
     const base = `${i+1}. ${x.name}(${x.code}) · ${x.sector||''} · ${Math.round(x.cur).toLocaleString()}원 ${(x.changeRate>=0?'+':'')+x.changeRate.toFixed(2)}%
@@ -668,7 +668,7 @@ function fmtScreenList(items, isV){
    52주 고점 대비 ${x.dd_close!=null?x.dd_close.toFixed(1)+'%':'—'} · 고점일 이후 ${idxName(x)} ${x.idx_since_peak!=null?(x.idx_since_peak>=0?'+':'')+x.idx_since_peak.toFixed(1)+'%':'—'} → 지수 대비 ${x.excess_dd!=null?x.excess_dd.toFixed(1)+'%p':'—'} · 업종 대비 ${x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(1)+'%p':(x.vs_sector_note||'—')}${x.sector_median_dd!=null?`(업종 중앙 ${x.sector_median_dd.toFixed(1)}%)`:''}
    매출 ${x.sales_growth!=null?(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)+'%':'—'} · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'}(직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'}(연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}
    52주 고점 ${x.peak_date||'—'}(${x.peak_days!=null?x.peak_days+'일 전':'—'})
-   1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap!=null?(x.ma20_gap>=0?'+':'')+x.ma20_gap.toFixed(1)+'%':'—'} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2)+'배':'—'} · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}${(x.r1!=null&&x.r1<=-15)?'  1개월 급락 중 — 5일선만 갓 회복한 상태입니다. 되돌림인지 바닥인지 구분이 필요합니다':''}
+   1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.excess_r1!=null?`(${idxName(x)}대비 ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.excess_r6!=null?`(${idxName(x)}대비 ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 20일선과의 거리 ${x.ma20_gap!=null?(x.ma20_gap>=0?'+':'')+x.ma20_gap.toFixed(1)+'%':'—'} · 최근 거래량(20일/60일) ${x.v2060?x.v2060.toFixed(2)+'배':'—'} · 52주 내 위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'}
    최근 분기 EPS ${e0!=null?Math.round(e0).toLocaleString():'—'} (직전 분기 대비 ${x.eps_turnaround_q?'적자→흑자':(x.eps_still_loss?'적자 지속':(qoq!=null?(qoq>=0?'+':'')+qoq.toFixed(0)+'%':'—'))})${warn}
    EPS 4분기: ${eq||'—'}`;
     }
@@ -708,7 +708,7 @@ function fmtOne(x){
 · 20일선 ${Math.round(x.ma20).toLocaleString()}원 · 20일선과의 거리 ${x.ma20_gap.toFixed(1)}% · 일봉 정배열 ${x.daily_aligned?'○ (진입 '+(x.entry_days!=null?x.entry_days:'—')+'일차)':'✗'} · 60주선(장기추세) 위 ${x.weekly_ma60_above?'○':'✗'}
 · 수익률 1개월 ${x.r1!=null?x.r1.toFixed(1)+'%':'—'}${x.idx_r1!=null?` (같은 기간 ${idxName(x)} ${(x.idx_r1>=0?'+':'')+x.idx_r1.toFixed(1)}% → ${(x.excess_r1>=0?'+':'')+x.excess_r1.toFixed(1)}%p)`:''} · 6개월 ${x.r6!=null?x.r6.toFixed(1)+'%':'—'}${x.idx_r6!=null?` (${idxName(x)} ${(x.idx_r6>=0?'+':'')+x.idx_r6.toFixed(1)}% → ${(x.excess_r6>=0?'+':'')+x.excess_r6.toFixed(1)}%p)`:''} · 52주(장중 저~고) ${x.low52w?Math.round(x.low52w).toLocaleString():'—'}~${x.high52w?Math.round(x.high52w).toLocaleString():'—'} (위치 ${x.pos52w!=null?x.pos52w.toFixed(0)+'%':'—'})
 · 거래량 20일/60일 ${x.v2060?x.v2060.toFixed(2)+'배':'—'}
-· 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'}(다음 확정EPS 기준) · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'업종PER 무효(음수·200초과) → 절대PER과 동종 개별로 대체'} · PBR ${v.pbr!=null?(+v.pbr).toFixed(2)+'배':'—'} · DPS ${v.dps!=null?v.dps:'—'}${x.excess_dd!=null?`
+· 밸류 PER ${x.per!=null?x.per.toFixed(1)+'배':'—'}(다음 확정EPS 기준) · ${v.sector_valid?'업종PER '+v.sectorPer.toFixed(1)+'배':'업종PER 무효(음수·200초과)'} · PBR ${v.pbr!=null?(+v.pbr).toFixed(2)+'배':'—'} · DPS ${v.dps!=null?v.dps:'—'}${x.excess_dd!=null?`
 · 52주 고점 종가 ${x.peak_close?Math.round(x.peak_close).toLocaleString()+'원':'—'} @ ${x.peak_date||'—'} (${x.peak_days!=null?x.peak_days+'일 전':'—'})`:''}${x.sales_growth!=null?`
 · 매출 ${(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(1)}% · 영업이익률 ${x.opm_prev!=null?x.opm_prev.toFixed(1):'—'}→${x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—'} (직전 분기 대비) · 이익수익률 ${x.earn_yield!=null?x.earn_yield.toFixed(1)+'%':'—'} (연율PER ${x.per_ann!=null?x.per_ann.toFixed(1)+'배':'—'}) · ROE ${x.roe_ann!=null?x.roe_ann.toFixed(1)+'%':'—'}`:''}
 · 수급 ${s?`외국인 ${s.f_buydays||'-'} (${s.f_net!=null?s.f_net.toLocaleString():'—'}) / 연기금 ${s.p_buydays||'-'} (${s.p_net!=null?s.p_net.toLocaleString():'—'})${s.is_zero_rank?' 외국인+연기금 동시':''}`:'최근 10거래일 기준 외국인·연기금 모두 순매수 조건 미달'}
@@ -887,7 +887,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v27';
+const PROMPT_VER='v28';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function bundleCmd(code){ return `[자료 — 가장 먼저 아래 명령을 실행하십시오]\ncurl -s ${BUNDLE_URL} | python3 - kr ${code}`; }
@@ -947,7 +947,7 @@ ${o.title}${o.note?`\n${o.note}`:''}
 [자료]
 ${o.data}
 
-자료에 없는 값은 지어내지 않습니다. 흐름을 정하는 요인이 자료 밖에 있다면 웹 검색을 한 차례 사용하여 확인하십시오.
+자료에 없는 사실은 지어내지 않습니다. 판단에 필요한 정보가 자료에 없다면 웹 검색을 한 차례 사용하여 확인하십시오.
 
 본인의 자금으로 이것을 매수할지 판단한다는 전제로 작성하십시오. 종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 리포트는 다음 순서로 전개합니다.
 
@@ -957,9 +957,9 @@ ${o.data}
 4. 향후 전망 — 대상이 앞으로 어떻게 진행될지에 대한 본인의 판단
 5. 결론 — 종합적 판단, 기대수익, 액션
 
-대상을 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 얻을 것이 잃을 것보다 클 때만 매수합니다. 가격 대기로 판단한 경우에는 얻을 것이 잃을 것보다 커지는 지수 수준을 함께 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
+대상을 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 가격 대기로 판단한 경우에는 매수할 지수 수준을 함께 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 액션만 씁니다.
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 예상 지수를 정할 수 있으면 그대로 씁니다. 예상 지수를 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (현재 지수) → 예상 (예상 지수)  (+N.N%)**
 ## **지금 매수 / 가격 대기 (매수할 지수) / 매수하지 않음 / 매도**
 그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
@@ -1008,9 +1008,9 @@ ${o.bg?'선별 조건은 후보를 고른 배경일 뿐입니다. ':''}목록과
 4. 향후 전망 — 종목이 앞으로 어떻게 진행될지에 대한 본인의 판단
 5. 결론 — 종합적 판단, 기대수익, 액션
 
-회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 얻을 것이 잃을 것보다 클 때만 매수합니다. 가격 대기로 판단한 경우에는 얻을 것이 잃을 것보다 커지는 매수 가격을 함께 제시합니다. 검토를 전개할 종목이 없으면 한 줄 판단만 적습니다.
+회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 가격 대기로 판단한 경우에는 매수 가격을 함께 제시합니다. 검토를 전개할 종목이 없으면 한 줄 판단만 적습니다.
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 액션만 씁니다.
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 예상 주가를 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (현재가) → 예상 (예상 주가)  (+N.N%)**
 ## **지금 매수 / 가격 대기 (매수 가격) / 매도**
 그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다. 검토를 전개한 종목은 기대수익 순으로 배열합니다.
@@ -1046,7 +1046,7 @@ ${o.title}${extra?`\n${extra}`:''}
 
 ${o.cmd}
 
-명령은 한 번만 실행합니다. 자료에 없는 값은 지어내지 않습니다. 다만 주가를 정하는 요인이 재무제표 밖에 있는 종목이라면, 웹 검색을 한 차례 사용하여 확인하십시오.
+명령은 한 번만 실행합니다. 자료에 없는 사실은 지어내지 않습니다. 판단에 필요한 정보가 자료에 없다면 웹 검색을 한 차례 사용하여 확인하십시오.
 
 본인의 자금으로 이 종목을 매수할지 판단한다는 전제로 작성하십시오. ${o.bg?'선별 조건은 후보를 고른 배경일 뿐입니다. ':''}종합적 판단으로 기대수익을 정하고 그에 따라 액션을 결정합니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 리포트는 다음 순서로 전개합니다.
 
@@ -1056,16 +1056,16 @@ ${o.cmd}
 4. 향후 전망 — 종목이 앞으로 어떻게 진행될지에 대한 본인의 판단
 5. 결론 — 종합적 판단, 기대수익, 액션
 
-회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 얻을 것이 잃을 것보다 클 때만 매수합니다. 가격 대기로 판단한 경우에는 얻을 것이 잃을 것보다 커지는 매수 가격을 함께 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
+회사를 잘못 파악하면 이후의 논지가 모두 어긋납니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다. 가격 대기로 판단한 경우에는 매수 가격을 함께 제시합니다. 매수하지 않기로 했다면 그 이유를 밝힙니다.
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 값을 부를 수 있으면 그 값을 그대로 씁니다. 값을 부를 근거 자체가 없을 때만 첫 줄을 빼고 액션만 씁니다.
+결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. 매수하지 않더라도 예상 주가를 정할 수 있으면 그대로 씁니다. 예상 주가를 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (현재가) → 예상 (예상 주가)  (+N.N%)**
 ## **지금 매수 / 가격 대기 (매수 가격) / 매수하지 않음 / 매도**
 그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
 
-리포트 첫머리에는 아래 기록 블록을 둡니다. 파일의 첫 글자가 ---이어야 하며, 코드블록으로 감싸지 않습니다. 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다. 그 아래 본문은 이 종목에 맞는 구성으로 작성하십시오.
+리포트 첫머리에는 아래 기록 블록을 둡니다. 파일의 첫 글자가 ---이어야 하며, 코드블록으로 감싸지 않습니다. 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)

@@ -1370,36 +1370,20 @@ def digest_card(x, mk):
             keep.append(t)
             n += len(t)
         out.append('사업: %s.' % '. '.join(keep))
-    m = re.search(r'→ (.+?)(?: ·|$)', src.get('시장 대비', ''))
     i20 = re.search(r'(\S+) 20일 (\S+) · 이 종목 20일 (\S+)', src.get('시장 대비', ''))
-    out.append('시장 대비: %s (20일 지수 %s vs 종목 %s)' % (m.group(1) if m else '확인 불가',
-                                                  i20.group(2) if i20 else '?', i20.group(3) if i20 else '?'))
+    out.append('시장 대비: 20일 지수 %s · 종목 %s' % (i20.group(2), i20.group(3)) if i20 else '시장 대비: 확인 불가')
     pos = src.get('가격 위치', '')[len('가격 위치: '):]
     keep = [p for p in pos.split(' · ') if re.search(r'^20일선|고점', p)]
     out.append('가격 위치: ' + (' · '.join(keep) if keep else '확인 불가'))
     sup = src.get('수급', '')
     body = sup.split('): ', 1)[1] if '): ' in sup else ''
-    pats = {}
-    for seg in body.split(' · '):                      # "외국인 일관매도" 같은 판정 조각만
-        m = re.fullmatch(r'(외국인|기관계|연기금|개인) (\S+)', seg.strip())
-        if m:
-            pats[m.group(1)] = m.group(2)
-    if not pats:                                       # 수급파일 없는 종목 — 순매수/순매도 수치에서 방향만
-        for m in re.finditer(r'(외국인|기관|기관계|연기금|개인) 20일 (순매수|순매도)', body):
-            pats[m.group(1)] = m.group(2)
-    if pats:
-        sell = [w for w, v in pats.items() if re.search(r'매도|이탈', v)]
-        buy = [w for w, v in pats.items() if re.search(r'매수|매집|유입', v)]
-        say = []
-        if sell:
-            say.append('%s 매도' % '·'.join(sell))
-        if buy:
-            say.append('%s 매수' % '·'.join(buy))
-        out.append('수급(20일): %s%s' % (', '.join(say) or '판정 없음',
-                                       ' · 장외 이동 의심' if '어긋남' in sup else ''))
-    else:
-        nums = [p for p in body.split(' · ') if re.search(r'순매수|순매도', p)][:2]
-        out.append('수급(20일): ' + (' · '.join(nums) if nums else '확인 불가'))
+    c20 = (((x.get('file') or {}).get('supply_detail') or {}).get('cum_20d') or {})
+    nums = ['%s %s %s주' % (w, '순매수' if c20[w] >= 0 else '순매도', _c(abs(c20[w])))
+            for w in ('외국인', '기관계', '연기금', '개인') if isinstance(c20.get(w), (int, float))]
+    if not nums:                                       # 수급파일 없는 종목 — 장내 외국인·기관 20일 수치
+        nums = [re.sub(r' 20일 ', ' ', p.strip()) for p in body.split(' · ')
+                if re.match(r'(외국인|기관|기관계|연기금|개인) 20일 (순매수|순매도) ', p.strip())]
+    out.append('수급(20일): ' + (' · '.join(nums) if nums else '확인 불가') + (' · 장외 이동 의심' if '어긋남' in sup else ''))
     fin = src.get('실적', '')
     body = fin.split('): ', 1)[1] if '): ' in fin else ''
     qm = re.search(r'실적\(확정, (\S+년 \d+월) 분기\)', fin)
@@ -1472,9 +1456,9 @@ def main(argv):
         mk, gl = fm.result()
     head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
     if brief and mode == 'kr' and ctxs and any(ctxs):
-        out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · %d종목 · 이 출력이 자료의 전부다'
+        out = ['#번들 kfilter 국장 총평판 · 수집 %s KST · %d종목'
                % (NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
-               '#판단 카드 — 코드가 원자료에서 계산했다. 이것만 보고 판단한다']
+               '#자료 카드 — 코드가 원자료에서 계산했다']
         for x in ctxs:
             if not x:
                 continue
@@ -1492,7 +1476,7 @@ def main(argv):
         print('#수집시간 %.1f초' % (time.time() - t0))
         sys.stdout.flush()
         os._exit(0)
-    head = ['#번들 kfilter %s · 수집 %s KST · %s · 이 출력이 자료의 전부다'
+    head = ['#번들 kfilter %s · 수집 %s KST · %s'
             % ('국장' if mode == 'kr' else '미장', NOW.strftime('%Y-%m-%d %H:%M:%S'), head_note)]
     if mode == 'kr' and deep and ctxs and ctxs[0]:
         try:
