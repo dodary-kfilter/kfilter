@@ -1442,42 +1442,60 @@ def market_news(fu):
 
 
 def overview_line(x, card):
-    """후보 개요 한 줄 — 자료 카드에서 이름·업종·가격·20일 등락·고점 대비·영업이익·PER·수급·컨센을 뽑는다"""
+    """후보 개요 한 줄 — 상세를 열지 않고도 한 줄 판단을 쓸 수 있게, 자료 카드에서 값만 뽑는다"""
     q = x.get('q') or {}
     get = lambda p: next((ln for ln in card if ln.startswith(p)), '')
+    put = lambda v: parts.append(v)
     parts = ['%s(%s)' % (x.get('name'), x.get('code'))]
     if q.get('wicsSectorName'):
-        parts.append(q['wicsSectorName'])
+        put(q['wicsSectorName'])
     b = get('기준:')
     m = re.search(r'현재가 ([\d,]+원\([^)]*\))', b)
     if m:
-        parts.append(m.group(1))
+        put(m.group(1))
     m = re.search(r'시총 ([\d,]+억)', b)
     if m:
-        parts.append('시총 ' + m.group(1))
-    m = re.search(r'20일 지수 (\S+) · 종목 (\S+)', get('시장 대비:'))
-    if m:
-        parts.append('20일 종목 %s·지수 %s' % (m.group(2), m.group(1)))
-    m = re.search(r'고점[^·]*?대비 (-?[\d.]+%)', get('가격 위치:'))
-    if m:
-        parts.append('고점 대비 ' + m.group(1))
-    m = re.search(r'영업이익 (-?[\d,]+억\([^)]*\))', get('실적('))
-    if m:
-        parts.append('영업이익 ' + m.group(1))
+        put('시총 ' + m.group(1))
+    fin = get('실적(')
+    rev = re.search(r'매출 (-?[\d,]+)억', fin)
+    op = re.search(r'영업이익 (-?[\d,]+)억', fin)
+    ni = re.search(r'순이익 (-?[\d,]+)억', fin)
+    if rev and op:
+        r, o = float(rev.group(1).replace(',', '')), float(op.group(1).replace(',', ''))
+        put('매출 %s억 · 영업이익 %s억%s%s' % (rev.group(1), op.group(1),
+                                        ('(%.1f%%)' % (o / r * 100)) if r else '',
+                                        (' · 순이익 %s억' % ni.group(1)) if ni else ''))
+    tr = re.findall(r'\d{4}\.\d{2} (-?[\d,]+)·(-?[\d,]+)·(-?[\d,]+)', get('분기 실적 추이'))
+    if len(tr) > 1:
+        put('영업이익 추이 ' + '·'.join(t[1] for t in reversed(tr)) + '억')   # 지난 분기부터 최근 분기 순
     v = get('밸류:')
     m = re.search(r'(?<!업종 )PER ([\d.]+배)', v)
+    ind = re.search(r'업종 PER ([\d.]+배)', v)
     if m:
-        parts.append('PER ' + m.group(1))
+        put('PER %s%s' % (m.group(1), '(업종 %s)' % ind.group(1) if ind else ''))
     elif '적자' in v:
-        parts.append('연환산 적자')
+        put('연환산 적자')
+    m = re.search(r'20일 지수 (\S+) · 종목 (\S+)', get('시장 대비:'))
+    if m:
+        put('20일 종목 %s·지수 %s' % (m.group(2), m.group(1)))
+    pos = get('가격 위치:')
+    m = re.search(r'고점[^·]*?대비 (-?[\d.]+%)', pos)
+    if m:
+        put('고점 대비 ' + m.group(1))
+    m = re.search(r'52주 최고·최저 사이 (\d+)% 지점', pos)
+    if m:
+        put('52주 위치 ' + m.group(1) + '%')
+    m = re.search(r'최근 20일 평균이 60일 평균의 ([\d.]+)배', get('거래량:'))
+    if m:
+        put('거래량 ' + m.group(1) + '배')
     sup = get('수급(20일):')[len('수급(20일): '):]
     if sup and sup != '확인 불가':
-        parts.append(sup)
+        put(sup)
     m = re.search(r'현재가 대비 ([-+][\d.]+%)', get('컨센:'))
     if m:
-        parts.append('컨센 목표가 ' + m.group(1))
+        put('컨센 목표가 ' + m.group(1))
     if get('경보:'):
-        parts.append(get('경보:'))
+        put(get('경보:'))
     return ' · '.join(parts)
 
 
