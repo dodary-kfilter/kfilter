@@ -569,7 +569,7 @@ def section_text(rcp, nd, k, rowf):
     return cap(t, k)
 
 
-def segment_text(items, k=700):
+def segment_text(items, k=400):
     """정기보고서의 '매출 및 수주상황' 절만 뽑는다 — 부문별 매출과 수주 잔고가 여기 있다"""
     rep = next((it for it in items if it.get('rcp') and re.search(r'사업보고서|반기보고서|분기보고서', it['title'])), None)
     if not rep:
