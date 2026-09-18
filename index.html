@@ -888,7 +888,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v35';
+const PROMPT_VER='v36';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function cmdKR(codes, flag){ return `curl -s ${BUNDLE_URL} | python3 - kr ${codes} ${flag}`; }
@@ -936,9 +936,9 @@ const RULE_BUNDLE_US = `[★자료 — 번들 한 번으로 끝낸다]
 ★가이던스 원문은 번들에 없다. 뉴스 제목과 컨센 리비전으로 읽고, 판단을 바꾸는 빈칸이면 무엇이 확인되면 판단이 바뀌는지를 쓴다.`;
 
 // ── 리포트 지시문 틀(v31) — 모든 경로가 이 틀 하나를 쓴다. 경로마다 다른 것은 대상 소개와 자료뿐이다 ──
-const DATA_KR = '위 명령은 종목의 사업 요약, 시세와 가격 위치, 수급, 분기 실적, 밸류, 컨센서스, 최근 공시와 뉴스 제목, 시장·금리·환율·유가와 시장 뉴스 제목을 정리해 보여 줍니다.';
+const DATA_KR = '위 명령은 종목의 사업 요약, 시세와 가격 위치, 수급, 분기 실적, 밸류, 컨센서스, 정기보고서의 부문별 매출과 수주, 최근 공시와 뉴스 제목, 시장·금리·환율·유가와 시장 뉴스 제목을 정리해 보여 줍니다.';
 const DATA_US = '위 명령은 종목의 시세와 가격 위치, 분기 재무와 연간 손익, 실적·컨센서스·목표가, 기관·공매도·내부자 거래, 최근 SEC 공시와 뉴스 제목, 미국 시장·금리·달러·환율·유가와 시장 뉴스 제목을 정리해 보여 줍니다.';
-const DATA_BATCH = '첫 번째 명령은 후보 전체의 개요를 종목마다 한 줄씩 보여 줍니다. 두 번째 명령은 종목코드 자리에 넣은 종목의 상세 자료를 보여 주고, 코드는 여러 개를 함께 넣을 수 있습니다. 상세 자료에는 사업 요약, 시세와 가격 위치, 수급, 분기 실적, 밸류, 컨센서스, 최근 공시와 뉴스 제목이 들어 있고, 두 명령 모두 시장·금리·환율·유가와 시장 뉴스 제목을 함께 보여 줍니다.';
+const DATA_BATCH = '첫 번째 명령은 후보 전체의 개요를 종목마다 한 줄씩 보여 줍니다. 두 번째 명령은 종목코드 자리에 넣은 종목의 상세 자료를 보여 주고, 코드는 여러 개를 함께 넣을 수 있습니다. 상세 자료에는 사업 요약, 시세와 가격 위치, 수급, 분기 실적, 밸류, 컨센서스, 정기보고서의 부문별 매출과 수주, 최근 공시와 뉴스 제목이 들어 있고, 두 명령 모두 시장·금리·환율·유가와 시장 뉴스 제목을 함께 보여 줍니다.';
 const UNIT = {
   stock: {cur:'현재가', exp:'예상 주가', expObj:'예상 주가를', buy:'매수 가격', buyObj:'매수 가격을', curRec:'현재가', expRec:'예상 주가', buyRec:'매수 가격'},
   index: {cur:'현재 지수', exp:'예상 지수', expObj:'예상 지수를', buy:'매수할 지수', buyObj:'매수할 지수를', curRec:'현재 지수 수준', expRec:'예상 지수', buyRec:'매수할 지수 수준'},
@@ -1170,7 +1170,7 @@ function buildPrompt(it){
     const members=ms.map(m=>txt(m.name)+'('+m.code+')').join(', ');
     return reportPrompt({kind:'macro', unit:'etn', subj:'이 섹터', title:`${it.basis} 섹터 — 구성종목은 ${members}입니다. 이 종목들을 묶어 섹터 단위로 분석하며, 개별 종목 리포트를 따로 쓰지 않습니다.`,
       note:'분석 대상은 구성종목을 묶은 섹터 자체입니다. 현재가와 예상 가격은 이 섹터를 따르는 ETN의 가격으로 적습니다.',
-      cmd:cmdKR([it.code, ...ms.map(m=>m.code)].join(' '),'--brief'), data:'위 명령은 이 섹터를 따르는 ETN의 가격 위치와 거래량, 구성종목 각각의 사업 요약·시세와 가격 위치·수급·분기 실적·밸류·컨센서스·최근 공시와 뉴스 제목, 시장·금리·환율·유가와 시장 뉴스 제목을 정리해 보여 줍니다.',
+      cmd:cmdKR([it.code, ...ms.map(m=>m.code)].join(' '),'--brief'), data:'위 명령은 이 섹터를 따르는 ETN의 가격 위치와 거래량, 구성종목 각각의 사업 요약·시세와 가격 위치·수급·분기 실적·밸류·컨센서스·부문별 매출과 수주·최근 공시와 뉴스 제목, 시장·금리·환율·유가와 시장 뉴스 제목을 정리해 보여 줍니다.',
       code:analCode, name:it.basis+' 섹터'});
   }
   // 동시수급 개별

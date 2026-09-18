@@ -569,6 +569,18 @@ def section_text(rcp, nd, k, rowf):
     return cap(t, k)
 
 
+def segment_text(items, k=700):
+    """정기보고서의 '매출 및 수주상황' 절만 뽑는다 — 부문별 매출과 수주 잔고가 여기 있다"""
+    rep = next((it for it in items if it.get('rcp') and re.search(r'사업보고서|반기보고서|분기보고서', it['title'])), None)
+    if not rep:
+        return None
+    hit = next((nd for nd in dart_nodes(rep['rcp']) if re.search(r'매출\s*및\s*수주|영업의\s*현황', nd.get('text', ''))), None)
+    if not hit:
+        return None
+    txt = section_text(rep['rcp'], hit, k, None)
+    return (rep['title'], re.sub(r'\s*\n\s*', ' ', txt).strip()) if txt else None
+
+
 def periodic(items):
     rep = next((it for it in items if it.get('rcp') and re.search(r'사업보고서|반기보고서|분기보고서', it['title'])), None)
     if not rep:
@@ -668,6 +680,8 @@ def kr_bundle(code, deep, brief=False, news=True):   # brief=자료 카드, news
     if deep and brief:                               # 자료 카드 — 공시 본문은 카드가 필요한 것만 본다
         ctx['brief'] = True
         ctx['news'] = wait(fg, '뉴스', []) if fg else []
+        if news:                                     # 개요는 받지 않는다 — 한 줄에 싣지 않는 자료다
+            ctx['seg'] = wait(EX.submit(segment_text, items), '정기보고서 매출·수주', None)
         return out, ctx
     if deep:
         docs = pick_docs(items)
@@ -1426,6 +1440,9 @@ def digest_card(x, mk, light=False):
     if not light:                                      # 개요는 공시 본문을 받지 않는다 — 한 줄에 싣지 않는 자료다
         ev = events(x.get('items') or [])
         out.append('최근 공시(45일): ' + (' | '.join(ev) if ev else '주요 공시 없음'))
+        seg = x.get('seg')
+        if seg:                                        # 부문별 매출·수주 — 특징 자리에서 쓰인다
+            out.append('사업부문·수주(%s 발췌): %s' % (seg[0], seg[1]))
         nw = x.get('news') or []
         if nw:                                         # 무슨 일이 있었는지 찾아볼 색인 — 제목만 싣는다
             out.append('최근 뉴스(14일): ' + ' | '.join(re.sub(r'^(\d\d-\d\d) \d\d:\d\d ', r'\1 ', n) for n in nw))

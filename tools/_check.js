@@ -27,9 +27,9 @@ const RULES=[
                    return t.includes('후보 전체의 개요') ? (n===2 && /--overview\n/.test(t) && t.includes('python3 - kr (종목코드) --brief')) : n===1; }],
  ['목적',       t=>t.includes('이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 하며, 판단을 빠르고 정확하게 받아 보려 합니다.') && t.includes('그 판단에서 나온 기대수익과 액션을 담습니다.') && t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.')],
  ['자료설명',   t=>t.includes('자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다.') && t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.')],
- ['자료대상',   t=>{ if(!t.includes('시장 뉴스 제목')) return false; if(t.includes('후보 전체의 개요')) return t.includes('상세 자료에는 사업 요약') && t.includes('최근 공시와 뉴스 제목');
+ ['자료대상',   t=>{ if(!t.includes('시장 뉴스 제목')) return false; if(t.includes('후보 전체의 개요')) return t.includes('상세 자료에는 사업 요약') && t.includes('부문별 매출과 수주') && t.includes('최근 공시와 뉴스 제목');
                    if(/이 (지수|섹터)에 대한/.test(t)) return /위 명령은 (코스피·코스닥 지수의|\S+ 지수를 따르는|이 섹터를 따르는 ETN)/.test(t);
-                   return /python3 - us /.test(t) ? t.includes('위 명령은 종목의 시세와 가격 위치, 분기 재무') : t.includes('위 명령은 종목의 사업 요약') && t.includes('최근 공시와 뉴스 제목'); }],
+                   return /python3 - us /.test(t) ? t.includes('위 명령은 종목의 시세와 가격 위치, 분기 재무') : t.includes('위 명령은 종목의 사업 요약') && t.includes('부문별 매출과 수주') && t.includes('최근 공시와 뉴스 제목'); }],
  ['시간',       t=>{ const s=['이 리포트는 5분 안에 완성되어야 합니다. 본문은 3,000자 안에서 씁니다.'];
                    const b=['이 리포트는 후보 수와 관계없이 10분 안에 완성되어야 합니다. 본문은 6,000자 안에서 씁니다.'];
                    return t.includes('후보 전체의 개요') ? (b.every(x=>t.includes(x)) && !t.includes('5분 안에')) : (s.every(x=>t.includes(x)) && !t.includes('10분 안에')); }],
