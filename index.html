@@ -890,6 +890,28 @@ ${RULE_BUDGET}
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
 const PROMPT_VER='v38';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
+// ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
+let verChecked=0, verStale=false;
+function checkVer(){
+  if(verStale) return;
+  const now=Date.now();
+  if(now-verChecked<30000) return;
+  verChecked=now;
+  fetch(location.pathname+'?vchk='+now,{cache:'no-store'})
+    .then(r=>r.ok?r.text():'')
+    .then(t=>{
+      const m=t.match(/const PROMPT_VER='(v\d+)'/);
+      if(!m||m[1]===PROMPT_VER) return;
+      verStale=true;
+      const e=document.getElementById('pver');
+      if(e){ e.textContent=PROMPT_VER+' → '+m[1]+' 새로고침 필요'; e.style.color='var(--red)'; }
+      document.querySelectorAll('.hdbtn.reload').forEach(b=>{ b.style.color='var(--red)'; b.style.borderColor='var(--red)'; b.style.background='rgba(239,83,80,.12)'; });
+    })
+    .catch(()=>{});
+}
+document.addEventListener('DOMContentLoaded',checkVer);
+window.addEventListener('pageshow',ev=>{ if(ev.persisted){ verChecked=0; checkVer(); } });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkVer(); });
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
 function cmdKR(codes, flag){ return `curl -s ${BUNDLE_URL} | python3 - kr ${codes} ${flag}`; }
 
