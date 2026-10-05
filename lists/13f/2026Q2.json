@@ -1,0 +1,9130 @@
+{
+ "quarter": "2026Q2",
+ "as_of": "2026-06-30",
+ "generated": "2026-09-24",
+ "tracked": 83,
+ "filed": 80,
+ "source": "Dataroma 슈퍼투자자 분기 거래 내역(m_activity.php)",
+ "rules": {
+  "count": "같은 행동을 한 슈퍼투자자 수",
+  "min_count": 2,
+  "top_n": 10,
+  "sort": "인원 내림차순, 동률이면 같은 방향 순매수(순매도) 큰 순",
+  "buy_sell": "buy=신규+확대 인원, sell=축소+청산 인원",
+  "exclude": "ETF, 분기 중 신규 상장(분사·IPO)"
+ },
+ "lists": {
+  "new": [
+   {
+    "ticker": "SPGI",
+    "name_ko": "S&P글로벌",
+    "name": "S&P Global Inc.",
+    "count": 5,
+    "buy": 9,
+    "sell": 4,
+    "price_0630": 407.26
+   },
+   {
+    "ticker": "GEV",
+    "name_ko": "GE버노바",
+    "name": "Ge Vernova Inc",
+    "count": 5,
+    "buy": 5,
+    "sell": 2,
+    "price_0630": 1174.86
+   },
+   {
+    "ticker": "VEEV",
+    "name_ko": "비바 시스템즈",
+    "name": "Veeva Systems Inc.",
+    "count": 4,
+    "buy": 5,
+    "sell": 1,
+    "price_0630": 177.47
+   },
+   {
+    "ticker": "NFLX",
+    "name_ko": "넷플릭스",
+    "name": "Netflix Inc.",
+    "count": 4,
+    "buy": 6,
+    "sell": 2,
+    "price_0630": 71.4
+   },
+   {
+    "ticker": "SE",
+    "name_ko": "씨",
+    "name": "Sea Ltd",
+    "count": 3,
+    "buy": 5,
+    "sell": 1,
+    "price_0630": 95.83
+   },
+   {
+    "ticker": "V",
+    "name_ko": "비자",
+    "name": "Visa Inc.",
+    "count": 3,
+    "buy": 14,
+    "sell": 10,
+    "price_0630": 343.09
+   },
+   {
+    "ticker": "APLD",
+    "name_ko": "어플라이드 디지털",
+    "name": "Applied Digital Corp",
+    "count": 3,
+    "buy": 3,
+    "sell": 0,
+    "price_0630": 37.3
+   },
+   {
+    "ticker": "CME",
+    "name_ko": "CME그룹",
+    "name": "CME Group",
+    "count": 3,
+    "buy": 4,
+    "sell": 2,
+    "price_0630": 220.83
+   },
+   {
+    "ticker": "LRCX",
+    "name_ko": "램리서치",
+    "name": "Lam Research",
+    "count": 3,
+    "buy": 3,
+    "sell": 2,
+    "price_0630": 433.33
+   },
+   {
+    "ticker": "META",
+    "name_ko": "메타",
+    "name": "Meta Platforms Inc.",
+    "count": 3,
+    "buy": 13,
+    "sell": 13,
+    "price_0630": 563.3
+   }
+  ],
+  "add": [
+   {
+    "ticker": "MSFT",
+    "name_ko": "마이크로소프트",
+    "name": "Microsoft Corp.",
+    "count": 16,
+    "buy": 18,
+    "sell": 18,
+    "price_0630": 373.02
+   },
+   {
+    "ticker": "V",
+    "name_ko": "비자",
+    "name": "Visa Inc.",
+    "count": 11,
+    "buy": 14,
+    "sell": 10,
+    "price_0630": 343.09
+   },
+   {
+    "ticker": "AMZN",
+    "name_ko": "아마존",
+    "name": "Amazon.com Inc.",
+    "count": 11,
+    "buy": 11,
+    "sell": 18,
+    "price_0630": 238.34
+   },
+   {
+    "ticker": "META",
+    "name_ko": "메타",
+    "name": "Meta Platforms Inc.",
+    "count": 10,
+    "buy": 13,
+    "sell": 13,
+    "price_0630": 563.3
+   },
+   {
+    "ticker": "BRK.B",
+    "name_ko": "버크셔 B",
+    "name": "Berkshire Hathaway CL B",
+    "count": 10,
+    "buy": 10,
+    "sell": 10,
+    "price_0630": 500.39
+   },
+   {
+    "ticker": "GOOG",
+    "name_ko": "알파벳 C",
+    "name": "Alphabet Inc. CL C",
+    "count": 9,
+    "buy": 9,
+    "sell": 16,
+    "price_0630": 353.33
+   },
+   {
+    "ticker": "TMO",
+    "name_ko": "써모피셔",
+    "name": "Thermo Fisher Scientific",
+    "count": 7,
+    "buy": 8,
+    "sell": 3,
+    "price_0630": 501.36
+   },
+   {
+    "ticker": "DIS",
+    "name_ko": "디즈니",
+    "name": "Walt Disney Co.",
+    "count": 7,
+    "buy": 8,
+    "sell": 9,
+    "price_0630": 96.25
+   },
+   {
+    "ticker": "DHR",
+    "name_ko": "다나허",
+    "name": "Danaher Corp.",
+    "count": 6,
+    "buy": 8,
+    "sell": 1,
+    "price_0630": 190.48
+   },
+   {
+    "ticker": "ADBE",
+    "name_ko": "어도비",
+    "name": "Adobe Inc.",
+    "count": 6,
+    "buy": 6,
+    "sell": 2,
+    "price_0630": 205.01
+   }
+  ],
+  "reduce": [
+   {
+    "ticker": "GOOGL",
+    "name_ko": "알파벳 A",
+    "name": "Alphabet Inc.",
+    "count": 19,
+    "buy": 4,
+    "sell": 23,
+    "price_0630": 357.37
+   },
+   {
+    "ticker": "AMZN",
+    "name_ko": "아마존",
+    "name": "Amazon.com Inc.",
+    "count": 18,
+    "buy": 11,
+    "sell": 18,
+    "price_0630": 238.34
+   },
+   {
+    "ticker": "GOOG",
+    "name_ko": "알파벳 C",
+    "name": "Alphabet Inc. CL C",
+    "count": 15,
+    "buy": 9,
+    "sell": 16,
+    "price_0630": 353.33
+   },
+   {
+    "ticker": "MSFT",
+    "name_ko": "마이크로소프트",
+    "name": "Microsoft Corp.",
+    "count": 15,
+    "buy": 18,
+    "sell": 18,
+    "price_0630": 373.02
+   },
+   {
+    "ticker": "META",
+    "name_ko": "메타",
+    "name": "Meta Platforms Inc.",
+    "count": 12,
+    "buy": 13,
+    "sell": 13,
+    "price_0630": 563.3
+   },
+   {
+    "ticker": "AAPL",
+    "name_ko": "애플",
+    "name": "Apple Inc.",
+    "count": 11,
+    "buy": 2,
+    "sell": 13,
+    "price_0630": 289.36
+   },
+   {
+    "ticker": "TSM",
+    "name_ko": "TSMC",
+    "name": "Taiwan Semiconductor S.A.",
+    "count": 10,
+    "buy": 7,
+    "sell": 11,
+    "price_0630": 477.55
+   },
+   {
+    "ticker": "BRK.B",
+    "name_ko": "버크셔 B",
+    "name": "Berkshire Hathaway CL B",
+    "count": 10,
+    "buy": 10,
+    "sell": 10,
+    "price_0630": 500.39
+   },
+   {
+    "ticker": "V",
+    "name_ko": "비자",
+    "name": "Visa Inc.",
+    "count": 10,
+    "buy": 14,
+    "sell": 10,
+    "price_0630": 343.09
+   },
+   {
+    "ticker": "TXN",
+    "name_ko": "텍사스인스트루먼트",
+    "name": "Texas Instruments",
+    "count": 9,
+    "buy": 1,
+    "sell": 9,
+    "price_0630": 298.07
+   }
+  ],
+  "exit": [
+   {
+    "ticker": "GOOGL",
+    "name_ko": "알파벳 A",
+    "name": "Alphabet Inc.",
+    "count": 4,
+    "buy": 4,
+    "sell": 23,
+    "price_0630": 357.37
+   },
+   {
+    "ticker": "UNH",
+    "name_ko": "유나이티드헬스",
+    "name": "United Health Group Inc.",
+    "count": 3,
+    "buy": 7,
+    "sell": 10,
+    "price_0630": 415.63
+   },
+   {
+    "ticker": "MSFT",
+    "name_ko": "마이크로소프트",
+    "name": "Microsoft Corp.",
+    "count": 3,
+    "buy": 18,
+    "sell": 18,
+    "price_0630": 373.02
+   },
+   {
+    "ticker": "AAPL",
+    "name_ko": "애플",
+    "name": "Apple Inc.",
+    "count": 2,
+    "buy": 2,
+    "sell": 13,
+    "price_0630": 289.36
+   },
+   {
+    "ticker": "BAC",
+    "name_ko": "뱅크오브아메리카",
+    "name": "Bank of America Corp.",
+    "count": 2,
+    "buy": 2,
+    "sell": 10,
+    "price_0630": 56.98
+   },
+   {
+    "ticker": "NVDA",
+    "name_ko": "엔비디아",
+    "name": "NVIDIA Corp.",
+    "count": 2,
+    "buy": 5,
+    "sell": 11,
+    "price_0630": 200.09
+   },
+   {
+    "ticker": "RTX",
+    "name_ko": "RTX",
+    "name": "RTX Corp.",
+    "count": 2,
+    "buy": 1,
+    "sell": 6,
+    "price_0630": 189.73
+   },
+   {
+    "ticker": "FDX",
+    "name_ko": "페덱스",
+    "name": "FedEx Corp.",
+    "count": 2,
+    "buy": 1,
+    "sell": 6,
+    "price_0630": 313.13
+   },
+   {
+    "ticker": "GE",
+    "name_ko": "GE에어로스페이스",
+    "name": "GE Aerospace",
+    "count": 2,
+    "buy": 2,
+    "sell": 5,
+    "price_0630": 373.73
+   },
+   {
+    "ticker": "TSLA",
+    "name_ko": "테슬라",
+    "name": "Tesla Inc.",
+    "count": 2,
+    "buy": 2,
+    "sell": 5,
+    "price_0630": 420.6
+   }
+  ]
+ },
+ "consensus": {
+  "buy_tilt": [
+   {
+    "ticker": "DHR",
+    "name_ko": "다나허",
+    "buy": 8,
+    "sell": 1
+   },
+   {
+    "ticker": "VEEV",
+    "name_ko": "비바 시스템즈",
+    "buy": 5,
+    "sell": 1
+   },
+   {
+    "ticker": "SE",
+    "name_ko": "씨",
+    "buy": 5,
+    "sell": 1
+   },
+   {
+    "ticker": "APLD",
+    "name_ko": "어플라이드 디지털",
+    "buy": 3,
+    "sell": 0
+   },
+   {
+    "ticker": "ADBE",
+    "name_ko": "어도비",
+    "buy": 6,
+    "sell": 2
+   },
+   {
+    "ticker": "NFLX",
+    "name_ko": "넷플릭스",
+    "buy": 6,
+    "sell": 2
+   },
+   {
+    "ticker": "TMO",
+    "name_ko": "써모피셔",
+    "buy": 8,
+    "sell": 3
+   },
+   {
+    "ticker": "SPGI",
+    "name_ko": "S&P글로벌",
+    "buy": 9,
+    "sell": 4
+   }
+  ],
+  "sell_tilt": [
+   {
+    "ticker": "GOOGL",
+    "name_ko": "알파벳 A",
+    "buy": 4,
+    "sell": 23
+   },
+   {
+    "ticker": "AAPL",
+    "name_ko": "애플",
+    "buy": 2,
+    "sell": 13
+   },
+   {
+    "ticker": "TXN",
+    "name_ko": "텍사스인스트루먼트",
+    "buy": 1,
+    "sell": 9
+   },
+   {
+    "ticker": "BAC",
+    "name_ko": "뱅크오브아메리카",
+    "buy": 2,
+    "sell": 10
+   },
+   {
+    "ticker": "JPM",
+    "name_ko": "JP모건",
+    "buy": 3,
+    "sell": 10
+   },
+   {
+    "ticker": "NVDA",
+    "name_ko": "엔비디아",
+    "buy": 5,
+    "sell": 11
+   },
+   {
+    "ticker": "GLW",
+    "name_ko": "코닝",
+    "buy": 0,
+    "sell": 3
+   }
+  ],
+  "split": [
+   {
+    "ticker": "MSFT",
+    "name_ko": "마이크로소프트",
+    "buy": 18,
+    "sell": 18
+   },
+   {
+    "ticker": "META",
+    "name_ko": "메타",
+    "buy": 13,
+    "sell": 13
+   },
+   {
+    "ticker": "BRK.B",
+    "name_ko": "버크셔 B",
+    "buy": 10,
+    "sell": 10
+   },
+   {
+    "ticker": "V",
+    "name_ko": "비자",
+    "buy": 14,
+    "sell": 10
+   },
+   {
+    "ticker": "DIS",
+    "name_ko": "디즈니",
+    "buy": 8,
+    "sell": 9
+   }
+  ]
+ },
+ "excluded": [
+  {
+   "ticker": "SPY",
+   "reason": "ETF"
+  },
+  {
+   "ticker": "GLD",
+   "reason": "ETF"
+  },
+  {
+   "ticker": "FDXF",
+   "reason": "2026-05-27 분사 상장(페덱스 프레이트) — 기계적 편입"
+  },
+  {
+   "ticker": "SPCX",
+   "reason": "2026-06-12 신규 상장(스페이스X) — 기계적 편입"
+  },
+  {
+   "ticker": "DPC",
+   "reason": "2026-06-25 신규 상장(DPC 홀딩스) — 기계적 편입"
+  }
+ ],
+ "counts_all": {
+  "A": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AAL": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AAOI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AAON": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AAP": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AAPL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 11,
+   "exit": 2
+  },
+  "ABBV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 4,
+   "exit": 0
+  },
+  "ABG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ABM": {
+   "new": 0,
+   "add": 4,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ABNB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "ABR": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ABT": {
+   "new": 2,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ABVX": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ACGL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ACHC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "ACI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ACMR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ACN": {
+   "new": 3,
+   "add": 1,
+   "reduce": 5,
+   "exit": 0
+  },
+  "ACWX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ADBE": {
+   "new": 0,
+   "add": 6,
+   "reduce": 1,
+   "exit": 1
+  },
+  "ADEA": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ADI": {
+   "new": 2,
+   "add": 0,
+   "reduce": 6,
+   "exit": 0
+  },
+  "ADNT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ADP": {
+   "new": 0,
+   "add": 4,
+   "reduce": 2,
+   "exit": 0
+  },
+  "ADSK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ADT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AEBI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AEIS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AEM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AEP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "AER": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "AESI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "AFL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AFRM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AGCO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "AGL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AGX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AIG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "AIIR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AIR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AIRJ": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AIT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AJG": {
+   "new": 2,
+   "add": 2,
+   "reduce": 2,
+   "exit": 1
+  },
+  "AKAM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AKBLF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AKTS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALAB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALC": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ALG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALGN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ALK": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALLY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "ALNY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALRS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALSN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ALV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ALVO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMAT": {
+   "new": 2,
+   "add": 0,
+   "reduce": 4,
+   "exit": 0
+  },
+  "AMBA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AMD": {
+   "new": 2,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AME": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMGN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 1
+  },
+  "AMH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMKR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AMN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AMP": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AMPX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AMPY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMRZ": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AMRZ.SW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "AMT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "AMTM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AMZN": {
+   "new": 0,
+   "add": 11,
+   "reduce": 18,
+   "exit": 0
+  },
+  "AN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ANET": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ANGI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AON": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 1
+  },
+  "APA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "APD": {
+   "new": 0,
+   "add": 5,
+   "reduce": 2,
+   "exit": 0
+  },
+  "APG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "APH": {
+   "new": 2,
+   "add": 2,
+   "reduce": 1,
+   "exit": 1
+  },
+  "APLD": {
+   "new": 3,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "APO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "APP": {
+   "new": 1,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "APTV": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ARCO": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ARES": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ARLO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ARLP": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ARM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ARMK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ARTV": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ARW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ASB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ASGN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ASH": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ASML": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "ASPI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ASR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ASTE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ASX": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ATAT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ATEC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ATI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "AUR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AVB-OLD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AVBH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AVGO": {
+   "new": 2,
+   "add": 4,
+   "reduce": 5,
+   "exit": 1
+  },
+  "AVT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AVTR": {
+   "new": 0,
+   "add": 5,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AWI": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AWK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AXP": {
+   "new": 1,
+   "add": 0,
+   "reduce": 7,
+   "exit": 0
+  },
+  "AXS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AXSM": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AXTA": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AXTI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AYI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AZN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AZO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AZUL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AZZ": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "B": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BA": {
+   "new": 1,
+   "add": 3,
+   "reduce": 2,
+   "exit": 1
+  },
+  "BABA": {
+   "new": 1,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "BAC": {
+   "new": 1,
+   "add": 1,
+   "reduce": 8,
+   "exit": 2
+  },
+  "BAH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BALL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BAM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BAP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BATRA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BATRK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BAX": {
+   "new": 0,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "BAYRY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BBIO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BBW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BBY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BCC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BCE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BCO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BCS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BDC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BDX": {
+   "new": 1,
+   "add": 3,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BEKE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BF.A": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BF.B": {
+   "new": 1,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "BFAM": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BFH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "BFLY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BGC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BH.A": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BIDU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BIIB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "BIL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BIO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "BIRK": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BKD": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BKH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BKLN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BKNG": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 2
+  },
+  "BKV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BLCO": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BLDR": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BLK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BLLN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BLMN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BLSH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BLTE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BMI": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BMRN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BMY": {
+   "new": 0,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "BN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 5,
+   "exit": 0
+  },
+  "BNS": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BNTX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BNY": {
+   "new": 1,
+   "add": 0,
+   "reduce": 5,
+   "exit": 0
+  },
+  "BOKF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BP": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BRBR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BRC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BRK.A": {
+   "new": 0,
+   "add": 2,
+   "reduce": 5,
+   "exit": 0
+  },
+  "BRK.B": {
+   "new": 0,
+   "add": 10,
+   "reduce": 10,
+   "exit": 0
+  },
+  "BRKR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BRO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BRX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BRZE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BSM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BSX": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BSY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BTAIQ": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BTDR": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BTE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BTI": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BTSG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BUD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BUDFF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BWA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BWLP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BWX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "BWXT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BXP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "BYD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BZH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "C": {
+   "new": 0,
+   "add": 0,
+   "reduce": 5,
+   "exit": 0
+  },
+  "CABJF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CACC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CAG": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CAKE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CALY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CAMT": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CARR": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CART": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CASY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CAT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CB": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CBL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CBOE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CBRE": {
+   "new": 0,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "CBRS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CBT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CCC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CCJ": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CCK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CCL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CCXI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CDLX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CDNL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CDNS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CDP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CDW": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 2
+  },
+  "CE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CEF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CEG": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CENX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CFG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CFRHF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CG": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CGAU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CGNX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CHCT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CHD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CHKP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CHRD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CHTR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CHYM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CI": {
+   "new": 0,
+   "add": 4,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CIB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CIEN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CIFR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CIGI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CLB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CLH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CLS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CLVT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CLW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CLX": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CMCO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CMCSA": {
+   "new": 1,
+   "add": 6,
+   "reduce": 3,
+   "exit": 1
+  },
+  "CME": {
+   "new": 3,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CMI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CMPR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CNA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CNC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CNDT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CNH": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CNI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CNO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CNP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CNQ": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CNR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CNS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CNX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CNXC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "COF": {
+   "new": 2,
+   "add": 6,
+   "reduce": 5,
+   "exit": 2
+  },
+  "COHR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "COIN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "COLB": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "COLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "COLL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "COMP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CON": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "COO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "COP": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 1
+  },
+  "CORN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CORZ": {
+   "new": 2,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "COST": {
+   "new": 0,
+   "add": 0,
+   "reduce": 4,
+   "exit": 0
+  },
+  "COTY": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 4,
+   "exit": 0
+  },
+  "CPA": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CPAC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CPAY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CPB": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CPNG": {
+   "new": 0,
+   "add": 5,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CPRI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CPRT": {
+   "new": 0,
+   "add": 2,
+   "reduce": 4,
+   "exit": 0
+  },
+  "CPRX-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CPT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CRAI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CRBG": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CRDO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "CRGY": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CRH": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CRK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CRL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CRM": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 1
+  },
+  "CRMT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CROX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "CRS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "CRWD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CRWV": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CSCO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 3,
+   "exit": 1
+  },
+  "CSGP": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 2
+  },
+  "CSL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CSX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "CTAS": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CTEV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "CTO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CTRA-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "CTRN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CTSH": {
+   "new": 1,
+   "add": 3,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CTVA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "CUBE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CUZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CVLG": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CVNA": {
+   "new": 0,
+   "add": 4,
+   "reduce": 3,
+   "exit": 0
+  },
+  "CVS": {
+   "new": 1,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "CVSA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CVX": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 2
+  },
+  "CW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CWK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CYD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "CYRX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DAL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "DAR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DASH": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DB": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 1
+  },
+  "DCGO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "DCH": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DCI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DECK": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DEI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DELL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "DEO": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "DG": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 1
+  },
+  "DGX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "DHI": {
+   "new": 1,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "DHR": {
+   "new": 2,
+   "add": 6,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DHT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DIA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DINO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DIS": {
+   "new": 1,
+   "add": 7,
+   "reduce": 7,
+   "exit": 2
+  },
+  "DKS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DLG.MI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DLO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DLR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DLTR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DMAC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DNOW": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DNTH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DOC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DOCN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DOCS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DOLE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "DORM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DOV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DOX": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DPC": {
+   "new": 3,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DPZ": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DRH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DRTS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DSX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DTE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "DVA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DVDCF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DVN": {
+   "new": 1,
+   "add": 4,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EA-OLD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EAF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EBAY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "EBC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ECG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ECL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ECPG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ECVT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "EDU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EEM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EFA": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EFX": {
+   "new": 2,
+   "add": 2,
+   "reduce": 4,
+   "exit": 1
+  },
+  "EG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "EGO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EGP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EHC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ELV": {
+   "new": 1,
+   "add": 4,
+   "reduce": 4,
+   "exit": 1
+  },
+  "EMBC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EMBJ": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EME": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EMR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "EMXC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ENSG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ENTG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "EOG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EPAM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EPD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "EQH": {
+   "new": 1,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EQIX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EQNR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EQPT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "EQT": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EQX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ERFSF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ERO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EROC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ESAB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ESGD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ESI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ESRT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ESS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ET": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ETON": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ETOR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "EVC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EVLV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EVTC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "EWT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EWY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EXP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EXPE": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EXR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "EXTR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "EYE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FAF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "FANG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FAST": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "FBIN": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FBTC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FCN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FCNCA": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FCX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FDS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FDX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 4,
+   "exit": 2
+  },
+  "FDXF": {
+   "new": 5,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FER": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FERG": {
+   "new": 0,
+   "add": 5,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FFIV": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FIBK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "FICO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 6,
+   "exit": 0
+  },
+  "FIG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "FIGR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "FINV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FIS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FISV": {
+   "new": 0,
+   "add": 4,
+   "reduce": 5,
+   "exit": 1
+  },
+  "FITB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FIVE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FIVN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FIX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FLCA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FLEX": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "FLG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FLOC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FLR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FLS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FLUT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "FLYW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FMC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FMS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FND": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FNDE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FNDF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FNF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FNV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "FORM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FOSL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FOUR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FOX": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FOXA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FPAG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FPAS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FPH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FPS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FRDM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "FRFHF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FRMI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FROG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FRPT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FRVO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FSLR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FSM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FSV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FTK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FTNT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FTV": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "FUL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FULT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FUTU": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "FWONA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "FWONK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 1
+  },
+  "G": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "GCMG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GCO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GDS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GDXJ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GE": {
+   "new": 1,
+   "add": 1,
+   "reduce": 3,
+   "exit": 2
+  },
+  "GEHC": {
+   "new": 1,
+   "add": 4,
+   "reduce": 2,
+   "exit": 0
+  },
+  "GENI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GEV": {
+   "new": 5,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "GFI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GFL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GGG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GHC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GIII": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GILD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GIS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GKOS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GLBAV-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "GLBE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GLD": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 2
+  },
+  "GLDM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GLIBK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GLOB": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GLPI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GLW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 2
+  },
+  "GM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 4,
+   "exit": 0
+  },
+  "GNE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GNRC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 1
+  },
+  "GNTX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "GOLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "GOOG": {
+   "new": 0,
+   "add": 9,
+   "reduce": 15,
+   "exit": 1
+  },
+  "GOOGL": {
+   "new": 0,
+   "add": 4,
+   "reduce": 19,
+   "exit": 4
+  },
+  "GPC": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GPGI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GPI": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GPK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GPN": {
+   "new": 1,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GRBK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "GSHD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GSK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "GT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GTES": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GTN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GTX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "GWRE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GWW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "GXO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HAE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HAFN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HALO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HAS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HCA": {
+   "new": 0,
+   "add": 3,
+   "reduce": 1,
+   "exit": 1
+  },
+  "HCC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "HCI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "HD": {
+   "new": 2,
+   "add": 3,
+   "reduce": 4,
+   "exit": 1
+  },
+  "HDB": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 1
+  },
+  "HEI.A": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "HGV": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HHH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HKHGF": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HKHHF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HLI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HLN": {
+   "new": 0,
+   "add": 3,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HLT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "HOFT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HOG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HON": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "HONA": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HPE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HPP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HPQ": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HRB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "HRI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HRL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "HSBC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HSIC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "HSPT-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "HSTM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HSY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HTHT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "HTLD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HTZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HUN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HURN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "HUT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "HVT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HWKN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HWM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "HYBB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IAG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IBIT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "IBKR": {
+   "new": 1,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "IBM": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IBN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IBP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ICE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 4,
+   "exit": 0
+  },
+  "ICFI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ICLR": {
+   "new": 0,
+   "add": 5,
+   "reduce": 1,
+   "exit": 1
+  },
+  "IDA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IDCC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IDT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IDXX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IEMG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IEP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IEX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IFF": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IGOV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "IIIV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IJH": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IJK": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IJR": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ILLUU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ILMN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "INBX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "INCY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "INDA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INDV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "INFQ": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ING": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INGR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INSM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INTC": {
+   "new": 2,
+   "add": 3,
+   "reduce": 1,
+   "exit": 0
+  },
+  "INTR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INTT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "INTU": {
+   "new": 1,
+   "add": 4,
+   "reduce": 2,
+   "exit": 1
+  },
+  "IONS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IPI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IQV": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 1
+  },
+  "IR": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ISRG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ITB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ITRN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "ITUB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ITW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "IVV": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 1
+  },
+  "IVZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IWD": {
+   "new": 2,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "IWF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "IWM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "IWN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IWO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IWP": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "IWR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "IWS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "J": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JAN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JAZZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JBL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JBLU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JBS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JBTM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JCI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "JD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 3,
+   "exit": 1
+  },
+  "JEF": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JELD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JGRW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JHG-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JHX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JJSF": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JKHY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JLL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 3,
+   "exit": 0
+  },
+  "JNJ": {
+   "new": 1,
+   "add": 1,
+   "reduce": 4,
+   "exit": 0
+  },
+  "JOBY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JOE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "JPM": {
+   "new": 0,
+   "add": 3,
+   "reduce": 9,
+   "exit": 1
+  },
+  "JXN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KALU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KARO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KDP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KEX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KEYS": {
+   "new": 2,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "KFY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KGC": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KGS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KHC": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "KKR": {
+   "new": 2,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "KLAC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "KLAR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "KMB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KMI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "KMROF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KMX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "KN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KNSL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KO": {
+   "new": 0,
+   "add": 4,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KOF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "KPLTW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "KR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "KRYS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KSA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KSPI": {
+   "new": 2,
+   "add": 3,
+   "reduce": 2,
+   "exit": 0
+  },
+  "KT": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KVUE": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KW-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "KWEB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "KWR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "KZIA": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "L": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LAD": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 1
+  },
+  "LAMR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LASR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LAUR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LAZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LBRDA-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "LBRDK-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "LBRT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LBTYA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LBTYK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LDOS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LEA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "LEGH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LEN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LEN.B": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LESL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LEVI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LFUS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "LH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "LHX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "LII": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LILAK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LIN": {
+   "new": 1,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "LIND": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LITE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "LKQ": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LLY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "LLYVA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LLYVK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LMT": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LNC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LOCO": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LOGI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LOW": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LPG": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LPLA": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 1
+  },
+  "LPTH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LRCX": {
+   "new": 3,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "LRN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LSCC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LTH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LULU": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "LUMN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "LUV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LYB": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "LYFT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "LYV": {
+   "new": 0,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "LZAGY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "M": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MA": {
+   "new": 2,
+   "add": 5,
+   "reduce": 7,
+   "exit": 1
+  },
+  "MAA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MAIR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MAMA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MANE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MANH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MANU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MAR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MAS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MAT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MATW": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MAVF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MBC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "MBI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MBUU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MCD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 1
+  },
+  "MCHP": {
+   "new": 2,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MCK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MCO": {
+   "new": 1,
+   "add": 1,
+   "reduce": 5,
+   "exit": 1
+  },
+  "MDB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MDLN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MDLZ": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MDT": {
+   "new": 0,
+   "add": 5,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MDY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MEC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MEDP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "MELI": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MET": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "META": {
+   "new": 3,
+   "add": 10,
+   "reduce": 12,
+   "exit": 1
+  },
+  "MFC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MGA": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MGEE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MGM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MGNI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MGPI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MHK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "MICC": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MIDD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MINN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MIR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MIRM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MITK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MKC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MKL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 3,
+   "exit": 0
+  },
+  "MKTX": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MLCO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MLI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MLKN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MLM": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MMI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MMM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MMS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MMSI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MMYT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MNST": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MOAT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MOD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MOH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MOS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MPLX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MPWR": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MRK": {
+   "new": 0,
+   "add": 2,
+   "reduce": 4,
+   "exit": 0
+  },
+  "MRKR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "MRP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MRSH": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 2
+  },
+  "MRVI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MRVL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "MS": {
+   "new": 2,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MSA": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MSCI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "MSFT": {
+   "new": 2,
+   "add": 16,
+   "reduce": 15,
+   "exit": 3
+  },
+  "MSGE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MSGS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MSI": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MSTR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MTB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "MTD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "MTDR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MTH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MTN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MTSI": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MTZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 1
+  },
+  "MU": {
+   "new": 2,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "MUR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "MXL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "MYRG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NAMS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NATL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NBIX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NBR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NCLH": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NDAQ": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NDSN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "NEE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NEM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NESR": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NFG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NFLX": {
+   "new": 4,
+   "add": 2,
+   "reduce": 1,
+   "exit": 1
+  },
+  "NGG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NICE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NKE": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NLR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NMIH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NNBR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NOAH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NOC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NOG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NOK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "NOMD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NOV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NOVT": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NOW": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NPKI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NRG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "NSC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NSRGY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NSSC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NTAP": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NTB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NTES": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NTGR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NTNX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NTR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NTRA": {
+   "new": 1,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NTRS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NTSK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "NU": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NUE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NVDA": {
+   "new": 1,
+   "add": 4,
+   "reduce": 9,
+   "exit": 2
+  },
+  "NVMI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NVO": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 1
+  },
+  "NVR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "NVS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NVST": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "NVT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "NWG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NWL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NWSA": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NXPI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "NXT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "NYT": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "O": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "OCSL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ODFL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 2
+  },
+  "OEC": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OGC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OGN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OGS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OKE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OKTA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OLN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OMC": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OMF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "ON": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ONB": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ONEW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ONON": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ONTO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OPCH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OPI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OPTU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ORCL": {
+   "new": 2,
+   "add": 0,
+   "reduce": 6,
+   "exit": 0
+  },
+  "ORIC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ORKA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ORLA-OLD": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ORLY": {
+   "new": 1,
+   "add": 0,
+   "reduce": 3,
+   "exit": 1
+  },
+  "OSCR": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OSG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OSIS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OSK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OSW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OTEX": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OTIS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "OUT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "OVV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "OXY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "OZK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PAGS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PANW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PARR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PATK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PAX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PAYC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PAYP": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PAYX": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PBH": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PBR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PBR.A": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PCG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PCOR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "PCVX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PDD": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 2
+  },
+  "PDRDF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PEG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PENG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PENN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PEP": {
+   "new": 0,
+   "add": 5,
+   "reduce": 3,
+   "exit": 0
+  },
+  "PFE": {
+   "new": 1,
+   "add": 5,
+   "reduce": 3,
+   "exit": 0
+  },
+  "PFGC": {
+   "new": 2,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PG": {
+   "new": 0,
+   "add": 3,
+   "reduce": 5,
+   "exit": 0
+  },
+  "PGEN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PGR": {
+   "new": 0,
+   "add": 4,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PHG": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PHIN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PHM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "PHYS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PINS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PIPR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PKG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PLAY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PLD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "PLGO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PLTR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PLXS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PM": {
+   "new": 0,
+   "add": 2,
+   "reduce": 3,
+   "exit": 0
+  },
+  "PNC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 1
+  },
+  "PNR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PONY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PPG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PPL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PPLI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "PR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PRA-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PRDO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PRG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PRGO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PRI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PRM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PRMB": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PROF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PRSU": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PRTH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PRVA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PSA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PSKY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PSUS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PSX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "PTCT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PTEN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PTLO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PTON": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "PUK": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PUMP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PURR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PVH": {
+   "new": 1,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PWP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PXED": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "PYPL": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "Q": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "QCOM": {
+   "new": 1,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "QLYS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "QMCO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "QNT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "QQQ": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "QQQM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "QRVO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "QSR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "QTRX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "QUAD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "QURE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "QXO": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RACE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RAL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "RBC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RBLX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "RCI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RCKT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RCL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RDDT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RDNT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "REAL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "REG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "REGN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "REI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RELX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "REPX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RES": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "REXR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "REYN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "REZI": {
+   "new": 0,
+   "add": 4,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RF": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RFL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RGA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RGEN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RGLD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RHI": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RIG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RIOT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RJF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RKLB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RKT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "RLI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RMD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RMNI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RNG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RNR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "ROG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ROIV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ROL": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ROP": {
+   "new": 1,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ROST": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "RPRX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "RRBI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RRX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RSP": {
+   "new": 2,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "RTX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 4,
+   "exit": 2
+  },
+  "RUSHA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RUSHB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "RVI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "RXO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RXT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RYAAY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RYAN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RYN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SAM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SAP": {
+   "new": 2,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SARO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SBAC": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SBUX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SCCO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SCHC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SCHD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SCHG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SCHW": {
+   "new": 0,
+   "add": 6,
+   "reduce": 3,
+   "exit": 0
+  },
+  "SCSC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SCWO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SD": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SDHC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SDRL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SDY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SE": {
+   "new": 3,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SEB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SEDG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SEE-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SEG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SEI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SFM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SFNC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SGI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SGOV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SGRY": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SHAZ": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SHC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SHEN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SHO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SHOE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SHOP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SHW": {
+   "new": 0,
+   "add": 4,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SIRI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SITE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SJM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SKY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SKYX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SLB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "SLM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "SLP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SLV": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SMBK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SMFG": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SMG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 2
+  },
+  "SMH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SMIN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SMPL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SMTC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 1
+  },
+  "SNA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SNDK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SNDX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SNEX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SNN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SNOW": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SNPS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SNX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "SNY": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SOFI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SOLV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SONO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SPB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SPCX": {
+   "new": 5,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SPG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SPGI": {
+   "new": 5,
+   "add": 4,
+   "reduce": 3,
+   "exit": 1
+  },
+  "SPHR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SPOT": {
+   "new": 1,
+   "add": 1,
+   "reduce": 2,
+   "exit": 1
+  },
+  "SPSM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SPUU": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SPY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 2
+  },
+  "SPYM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "SPYX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SRRK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SSD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SSNC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ST": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "STE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "STKL-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "STLA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 2
+  },
+  "STN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "STRL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "STT": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "STVN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "STX": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "STZ": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 2
+  },
+  "SU": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SUI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SUN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SUNB": {
+   "new": 1,
+   "add": 3,
+   "reduce": 5,
+   "exit": 0
+  },
+  "SVC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "SWIM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SWK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SWKS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SYF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "SYK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "SYY": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "T": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TAC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TAGS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TAK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TAL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TALO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TAP": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TBI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TCHP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TCOM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TD": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TDAY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TDG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 3,
+   "exit": 0
+  },
+  "TDS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TDW": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TDY": {
+   "new": 0,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TECH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 4,
+   "exit": 0
+  },
+  "TECK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TEL": {
+   "new": 1,
+   "add": 3,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TEM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TEO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TER": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TEVA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "TEX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TFC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "TFX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "TGT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "THC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "THO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TIGO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TJX": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TKO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TKR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TLN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "TME": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TMHC-OLD": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TMO": {
+   "new": 1,
+   "add": 7,
+   "reduce": 2,
+   "exit": 1
+  },
+  "TMUS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TNC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TOL": {
+   "new": 1,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TOST": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TPB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TPC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TPG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TPH-OLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TREX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TRGP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TRIP": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TRMD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "TRNO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TROW": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TRU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TRUP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TRV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TRVI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TSCO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "TSHA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TSLA": {
+   "new": 1,
+   "add": 1,
+   "reduce": 3,
+   "exit": 2
+  },
+  "TSM": {
+   "new": 1,
+   "add": 6,
+   "reduce": 10,
+   "exit": 1
+  },
+  "TSN": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 1
+  },
+  "TTC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "TTE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "TTMI": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TTWO": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TVTX": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TW": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "TWFG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TWLO": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "TWST": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "TX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TXN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 9,
+   "exit": 0
+  },
+  "UAA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UAL": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "UBER": {
+   "new": 1,
+   "add": 4,
+   "reduce": 3,
+   "exit": 1
+  },
+  "UBS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "UFPI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UHAL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UHAL.B": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "UHS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UL": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ULS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "UNF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "UNFI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "UNH": {
+   "new": 2,
+   "add": 5,
+   "reduce": 7,
+   "exit": 3
+  },
+  "UNM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "UNP": {
+   "new": 1,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "UPBD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UPS": {
+   "new": 1,
+   "add": 3,
+   "reduce": 1,
+   "exit": 0
+  },
+  "URA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "URBN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "URGN": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "URI": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "USB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 4,
+   "exit": 0
+  },
+  "USFD": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "USMV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "USNA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UTZ": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "UVSP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "UVV": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "V": {
+   "new": 3,
+   "add": 11,
+   "reduce": 10,
+   "exit": 0
+  },
+  "VAC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VAL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VALE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VBIL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VBR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VEA": {
+   "new": 1,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VECO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VEEV": {
+   "new": 4,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VELO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VEU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VFC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VGNT": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VGT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VHT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VICI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VICR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VIG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VIGI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VIST": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VLO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VLTO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VMC": {
+   "new": 2,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "VMRK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VNO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VNT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VONG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VOO": {
+   "new": 2,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VOYA": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VPG": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VREX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VRSK": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VRSN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VRT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VRTX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VSAT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VSEC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VSNT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VSS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VST": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 1
+  },
+  "VSTM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VSXY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "VT": {
+   "new": 1,
+   "add": 3,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VTI": {
+   "new": 0,
+   "add": 3,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VTOL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VTR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VTRS": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VTS": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VTV": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VUG": {
+   "new": 1,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "VV": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VWO": {
+   "new": 0,
+   "add": 2,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VXUS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VYM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "VYMI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VYX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "VZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 1
+  },
+  "W": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WAB": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WAL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WAT": {
+   "new": 0,
+   "add": 3,
+   "reduce": 3,
+   "exit": 0
+  },
+  "WB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WBD": {
+   "new": 2,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WBS-OLD": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WCC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 3,
+   "exit": 0
+  },
+  "WDAY": {
+   "new": 1,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WEAT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WEN": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WEX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WFC": {
+   "new": 0,
+   "add": 5,
+   "reduce": 5,
+   "exit": 1
+  },
+  "WFRD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "WGO": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WHK": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WHR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WIT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WLFC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 2,
+   "exit": 0
+  },
+  "WMB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WMG": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WMT": {
+   "new": 0,
+   "add": 2,
+   "reduce": 2,
+   "exit": 0
+  },
+  "WOLF": {
+   "new": 2,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WPC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WPM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WRBY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WRLC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WSC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WSFS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WSO": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WST": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "WT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WTFC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WTM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WTW": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 1
+  },
+  "WU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WULF": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WVE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "WY": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "XCEM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "XE": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "XGN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "XLE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "XMTR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "XNDU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "XOM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 5,
+   "exit": 0
+  },
+  "XOP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "XP": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
+   "exit": 0
+  },
+  "XPO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "XRAY": {
+   "new": 0,
+   "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "XT": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "XYL": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "XYZ": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "YETI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "YMM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "YNDX": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "YOU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "YPF": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "YUM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "YUMC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "Z": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ZBH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 5,
+   "exit": 0
+  },
+  "ZBRA": {
+   "new": 1,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ZD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "ZDGE": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ZG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ZH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ZIM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "ZION": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "ZM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ZS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 1
+  },
+  "ZTS": {
+   "new": 2,
+   "add": 1,
+   "reduce": 1,
+   "exit": 2
+  }
+ }
+}
