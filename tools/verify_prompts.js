@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 프롬프트 검증 — index.html에서 15경로를 생성해 구조 규칙을 검사한다.
+// 프롬프트 검증 — index.html에서 19경로(리스트 탭 4경로 포함)를 생성해 구조 규칙을 검사한다.
 // 사용: node tools/verify_prompts.js [--dump DIR]   (저장소 어디서든)
 // 프롬프트를 고칠 때마다 돌린다. ★가 하나라도 있으면 올리지 마라.
 const fs=require('fs'), path=require('path'), os=require('os');

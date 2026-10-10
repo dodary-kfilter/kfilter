@@ -9,9 +9,10 @@
 - `README.md`: 운영 규칙과 현재 리스트(사람이 읽는 판)
 - `analyst.json`: 월가 상위 애널리스트 추천, 최근 4주
 - `13f/2026Q2.json`: 13F 2분기 집계(상위 리스트, 합의 강도, 제외 종목, 전체 종목 인원)
+- `13f/index.json`: 사이트가 읽을 최신 분기(`latest`). 새 분기 파일을 올리면 여기 `latest`도 바꾼다
 - `history/analyst/날짜.json`: 애널리스트 리스트 갱신 기록
 
-이 폴더는 사이트(index.html)와 수급 스캔(scanner.py, update.yml)과 무관한 독립 자료다. 기존 파일을 읽거나 바꾸지 않는다.
+사이트(index.html)의 **애널 추천·13F 탭**이 `analyst.json`과 `13f/index.json`이 가리키는 분기 파일을 읽어 보여 준다(읽기만 함). 이 폴더의 자료는 수급 스캔(scanner.py, update.yml)과 무관하고, 사이트·스캔 파일을 읽거나 바꾸지 않는다.
 
 ## 운영 규칙
 

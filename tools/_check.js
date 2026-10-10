@@ -2,6 +2,10 @@
 const _fs=require('fs'), _path=require('path');
 DATA=JSON.parse(_fs.readFileSync(_path.join(process.env.KF_ROOT,'data.json'),'utf8'));
 const _D=DATA, _P=_D.portfolio, _pick=t=>_P.find(x=>x.ptype===t);
+// 리스트 탭 — 각 폴더 JSON을 실물 그대로 읽는다(사이트가 받는 것과 같은 파일)
+const _rd=p=>JSON.parse(_fs.readFileSync(_path.join(process.env.KF_ROOT,p),'utf8'));
+LISTS.top20=_rd('top20/top20.json'); LISTS.analyst=_rd('lists/analyst.json');
+LISTS.f13=_rd('lists/13f/'+_rd('lists/13f/index.json').latest+'.json');
 const CASES=[
  ['01_동시수급-일괄',()=>buildScreenPrompt()],
  ['02_저가매수-일괄',()=>buildValuePrompt()],
@@ -18,6 +22,10 @@ const CASES=[
  ['13_관심-미국지수',()=>buildPrompt(_P.find(x=>x.ptype==='us'&&x.us_kind==='index'))],
  ['14_검색-국내',()=>buildSearchOne('005930','삼성전자')],
  ['15_검색-미국',()=>buildSearchUS('NVDA')],
+ ['16_TOP20-국장',()=>listPrompt('top20','kr',0)],
+ ['17_TOP20-미장',()=>listPrompt('top20','us',0)],
+ ['18_애널추천',()=>listPrompt('analyst',0)],
+ ['19_13F',()=>listPrompt('f13',LISTS.f13.lists.new[0].ticker)],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[
