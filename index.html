@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-11a (리스트 탭 — TOP 20·애널 추천·13F, 종목별 프롬프트) / 이전: 2026-08-21a (검색 — 미국 종목 한글명 사전 101종목) -->
+<!-- build: 2026-10-11b (리스트 탭을 기존 탭 틀로 — 한 줄 10탭, 판정 줄·구간·카드, 정렬) / 이전: 2026-10-11a (리스트 탭 3종 추가) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -37,8 +37,8 @@
   .rule{font-size:12.5px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
     border-left:3px solid var(--foreign); border-radius:8px; padding:11px 14px; margin:18px 0}
   .rule b{color:var(--txt)}
-  .tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap}
-  .tab{flex:1; min-width:90px; background:var(--panel); border:1px solid var(--line); border-radius:10px;
+  .tabs{display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); gap:8px; margin-bottom:16px}
+  .tab{min-width:0; background:var(--panel); border:1px solid var(--line); border-radius:10px;
     padding:13px 10px; cursor:pointer; text-align:center; transition:all .15s}
   .tab .c{font-family:'Space Mono',monospace; font-size:24px; font-weight:700}
   .tab .l{font-size:12px; color:var(--dim); margin-top:2px}
@@ -199,88 +199,33 @@
     .hd-r{width:100%; justify-content:space-between; gap:6px}
     .hd-r .meta{order:3; width:100%; text-align:right; font-size:10.5px}
     .hdbtn{flex:1; padding:9px 6px; font-size:12px; text-align:center}
-    /* 탭 7개 — flex-wrap이면 마지막 줄이 늘어나 불균형. 균등 그리드로 고정한다. */
-    .tabs{display:grid; grid-template-columns:repeat(4,1fr); gap:6px}
+    /* 탭 10개 — 5칸 두 줄 균등 그리드로 고정한다. */
+    .tabs{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:6px}
     .tab{min-width:0; padding:10px 4px}
     .tab .c{font-size:19px}
     .tab .l{font-size:10.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
     .refresh{flex-direction:column; gap:8px}.refresh button{width:100%; max-width:320px}.code-col{display:none}tbody td{padding:11px 8px; font-size:13px}thead th{padding:9px 8px}.tab .c{font-size:20px}
     .pk-r{width:104px} .vg{gap:6px 10px} .copybtn{padding:6px 8px; font-size:10.5px}}
-  @media(max-width:380px){ .tabs{grid-template-columns:repeat(3,1fr)} .tab .l{font-size:10px} }
-  /* ── 리스트 탭 (TOP 20 · 애널 추천 · 13F) — 수급 스캔과 별개 묶음. 숫자 자리엔 기준일을 띄운다 ── */
-  :root{--list:#39c5cf; --lup:#f85149; --ldn:#4493f8}
-  .tabs.ltabs{margin-top:-6px}
-  .ltabs .tab .c{color:var(--list); font-size:20px; line-height:36px}
-  .ltabs .tab.active{border-color:var(--list)}
-  .lst .cn{flex-wrap:wrap; row-gap:4px}
-  .lst .lu{color:var(--lup)} .lst .ld{color:var(--ldn)} .lst .lw{color:var(--txt)}
-  .lhead{font-size:12.5px; color:var(--dim); background:var(--panel); border:1px solid var(--line);
-    border-left:3px solid var(--list); border-radius:8px; padding:11px 14px; margin:0 0 12px; line-height:1.65}
-  .lhead b{color:var(--txt)}
-  .lseg{display:flex; gap:8px; margin:0 0 12px}
-  .lseg button{flex:1; font-family:inherit; font-size:14px; font-weight:700; color:var(--dim); background:var(--panel);
-    border:1px solid var(--line); border-radius:9px; padding:10px; cursor:pointer}
-  .lseg button span{font-family:'Space Mono',monospace; font-size:12px; font-weight:400; margin-left:4px}
-  .lseg button[aria-pressed="true"]{color:var(--txt); border-color:var(--list); background:rgba(57,197,207,.10)}
-  .lnote{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:0 0 10px}
-  .lnote h2{font-size:12.5px; font-weight:700; color:var(--list); margin:0 0 6px}
-  .lnote p{font-size:13.5px; line-height:1.7; margin:0 0 6px}
-  .lnote p:last-child{margin-bottom:0}
-  .ldet{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 14px; margin:10px 0}
-  .ldet>summary{cursor:pointer; font-size:12.5px; font-weight:600; color:var(--dim)}
-  .ldet-b{font-size:12.5px; line-height:1.75; color:var(--dim); margin-top:8px}
-  .ldet-b b{color:var(--txt)}
-  .lctl{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:12px 0 10px}
-  .lchip{font-family:inherit; font-size:12px; font-weight:600; color:var(--dim); background:var(--panel);
-    border:1px solid var(--line); border-radius:999px; padding:6px 11px; cursor:pointer}
-  .lchip[aria-pressed="true"]{color:var(--bg); background:var(--list); border-color:var(--list)}
-  .lsort{margin-left:auto; display:flex; align-items:center; gap:6px; font-size:12px; color:var(--dim)}
-  .lsort select{font-family:inherit; font-size:12px; color:var(--txt); background:var(--panel); border:1px solid var(--line);
-    border-radius:8px; padding:5px 6px; max-width:210px}
-  .lst button:focus-visible,.lst select:focus-visible,.lst summary:focus-visible,.lst a:focus-visible{outline:2px solid var(--list); outline-offset:2px}
-  .lact{font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--dim); white-space:nowrap}
-  .lact.buy{color:#fff; background:var(--lup); border-color:var(--lup)}
-  .lact.hold{color:var(--bg); background:var(--txt); border-color:var(--txt)}
-  .lact.pass{color:var(--list); border-color:var(--list)}
-  .lact.out{color:var(--ldn); border-color:var(--ldn)}
-  .tag.lt{color:var(--list); background:rgba(57,197,207,.12)}
-  .card.lhi{border-left:3px solid var(--list)}
-  .lkn{font-weight:500; color:var(--dim); font-size:13px}
-  .lsub{color:var(--dim); font-size:11px}
-  .mkt-head.lst{color:var(--list); border-bottom:1px solid rgba(57,197,207,.25)}
-  .lcons{display:flex; flex-direction:column; gap:12px; margin:8px 0 4px}
-  .lk{display:block; font-size:11.5px; color:var(--dim); margin-bottom:6px}
-  .lcrow{display:flex; flex-wrap:wrap; gap:6px}
-  .lc{font-size:12px; background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:4px 9px}
-  .lc b{font-family:'Space Mono',monospace; font-size:11.5px; margin-left:4px}
-  .lul{margin:8px 0 0; padding-left:16px; font-size:12.5px; color:var(--dim); line-height:1.7}
-  .lul b{color:var(--txt)}
-  .lfoot{font-size:11.5px; color:var(--dim); margin-top:14px; line-height:1.6}
-  .t20a{display:inline-block; margin-top:12px; color:var(--port); font-size:12.5px; text-decoration:none; border-bottom:1px dotted var(--line)}
-  .pinfo .t20a{margin-top:0}
-  .t20g{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px; margin-top:12px}
-  .t20g div{background:#0e1620; border:1px solid var(--line); border-radius:8px; padding:6px 8px; min-width:0}
-  .t20g span{display:block; font-size:11px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .t20g b{font-family:'Space Mono',monospace; font-size:14px}
-  .t20l{font-size:12.5px; color:var(--dim); margin-top:8px; line-height:1.65}
-  .t20l b{color:var(--txt); font-family:'Space Mono',monospace}
-  .t20cm{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
-  .t20cm span{font-size:11.5px; border:1px solid var(--line); border-radius:6px; padding:2px 8px; background:#0e1620}
-  .t20m{font-size:13px; margin-top:10px}
-  .t20more{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px 20px; margin-top:14px;
-    padding-top:12px; border-top:1px dashed var(--line)}
-  .t20more h4{font-size:12px; font-weight:700; color:var(--list); margin:0 0 6px}
-  .t20more table{font-size:12.5px}
-  .t20more td{padding:4px 0; font-size:12.5px; border-bottom:1px dotted #1b2430; vertical-align:top}
-  .t20more td:last-child{text-align:right; padding-left:10px}
-  .t20more tr.sum td{font-weight:700; border-bottom:0}
-  .t20more ul{margin:0; padding-left:16px; font-size:12.5px; color:var(--dim); line-height:1.65}
-  @media(max-width:560px){
-    .tabs.ltabs{grid-template-columns:repeat(3,1fr)}
-    .ltabs .tab .c{font-size:17px; line-height:30px}
-    .lsort{margin-left:0; width:100%} .lsort select{flex:1; max-width:none}
-  }
-  @media(max-width:420px){ .t20g{grid-template-columns:repeat(2,minmax(0,1fr))} }
+  @media(max-width:380px){ .tab .l{font-size:10px} }
+  /* ── 리스트 탭 (TOP 20 · 애널 추천 · 13F) — 기존 탭과 같은 틀, 색만 탭별 ── */
+  @media(max-width:860px){ .tabs{grid-template-columns:repeat(5,minmax(0,1fr))} }
+  .tab[data-k="top20"] .c{color:#a371f7}   .tab.active[data-k="top20"]{border-color:#a371f7}
+  .tab[data-k="analyst"] .c{color:#39c5cf} .tab.active[data-k="analyst"]{border-color:#39c5cf}
+  .tab[data-k="f13"] .c{color:#ff7b72}     .tab.active[data-k="f13"]{border-color:#ff7b72}
+  .srt{display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin:0 0 4px}
+  .srt span{font-size:12px; color:var(--dim); margin-right:2px}
+  .srt button{font-family:'IBM Plex Sans KR',sans-serif; font-size:12px; font-weight:600; color:var(--dim); background:var(--panel);
+    border:1px solid var(--line); border-radius:8px; padding:7px 12px; cursor:pointer}
+  .srt button.on{color:var(--txt); border-color:#8b949e; background:#161d29}
+  .srt button:focus-visible{outline:2px solid var(--port); outline-offset:2px}
+  .cs .lk2{color:var(--dim); font-family:'IBM Plex Sans KR',sans-serif; font-weight:400}
+  .card-b > .en-sec:first-child{border-top:0}
+  .lst .en-line{flex-wrap:wrap}
+  .lst .pinfo b{color:var(--txt)}
+  .lnk{color:var(--port); text-decoration:none; border-bottom:1px dotted var(--line)}
+  .mkt-head.buy{color:#f85149; border-bottom:1px solid rgba(248,81,73,.25)}
+  .mkt-head.sell{color:#4493f8; border-bottom:1px solid rgba(68,147,248,.25)}
+  .mkt-head.neu{color:var(--dim); border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>
@@ -299,13 +244,11 @@
     <div class="tab" data-k="both" onclick="show('both')"><div class="c" id="c-both">—</div><div class="l">동시 수급</div></div>
     <div class="tab" data-k="value_pick" onclick="show('value_pick')"><div class="c" id="c-value_pick">—</div><div class="l">저가매수</div></div>
     <div class="tab" data-k="momentum" onclick="show('momentum')"><div class="c" id="c-momentum">—</div><div class="l">모멘텀</div></div>
-    <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">관심종목</div></div>
-    <div class="tab" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
-  </div>
-  <div class="tabs ltabs">
     <div class="tab" data-k="top20" onclick="show('top20')"><div class="c" id="c-top20">—</div><div class="l">TOP 20</div></div>
     <div class="tab" data-k="analyst" onclick="show('analyst')"><div class="c" id="c-analyst">—</div><div class="l">애널 추천</div></div>
     <div class="tab" data-k="f13" onclick="show('f13')"><div class="c" id="c-f13">—</div><div class="l">13F</div></div>
+    <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">관심종목</div></div>
+    <div class="tab" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
   <div class="refresh">
@@ -967,7 +910,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v39';
+const PROMPT_VER='v40';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1676,7 +1619,8 @@ function sectionScreen(items, isV){
 function fmtPct(v){ if(v==null) return '—'; const t=(v>=0?'+':'')+v.toFixed(1)+'%'; return '<span style="color:'+(v>=0?'#f85149':'#4493f8')+'">'+t+'</span>'; }
 function fmtN(v){ return v==null?'—':Number(v).toLocaleString('ko-KR'); }
 // ── 리스트 탭 (TOP 20 · 애널 추천 · 13F) ──
-//   각 폴더의 JSON(top20/, lists/)을 읽어 보여 주기만 한다. data.json·스캔과 독립이라 자료가 깨져도 그 탭만 빈다.
+//   기존 탭과 같은 틀(판정 줄 · 시장 구간 · 카드)로 각 폴더 JSON을 보여 주기만 한다. data.json·스캔과 독립이라 자료가 깨져도 그 탭만 빈다.
+//   보유·매수 같은 행동 정보와 판단 문구는 싣지 않고 자료만 보여 준다.
 //   종목별 프롬프트는 기존 리포트 틀(reportPrompt) 그대로 — 대상 소개에는 리스트에 오른 사실만 쓰고 예측 숫자(확률·고유 기대·목표가)는 넣지 않는다.
 const LIST_TABS=['top20','analyst','f13'];
 const LIST_NAME={top20:'TOP 20', analyst:'애널 추천', f13:'13F'};
@@ -1707,23 +1651,45 @@ function loadList(k){
 function prefetchLists(){ LIST_TABS.forEach(k=>{ loadList(k); }); }
 function lMd(s){ s=String(s||''); return /^\d{4}-\d{2}-\d{2}/.test(s) ? s.slice(5,7)+'/'+s.slice(8,10) : (s||'—'); }
 function lMd2(s){ s=String(s||''); return /^\d{4}-\d{2}-\d{2}/.test(s) ? (+s.slice(5,7))+'월 '+(+s.slice(8,10))+'일' : s; }
-function lF1(v){ return (v==null||isNaN(v)) ? '—' : (v>0?'+':'')+Number(v).toFixed(1)+'%'; }
-function lPct(v){ return (v==null||isNaN(v)) ? '—' : (v>0?'+':'')+v+'%'; }
 function lN2(v){ return (v==null||isNaN(v)) ? '—' : Number(v).toFixed(2); }
+function lP1(v){ return (v==null||isNaN(v)) ? '—' : (v>0?'+':'')+Number(v).toFixed(1)+'%'; }
+function lP0(v){ return (v==null||isNaN(v)) ? '—' : (v>0?'+':'')+v+'%'; }
 function lUsd(v,dec){ return (v==null||isNaN(v)) ? '—' : '$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:dec, maximumFractionDigits:dec}); }
+const F13_LISTS=[['new','신규 편입','buy'],['add','비중 확대','buy'],['reduce','비중 축소','sell'],['exit','청산(전량 매도)','sell']];
+function lCnt(k){
+  // 탭 숫자 = 화면에 나오는 행 수 (기존 탭처럼 구간 합)
+  const d=LISTS[k]; if(!d) return null;
+  if(k==='top20') return (((d.kr||{}).top)||[]).length+(((d.us||{}).top)||[]).length;
+  if(k==='analyst') return (d.picks||[]).length;
+  return F13_LISTS.reduce((a,[x])=>a+(((d.lists||{})[x])||[]).length, 0);
+}
 function listBadge(k){
-  // 탭 숫자 자리 = 기준일 (TOP 20 기록일 · 애널 최신 연재일 · 13F 분기)
-  try{
-    const d=LISTS[k], el=document.getElementById('c-'+k);
-    if(!d || !el) return;
-    if(k==='top20') el.textContent=lMd((d.meta||{}).record_date);
-    else if(k==='analyst') el.textContent=lMd((d.window||{}).to || d.updated);
-    else { const m=String(d.quarter||'').match(/Q(\d)$/); el.textContent=m ? m[1]+'Q' : '—'; }
-  }catch(e){ console.error('리스트 기준일 표시 실패:', e); }
+  try{ const el=document.getElementById('c-'+k), n=lCnt(k); if(el && n!=null) el.textContent=n; }
+  catch(e){ console.error('리스트 개수 표시 실패:', e); }
+}
+// 판정 줄 — 리스트 탭에선 그 리스트의 기준을, 스캔 탭으로 돌아가면 원래 판정 기준을 보여 준다
+let RULE_SCAN=null, RULE_LIST_LAST=null;
+function listRule(k){
+  const d=LISTS[k];
+  if(!d) return '기준: '+LIST_NAME[k]+' 자료를 불러오는 중…';
+  if(k==='top20'){ const M=d.meta||{};
+    return '기준: <b>'+esc(M.record_date||'—')+'</b> 기록 · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·기대수익 · '+esc(M.basis||''); }
+  if(k==='analyst'){ const w=d.window||{};
+    return '기준: 최근 4주 <b>'+lMd(w.from)+'~'+lMd(w.to)+'</b> · '+esc(d.source||'')+' · 여력은 '+esc(d.price_basis||'')+' 기준'; }
+  const q=f13Q(d), r=d.rules||{};
+  return '기준: <b>'+q.y+'년 '+q.q+'분기</b> 13F('+esc(lMd2(d.as_of))+' 보유) · 슈퍼투자자 '+esc(d.tracked)+'명 중 공시 <b>'+esc(d.filed)+'명</b> · 같은 행동 <b>'
+    +esc(r.min_count||2)+'명 이상</b>'+(r.exclude?' · 제외: '+esc(r.exclude):'');
+}
+function ruleFor(k){
+  const rl=document.getElementById('rule'); if(!rl) return;
+  if(rl.innerHTML!==RULE_LIST_LAST) RULE_SCAN=rl.innerHTML;          // 리스트 문구가 아니면 스캔 판정 문구(또는 불러오는 중)다
+  if(LIST_TABS.includes(k)){ rl.innerHTML=listRule(k); RULE_LIST_LAST=rl.innerHTML; }
+  else if(RULE_LIST_LAST!==null){ rl.innerHTML=RULE_SCAN; RULE_LIST_LAST=null; }
 }
 function renderList(k){
   const content=document.getElementById('content');
   const d=LISTS[k];
+  ruleFor(k);
   if(!d){
     if(LIST_ERR[k] && !LIST_BUSY[k]){
       content.innerHTML='<div class="empty">'+LIST_NAME[k]+' 자료를 받지 못했습니다.<br><span style="font-size:12px;color:var(--dim)">'+esc(LIST_ERR[k])+'</span><br><br>'
@@ -1735,206 +1701,143 @@ function renderList(k){
     return;
   }
   try{
-    if(k==='top20'){ content.innerHTML='<div class="lst">'+t20View(d)+'</div>'; t20Draw(); }
-    else if(k==='analyst') content.innerHTML='<div class="lst">'+anView(d)+'</div>';
-    else content.innerHTML='<div class="lst">'+f13View(d)+'</div>';
+    content.innerHTML='<div class="lst">'+(k==='top20' ? t20View(d) : k==='analyst' ? anView(d) : f13View(d))+'</div>';
   }catch(e){
     console.error('리스트 표시 실패:', e);
     content.innerHTML='<div class="empty">'+LIST_NAME[k]+' 자료를 표시하지 못했습니다.<br><span style="font-size:12px;color:var(--dim)">자료 형식이 바뀌었는지 확인해야 합니다 — '+esc((e&&e.message)||e)+'</span></div>';
   }
 }
 function retryList(k){ LIST_ERR[k]=''; renderList(k); }
+function lSortRow(cur, opts, fn){
+  return '<div class="srt"><span>정렬</span>'+opts.map(([v,l])=>'<button type="button"'+(v===cur?' class="on"':'')+' onclick="'+fn+'(\''+v+'\')">'+l+'</button>').join('')+'</div>';
+}
 
-// ── TOP 20 — 국장/미장 전환, 거르기·정렬, 카드 펼침 (보기용 페이지를 옮긴 것) ──
-let T20_MK='kr';
-const T20_ST={kr:{filter:'all',key:'base',open:false}, us:{filter:'all',key:'base',open:false}};
-const T20_KEY={base:['rank',1],pup:['Pup',-1],E:['E',-1],eup:['Eup',-1],edn:['Edn',-1],swing:['swing',1],mcap:['mcap',-1],mcap_a:['mcap',1],
-  own:['own',-1],a60:['a60',-1],per:['per',1],si:['si',1],est:['est',-1]};
-const T20_OPT_C=[['base','기본 순서(문턱 통과 → 오를 폭)'],['pup','상승 확률 높은 순'],['E','기대수익 높은 순'],['eup','오르면 평균 큰 순'],
-  ['edn','내리면 평균 손실 작은 순'],['swing','3개월 흔들림 작은 순'],['mcap','시가총액 큰 순'],['mcap_a','시가총액 작은 순']];
-const T20_OPT={kr:T20_OPT_C.concat([['own','외국인 지분율 높은 순'],['a60','외국인 지분율 60일 증가 큰 순'],['per','PER 낮은 순']]),
-               us:T20_OPT_C.concat([['si','공매도 감소 큰 순'],['per','선행 PER 낮은 순'],['est','추정치 순상향 많은 순']])};
+// ── TOP 20 — 국장·미장 구간, 상승 확률 · 기대수익 · 시총 정렬 ──
+let T20_SORT='pup';
+const T20_SORTS=[['pup','상승 확률'],['E','기대수익'],['mcap','시총']];
+const T20_KEY={pup:'Pup', E:'E', mcap:'mcap'};
+function t20Sort(k){ T20_SORT=k; renderList('top20'); }
 function t20Money(v,mk){ if(v==null||isNaN(v)) return '—'; return mk==='kr' ? Math.round(v).toLocaleString('ko-KR')+'원' : lUsd(v,2); }
 function t20Cap(r,mk){
-  if(!r.mcap) return '';
-  if(mk!=='kr') return Math.round(r.mcap).toLocaleString('ko-KR')+'억 달러';
-  return r.mcap>=10000 ? (r.mcap/10000).toFixed(1)+'조 원' : Math.round(r.mcap).toLocaleString('ko-KR')+'억 원';
+  if(!r.mcap) return '—';
+  const unit=mk==='kr' ? '' : ' 달러';
+  return r.mcap>=10000 ? (r.mcap/10000).toFixed(1)+'조'+unit : Math.round(r.mcap).toLocaleString('ko-KR')+'억'+unit;
 }
-function t20Act(a){
-  a=String(a||''); let c='wait', l='대기';
-  if(a.startsWith('제외')){c='out';l='제외';}
-  else if(a.startsWith('보유')){c='hold';l='보유';}
-  else if(a.startsWith('소량')){l='소량';}
-  else if(a.startsWith('후보')){l='후보';}
-  else if(a.indexOf('매수')>=0){c='buy';l='매수';}
-  return '<span class="lact '+c+'">'+l+'</span>';
-}
-function t20Tbl(rows){ return '<table>'+rows.map(x=>'<tr'+(x[2]?' class="sum"':'')+'><td>'+x[0]+'</td><td>'+x[1]+'</td></tr>').join('')+'</table>'; }
 function t20View(d){
-  const M=d.meta||{}, mk=T20_MK, P=d[mk]||{}, top=P.top||[], st=T20_ST[mk];
-  const th=(M.thresholds||{})[mk];
-  const tags=[...new Set(top.map(r=>r.tag).filter(Boolean))];
-  const seg='<div class="lseg" role="group" aria-label="시장 선택">'
-    +['kr','us'].map(m=>'<button type="button" aria-pressed="'+(m===mk)+'" onclick="t20Mk(\''+m+'\')">'+(m==='kr'?'국장':'미장')
-      +'<span>'+(((d[m]||{}).top)||[]).length+'</span></button>').join('')+'</div>';
-  const stale=(M.stale&&M.stale.length) ? '<br>받지 못한 항목: '+esc(M.stale.join(', ')) : '';
-  const head='<div class="lhead">기록 <b>'+esc(M.record_date||'—')+'</b> · 앞으로 '+esc(M.horizon_months||3)+'개월 판단 · 문턱 상승 확률 <b>'+esc(th==null?'—':th)+'%</b><br>'
-    +esc(M.basis||'')+stale+'</div>';
-  const notes=M['notes_'+mk] ? '<div class="lnote">'+M['notes_'+mk]+'</div>' : '';
-  const scen=M['scen_'+mk] ? '<details class="ldet"><summary>시장 전제와 순서 기준</summary><div class="ldet-b">'+M['scen_'+mk]+'</div></details>' : '';
-  const chips=[['all','전체 '+top.length],['pass','문턱 통과'],['buy','매수·보유']].concat(tags.length?[['mine',tags.join('·')]]:[])
-    .map(([f,l])=>'<button type="button" class="lchip" data-f="'+f+'" aria-pressed="'+(st.filter===f)+'" onclick="t20Filter(\''+f+'\')">'+esc(l)+'</button>').join('');
-  const opts=T20_OPT[mk].map(([v,l])=>'<option value="'+v+'"'+(st.key===v?' selected':'')+'>'+l+'</option>').join('');
-  const ctl='<div class="lctl" id="t20ctl">'+chips
-    +'<button type="button" class="lchip" onclick="t20Open(this)">'+(st.open?'모두 접기':'모두 펼치기')+'</button>'
-    +'<label class="lsort">정렬 <select onchange="t20Sort(this.value)" aria-label="정렬 기준">'+opts+'</select></label></div>';
-  const out=P.out||[], bench=P.bench||[];
-  const extra=(out.length ? '<details class="ldet"><summary>이번에 제외한 종목 '+out.length+'</summary><div class="cards" style="margin-top:10px">'
-      +out.map(r=>t20Card(r,'·',mk,-1)).join('')+'</div></details>' : '')
-    +(bench.length ? '<details class="ldet"><summary>20위 밖 대기 '+bench.length+'</summary><div class="cards" style="margin-top:10px">'
-      +bench.map(r=>t20Card(r,'·',mk,-1)).join('')+'</div></details>' : '');
-  return seg+head+notes+scen+ctl+'<div class="cards" id="t20list"></div>'+extra;
-}
-function t20Draw(){
-  const d=LISTS.top20, mk=T20_MK, st=T20_ST[mk], box=document.getElementById('t20list');
-  if(!d || !box) return;
-  let a=(((d[mk]||{}).top)||[]).map((r,i)=>({r,i}));                 // i = 원본 위치(프롬프트 버튼이 가리킨다)
-  if(st.filter==='buy') a=a.filter(x=>String(x.r.act||'').indexOf('매수')>=0 || String(x.r.act||'').startsWith('보유'));
-  if(st.filter==='mine') a=a.filter(x=>x.r.tag);
-  if(st.filter==='pass') a=a.filter(x=>x.r.pass);
-  const [k,dir]=T20_KEY[st.key]||T20_KEY.base;
-  const val=r=> k==='est' ? ((r.up==null&&r.dn==null) ? null : (r.up||0)-(r.dn||0)) : r[k];
-  a.sort((x,y)=>{ const vx=val(x.r), vy=val(y.r);
-    if(vx==null&&vy==null) return 0; if(vx==null) return 1; if(vy==null) return -1;
-    return ((vx-vy)*dir) || ((y.r.E||0)-(x.r.E||0)); });
-  const plain=(st.key==='base' && st.filter==='all');
-  box.innerHTML=a.map((x,j)=>t20Card(x.r, plain ? x.r.rank : j+1, mk, x.i)).join('') || '<div class="empty">이 조건에 맞는 종목이 없습니다.</div>';
-  if(st.open) box.querySelectorAll('.card').forEach(c=>c.classList.add('open'));
-}
-function t20Mk(m){ if(m===T20_MK) return; T20_MK=m; renderList('top20'); }
-function t20Filter(f){
-  T20_ST[T20_MK].filter=f;
-  document.querySelectorAll('#t20ctl .lchip[data-f]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.f===f ? 'true' : 'false'));
-  t20Draw();
-}
-function t20Sort(v){ T20_ST[T20_MK].key=v; t20Draw(); }
-function t20Open(btn){
-  const st=T20_ST[T20_MK]; st.open=!st.open;
-  if(btn) btn.textContent=st.open ? '모두 접기' : '모두 펼치기';
-  document.querySelectorAll('#t20list .card').forEach(c=>c.classList.toggle('open', st.open));
+  const k=T20_KEY[T20_SORT]||'Pup';
+  let h=lSortRow(T20_SORT, T20_SORTS, 't20Sort');
+  for(const [mk,lab,cls] of [['kr','국장','kospi'],['us','미장','kosdaq']]){
+    const top=((d[mk]||{}).top)||[];
+    const rows=top.map((r,i)=>({r,i})).sort((x,y)=>{                 // i = 원본 위치(프롬프트 버튼이 가리킨다)
+      const vx=x.r[k], vy=y.r[k];
+      if(vx==null&&vy==null) return 0; if(vx==null) return 1; if(vy==null) return -1;
+      return (vy-vx) || ((y.r.E||0)-(x.r.E||0)) || ((y.r.Pup||0)-(x.r.Pup||0)); });
+    h+='<div class="mkt-head '+cls+'">'+lab+' <span>'+top.length+'</span></div>';
+    h+=rows.length ? '<div class="cards">'+rows.map((x,j)=>t20Card(x.r, j+1, mk, x.i)).join('')+'</div>'
+                   : '<div class="empty" style="padding:20px 0">종목이 없습니다.</div>';
+  }
+  return h;
 }
 function t20Card(r, rank, mk, idx){
-  const isKR=(mk==='kr'), id='t20-'+mk+'-'+(r.code||r.name), act=String(r.act||'');
-  const nm=isKR
-    ? '<a href="'+naverUrl(r.code)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(r.name)+'</a>'
-    : '<a href="'+esc(r.link||('https://finance.yahoo.com/quote/'+r.name))+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(r.name)+'</a>'
-      +(r.kn ? '<span class="lkn">'+esc(r.kn)+'</span>' : '');
-  const tag=(r.tag && !(r.tag==='보유' && act.startsWith('보유'))) ? '<span class="tag lt">'+esc(r.tag)+'</span>' : '';
-  const pass=(r.pass && !act.startsWith('제외')) ? '<span class="lact pass">문턱 통과</span>' : '';
-  const sub=esc(isKR ? (r.sector||'') : (r.desc||'')), cap=t20Cap(r,mk);
-  const btn=idx>=0 ? '<button class="copybtn" onclick="copyList(event,\'top20\',\''+mk+'\','+idx+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>' : '';
-  return '<div class="card'+(r.tag?' lhi':'')+'" data-code="'+id+'">'
+  const isKR=(mk==='kr'), id='t20-'+mk+'-'+(r.code||r.name);
+  const mkt=/\.KQ$/.test(r.sym||'') ? 'KOSDAQ' : /\.KS$/.test(r.sym||'') ? 'KOSPI' : '';
+  const name=isKR
+    ? '<a href="'+naverUrl(r.code)+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name)+'</a>'+(mkt?'<span class="tag '+mkt+'">'+mkt+'</span>':'')
+    : '<a href="'+esc(r.link||('https://finance.yahoo.com/quote/'+r.name))+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name)+'</a>'
+      +(r.kn?'<span class="psub">'+esc(r.kn)+'</span>':'');
+  return '<div class="card" data-code="'+id+'">'
     +'<div class="card-h" onclick="toggleCard(\''+id+'\')">'
-    +'<span class="rank">'+esc(rank)+'</span>'
-    +'<div class="cmid"><span class="cn">'+nm+tag+t20Act(act)+pass+'</span>'
-    +'<span class="cs"><b class="lu">상승 '+esc(r.Pup)+'%</b><span>오르면 <b class="lu">'+lF1(r.Eup)+'</b></span><span>내리면 <b class="ld">'+lF1(r.Edn)+'</b></span></span>'
-    +((sub||cap) ? '<span class="psub">'+sub+(sub&&cap?' · ':'')+(cap?'시총 '+cap:'')+'</span>' : '')
-    +'</div>'+btn+'<span class="chev">⌄</span></div>'
+    +'<span class="rank">'+rank+'</span>'
+    +'<div class="cmid"><span class="cn">'+name+'</span>'
+    +'<span class="cs"><span><span class="lk2">상승 확률</span> <b>'+esc(r.Pup)+'%</b></span>'
+    +'<span><span class="lk2">기대수익</span> '+fmtPct(r.E)+'</span>'
+    +'<span><span class="lk2">시총</span> <b>'+t20Cap(r,mk)+'</b></span></span></div>'
+    +'<button class="copybtn" onclick="copyList(event,\'top20\',\''+mk+'\','+idx+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>'
+    +'<span class="chev">⌄</span></div>'
     +'<div class="card-b">'+t20Body(r,mk)+'</div></div>';
 }
 function t20Body(r, mk){
-  const isKR=(mk==='kr'), mw=r.mw||{};
-  const idxName={SOXX:'반도체 지수',KOSDAQ:'코스닥',KOSPI:'코스피',SPY:'S&P500'}[r.idx] || r.idx || '';
-  const beta=(r.beta==null||isNaN(r.beta)) ? '—' : Number(r.beta).toFixed(2);
-  const grid='<div class="t20g">'
-    +'<div><span>상승 확률</span><b class="lu">'+esc(r.Pup)+'%</b></div><div><span>하락 확률</span><b class="ld">'+esc(r.Pdn)+'%</b></div>'
-    +'<div><span>오르면 평균</span><b class="lu">'+lF1(r.Eup)+'</b></div><div><span>내리면 평균</span><b class="ld">'+lF1(r.Edn)+'</b></div></div>';
-  const line='<p class="t20l">기대수익 <b>'+lF1(r.E)+'</b>, 3개월 흔들림 <b>±'+esc(r.swing)+'%</b>('+(r.volsrc==='옵션 내재 변동성'?'옵션 시장 예상':'지난 120일')+'), 베타 <b>'+beta+'</b>'
-    +(idxName?' ('+esc(idxName)+' 기준)':'')+'</p>';
-  const w30=(mw.lv_w30==null) ? '30주선 자료 없음'
-    : (mw.lv_w30<=0 ? '30주선 <b>'+Number(mw.lv_w30).toFixed(1)+'%</b> 아래(지지)' : '30주선 <b>+'+Number(mw.lv_w30).toFixed(1)+'%</b> 위(저항)');
-  const levels='<p class="t20l">전고점까지 <b>'+(mw.lv_hi==null?'—':(mw.lv_hi>0?'+':'')+Number(mw.lv_hi).toFixed(1)+'%')+'</b>, '+w30
-    +', 최근 13주 저점 <b>'+(mw.lv_low==null?'—':Number(mw.lv_low).toFixed(1)+'%')+'</b></p>';
-  const own=!isKR ? '' : (r.own==null ? '<p class="t20l">외국인 지분율 자료 없음</p>'
-    : '<p class="t20l">외국인 지분율 '+lN2(r.own60)+'% → '+lN2(r.own20)+'% → <b>'+lN2(r.own)+'%</b> (60일 전 → 20일 전 → 지금, '+(r.a60>0?'+':'')+lN2(r.a60)+'%p)</p>');
-  const cm=(r.cm||[]).length ? '<div class="t20cm">'+r.cm.map(c=>'<span>'+esc(c)+'</span>').join('')+'</div>' : '';
-  const memo=r.act ? '<p class="t20m">'+esc(r.act)+'</p>' : '';
-  const sc=(r.sc||[]).map(s=>[esc(s.lab)+' '+esc(s.p)+'%, 지수 '+(s.m>0?'+':'')+esc(s.m)+'%', '예상 '+lF1(s.r)+', 상승 확률 '+esc(s.pu)+'%']);
-  const calc=t20Tbl(sc.concat([['베타',beta],['고유 기대 (내 판단)',lPct(r.alpha)],['흔들림 출처',esc(r.volsrc||'—')+(r.iv?' (연 '+esc(r.iv)+'%)':'')],
-    ['고유 흔들림 (3개월)','±'+esc(r.idio)+'%'],['상승 확률 / 하락 확률',esc(r.Pup)+'% / '+esc(r.Pdn)+'%',1],
-    ['오르면 평균 / 내리면 평균',lF1(r.Eup)+' / '+lF1(r.Edn),1],['기대수익',lF1(r.E),1]]));
-  const w30pos=(mw.w30pos==null) ? '' : ' (현재가가 '+(mw.w30pos>=0 ? mw.w30pos+'% 위' : Math.abs(mw.w30pos)+'% 아래')+')';
-  const chart=t20Tbl([['20개월선 위 연속', mw.run20==null?'자료 부족':mw.run20+'개월째'],['20개월선 대비',lPct(mw.ext20)],['3년 수익률',lPct(mw.r36)],
-    ['월 평균 흔들림', mw.mrng==null?'—':mw.mrng+'%'],['최근 1년 최대 낙폭', mw.mdd==null?'—':mw.mdd+'%'],
-    ['30주선', mw.w30==null?'—':t20Money(mw.w30,mk)+w30pos],['10주선 방향', mw.w10up==null?'—':(mw.w10up?'상승':'하락')],
-    ['최근 8주 저점이 높아진 주', mw.hl==null?'—':mw.hl+'/8']]);
-  const exit=t20Tbl([['10일선 (단기 도망선)', r.ma10?t20Money(r.ma10,mk):'—'],['하루 급락 기준 (평소의 2배)', r.drop2==null?'—':'−'+r.drop2+'%'],
-    ['30주선 (추세 이탈선, 주봉 종가)', mw.w30==null?'—':t20Money(mw.w30,mk)],['최근 1년 종가 고점', r.peak==null?'—':t20Money(r.peak,mk)+(r.peak_date?' ('+esc(r.peak_date)+')':'')]]);
-  const ops=(r.op||[]).length ? r.op.map(v=>(isKR?Math.round(v):Number(v)).toLocaleString('ko-KR')).join(' → ') : '자료 없음';
+  const isKR=(mk==='kr'), mw=r.mw||{}, money=v=>t20Money(v,mk);
+  const vg=rows=>'<div class="vg">'+rows.map(([k,v])=>'<div class="vg-c"><span class="vg-k">'+k+'</span><b>'+v+'</b></div>').join('')+'</div>';
+  const sec=(t,body)=>'<div class="en-sec"><div class="en-h">'+t+'</div>'+body+'</div>';
+  const idxName={SOXX:'필라델피아 반도체',KOSDAQ:'코스닥',KOSPI:'코스피',SPY:'S&P500'}[r.idx] || r.idx || '';
+  const vol=(r.volsrc==='옵션 내재 변동성') ? '옵션 내재 변동성'+(r.iv?'(연 '+esc(r.iv)+'%)':'') : '120거래일 실현 변동성';
+  const outlook=vg([['상승 확률', esc(r.Pup)+'%'],['하락 확률', esc(r.Pdn)+'%'],['상승 시 평균', lP1(r.Eup)],['하락 시 평균', lP1(r.Edn)],
+      ['기대수익', lP1(r.E)],['변동성(3개월)', r.swing==null?'—':'±'+esc(r.swing)+'%'],['베타'+(idxName?'('+esc(idxName)+')':''), r.beta==null?'—':Number(r.beta).toFixed(2)],
+      ['고유 기대수익', lP0(r.alpha)]])
+    +'<div class="vg-cap">변동성 산출: '+vol+' · 고유 변동성 ±'+esc(r.idio==null?'—':r.idio)+'%</div>';
+  const SC={'좋은 장':'강세','나쁜 장':'약세','횡보':'횡보'};
+  const scen=(r.sc||[]).map(s=>'<div class="en-line"><span class="en-k">'+esc(SC[s.lab]||s.lab)+' '+esc(s.p)+'% · 지수 '+(s.m>0?'+':'')+esc(s.m)+'%</span>'
+      +'<b>'+lP1(s.r)+'</b><span class="en-k">상승 확률 '+esc(s.pu)+'%</span></div>').join('');
+  const price=vg([['기준가', money(r.cur)],['52주 종가 고점', money(r.peak)],['52주 고점까지', lP1(mw.lv_hi)],['13주 저점까지', lP1(mw.lv_low)],
+      ['10일 이평', money(r.ma10)],['30주 이평', money(mw.w30)],['30주 이평 이격', lP1(mw.w30pos)]]);
+  const trend=vg([['20개월 이평 상회', mw.run20==null?'—':mw.run20+'개월째'],['20개월 이평 이격', lP0(mw.ext20)],['3년 수익률', lP0(mw.r36)],
+      ['1년 최대 낙폭', mw.mdd==null?'—':mw.mdd+'%'],['월간 평균 변동폭', mw.mrng==null?'—':mw.mrng+'%'],['10주 이평 방향', mw.w10up==null?'—':(mw.w10up?'상승':'하락')],
+      ['8주 중 저점 상승', mw.hl==null?'—':mw.hl+'/8주']]);
+  const ops=(r.op||[]).length ? r.op.map(v=>(isKR?Math.round(v):Number(v)).toLocaleString('ko-KR')).join(' → ') : '—';
   const fund=isKR
-    ? t20Tbl([['반기 영업이익',esc(r.hg||'—')],['분기 영업이익(억 원)',ops],['PER', r.per==null?'없음':Number(r.per).toFixed(1)+'배'],
-        ['외국인 지분율 60일 전 / 20일 전 / 지금', r.own==null?'자료 없음':lN2(r.own60)+'% / '+lN2(r.own20)+'% / '+lN2(r.own)+'%'],
-        ['기관 20일 순매매', r.ins==null?'—':(r.ins>0?'+':'')+Number(r.ins).toLocaleString('ko-KR')+'만 주']])
-    : t20Tbl([['반기 영업이익',esc(r.hg||'—')],['내년 EPS 성장',esc(r.fg||'—')],['선행 PER', r.per==null?'—':Number(r.per).toFixed(1)+'배'],
-        ['추정치 상향 / 하향',(r.up==null?'—':r.up)+'건 / '+(r.dn==null?'—':r.dn)+'건'],['공매도 1개월 변화',lPct(r.si)],
-        ['기관 보유 (분기 공시)', r.inst==null?'—':((r.inst>0?'순증 +':'순감 ')+(r.inst/1e6).toFixed(1)+'백만 주')],['분기 영업이익(백만 달러)',ops]]);
-  const why=(r.why||[]).length ? '<ul>'+r.why.map(w=>'<li>'+esc(w)+'</li>').join('')+'</ul>' : '<p class="t20l">—</p>';
-  const link=r.link ? '<a class="t20a" href="'+esc(r.link)+'" target="_blank" rel="noopener">'+(isKR?'다음 금융':'야후 파이낸스')+'에서 열기</a>' : '';
-  return grid+line+levels+own+cm+memo
-    +'<div class="t20more"><div><h4>3개월 예측 계산</h4>'+calc+'</div><div><h4>판단 근거</h4>'+why+'<h4 style="margin-top:12px">실적·수급</h4>'+fund+'</div>'
-    +'<div><h4>월봉·주봉</h4>'+chart+'</div><div><h4>도망선</h4>'+exit+'</div></div>'+link;
+    ? vg([['반기 영업이익 증가율', esc(r.hg||'—')],['PER', r.per==null?'—':Number(r.per).toFixed(1)+'배'],
+          ['기관 20일 순매매', r.ins==null?'—':(r.ins>0?'+':'')+Number(r.ins).toLocaleString('ko-KR')+'만 주']])
+      +'<div class="en-line"><span class="en-k">분기 영업이익(억 원)</span><b>'+ops+'</b></div>'
+      +(r.own==null ? '<div class="en-line"><span class="en-k">외국인 지분율</span><b>—</b></div>'
+          : '<div class="en-line"><span class="en-k">외국인 지분율</span><b>'+lN2(r.own60)+'% → '+lN2(r.own20)+'% → '+lN2(r.own)+'%</b>'
+            +'<span class="en-k">60일 전 → 20일 전 → 현재, '+(r.a60>0?'+':'')+lN2(r.a60)+'%p</span></div>')
+    : vg([['반기 영업이익 증가율', esc(r.hg||'—')],['내년 EPS 증가율', esc(r.fg||'—')],['선행 PER', r.per==null?'—':Number(r.per).toFixed(1)+'배'],
+          ['EPS 추정치 상향·하향', (r.up==null?'—':r.up)+'건 · '+(r.dn==null?'—':r.dn)+'건'],['공매도 잔고 1개월', lP0(r.si)],
+          ['기관 순증감(분기 공시)', r.inst==null?'—':(r.inst>0?'+':'')+(r.inst/1e6).toFixed(1)+'백만 주']])
+      +'<div class="en-line"><span class="en-k">분기 영업이익(백만 달러)</span><b>'+ops+'</b></div>';
+  return sec('향후 3개월 전망', outlook)+sec('시장 시나리오', scen||'<div class="en-empty">—</div>')+sec('가격 위치', price)
+    +sec('중장기 추세', trend)+sec('실적·수급', fund);
 }
 
-// ── 애널 추천 — 최근 4주, TipRanks 애널리스트 순위순 ──
+// ── 애널 추천 — 애널리스트 순위 · 여력 · 최신 추천 정렬 ──
+let AN_SORT='rank';
+const AN_SORTS=[['rank','애널리스트 순위'],['up','여력'],['date','최신 추천']];
+function anSort(k){ AN_SORT=k; renderList('analyst'); }
 function anView(d){
-  const w=d.window||{};
-  const picks=(d.picks||[]).map((p,i)=>({p,i}))                   // i = 원본 위치(프롬프트 버튼이 가리킨다)
-    .sort((a,b)=>((a.p.tipranks_rank||1e9)-(b.p.tipranks_rank||1e9)) || String(b.p.date||'').localeCompare(String(a.p.date||'')));
-  const head='<div class="lhead">최근 4주 <b>'+lMd(w.from)+' ~ '+lMd(w.to)+'</b> · '+picks.length+'종목 · TipRanks 애널리스트 순위순<br>'
-    +esc(d.source||'')+' · 여력은 '+esc(d.price_basis||'')+' 기준</div>';
+  const k=AN_SORT;
+  const picks=(d.picks||[]).map((p,i)=>({p,i})).sort((a,b)=>{          // i = 원본 위치(프롬프트 버튼이 가리킨다)
+    const rk=(a.p.tipranks_rank||1e9)-(b.p.tipranks_rank||1e9);
+    const dt=String(b.p.date||'').localeCompare(String(a.p.date||''));
+    const up=(b.p.upside_pct==null?-1e9:b.p.upside_pct)-(a.p.upside_pct==null?-1e9:a.p.upside_pct);
+    return k==='up' ? (up||rk) : k==='date' ? (dt||rk) : (rk||dt); });
+  const usd=v=>lUsd(v, Number.isInteger(Number(v)) ? 0 : 2);
   const rows=picks.map(({p,i},j)=>{
-    const usd=v=>lUsd(v, Number.isInteger(Number(v)) ? 0 : 2);
     const pt=((p.pt_from!=null && p.pt_from!==p.pt) ? usd(p.pt_from)+'→' : '')+(p.pt!=null ? usd(p.pt) : '—');
     const avg=(p.avg_return_pct==null) ? '—' : (p.avg_return_pct>0?'+':'')+p.avg_return_pct+'%';
-    return '<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(p.name_ko||p.ticker)+'</b> <span class="pcode">'+esc(p.ticker)+'</span>'
-      +' <span class="lsub">'+lMd(p.date)+' 추천</span></div>'
+    return '<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(p.name_ko||p.ticker)+'</b> <span class="pcode">'+esc(p.ticker)+'</span></div>'
       +'<button class="copybtn" onclick="copyList(event,\'analyst\','+i+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
-      +'<div class="pinfo"><b class="lw">'+esc(p.analyst_ko||p.analyst)+'</b>('+esc(p.firm_ko||p.firm)+') · '+esc(p.action)+', 목표가 '+pt+' · 여력 '+fmtPct(p.upside_pct)+'</div>'
-      +'<div class="pinfo">TipRanks '+esc(p.tipranks_rank)+'위 · 적중률 '+esc(p.success_pct)+'% · 평균수익 '+avg
-      +(p.url ? ' · <a class="t20a" href="'+esc(p.url)+'" target="_blank" rel="noopener">기사</a>' : '')+'</div></div>';
+      +'<div class="pinfo">애널리스트 순위 <b>'+esc(p.tipranks_rank)+'위</b> · '+esc(p.analyst_ko||p.analyst)+'('+esc(p.firm_ko||p.firm)+') · 적중률 '+esc(p.success_pct)+'% · 평균 수익률 '+avg+'</div>'
+      +'<div class="pinfo">'+esc(p.action)+' · 목표가 '+pt+' · 여력 '+fmtPct(p.upside_pct)+' · '+lMd(p.date)
+      +(p.url ? ' · <a class="lnk" href="'+esc(p.url)+'" target="_blank" rel="noopener">기사</a>' : '')+'</div></div>';
   }).join('');
-  return head+(rows || '<div class="empty">추천 종목이 없습니다.</div>');
+  return lSortRow(k, AN_SORTS, 'anSort')+'<div class="sec"><div class="sechd">추천 '+picks.length+'종목</div>'
+    +(rows || '<div class="empty">추천 종목이 없습니다.</div>')+'</div>';
 }
 
-// ── 13F — 거물 공통 매매 4리스트 ──
-const F13_LISTS=[['new','① 신규 편입','신규 편입'],['add','② 비중 확대','비중 확대'],['reduce','③ 비중 축소','비중 축소'],['exit','④ 청산(전량 매도)','청산(전량 매도)']];
+// ── 13F — 신규 편입 · 비중 확대 · 비중 축소 · 청산 구간과 합의 강도 ──
 function f13Q(d){ const m=String(d.quarter||'').match(/^(\d{4})Q(\d)$/); return m ? {y:m[1], q:m[2]} : {y:'', q:''}; }
 function f13Price(x){ const k=Object.keys(x).find(k=>/^price_/.test(k)); return k ? x[k] : null; }   // 분기마다 price_0630·price_0930…
 function f13View(d){
-  const q=f13Q(d), rules=d.rules||{}, L=d.lists||{}, asOf=String(d.as_of||'');
+  const L=d.lists||{}, asOf=String(d.as_of||'');
   const mon=/^\d{4}-\d{2}/.test(asOf) ? (+asOf.slice(5,7))+'월 말' : '분기 말';
-  const head='<div class="lhead"><b>'+q.y+'년 '+q.q+'분기</b>('+esc(lMd2(asOf))+' 기준 보유) · 슈퍼투자자 '+esc(d.tracked)+'명 중 공시 '+esc(d.filed)+'명 · 같은 행동을 한 인원순, '
-    +esc(rules.min_count||2)+'명 이상<br>'+esc(d.source||'')+' · 매수:매도 = 사거나 늘린 인원 : 줄이거나 판 인원</div>';
   let h='';
-  for(const [k,lab] of F13_LISTS){
+  for(const [k,lab,side] of F13_LISTS){
     const arr=L[k]||[];
-    h+='<div class="mkt-head lst">'+lab+' <span>'+arr.length+'</span></div>';
-    h+=arr.length ? arr.map((x,j)=>{ const px=f13Price(x);
-      return '<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(x.name_ko||x.name||x.ticker)+'</b> <span class="pcode">'+esc(x.ticker)+'</span></div>'
+    h+='<div class="mkt-head '+side+'">'+lab+' <span>'+arr.length+'</span></div>';
+    h+=arr.length ? arr.map((x,j)=>'<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(x.name_ko||x.name||x.ticker)+'</b> <span class="pcode">'+esc(x.ticker)+'</span></div>'
         +'<button class="copybtn" onclick="copyList(event,\'f13\',\''+esc(x.ticker)+'\')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
-        +'<div class="pinfo"><b class="lw">'+esc(x.count)+'명</b> · 매수:매도 '+esc(x.buy)+':'+esc(x.sell)+' · '+mon+' '+lUsd(px,2)+'</div></div>'; }).join('')
-      : '<div class="empty" style="padding:16px 0">해당 종목 없음</div>';
+        +'<div class="pinfo">'+lab+' <b>'+esc(x.count)+'명</b> · 매수 '+esc(x.buy)+'명 : 매도 '+esc(x.sell)+'명 · '+mon+' 종가 '+lUsd(f13Price(x),2)+'</div></div>').join('')
+      : '<div class="empty" style="padding:16px 0">해당 종목이 없습니다.</div>';
   }
   const C=d.consensus||{};
-  const chip=a=>(a||[]).map(x=>'<span class="lc">'+esc(x.name_ko||x.ticker)+'<b>'+esc(x.buy)+':'+esc(x.sell)+'</b></span>').join('') || '<span class="lsub">없음</span>';
-  h+='<div class="mkt-head lst">합의 강도</div><div class="lcons">'
-    +'<div><span class="lk">매수 쪽으로 쏠림</span><div class="lcrow">'+chip(C.buy_tilt)+'</div></div>'
-    +'<div><span class="lk">매도 쪽으로 쏠림</span><div class="lcrow">'+chip(C.sell_tilt)+'</div></div>'
-    +'<div><span class="lk">의견이 갈림</span><div class="lcrow">'+chip(C.split)+'</div></div></div>';
-  if((d.excluded||[]).length) h+='<details class="ldet"><summary>제외한 종목 '+d.excluded.length+'</summary><ul class="lul">'
-    +d.excluded.map(x=>'<li><b>'+esc(x.ticker)+'</b> — '+esc(x.reason)+'</li>').join('')+'</ul></details>';
-  h+='<p class="lfoot">13F는 분기 말 보유 내역을 45일 안에 내는 공시라 늦게 나오고, 매수 포지션만 보이며, 분기 중 매매와 매수 가격은 나오지 않습니다.</p>';
-  return head+h;
+  const chips=a=>(a||[]).length ? '<div class="peer-row">'+a.map(x=>'<span class="peer">'+esc(x.name_ko||x.ticker)+' <b>'+esc(x.buy)+':'+esc(x.sell)+'</b></span>').join('')+'</div>'
+                                : '<div class="en-empty" style="padding:4px 0">없음</div>';
+  h+='<div class="mkt-head neu">합의 강도 <span>매수:매도 인원</span></div>'
+    +'<div class="en-sec" style="border-top:0"><div class="en-h">매수 우위</div>'+chips(C.buy_tilt)+'</div>'
+    +'<div class="en-sec"><div class="en-h">매도 우위</div>'+chips(C.sell_tilt)+'</div>'
+    +'<div class="en-sec"><div class="en-h">의견 분산</div>'+chips(C.split)+'</div>';
+  return h;
 }
 
 // ── 리스트 종목 프롬프트 — 기존 틀 그대로, 대상 소개만 리스트별 ──
@@ -1942,10 +1845,10 @@ function listPrompt(kind, a, b){
   if(kind==='top20'){
     const r=(((LISTS.top20||{})[a]||{}).top||[])[b];
     if(!r) return null;
-    if(a==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 앞으로 3개월을 보고 고른 국장 매수 후보 TOP 20에 든 종목으로 선별되었습니다.`,
+    if(a==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 향후 3개월 상승 확률과 기대수익을 기준으로 고른 국장 TOP 20 종목으로 선별되었습니다.`,
       bg:true, cmd:cmdKR(r.code,'--brief'), data:DATA_KR, code:r.code, name:r.name});
     const nm=r.kn||r.name;
-    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.name}) — 앞으로 3개월을 보고 고른 미장 매수 후보 TOP 20에 든 종목으로 선별되었습니다.`,
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.name}) — 향후 3개월 상승 확률과 기대수익을 기준으로 고른 미장 TOP 20 종목으로 선별되었습니다.`,
       bg:true, cmd:cmdUS(r.name), data:DATA_US, code:r.name, name:nm});
   }
   if(kind==='analyst'){
@@ -1966,10 +1869,10 @@ function listPrompt(kind, a, b){
     const c=(d.counts_all||{})[tk];
     let parts, buy, sell;
     if(c){
-      parts=F13_LISTS.filter(([k])=>c[k]>0).map(([k,,l])=>l+' '+c[k]+'명');
+      parts=F13_LISTS.filter(([k])=>c[k]>0).map(([k,l])=>l+' '+c[k]+'명');
       buy=(c.new||0)+(c.add||0); sell=(c.reduce||0)+(c.exit||0);
     }else{                                                         // 전체 집계가 없으면 리스트에 실린 값으로
-      parts=F13_LISTS.map(([k,,l])=>{ const x=((d.lists||{})[k]||[]).find(v=>v.ticker===tk); return x ? l+' '+x.count+'명' : ''; }).filter(Boolean);
+      parts=F13_LISTS.map(([k,l])=>{ const x=((d.lists||{})[k]||[]).find(v=>v.ticker===tk); return x ? l+' '+x.count+'명' : ''; }).filter(Boolean);
       buy=hit.buy; sell=hit.sell;
     }
     const note=`${q.y}년 ${q.q}분기 13F(${asOf} 기준 보유, 슈퍼투자자 ${d.filed}명 공시)에서 ${parts.length ? parts.join(', ')+'이었고, ' : ''}사거나 늘린 인원 대 줄이거나 판 인원은 ${buy}:${sell}입니다. `
@@ -2044,8 +1947,7 @@ function show(k){
     // 스크리닝 프롬프트는 0순위·저가매수·모멘텀 탭에서만 의미가 있다
     b.style.display = (k==='both'||k==='value_pick'||k==='momentum') ? '' : 'none';
   }
-  const rl=document.getElementById('rule');
-  if(rl) rl.style.display = LIST_TABS.includes(k) ? 'none' : '';
+  ruleFor(k);   // 리스트 탭이면 판정 줄에 그 리스트의 기준을, 스캔 탭이면 원래 판정 기준을
   render();
 }
 // 재접속 직후 주소창의 캐시버스팅 파라미터를 지워 깔끔하게 유지
