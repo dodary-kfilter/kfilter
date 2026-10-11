@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-11c (TOP 20 국장/미장 탭 분리, 여러 기준 정렬 복원) / 이전: 2026-10-11b (리스트 탭을 기존 탭 틀로) -->
+<!-- build: 2026-10-11d (TOP 20 첫 줄·정렬을 상승 확률 → 상승 시 평균으로) / 이전: 2026-10-11c (TOP 20 국장/미장 탭 분리, 여러 기준 정렬 복원) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -914,7 +914,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v40';
+const PROMPT_VER='v41';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1677,7 +1677,7 @@ function listRule(k){
   const d=LISTS[k];
   if(!d) return '기준: '+LIST_NAME[k]+' 자료를 불러오는 중…';
   if(k==='top20'){ const M=d.meta||{};
-    return '기준: <b>'+esc(M.record_date||'—')+'</b> 기록 · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·기대수익 · '+esc(M.basis||''); }
+    return '기준: <b>'+esc(M.record_date||'—')+'</b> 기록 · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·상승 시 평균 · '+esc(M.basis||''); }
   if(k==='analyst'){ const w=d.window||{};
     return '기준: 최근 4주 <b>'+lMd(w.from)+'~'+lMd(w.to)+'</b> · '+esc(d.source||'')+' · 여력은 '+esc(d.price_basis||'')+' 기준'; }
   const q=f13Q(d), r=d.rules||{};
@@ -1720,8 +1720,8 @@ function lSortRow(cur, opts, fn){
 // ── TOP 20 — 국장/미장 탭, 여러 기준 정렬(상승 확률 · 기대수익 · 시총 먼저) ──
 let T20_MK='kr';
 const T20_SORT={kr:'pup', us:'pup'};
-const T20_OPT_C=[['pup','상승 확률 높은 순'],['E','기대수익 높은 순'],['mcap','시가총액 큰 순'],['mcap_a','시가총액 작은 순'],
-  ['eup','상승 시 평균 큰 순'],['edn','하락 시 평균 손실 작은 순'],['swing','3개월 변동성 작은 순']];
+const T20_OPT_C=[['pup','상승 확률 높은 순'],['eup','상승 시 평균 큰 순'],['mcap','시가총액 큰 순'],['mcap_a','시가총액 작은 순'],
+  ['edn','하락 시 평균 손실 작은 순'],['swing','3개월 변동성 작은 순'],['E','기대수익 높은 순']];
 const T20_OPT={kr:T20_OPT_C.concat([['own','외국인 지분율 높은 순'],['a60','외국인 지분율 60일 증가 큰 순'],['per','PER 낮은 순'],['rank','선정 순위']]),
                us:T20_OPT_C.concat([['si','공매도 잔고 감소 큰 순'],['per','선행 PER 낮은 순'],['est','EPS 추정치 순상향 많은 순'],['rank','선정 순위']])};
 const T20_KEY={pup:['Pup',-1],E:['E',-1],mcap:['mcap',-1],mcap_a:['mcap',1],eup:['Eup',-1],edn:['Edn',-1],swing:['swing',1],
@@ -1742,7 +1742,7 @@ function t20View(d){
   const rows=top.map((r,i)=>({r,i})).sort((x,y)=>{                   // i = 원본 위치(프롬프트 버튼이 가리킨다)
     const vx=val(x.r), vy=val(y.r);
     if(vx==null&&vy==null) return 0; if(vx==null) return 1; if(vy==null) return -1;
-    return ((vx-vy)*dir) || ((y.r.E||0)-(x.r.E||0)) || ((y.r.Pup||0)-(x.r.Pup||0)); });
+    return ((vx-vy)*dir) || ((y.r.Eup||0)-(x.r.Eup||0)) || ((y.r.Pup||0)-(x.r.Pup||0)); });
   const seg='<div class="mk2">'+[['kr','국장'],['us','미장']].map(([m,l])=>'<button type="button"'+(m===mk?' class="on"':'')+' onclick="t20Mk(\''+m+'\')">'+l
       +' <span>'+((((d[m]||{}).top)||[]).length)+'</span></button>').join('')+'</div>';
   return seg+lSortRow(sk, T20_OPT[mk], 't20Sort')
@@ -1761,7 +1761,7 @@ function t20Card(r, rank, mk, idx){
     +'<span class="rank">'+rank+'</span>'
     +'<div class="cmid"><span class="cn">'+name+'</span>'
     +'<span class="cs"><span><span class="lk2">상승 확률</span> <b>'+esc(r.Pup)+'%</b></span>'
-    +'<span><span class="lk2">기대수익</span> '+fmtPct(r.E)+'</span>'
+    +'<span><span class="lk2">상승 시 평균</span> '+fmtPct(r.Eup)+'</span>'
     +'<span><span class="lk2">시총</span> <b>'+t20Cap(r,mk)+'</b></span></span></div>'
     +'<button class="copybtn" onclick="copyList(event,\'top20\',\''+mk+'\','+idx+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>'
     +'<span class="chev">⌄</span></div>'
@@ -1773,7 +1773,7 @@ function t20Body(r, mk){
   const sec=(t,body)=>'<div class="en-sec"><div class="en-h">'+t+'</div>'+body+'</div>';
   const idxName={SOXX:'필라델피아 반도체',KOSDAQ:'코스닥',KOSPI:'코스피',SPY:'S&P500'}[r.idx] || r.idx || '';
   const vol=(r.volsrc==='옵션 내재 변동성') ? '옵션 내재 변동성'+(r.iv?'(연 '+esc(r.iv)+'%)':'') : '120거래일 실현 변동성';
-  const outlook=vg([['상승 확률', esc(r.Pup)+'%'],['하락 확률', esc(r.Pdn)+'%'],['상승 시 평균', lP1(r.Eup)],['하락 시 평균', lP1(r.Edn)],
+  const outlook=vg([['상승 확률', esc(r.Pup)+'%'],['상승 시 평균', lP1(r.Eup)],['하락 확률', esc(r.Pdn)+'%'],['하락 시 평균', lP1(r.Edn)],
       ['기대수익', lP1(r.E)],['변동성(3개월)', r.swing==null?'—':'±'+esc(r.swing)+'%'],['베타'+(idxName?'('+esc(idxName)+')':''), r.beta==null?'—':Number(r.beta).toFixed(2)],
       ['고유 기대수익', lP0(r.alpha)]])
     +'<div class="vg-cap">변동성 산출: '+vol+' · 고유 변동성 ±'+esc(r.idio==null?'—':r.idio)+'%</div>';
@@ -1856,10 +1856,10 @@ function listPrompt(kind, a, b){
   if(kind==='top20'){
     const r=(((LISTS.top20||{})[a]||{}).top||[])[b];
     if(!r) return null;
-    if(a==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 향후 3개월 상승 확률과 기대수익을 기준으로 고른 국장 TOP 20 종목으로 선별되었습니다.`,
+    if(a==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 향후 3개월 상승 확률과 상승 시 평균 수익률을 기준으로 고른 국장 TOP 20 종목으로 선별되었습니다.`,
       bg:true, cmd:cmdKR(r.code,'--brief'), data:DATA_KR, code:r.code, name:r.name});
     const nm=r.kn||r.name;
-    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.name}) — 향후 3개월 상승 확률과 기대수익을 기준으로 고른 미장 TOP 20 종목으로 선별되었습니다.`,
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.name}) — 향후 3개월 상승 확률과 상승 시 평균 수익률을 기준으로 고른 미장 TOP 20 종목으로 선별되었습니다.`,
       bg:true, cmd:cmdUS(r.name), data:DATA_US, code:r.name, name:nm});
   }
   if(kind==='analyst'){
