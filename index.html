@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-11b (리스트 탭을 기존 탭 틀로 — 한 줄 10탭, 판정 줄·구간·카드, 정렬) / 이전: 2026-10-11a (리스트 탭 3종 추가) -->
+<!-- build: 2026-10-11c (TOP 20 국장/미장 탭 분리, 여러 기준 정렬 복원) / 이전: 2026-10-11b (리스트 탭을 기존 탭 틀로) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -212,12 +212,16 @@
   .tab[data-k="top20"] .c{color:#a371f7}   .tab.active[data-k="top20"]{border-color:#a371f7}
   .tab[data-k="analyst"] .c{color:#39c5cf} .tab.active[data-k="analyst"]{border-color:#39c5cf}
   .tab[data-k="f13"] .c{color:#ff7b72}     .tab.active[data-k="f13"]{border-color:#ff7b72}
-  .srt{display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin:0 0 4px}
-  .srt span{font-size:12px; color:var(--dim); margin-right:2px}
-  .srt button{font-family:'IBM Plex Sans KR',sans-serif; font-size:12px; font-weight:600; color:var(--dim); background:var(--panel);
-    border:1px solid var(--line); border-radius:8px; padding:7px 12px; cursor:pointer}
-  .srt button.on{color:var(--txt); border-color:#8b949e; background:#161d29}
-  .srt button:focus-visible{outline:2px solid var(--port); outline-offset:2px}
+  .srt{display:flex; gap:8px; align-items:center; margin:0 0 10px; font-size:12px; color:var(--dim)}
+  .srt select{font-family:'IBM Plex Sans KR',sans-serif; font-size:12.5px; color:var(--txt); background:var(--panel);
+    border:1px solid var(--line); border-radius:8px; padding:7px 8px; flex:1; max-width:280px}
+  .srt select:focus-visible{outline:2px solid var(--port); outline-offset:2px}
+  .mk2{display:flex; gap:8px; margin:0 0 10px}
+  .mk2 button{flex:1; font-family:'IBM Plex Sans KR',sans-serif; font-size:13px; font-weight:700; color:var(--dim); background:var(--panel);
+    border:1px solid var(--line); border-radius:9px; padding:10px; cursor:pointer}
+  .mk2 button span{font-family:'Space Mono',monospace; font-size:12px; font-weight:400; margin-left:4px}
+  .mk2 button.on{color:var(--txt); border-color:#a371f7}
+  .mk2 button:focus-visible{outline:2px solid var(--port); outline-offset:2px}
   .cs .lk2{color:var(--dim); font-family:'IBM Plex Sans KR',sans-serif; font-weight:400}
   .card-b > .en-sec:first-child{border-top:0}
   .lst .en-line{flex-wrap:wrap}
@@ -1709,14 +1713,21 @@ function renderList(k){
 }
 function retryList(k){ LIST_ERR[k]=''; renderList(k); }
 function lSortRow(cur, opts, fn){
-  return '<div class="srt"><span>정렬</span>'+opts.map(([v,l])=>'<button type="button"'+(v===cur?' class="on"':'')+' onclick="'+fn+'(\''+v+'\')">'+l+'</button>').join('')+'</div>';
+  return '<label class="srt">정렬 <select onchange="'+fn+'(this.value)" aria-label="정렬 기준">'
+    +opts.map(([v,l])=>'<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>').join('')+'</select></label>';
 }
 
-// ── TOP 20 — 국장·미장 구간, 상승 확률 · 기대수익 · 시총 정렬 ──
-let T20_SORT='pup';
-const T20_SORTS=[['pup','상승 확률'],['E','기대수익'],['mcap','시총']];
-const T20_KEY={pup:'Pup', E:'E', mcap:'mcap'};
-function t20Sort(k){ T20_SORT=k; renderList('top20'); }
+// ── TOP 20 — 국장/미장 탭, 여러 기준 정렬(상승 확률 · 기대수익 · 시총 먼저) ──
+let T20_MK='kr';
+const T20_SORT={kr:'pup', us:'pup'};
+const T20_OPT_C=[['pup','상승 확률 높은 순'],['E','기대수익 높은 순'],['mcap','시가총액 큰 순'],['mcap_a','시가총액 작은 순'],
+  ['eup','상승 시 평균 큰 순'],['edn','하락 시 평균 손실 작은 순'],['swing','3개월 변동성 작은 순']];
+const T20_OPT={kr:T20_OPT_C.concat([['own','외국인 지분율 높은 순'],['a60','외국인 지분율 60일 증가 큰 순'],['per','PER 낮은 순'],['rank','선정 순위']]),
+               us:T20_OPT_C.concat([['si','공매도 잔고 감소 큰 순'],['per','선행 PER 낮은 순'],['est','EPS 추정치 순상향 많은 순'],['rank','선정 순위']])};
+const T20_KEY={pup:['Pup',-1],E:['E',-1],mcap:['mcap',-1],mcap_a:['mcap',1],eup:['Eup',-1],edn:['Edn',-1],swing:['swing',1],
+  own:['own',-1],a60:['a60',-1],per:['per',1],si:['si',1],est:['est',-1],rank:['rank',1]};
+function t20Mk(m){ if(m===T20_MK) return; T20_MK=m; renderList('top20'); }
+function t20Sort(k){ T20_SORT[T20_MK]=k; renderList('top20'); }
 function t20Money(v,mk){ if(v==null||isNaN(v)) return '—'; return mk==='kr' ? Math.round(v).toLocaleString('ko-KR')+'원' : lUsd(v,2); }
 function t20Cap(r,mk){
   if(!r.mcap) return '—';
@@ -1724,19 +1735,19 @@ function t20Cap(r,mk){
   return r.mcap>=10000 ? (r.mcap/10000).toFixed(1)+'조'+unit : Math.round(r.mcap).toLocaleString('ko-KR')+'억'+unit;
 }
 function t20View(d){
-  const k=T20_KEY[T20_SORT]||'Pup';
-  let h=lSortRow(T20_SORT, T20_SORTS, 't20Sort');
-  for(const [mk,lab,cls] of [['kr','국장','kospi'],['us','미장','kosdaq']]){
-    const top=((d[mk]||{}).top)||[];
-    const rows=top.map((r,i)=>({r,i})).sort((x,y)=>{                 // i = 원본 위치(프롬프트 버튼이 가리킨다)
-      const vx=x.r[k], vy=y.r[k];
-      if(vx==null&&vy==null) return 0; if(vx==null) return 1; if(vy==null) return -1;
-      return (vy-vx) || ((y.r.E||0)-(x.r.E||0)) || ((y.r.Pup||0)-(x.r.Pup||0)); });
-    h+='<div class="mkt-head '+cls+'">'+lab+' <span>'+top.length+'</span></div>';
-    h+=rows.length ? '<div class="cards">'+rows.map((x,j)=>t20Card(x.r, j+1, mk, x.i)).join('')+'</div>'
-                   : '<div class="empty" style="padding:20px 0">종목이 없습니다.</div>';
-  }
-  return h;
+  const mk=T20_MK, top=((d[mk]||{}).top)||[];
+  const sk=T20_OPT[mk].some(([v])=>v===T20_SORT[mk]) ? T20_SORT[mk] : 'pup';
+  const [k,dir]=T20_KEY[sk];
+  const val=r=> k==='est' ? ((r.up==null&&r.dn==null) ? null : (r.up||0)-(r.dn||0)) : r[k];
+  const rows=top.map((r,i)=>({r,i})).sort((x,y)=>{                   // i = 원본 위치(프롬프트 버튼이 가리킨다)
+    const vx=val(x.r), vy=val(y.r);
+    if(vx==null&&vy==null) return 0; if(vx==null) return 1; if(vy==null) return -1;
+    return ((vx-vy)*dir) || ((y.r.E||0)-(x.r.E||0)) || ((y.r.Pup||0)-(x.r.Pup||0)); });
+  const seg='<div class="mk2">'+[['kr','국장'],['us','미장']].map(([m,l])=>'<button type="button"'+(m===mk?' class="on"':'')+' onclick="t20Mk(\''+m+'\')">'+l
+      +' <span>'+((((d[m]||{}).top)||[]).length)+'</span></button>').join('')+'</div>';
+  return seg+lSortRow(sk, T20_OPT[mk], 't20Sort')
+    +(rows.length ? '<div class="cards">'+rows.map((x,j)=>t20Card(x.r, j+1, mk, x.i)).join('')+'</div>'
+                  : '<div class="empty" style="padding:20px 0">종목이 없습니다.</div>');
 }
 function t20Card(r, rank, mk, idx){
   const isKR=(mk==='kr'), id='t20-'+mk+'-'+(r.code||r.name);
@@ -1792,7 +1803,7 @@ function t20Body(r, mk){
 
 // ── 애널 추천 — 애널리스트 순위 · 여력 · 최신 추천 정렬 ──
 let AN_SORT='rank';
-const AN_SORTS=[['rank','애널리스트 순위'],['up','여력'],['date','최신 추천']];
+const AN_SORTS=[['rank','애널리스트 순위 순'],['up','여력 큰 순'],['date','최신 추천 순']];
 function anSort(k){ AN_SORT=k; renderList('analyst'); }
 function anView(d){
   const k=AN_SORT;
