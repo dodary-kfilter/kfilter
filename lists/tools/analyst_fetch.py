@@ -5,6 +5,7 @@
 사용(저장소 루트에서):
   python3 lists/tools/analyst_fetch.py          # analyst.json과 history/analyst/날짜.json을 쓴다
   python3 lists/tools/analyst_fetch.py --dry    # 쓰지 않고 요약만 본다
+  GitHub Actions(.github/workflows/analyst.yml)가 매주 토요일 09:00(한국시간)에 같은 명령을 돌린다
 
 - 순위표: TipRanks 애널리스트 순위 상위 100명 (api/experts/getTop)
 - 의견: 애널리스트별 담당 종목의 최신 의견 (api/experts/getStocks)
@@ -102,7 +103,7 @@ def main(argv):
         g['latest'] = max(b['date'] for b in g['by'])
         g['name_ko'] = names.get(g['ticker'], '')
     stocks = sorted(agg.values(), key=lambda g: (-g['count'], g['best_rank'], g['ticker']))
-    out = {'version': 2, 'updated': today.isoformat(),
+    out = {'version': 2, 'updated': today.isoformat(), 'fetched_at': dt.datetime.now(KST).strftime('%Y-%m-%d %H:%M KST'),
            'window': {'from': cut, 'to': today.isoformat(), 'days': DAYS},
            'source': 'TipRanks 애널리스트 순위와 애널리스트별 최신 의견', 'analysts_tracked': 'TipRanks 약 12,500명',
            'rules': {'rank_view': '상위 %d위 애널리스트 각자의 최근 %d일 매수 의견' % (N_RANK, DAYS),
