@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-11d (TOP 20 첫 줄·정렬을 상승 확률 → 상승 시 평균으로) / 이전: 2026-10-11c (TOP 20 국장/미장 탭 분리, 여러 기준 정렬 복원) -->
+<!-- build: 2026-10-11e (애널 추천 — TipRanks 상위 애널리스트 직접 수집, 랭킹순·추천 수순) / 이전: 2026-10-11d (TOP 20 상승 확률 → 상승 시 평균) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -230,6 +230,9 @@
   .mkt-head.buy{color:#f85149; border-bottom:1px solid rgba(248,81,73,.25)}
   .mkt-head.sell{color:#4493f8; border-bottom:1px solid rgba(68,147,248,.25)}
   .mkt-head.neu{color:var(--dim); border-bottom:1px solid var(--line)}
+  .mkt-head.an{color:#39c5cf; border-bottom:1px solid rgba(57,197,207,.25); flex-wrap:wrap; row-gap:2px}
+  .mkt-head.an span{flex-basis:100%; font-family:'IBM Plex Sans KR',sans-serif; font-size:11.5px; letter-spacing:0}
+  .mk2.an button.on{border-color:#39c5cf}
 </style>
 </head>
 <body>
@@ -914,7 +917,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v41';
+const PROMPT_VER='v42';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1664,7 +1667,8 @@ function lCnt(k){
   // 탭 숫자 = 화면에 나오는 행 수 (기존 탭처럼 구간 합)
   const d=LISTS[k]; if(!d) return null;
   if(k==='top20') return (((d.kr||{}).top)||[]).length+(((d.us||{}).top)||[]).length;
-  if(k==='analyst') return (d.picks||[]).length;
+  if(k==='analyst'){ const top=((d.rules||{}).rank_top)||25, set=new Set();
+    (d.analysts||[]).forEach(a=>{ if(a.rank<=top) (a.picks||[]).forEach(p=>set.add(p.ticker)); }); return set.size; }
   return F13_LISTS.reduce((a,[x])=>a+(((d.lists||{})[x])||[]).length, 0);
 }
 function listBadge(k){
@@ -1678,8 +1682,9 @@ function listRule(k){
   if(!d) return '기준: '+LIST_NAME[k]+' 자료를 불러오는 중…';
   if(k==='top20'){ const M=d.meta||{};
     return '기준: <b>'+esc(M.record_date||'—')+'</b> 기록 · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·상승 시 평균 · '+esc(M.basis||''); }
-  if(k==='analyst'){ const w=d.window||{};
-    return '기준: 최근 4주 <b>'+lMd(w.from)+'~'+lMd(w.to)+'</b> · '+esc(d.source||'')+' · 여력은 '+esc(d.price_basis||'')+' 기준'; }
+  if(k==='analyst'){ const w=d.window||{}, R=d.rules||{};
+    return '기준: TipRanks 애널리스트 순위 · 최근 <b>'+esc(w.days||28)+'일</b>('+lMd(w.from)+'~'+lMd(w.to)+') 미국 상장 종목 매수 의견 · 랭킹순 <b>상위 '+esc(R.rank_top||25)
+      +'위</b> · 추천 수순 <b>상위 '+esc(R.pool||100)+'위 중 '+esc(R.min_count||2)+'명 이상</b>'+((d.failed||[]).length ? ' · 못 받은 애널리스트 '+d.failed.length+'명' : ''); }
   const q=f13Q(d), r=d.rules||{};
   return '기준: <b>'+q.y+'년 '+q.q+'분기</b> 13F('+esc(lMd2(d.as_of))+' 보유) · 슈퍼투자자 '+esc(d.tracked)+'명 중 공시 <b>'+esc(d.filed)+'명</b> · 같은 행동 <b>'
     +esc(r.min_count||2)+'명 이상</b>'+(r.exclude?' · 제외: '+esc(r.exclude):'');
@@ -1801,29 +1806,44 @@ function t20Body(r, mk){
     +sec('중장기 추세', trend)+sec('실적·수급', fund);
 }
 
-// ── 애널 추천 — 애널리스트 순위 · 여력 · 최신 추천 정렬 ──
-let AN_SORT='rank';
-const AN_SORTS=[['rank','애널리스트 순위 순'],['up','여력 큰 순'],['date','최신 추천 순']];
-function anSort(k){ AN_SORT=k; renderList('analyst'); }
+// ── 애널 추천 — TipRanks 상위 애널리스트: 랭킹순(상위 25위 각자의 매수 의견) / 추천 수순(상위 100위 중 여러 명이 매수한 종목) ──
+let AN_VIEW='rank';
+const AN_ACT={maintained:'의견 유지', reiterated:'의견 재확인', initiatedcoverage:'신규 분석', initiated:'신규 분석', rated:'의견 제시', upgraded:'의견 상향', downgraded:'의견 하향'};
+function anMode(m){ if(m===AN_VIEW) return; AN_VIEW=m; renderList('analyst'); }
 function anView(d){
-  const k=AN_SORT;
-  const picks=(d.picks||[]).map((p,i)=>({p,i})).sort((a,b)=>{          // i = 원본 위치(프롬프트 버튼이 가리킨다)
-    const rk=(a.p.tipranks_rank||1e9)-(b.p.tipranks_rank||1e9);
-    const dt=String(b.p.date||'').localeCompare(String(a.p.date||''));
-    const up=(b.p.upside_pct==null?-1e9:b.p.upside_pct)-(a.p.upside_pct==null?-1e9:a.p.upside_pct);
-    return k==='up' ? (up||rk) : k==='date' ? (dt||rk) : (rk||dt); });
+  const R=d.rules||{}, top=R.rank_top||25, pool=R.pool||100, minc=R.min_count||2, days=(d.window||{}).days||28;
+  const A=(d.analysts||[]).filter(a=>a.rank<=top).sort((x,y)=>x.rank-y.rank);
+  const S=(d.stocks||[]).filter(g=>g.count>=minc).slice().sort((x,y)=>(y.count-x.count)||(x.best_rank-y.best_rank)||String(x.ticker).localeCompare(String(y.ticker)));
+  const SM={}; (d.stocks||[]).forEach(g=>{ SM[g.ticker]=g; });
+  const nm=t=>{ const g=SM[t]; return g ? (g.name_ko||g.name||t) : t; };
   const usd=v=>lUsd(v, Number.isInteger(Number(v)) ? 0 : 2);
-  const rows=picks.map(({p,i},j)=>{
-    const pt=((p.pt_from!=null && p.pt_from!==p.pt) ? usd(p.pt_from)+'→' : '')+(p.pt!=null ? usd(p.pt) : '—');
-    const avg=(p.avg_return_pct==null) ? '—' : (p.avg_return_pct>0?'+':'')+p.avg_return_pct+'%';
-    return '<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(p.name_ko||p.ticker)+'</b> <span class="pcode">'+esc(p.ticker)+'</span></div>'
-      +'<button class="copybtn" onclick="copyList(event,\'analyst\','+i+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
-      +'<div class="pinfo">애널리스트 순위 <b>'+esc(p.tipranks_rank)+'위</b> · '+esc(p.analyst_ko||p.analyst)+'('+esc(p.firm_ko||p.firm)+') · 적중률 '+esc(p.success_pct)+'% · 평균 수익률 '+avg+'</div>'
-      +'<div class="pinfo">'+esc(p.action)+' · 목표가 '+pt+' · 여력 '+fmtPct(p.upside_pct)+' · '+lMd(p.date)
-      +(p.url ? ' · <a class="lnk" href="'+esc(p.url)+'" target="_blank" rel="noopener">기사</a>' : '')+'</div></div>';
+  const seg='<div class="mk2 an">'
+    +'<button type="button"'+(AN_VIEW==='rank'?' class="on"':'')+' onclick="anMode(\'rank\')">랭킹순 <span>'+A.length+'명</span></button>'
+    +'<button type="button"'+(AN_VIEW==='count'?' class="on"':'')+' onclick="anMode(\'count\')">추천 수순 <span>'+S.length+'종목</span></button></div>';
+  if(AN_VIEW==='count'){
+    const rows=S.map((g,j)=>{ const b=(g.by||[])[0]||{};
+      return '<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(nm(g.ticker))+'</b> <span class="pcode">'+esc(g.ticker)+'</span></div>'
+        +'<button class="copybtn" onclick="copyList(event,\'analyst\',\''+esc(g.ticker)+'\')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
+        +'<div class="pinfo"><b>'+esc(g.count)+'명</b> 매수 · 최고 '+esc(b.rank)+'위 '+esc(b.name)+'('+esc(b.company)+') · 최근 '+lMd(g.latest)+'</div>'
+        +'<div class="pinfo">추천 순위 '+(g.by||[]).map(x=>esc(x.rank)).join('·')+'위</div></div>'; }).join('');
+    return seg+'<div class="sec"><div class="sechd">상위 '+pool+'위 중 '+minc+'명 이상 매수 '+S.length+'종목</div>'
+      +(rows || '<div class="empty">해당 종목이 없습니다.</div>')+'</div>';
+  }
+  const body=A.map(a=>{
+    const st=[a.company, a.success_pct!=null ? '적중률 '+a.success_pct+'%' : '', a.avg_return_pct!=null ? '평균 수익률 '+(a.avg_return_pct>0?'+':'')+a.avg_return_pct+'%' : '']
+      .filter(Boolean).map(esc).join(' · ');
+    const picks=a.picks||[];
+    return '<div class="mkt-head an">'+esc(a.rank)+'위 '+esc(a.name)+' <span>'+st+'</span></div>'
+      +(picks.length ? picks.map(p=>{ const g=SM[p.ticker]||{};
+          const pt=((p.pt_prev!=null && p.pt!=null && p.pt_prev!==p.pt) ? usd(p.pt_prev)+'→' : '')+(p.pt!=null ? usd(p.pt) : '—');
+          return '<div class="pcard"><div class="prow"><div class="pname"><b>'+esc(nm(p.ticker))+'</b> <span class="pcode">'+esc(p.ticker)+'</span></div>'
+            +'<button class="copybtn" onclick="copyList(event,\'analyst\',\''+esc(p.ticker)+'\','+Number(a.rank)+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
+            +'<div class="pinfo">'+lMd(p.date)+' · '+esc(AN_ACT[p.action]||p.action||'의견')+' · 목표가 '+pt
+            +((g.count||0)>1 ? ' · 상위 '+pool+'위 중 <b>'+esc(g.count)+'명</b> 매수' : '')
+            +(p.link ? ' · <a class="lnk" href="'+esc(p.link)+'" target="_blank" rel="noopener">기사</a>' : '')+'</div></div>'; }).join('')
+        : '<div class="en-empty" style="padding:8px 2px">최근 '+days+'일 미국 상장 종목 매수 의견 없음</div>');
   }).join('');
-  return lSortRow(k, AN_SORTS, 'anSort')+'<div class="sec"><div class="sechd">추천 '+picks.length+'종목</div>'
-    +(rows || '<div class="empty">추천 종목이 없습니다.</div>')+'</div>';
+  return seg+(body || '<div class="empty">애널리스트 자료가 없습니다.</div>');
 }
 
 // ── 13F — 신규 편입 · 비중 확대 · 비중 축소 · 청산 구간과 합의 강도 ──
@@ -1863,12 +1883,16 @@ function listPrompt(kind, a, b){
       bg:true, cmd:cmdUS(r.name), data:DATA_US, code:r.name, name:nm});
   }
   if(kind==='analyst'){
-    const p=((LISTS.analyst||{}).picks||[])[a];
-    if(!p) return null;
-    const nm=p.name_ko||p.ticker;
-    const note=`${lMd2(p.date)} ${p.firm_ko||p.firm}의 ${p.analyst_ko||p.analyst}(TipRanks 애널리스트 순위 ${p.tipranks_rank}위)가 낸 의견은 ${p.action}입니다.`;
-    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${p.ticker}) — 월가 상위 애널리스트가 추천한 종목으로 선별되었습니다.`, note,
-      bg:true, cmd:cmdUS(p.ticker), data:DATA_US, code:p.ticker, name:nm});
+    const d=LISTS.analyst;
+    if(!d) return null;
+    const g=(d.stocks||[]).find(x=>x.ticker===a);
+    if(!g || !(g.by||[]).length) return null;
+    const nm=g.name_ko||g.name||a, w=d.window||{}, pool=((d.rules||{}).pool)||100;
+    const who=((b!=null) ? g.by.find(x=>x.rank===Number(b)) : null) || g.by[0];      // 랭킹순에서 누르면 그 애널리스트, 추천 수순이면 최고 순위
+    const note=`TipRanks 애널리스트 순위 ${who.rank}위인 ${who.name}(${who.company})가 ${lMd2(who.date)}에 매수 의견을 냈습니다. `
+      +`최근 ${w.days||28}일(${lMd2(w.from)}~${lMd2(w.to)}) 동안 상위 ${pool}위 애널리스트 가운데 이 종목에 매수 의견을 낸 사람은 ${g.count}명입니다.`;
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${a}) — 월가 상위 애널리스트가 매수 의견을 낸 종목으로 선별되었습니다.`, note,
+      bg:true, cmd:cmdUS(a), data:DATA_US, code:a, name:nm});
   }
   if(kind==='f13'){
     const d=LISTS.f13, tk=a;
