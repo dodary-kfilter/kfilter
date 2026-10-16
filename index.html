@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-17a (시황 종합 리포트, 하단 새로고침 → 맨 위로) / 이전: 2026-10-16a (검색 탭에 지수 리포트 5종) -->
+<!-- build: 2026-10-17b (저가매수형 v2 — 돈 잘 버는데 기업가치가 업종보다 낮은 순) / 이전: 2026-10-17a (시황 종합 리포트) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -777,7 +777,7 @@ function buildSearchOne(code, name){
 
 function buildValueOne(x){
   if(!x) return '저가매수형 종목이 없습니다.';
-  return reportPrompt({kind:'one', subj:'이 종목', title:`${x.name}(${x.code}) — 주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.`, bg:true, cmd:cmdKR(x.code,'--brief'), data:DATA_KR, code:x.code, name:x.name});
+  return reportPrompt({kind:'one', subj:'이 종목', title:`${x.name}(${x.code}) — 1년 영업이익률이 업종보다 높은데 기업가치는 업종보다 낮게 매겨진 종목으로 선별되었습니다.`, bg:true, cmd:cmdKR(x.code,'--brief'), data:DATA_KR, code:x.code, name:x.name});
 }
 
 function buildMomentumOne(x){
@@ -795,7 +795,7 @@ function batchOf(title, items){
 function buildValuePrompt(){
   const items=(DATA&&DATA.value_pick)||[];
   if(!items.length) return '오늘 저가매수형 자격을 충족한 종목이 없다. (자격 미달이면 채우지 않는다)';
-  return batchOf('주가는 크게 하락했으나 실적은 유지되고 있는 종목으로 선별되었습니다.', items);
+  return batchOf('1년 영업이익률이 업종보다 높은데 기업가치는 업종보다 낮게 매겨진 종목으로 선별되었습니다.', items);
 }
 
 function buildMomentumPrompt(){
@@ -922,7 +922,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v44';
+const PROMPT_VER='v45';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1618,7 +1618,13 @@ function sectionScreen(items, isV){
     const perTxt = (x.per!=null? x.per.toFixed(1)+'배':'—')
       + (val.sector_valid? ' <span style="color:var(--dim)">(업종 '+val.sectorPer.toFixed(1)+')</span>'
                           : ' <span style="color:#6e7681">(업종비교 무효)</span>');
-    const mid = isV
+    // 저가매수형 v2 — 기업가치/영업이익(업종) · 1년 영업이익률(업종) · 고점 대비 · 반기 매출. 옛 자료(v1)면 예전 줄 그대로
+    const midV2 = (isV && x.ev_ebit!=null)
+      ? '기업가치/영업이익 '+x.ev_ebit.toFixed(1)+'배 <span style="color:var(--dim)">(업종 '+(x.sector_ev_ebit!=null?x.sector_ev_ebit.toFixed(1):'—')+(x.ev_basis==='시총'?' · 시총 기준':'')+')</span>'
+        +' · 영업이익률 '+(x.opm_ttm!=null?x.opm_ttm.toFixed(0)+'%':'—')+' <span style="color:var(--dim)">(업종 '+(x.sector_opm!=null?x.sector_opm.toFixed(0)+'%':'—')+')</span>'
+        +' · 고점 대비 '+fmtPct(x.dd_close)+' · 반기 매출 '+(x.sales_h_growth!=null?(x.sales_h_growth>=0?'+':'')+x.sales_h_growth.toFixed(0)+'%':'—')
+      : null;
+    const mid = midV2 ? midV2 : isV
       ? '지수대비 '+(x.excess_dd!=null?x.excess_dd.toFixed(0)+'p':'—')+' · 업종대비 '+(x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(0)+'p':'—')+' · 낙폭 '+fmtPct(x.dd_close)+' · 매출 '+(x.sales_growth!=null?(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(0)+'%':'—')+' · 영업이익률 '+(x.opm_prev!=null?x.opm_prev.toFixed(1):'—')+'→'+(x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—')
       : '정배열 '+x.entry_days+'일차 · 1개월 '+fmtPct(x.r1)+' · 20일선 '+fmtPct(x.ma20_gap)+' · 거래량 '+(x.v2060?x.v2060.toFixed(2):'—')+'배';
     const warn = (!isV && x.ma20_gap>25) ? ' <b style="color:#f85149">과열</b>' : '';
@@ -1630,7 +1636,8 @@ function sectionScreen(items, isV){
       +'<div class="pinfo">PER '+perTxt+' · PBR '+(val.pbr!=null?val.pbr:'—')+' · '+supTxt+'</div>'
       +'</div>';
   }).join('');
-  return '<div class="sec"><div class="sechd">'+(isV?'저가매수형':'모멘텀형')+' '+items.length+'종목</div>'+rows+'</div>';
+  const vsub = (isV && items.length && items[0].ev_ebit!=null) ? ' <span style="color:var(--dim);font-weight:400">1년 영업이익률 ≥ 업종 · 기업가치/영업이익 업종 대비 낮은 순</span>' : '';
+  return '<div class="sec"><div class="sechd">'+(isV?'저가매수형':'모멘텀형')+' '+items.length+'종목'+vsub+'</div>'+rows+'</div>';
 }
 function fmtPct(v){ if(v==null) return '—'; const t=(v>=0?'+':'')+v.toFixed(1)+'%'; return '<span style="color:'+(v>=0?'#f85149':'#4493f8')+'">'+t+'</span>'; }
 function fmtN(v){ return v==null?'—':Number(v).toLocaleString('ko-KR'); }
