@@ -6,7 +6,7 @@ on:
     #   ※ GitHub 예약은 부하 시 지연될 수 있음
     - cron: '0 22 * * *'
   push:
-    # 이 파일을 올리거나 고칠 때 한 번 돌아 접속을 시험한다
+    # 이 파일을 올리거나 고칠 때 한 번 돌아 접속을 시험한다 (실패 시 로그에 HTTP 상태가 남는다)
     branches: [main]
     paths: ['.github/workflows/analyst.yml']
   workflow_dispatch:
