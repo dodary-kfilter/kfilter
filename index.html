@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-17d (TOP 20 기준 줄에 숫자 갱신일·판단일 분리) / 이전: 2026-10-17c (저가매수형 v2.1) -->
+<!-- build: 2026-10-17e (첫 화면·새로고침 = 종목 검색 탭) / 이전: 2026-10-17d (TOP 20 숫자 갱신일·판단일 분리) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -251,7 +251,7 @@
   </header>
   <div class="rule" id="rule">판정 기준을 불러오는 중…</div>
   <div class="tabs">
-    <div class="tab active" data-k="foreign" onclick="show('foreign')"><div class="c" id="c-foreign">—</div><div class="l">외국인</div></div>
+    <div class="tab" data-k="foreign" onclick="show('foreign')"><div class="c" id="c-foreign">—</div><div class="l">외국인</div></div>
     <div class="tab" data-k="pension" onclick="show('pension')"><div class="c" id="c-pension">—</div><div class="l">연기금</div></div>
     <div class="tab" data-k="both" onclick="show('both')"><div class="c" id="c-both">—</div><div class="l">동시 수급</div></div>
     <div class="tab" data-k="value_pick" onclick="show('value_pick')"><div class="c" id="c-value_pick">—</div><div class="l">저가매수</div></div>
@@ -260,16 +260,16 @@
     <div class="tab" data-k="analyst" onclick="show('analyst')"><div class="c" id="c-analyst">—</div><div class="l">애널 추천</div></div>
     <div class="tab" data-k="f13" onclick="show('f13')"><div class="c" id="c-f13">—</div><div class="l">13F</div></div>
     <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">관심종목</div></div>
-    <div class="tab" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
+    <div class="tab active" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
   <div class="refresh">
     <button onclick="toTop()">↑ 맨 위로</button>
-    <button id="screenbtn" class="screenbtn" onclick="copyScreen(event)">일괄 스크리닝 프롬프트</button>
+    <button id="screenbtn" class="screenbtn" style="display:none" onclick="copyScreen(event)">일괄 스크리닝 프롬프트</button>
   </div>
 </div>
 <script>
-let DATA=null, CUR='foreign';
+let DATA=null, CUR='search';   // 처음 오거나 새로고침하면 종목 검색 탭(지수 리포트가 맨 위)
 const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 function naverUrl(code){
   return IS_MOBILE
