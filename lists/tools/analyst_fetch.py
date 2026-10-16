@@ -3,9 +3,10 @@
 """월가 상위 애널리스트 추천 — TipRanks에서 직접 받아 lists/analyst.json을 만든다.
 
 사용(저장소 루트에서):
-  python3 lists/tools/analyst_fetch.py          # analyst.json과 history/analyst/날짜.json을 쓴다
-  python3 lists/tools/analyst_fetch.py --dry    # 쓰지 않고 요약만 본다
-  GitHub Actions(.github/workflows/analyst.yml)가 매주 토요일 09:00(한국시간)에 같은 명령을 돌린다
+  python3 lists/tools/analyst_fetch.py              # analyst.json을 쓴다
+  python3 lists/tools/analyst_fetch.py --history    # 기록(history/analyst/날짜.json)도 함께 남긴다 — 주 1회
+  python3 lists/tools/analyst_fetch.py --dry        # 쓰지 않고 요약만 본다
+  GitHub Actions(.github/workflows/analyst.yml)가 매일 07:00(한국시간)에 돌리고, 토요일엔 기록도 남긴다
 
 - 순위표: TipRanks 애널리스트 순위 상위 100명 (api/experts/getTop)
 - 의견: 애널리스트별 담당 종목의 최신 의견 (api/experts/getStocks)
@@ -56,6 +57,7 @@ def stocks_of(a):
 
 def main(argv):
     dry = '--dry' in argv
+    keep_hist = '--history' in argv
     today = dt.datetime.now(KST).date()
     cut = (today - dt.timedelta(days=DAYS - 1)).isoformat()
     top = get(API + 'getTop/?expertType=analyst&numExperts=%d' % N_POOL)
@@ -122,12 +124,15 @@ def main(argv):
     print('화면에 나오는데 한글명이 없는 티커 %d개: %s' % (len(miss), ', '.join(miss)))
     if dry:
         return 0
-    os.makedirs(HIST, exist_ok=True)
-    for path in (OUT, os.path.join(HIST, today.isoformat() + '.json')):
+    paths = [OUT]
+    if keep_hist:                                                                      # 매일 쌓으면 저장소가 불어서 기록은 주 1회만
+        os.makedirs(HIST, exist_ok=True)
+        paths.append(os.path.join(HIST, today.isoformat() + '.json'))
+    for path in paths:
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
             f.write('\n')
-    print('저장:', os.path.relpath(OUT, ROOT), '·', os.path.relpath(os.path.join(HIST, today.isoformat() + '.json'), ROOT))
+    print('저장:', ' · '.join(os.path.relpath(p, ROOT) for p in paths))
     return 0
 
 
