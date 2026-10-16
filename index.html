@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-17b (저가매수형 v2 — 돈 잘 버는데 기업가치가 업종보다 낮은 순) / 이전: 2026-10-17a (시황 종합 리포트) -->
+<!-- build: 2026-10-17c (저가매수형 v2.1 — 최근 분기 가중·카드에 반기 영업이익·순현금, PBR 뺌) / 이전: 2026-10-17b (저가매수형 v2) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1624,6 +1624,12 @@ function sectionScreen(items, isV){
         +' · 영업이익률 '+(x.opm_ttm!=null?x.opm_ttm.toFixed(0)+'%':'—')+' <span style="color:var(--dim)">(업종 '+(x.sector_opm!=null?x.sector_opm.toFixed(0)+'%':'—')+')</span>'
         +' · 고점 대비 '+fmtPct(x.dd_close)+' · 반기 매출 '+(x.sales_h_growth!=null?(x.sales_h_growth>=0?'+':'')+x.sales_h_growth.toFixed(0)+'%':'—')
       : null;
+    // 둘째 줄 — 저가매수형 v2는 PBR(자산 잣대) 대신 반기 영업이익 증감, 순현금이 큰 회사는 그 비중을 보인다
+    const line2 = (isV && x.ev_ebit!=null)
+      ? 'PER '+perTxt+' · 반기 영업이익 '+(x.op_h_turn ? '<span style="color:#f85149">흑자 전환</span>' : (x.op_h_growth!=null ? fmtPct(x.op_h_growth) : '—'))
+        +((x.net_cash_flag && x.net_cash_ratio!=null) ? ' · <span style="color:var(--pension)">순현금 시총의 '+Math.round(x.net_cash_ratio*100)+'%</span>' : '')
+        +' · '+supTxt
+      : 'PER '+perTxt+' · PBR '+(val.pbr!=null?val.pbr:'—')+' · '+supTxt;
     const mid = midV2 ? midV2 : isV
       ? '지수대비 '+(x.excess_dd!=null?x.excess_dd.toFixed(0)+'p':'—')+' · 업종대비 '+(x.vs_sector_dd!=null?x.vs_sector_dd.toFixed(0)+'p':'—')+' · 낙폭 '+fmtPct(x.dd_close)+' · 매출 '+(x.sales_growth!=null?(x.sales_growth>=0?'+':'')+x.sales_growth.toFixed(0)+'%':'—')+' · 영업이익률 '+(x.opm_prev!=null?x.opm_prev.toFixed(1):'—')+'→'+(x.opm_recent!=null?x.opm_recent.toFixed(1)+'%':'—')
       : '정배열 '+x.entry_days+'일차 · 1개월 '+fmtPct(x.r1)+' · 20일선 '+fmtPct(x.ma20_gap)+' · 거래량 '+(x.v2060?x.v2060.toFixed(2):'—')+'배';
@@ -1633,10 +1639,10 @@ function sectionScreen(items, isV){
       +' <span style="color:var(--dim);font-size:11px">'+esc(x.sector||'')+'</span></div>'
       +'<button class="copybtn" onclick="copyOne(event,\''+x.code+'\','+(isV?'1':'0')+')" title="이 종목 정밀 분석 프롬프트">프롬프트</button></div>'
       +'<div class="pinfo">'+fmtN(x.cur)+'원 '+fmtPct(x.changeRate)+' · '+mid+warn+'</div>'
-      +'<div class="pinfo">PER '+perTxt+' · PBR '+(val.pbr!=null?val.pbr:'—')+' · '+supTxt+'</div>'
+      +'<div class="pinfo">'+line2+'</div>'
       +'</div>';
   }).join('');
-  const vsub = (isV && items.length && items[0].ev_ebit!=null) ? ' <span style="color:var(--dim);font-weight:400">1년 영업이익률 ≥ 업종 · 기업가치/영업이익 업종 대비 낮은 순</span>' : '';
+  const vsub = (isV && items.length && items[0].ev_ebit!=null) ? ' <span style="color:var(--dim);font-weight:400">1년 영업이익률 ≥ 업종 · 기업가치/영업이익(최근 분기 가중) 업종 대비 낮은 순</span>' : '';
   return '<div class="sec"><div class="sechd">'+(isV?'저가매수형':'모멘텀형')+' '+items.length+'종목'+vsub+'</div>'+rows+'</div>';
 }
 function fmtPct(v){ if(v==null) return '—'; const t=(v>=0?'+':'')+v.toFixed(1)+'%'; return '<span style="color:'+(v>=0?'#f85149':'#4493f8')+'">'+t+'</span>'; }

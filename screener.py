@@ -4,13 +4,17 @@ kfilter 확장 — 기술적 스크리닝 필터 (저가매수형 / 모멘텀형
 
 [설계 원칙]
 · 수급은 필터가 아니라 라벨. 필터로 쓰면 "수급 없이 기술만 좋은 종목"을 못 본다.
-· 【저가매수형 v2 — 2026-10-17】 컨셉 = "돈 잘 버는데 주가가 너무 낮은 종목".
+· 【저가매수형 v2.1 — 2026-10-17】 컨셉 = "돈 잘 버는데 주가가 너무 낮은 종목".
     ① 돈 번다   : 최근 4분기 합 영업흑자 (적자 분기가 있어도 1년이 흑자면 통과 — 계절·일회성·R&D 비용 분기로 빼지 않는다)
     ② 잘 번다   : 1년 영업이익률 ≥ 업종 중앙값
     ③ 실적 유지 : 최근 반기 매출이 직전 반기 대비 -10% 이상 (분기 비교는 계절·수주 시점에 흔들린다)
-    ④ 눌림      : 자기 52주 고점(종가) 대비 -20% 이하 — ★지수 대비가 아니다
-    ⑤ 순위      : 기업가치(시가총액 + 차입금 - 현금) ÷ 최근 4분기 영업이익이 업종 중앙값보다 낮은 순 → 상위 20
-    ★ 제외: 우선주·금융·지주사, 액면변동(주식수 ±50%)·장기 거래정지·권리락 — 없으면 배수·낙폭이 가짜가 된다
+    ④ 순위      : 기업가치(시가총액 + 차입금 - 현금) ÷ 최근 분기 가중 영업이익이 업종 중앙값보다 낮은 순 → 상위 20
+                  가중 영업이익 = 4 × (0.4·Q0 + 0.3·Q1 + 0.2·Q2 + 0.1·Q3), Q0 = 가장 최근 분기.
+                  최근에 더 잘 벌면 더 눌린 것으로 본다. 단 1년 합의 1/1.5~1.5배로 묶는다 — 한 분기 급증이
+                  작은 업종의 중앙값을 끌어내려 남의 순위까지 흔드는 걸 막는다(실측: 기아 6위→16위).
+    ★ 눌림(고점 대비 하락)은 조건이 아니라 표시다 — 평소 장에선 대부분을 걸러 '안 빠졌지만 싼 회사'를 놓친다.
+    ★ 제외: 우선주·금융·결제·부동산(리츠)·지주사, 차입금 자료가 없는데 부채비율 100% 이상,
+           액면변동(주식수 ±50%)·장기 거래정지·권리락 — 없으면 배수가 가짜가 된다
   · v1(초과낙폭 순)을 버린 이유(실측 2026-10-16): 삼전+하이닉스가 코스피 시총의 47%라 '지수 대비'는 자기 자신과
     비교하는 꼴이었고(삼전 초과낙폭 -2.7%p, 자격 154종목 중 154위), 고점이 1년 전인 소외주가 상위를 채워
     20종목 중 9개가 연율 PER 20배 이상이었다. 순위가 '싼 순'이 아니라 '오래 소외된 순'이었다.
@@ -65,16 +69,19 @@ VP_GAP_DROP  = -25.0   # 하루 낙폭이 이보다 크면 권리락 의심(정�
 VP_GAP_DAYS  = 60      # 의심 구간(최근 N거래일)
 VP_TOP_N     = 20      # ★상위 N개 컷(초과낙폭 큰 순)
 FIN_CACHE    = os.path.join(CACHE_DIR, "financials.json")   # 분기 재무 캐시(분기 갱신)
-# 【저가매수형 v2】
-VP_DD_MAX      = -20.0   # 자기 52주 고점(종가) 대비 이보다 더 내려와야 '눌림'
+# 【저가매수형 v2.1】
 VP_SALES_H_MIN = -10.0   # 최근 반기 매출이 직전 반기 대비 이보다 덜 줄어야 '실적 유지'
-VP_EXCL_SECTORS = {"증권", "은행", "손해보험", "생명보험", "기타금융", "창업투자", "카드"}   # 영업이익·부채 구조가 달라 배수 비교가 무의미
+VP_W           = (0.4, 0.3, 0.2, 0.1)   # 최근 분기 가중(Q0~Q3) — 순위 배수에만 쓴다. 자격(①②)은 1년 합 그대로
+VP_W_CAP       = 1.5     # 가중 영업이익은 1년 합의 1/1.5 ~ 1.5배 안으로 묶는다
+VP_DEBT_RATIO_MAX = 100.0  # 차입금·현금 자료가 없을 때 부채비율(%)이 이 이상이면 제외 — 시총으로 대신 계산하면 실제보다 싸 보인다
+VP_NETCASH_FLAG = 0.30   # 순현금이 시총의 이 비율 이상이면 카드에 표시 — 현금이 주주에게 돌아올지는 리포트가 판단
+VP_EXCL_SECTORS = {"증권", "은행", "손해보험", "생명보험", "기타금융", "창업투자", "카드", "부동산"}   # 영업이익·부채 구조가 달라 배수 비교가 무의미(부동산=리츠·신탁)
 VP_HOLDCO_NAMES = {"SK", "LG", "GS", "LS", "DL", "CJ", "한화", "두산", "효성", "코오롱", "HD현대",
                    "SK스퀘어", "한진칼", "한국앤컴퍼니", "SK디스커버리"}   # 회사 개요로 못 잡을 때의 이름 목록
 VAL_CACHE    = os.path.join(CACHE_DIR, "valuation.json")    # 차입금·현금(야후)·지주사 여부(다음 회사개요) — 분기성 값
 VP_FINLIKE_NAMES = {"카카오페이", "헥토파이낸셜", "KG이니시스", "NHN KCP", "다날", "나이스정보통신", "한국정보통신",
                     "KG모빌리언스", "갤럭시아머니트리", "세틀뱅크"}   # 회사 개요로 못 잡을 때의 결제·핀테크 이름 목록
-VAL_SCHEMA   = 2         # 기업가치 캐시 구조 — 바뀌면 전부 다시 받는다
+VAL_SCHEMA   = 3         # 기업가치 캐시 구조 — 바뀌면 전부 다시 받는다(3: 부채비율 추가)
 # 결제·핀테크 판별 — 현금에 고객 예치금(선불충전금·정산대금)이 섞여 순현금이 부풀고 기업가치가 0 아래로 내려간다(실측: 카카오페이)
 _FINLIKE_RE = re.compile(r"전자지급결제|지급결제|결제대행|전자금융|간편결제|선불|종합결제|결제\s*플랫폼|핀테크|PG\s*\(|PG사|PG\s*사업|PG업|부가통신업|금융\s*VAN|VAN사|VAN\s*사업")
 # 지주사 판별 — 회사 개요가 '자기 자신이 지주회사'라고 말할 때만. ("지주회사인 OO의 자회사"는 걸리지 않게)
@@ -586,28 +593,34 @@ def fetch_valuation(meta, force=False):
             summ = d.get("companySummary") or ""
             out["holdco"] = bool(_HOLDCO_RE.search(summ))
             out["finlike"] = bool(_FINLIKE_RE.search(summ))
+            if d.get("debtRatio") is not None:
+                out["debt_ratio"] = round(d["debtRatio"] * 100, 1)       # 다음은 비율(0.31)로 준다 → %
         except Exception:
             pass
         if ys:
-            sym = sc[1:] + (".KQ" if meta.get(sc) == "KOSDAQ" else ".KS")
-            for attempt in (1, 2, 3):
-                try:
-                    r = ys.get(f"https://query1.finance.yahoo.com/v10/finance/quoteSummary/{sym}",
-                               params={"modules": "financialData", "crumb": crumb}, timeout=15)
-                    if r.status_code == 429:
-                        time.sleep(2 * attempt)
-                        continue
-                    res = ((r.json() or {}).get("quoteSummary") or {}).get("result") or []
-                    fdx = ((res[0] or {}).get("financialData") or {}) if res else {}
-                    if fdx.get("financialCurrency") not in (None, "KRW"):
-                        break
-                    debt = (fdx.get("totalDebt") or {}).get("raw")
-                    cash = (fdx.get("totalCash") or {}).get("raw")
-                    if debt is not None or cash is not None:
-                        out["debt"], out["cash"] = (debt or 0), (cash or 0)
+            # 시장 정보가 어긋난 종목은 다른 접미사로 한 번 더 — 야후 기호는 코스피 .KS, 코스닥 .KQ
+            suf = [".KQ", ".KS"] if meta.get(sc) == "KOSDAQ" else [".KS", ".KQ"]
+            for sym in (sc[1:] + x for x in suf):
+                if "debt" in out:
                     break
-                except Exception:
-                    time.sleep(1)
+                for attempt in (1, 2, 3):
+                    try:
+                        r = ys.get(f"https://query1.finance.yahoo.com/v10/finance/quoteSummary/{sym}",
+                                   params={"modules": "financialData", "crumb": crumb}, timeout=15)
+                        if r.status_code == 429:
+                            time.sleep(2 * attempt)
+                            continue
+                        res = ((r.json() or {}).get("quoteSummary") or {}).get("result") or []
+                        fdx = ((res[0] or {}).get("financialData") or {}) if res else {}
+                        if fdx.get("financialCurrency") not in (None, "KRW"):
+                            break
+                        debt = (fdx.get("totalDebt") or {}).get("raw")
+                        cash = (fdx.get("totalCash") or {}).get("raw")
+                        if debt is not None or cash is not None:
+                            out["debt"], out["cash"] = (debt or 0), (cash or 0)
+                        break
+                    except Exception:
+                        time.sleep(1)
         return sc, out
 
     with ThreadPoolExecutor(max_workers=6) as ex:
@@ -637,44 +650,65 @@ def _ttm(q):
 
 
 def _vp_excluded(x, v):
-    """저가매수형에서 빼는 종목 — 배수 비교가 성립하지 않는 구조."""
-    n, c = (x.get("name") or ""), (x.get("code") or "")
+    """저가매수형에서 빼는 종목 — 배수 비교가 성립하지 않는 구조이거나, 빚을 확인할 수 없는 종목."""
+    n, c, v = (x.get("name") or ""), (x.get("code") or ""), (v or {})
     if not c.endswith("0") or n.endswith("우") or "우B" in n:
         return "우선주"                       # 보통주 이익을 우선주 주가로 나누면 배수가 가짜가 된다
-    if x.get("sector") in VP_EXCL_SECTORS or (v or {}).get("finlike") or n in VP_FINLIKE_NAMES:
-        return "금융"                         # 결제·핀테크는 현금에 고객 예치금이 섞여 기업가치가 왜곡된다
-    if (v or {}).get("holdco") or n in VP_HOLDCO_NAMES or n.endswith("홀딩스") or "지주" in n:
+    if x.get("sector") in VP_EXCL_SECTORS or v.get("finlike") or n in VP_FINLIKE_NAMES:
+        return "금융·부동산"                  # 결제·핀테크는 현금에 고객 예치금이 섞이고, 리츠는 차입 구조가 달라 기업가치가 왜곡된다
+    if v.get("holdco") or n in VP_HOLDCO_NAMES or n.endswith("홀딩스") or "지주" in n:
         return "지주사"                       # 자회사 이익이 연결로 잡혀 지주사 할인만큼 늘 싸 보인다
+    if (v.get("debt") is None or v.get("cash") is None) and (v.get("debt_ratio") is None or v["debt_ratio"] >= VP_DEBT_RATIO_MAX):
+        return "차입금 확인 불가"             # 차입금·현금이 없는데 부채가 많거나 모르면, 시총으로 대신 계산할 때 실제보다 싸 보인다
     return None
 
 
+def _w_op(q, ttm):
+    """최근 분기 가중 영업이익(연 환산) = 4 × (0.4·Q0 + 0.3·Q1 + 0.2·Q2 + 0.1·Q3).
+    1년 합(ttm)이 흑자일 때만 1/VP_W_CAP ~ VP_W_CAP배로 묶는다 — 한 분기 급증·급감이 순위를 흔들지 않게."""
+    w = 4 * sum(a * (r.get("op") or 0) for a, r in zip(VP_W, q[:4]))
+    if ttm > 0:
+        w = max(min(w, VP_W_CAP * ttm), ttm / VP_W_CAP)
+    return w
+
+
 def pick_value(vitems, fin, val):
-    """【저가매수형 v2】 돈 잘 버는데 주가가 너무 낮은 종목 — 업종 대비 기업가치 배수가 낮은 순.
+    """【저가매수형 v2.1】 돈 잘 버는데 주가가 너무 낮은 종목 — 업종 대비 기업가치 배수가 낮은 순.
+    자격(①돈 번다·②잘 번다·③실적 유지)은 1년 합으로, 순위 배수는 최근 분기 가중 영업이익으로 본다.
     vitems: 일봉 지표가 붙은 종목(시총 상위 800 중 앞단 흑자 게이트 통과분 + 1년 흑자인데 적자 분기가 있던 종목)
     반환: (자격 종목 — 순위순, 집계)"""
-    rows = []
+    rows, excl = [], {}
     for x in vitems:
         sc = x.get("symbol") or ("A" + x["code"])
         v = val.get(sc) or {}
-        if _vp_excluded(x, v):
+        why = _vp_excluded(x, v)
+        if why:
+            excl[why] = excl.get(why, 0) + 1
             continue
         q = fin.get(sc) or []
         op_t, sa_t = _ttm(q)
         if len(q) < 4 or sa_t <= 0:
             continue
+        ops = [(r.get("op") or 0) for r in q[:4]]
+        sls = [(r.get("sales") or 0) for r in q[:4]]
         x["ebit_ttm"], x["sales_ttm"] = op_t, sa_t
         x["opm_ttm"] = op_t / sa_t * 100
-        s1 = (q[0].get("sales") or 0) + (q[1].get("sales") or 0)
-        s0 = (q[2].get("sales") or 0) + (q[3].get("sales") or 0)
+        s1, s0 = sls[0] + sls[1], sls[2] + sls[3]
         x["sales_h_growth"] = ((s1 / s0 - 1) * 100) if s0 > 0 else None
+        o1, o0 = ops[0] + ops[1], ops[2] + ops[3]
+        x["op_h_growth"] = ((o1 / o0 - 1) * 100) if o0 > 0 else None    # 반기 영업이익 증감 — 카드 표시
+        x["op_h_turn"] = (o0 <= 0 < o1)                                  # 직전 반기 적자 → 최근 반기 흑자
+        x["ebit_w"] = _w_op(q, op_t)
         mcap = x.get("mcap")
         if mcap and v.get("debt") is not None and v.get("cash") is not None:
             x["net_debt"] = v["debt"] - v["cash"]
             x["ev"], x["ev_basis"] = mcap + x["net_debt"], "부채 반영"
+            x["net_cash_ratio"] = -x["net_debt"] / mcap                  # 순현금 ÷ 시총(음수면 순부채)
         else:
-            x["net_debt"], x["ev"], x["ev_basis"] = None, mcap, "시총"
-        # 순현금이 시가총액보다 많으면 기업가치가 0 이하 — 배수 0으로 두고(가장 싼 쪽) 표시로 알린다
-        x["ev_ebit"] = (max(x["ev"], 0) / op_t) if (op_t > 0 and x["ev"] is not None) else None
+            x["net_debt"], x["ev"], x["ev_basis"], x["net_cash_ratio"] = None, mcap, "시총", None
+        x["debt_ratio"] = v.get("debt_ratio")
+        # 순현금이 시가총액보다 많으면 기업가치가 0 이하 — 배수 0으로 두고(가장 싼 쪽) 순현금 비중으로 알린다
+        x["ev_ebit"] = (max(x["ev"], 0) / x["ebit_w"]) if (op_t > 0 and x["ebit_w"] > 0 and x["ev"] is not None) else None
         rows.append(x)
     # 업종 중앙값 — 후보가 아니라 모집단 전체로 낸다(후보만으로 내면 기준이 후보에 끌려간다)
     sec_m, sec_o = {}, {}
@@ -693,17 +727,17 @@ def pick_value(vitems, fin, val):
         x["sector_opm"], x["sector_ev_ebit"] = so.get(sec, med_o), sm.get(sec, med_m)
         if sec not in so or sec not in sm:
             x["sector_note"] = "업종 표본 3개 미만 — 전체 중앙값으로 비교"
-        if (x["ebit_ttm"] > 0                                                               # ①돈 번다
-                and x["sector_opm"] is not None and x["opm_ttm"] >= x["sector_opm"]         # ②잘 번다
-                and x.get("sales_h_growth") is not None and x["sales_h_growth"] >= VP_SALES_H_MIN   # ③실적 유지
-                and x.get("dd_close") is not None and x["dd_close"] <= VP_DD_MAX            # ④눌림
+        if (x["ebit_ttm"] > 0                                                               # ①돈 번다(1년 합)
+                and x["sector_opm"] is not None and x["opm_ttm"] >= x["sector_opm"]         # ②잘 번다(1년 이익률)
+                and x.get("sales_h_growth") is not None and x["sales_h_growth"] >= VP_SALES_H_MIN   # ③실적 유지(반기 매출)
                 and x.get("share_ratio") is not None and VP_SHARE_LO < x["share_ratio"] < VP_SHARE_HI
                 and (x.get("halt_days") or 0) <= VP_HALT_MAX
                 and x.get("ev_ebit") is not None and x.get("sector_ev_ebit")):
             x["ev_rel"] = x["ev_ebit"] / x["sector_ev_ebit"]
+            x["net_cash_flag"] = bool(x.get("net_cash_ratio") is not None and x["net_cash_ratio"] >= VP_NETCASH_FLAG)
             cand.append(x)
-    cand.sort(key=lambda z: (z["ev_rel"], -(z.get("mcap") or 0)))      # ⑤업종 대비 배수 낮은 순
-    return cand, {"universe": len(rows), "ev_mcap": sum(1 for x in rows if x.get("ev_basis") == "시총")}
+    cand.sort(key=lambda z: (z["ev_rel"], -(z.get("mcap") or 0)))      # ④업종 대비 배수 낮은 순
+    return cand, {"universe": len(rows), "ev_mcap": sum(1 for x in rows if x.get("ev_basis") == "시총"), "excluded": excl}
 
 
 # ───────────────────── 7. 백분위 (모멘텀형 전용) ─────────────────────
@@ -918,6 +952,7 @@ def run_screeners(supply_map=None):
         "top_n": len(ranked), "profit": len(profit_ok), "valid": len(items),
         "value_pick": len(value_pick), "vp_qualified": vp_qualified, "vp_cap": VP_TOP_N,
         "vp_universe": vp_meta["universe"], "vp_extra": len(extra_items), "vp_ev_mcap": vp_meta["ev_mcap"],
+        "vp_excluded": vp_meta["excluded"],
         "momentum": len(momentum),
         "elapsed": round(time.time() - t0, 1),
     }
