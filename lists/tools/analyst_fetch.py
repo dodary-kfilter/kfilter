@@ -29,14 +29,18 @@ N_POOL, N_RANK, MIN_CNT, DAYS = 100, 25, 2, 28
 KST = dt.timezone(dt.timedelta(hours=9))
 
 
+LAST = {}       # 마지막 실패의 HTTP 상태·응답 앞부분 — 막혔을 때 원인을 로그에 남긴다
+
+
 def get(url, tries=2):
     for _ in range(tries):
-        r = subprocess.run(['curl', '-s', '-L', '-A', UA, '-H', 'Accept: application/json', '--max-time', '30', url],
-                           capture_output=True)
+        r = subprocess.run(['curl', '-s', '-L', '-A', UA, '-H', 'Accept: application/json', '--max-time', '30',
+                            '-w', '\n%{http_code}', url], capture_output=True)
+        body, _, code = r.stdout.rpartition(b'\n')
         try:
-            return json.loads(r.stdout)
+            return json.loads(body)
         except Exception:
-            pass
+            LAST.update(code=code.decode(errors='replace'), head=body[:160].decode(errors='replace').replace('\n', ' '))
     return None
 
 
@@ -62,7 +66,7 @@ def main(argv):
     cut = (today - dt.timedelta(days=DAYS - 1)).isoformat()
     top = get(API + 'getTop/?expertType=analyst&numExperts=%d' % N_POOL)
     if not isinstance(top, list) or not top:
-        sys.exit('★ 순위표(getTop)를 받지 못함 — 기존 파일 유지')
+        sys.exit('★ 순위표(getTop)를 받지 못함 — 기존 파일 유지 (HTTP %s · %s)' % (LAST.get('code'), LAST.get('head')))
     top = sorted(top, key=lambda a: a['rank'])[:N_POOL]
     with ThreadPoolExecutor(10) as ex:
         got = list(ex.map(stocks_of, top))
