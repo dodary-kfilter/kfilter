@@ -1,0 +1,51 @@
+name: 애널 추천 자동 갱신
+
+on:
+  schedule:
+    # 매일 07:00 한국시간(= 전날 22:00 UTC) — 미국 장 마감 뒤, 수급 스캔(09:30~)보다 앞
+    #   ※ GitHub 예약은 부하 시 지연될 수 있음
+    - cron: '0 22 * * *'
+  push:
+    # 이 파일을 올리거나 고칠 때 한 번 돌아 접속을 시험한다
+    branches: [main]
+    paths: ['.github/workflows/analyst.yml']
+  workflow_dispatch:
+    inputs:
+      dry:
+        description: 'true면 쓰지 않고 요약만'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 수집 (TipRanks 상위 애널리스트)
+        run: |
+          # 순위표를 못 받거나 10명 넘게 못 받으면 수집기가 실패로 끝나고 기존 파일은 그대로다
+          if [ "${{ github.event.inputs.dry }}" = "true" ]; then
+            python3 lists/tools/analyst_fetch.py --dry
+          elif [ "$(TZ=Asia/Seoul date +%u)" = "6" ]; then
+            python3 lists/tools/analyst_fetch.py --history     # 토요일엔 주간 기록도 남긴다
+          else
+            python3 lists/tools/analyst_fetch.py
+          fi
+
+      - name: 결과 커밋
+        if: ${{ github.event.inputs.dry != 'true' }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add lists/analyst.json lists/history/analyst/
+          if git diff --cached --quiet; then echo "변경 없음"; exit 0; fi
+          git commit -m "애널 추천 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          # 다른 커밋이 끼어 있어도 거절되지 않게 최신본 위에 얹어서 올린다
+          git pull --rebase origin main
+          git push origin HEAD:main
