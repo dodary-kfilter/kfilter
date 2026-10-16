@@ -38,8 +38,14 @@ def yh(sym, interval, rng):
         j = get_json('https://query1.finance.yahoo.com/v8/finance/chart/%s?range=%s&interval=%s'
                      % (urllib.parse.quote(sym), rng, interval))['chart']['result'][0]
         q = j['indicators']['quote'][0]
+        close = list(q['close'])
+        # ★국장은 장 마감 뒤에도 마지막 봉의 종가가 한동안 비어 있다(시가·고가·저가만 있음, 실측 2026-10-17 02시).
+        #   그대로 버리면 하루 전 가격으로 계산된다 → 메타의 현재가(=마감가)로 채운다
+        m = j.get('meta') or {}
+        if close and close[-1] is None and q['open'][-1] and m.get('regularMarketPrice'):
+            close[-1] = m['regularMarketPrice']
         return [(dt.datetime.fromtimestamp(ts, dt.timezone.utc).strftime('%Y-%m-%d'), o, h, l, c)
-                for ts, o, h, l, c in zip(j['timestamp'], q['open'], q['high'], q['low'], q['close']) if c and h and l and o]
+                for ts, o, h, l, c in zip(j['timestamp'], q['open'], q['high'], q['low'], close) if c and h and l and o]
     except Exception:
         return None
 
@@ -141,7 +147,7 @@ def scenario(b, sdd, idd, alpha, sc, iv_s=None, iv_i=None, k=1.0):
 
 def main():
     F = json.load(open(SRC)); M = F['meta']
-    today = dt.date.today()
+    today = dt.datetime.now(dt.timezone(dt.timedelta(hours=9))).date()     # 한국 날짜 — GitHub 서버는 UTC라 토요일 아침이 금요일로 찍힌다
     rows = [(mk, r) for mk in ('kr', 'us') for g in ('top', 'out', 'bench') for r in F[mk].get(g, [])]
     syms = sorted({r['sym'] for _, r in rows} | set(IDX_SYM.values()))
     def fetch(s): return s, dict(d=yh(s, '1d', '1y'), w=yh(s, '1wk', '3y'), m=yh(s, '1mo', '10y'))
