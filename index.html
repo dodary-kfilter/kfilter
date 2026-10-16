@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-11e (애널 추천 — TipRanks 상위 애널리스트 직접 수집, 랭킹순·추천 수순) / 이전: 2026-10-11d (TOP 20 상승 확률 → 상승 시 평균) -->
+<!-- build: 2026-10-16a (검색 탭에 지수 리포트 5종 — 언제든 프롬프트 복사) / 이전: 2026-10-11e (애널 추천 — TipRanks 직접 수집) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -233,6 +233,11 @@
   .mkt-head.an{color:#39c5cf; border-bottom:1px solid rgba(57,197,207,.25); flex-wrap:wrap; row-gap:2px}
   .mkt-head.an span{flex-basis:100%; font-family:'IBM Plex Sans KR',sans-serif; font-size:11.5px; letter-spacing:0}
   .mk2.an button.on{border-color:#39c5cf}
+  /* 지수 리포트 — 검색 탭 맨 위, 누르면 바로 복사 */
+  .idxbox{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:0 0 12px}
+  .idxh{font-size:12.5px; font-weight:700; margin:0 0 8px} .idxh span{font-size:11.5px; font-weight:400; color:var(--dim); margin-left:6px}
+  .idxrow{display:flex; flex-wrap:wrap; gap:6px}
+  .srow .sinput{min-width:0}   /* 입력칸이 줄어들지 않아 폰에서 검색 버튼이 화면 밖으로 밀리던 것 */
 </style>
 </head>
 <body>
@@ -917,7 +922,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v42';
+const PROMPT_VER='v43';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1929,6 +1934,44 @@ function copyList(ev, kind, a, b){
   }else{ fallbackCopy(text,done); }
 }
 
+// ── 지수 리포트 — 검색 탭에서 언제든 (관심종목 지수 리포트와 같은 틀) ──
+//   가격 위치·수급은 지수를 따르는 ETF로, 지수 등락·투자자별 순매수·해외 지수·금리·환율은 번들의 시장 묶음으로 받는다.
+const IDX_LIST=[
+  {k:'KOSPI',  name:'코스피',            mk:'kr', px:'069500', pxName:'코스피200을 따르는 KODEX 200'},
+  {k:'KOSDAQ', name:'코스닥',            mk:'kr', px:'229200', pxName:'코스닥150을 따르는 KODEX 코스닥150'},
+  {k:'^GSPC',  name:'S&P 500',           mk:'us', px:'SPY'},
+  {k:'^IXIC',  name:'나스닥',            mk:'us', px:'QQQ'},
+  {k:'^SOX',   name:'필라델피아 반도체', mk:'us', px:'SOXX'},
+];
+function buildIndexPrompt(k){
+  const x=IDX_LIST.find(v=>v.k===k);
+  if(!x) return null;
+  if(x.mk==='kr') return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,
+    note:`분석 대상은 ${x.name} 지수 자체입니다. 아래 명령의 ETF는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다.`,
+    cmd:cmdKR(x.px,'--brief'), data:`위 명령은 배경에 쓸 코스피·코스닥 지수의 기간별 등락과 투자자별 순매수, 해외 지수·금리·환율·유가와 시장 뉴스 제목, 특징에 쓸 ${x.pxName}의 가격 위치·거래량·수급을 보여 줍니다.`,
+    code:x.k, name:x.name});
+  return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,
+    note:`분석 대상은 ${x.name} 지수 자체입니다. 아래 명령의 ${x.px}는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다.`,
+    cmd:cmdUS(x.px), data:`위 명령은 배경에 쓸 미국 주요 지수와 금리·달러·환율·유가와 시장 뉴스 제목, 특징에 쓸 ${x.name} 지수를 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
+    code:x.k, name:x.name});
+}
+function idxBlock(){
+  return '<div class="idxbox"><div class="idxh">지수 리포트 <span>누르면 프롬프트가 복사됩니다</span></div><div class="idxrow">'
+    +IDX_LIST.map(x=>'<button type="button" class="copybtn" data-label="'+esc(x.name)+'" onclick="copyIndex(event,\''+x.k+'\')" title="'+esc(x.name)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(x.name)+'</button>').join('')
+    +'</div></div>';
+}
+function copyIndex(ev, k){
+  ev.stopPropagation();
+  const btn=ev.currentTarget;
+  let text;
+  try{ text=buildIndexPrompt(k); if(!text) throw new Error('지수를 찾지 못함 '+k); }catch(e){ copyFailed(btn,e); return; }
+  const done=()=>{ const o=btn.dataset.label||btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  }else{ fallbackCopy(text,done); }
+}
+
 function render(){
   const content=document.getElementById('content');
   if(LIST_TABS.includes(CUR)){ renderList(CUR); return; }   // 리스트 탭 — 각자 JSON, data.json과 무관
@@ -1936,7 +1979,7 @@ function render(){
   const items=DATA[CUR]||[];
   // [검색 탭] 필터를 안 거친 종목 — 백지 상태 종합 진단용
   if(CUR==='search'){
-    content.innerHTML =
+    content.innerHTML = idxBlock() +   // 지수 리포트(언제든 복사)
       '<div class="srow"><input id="sq" class="sinput" type="search" placeholder="종목명·코드·미국 종목 (예: 삼성전자, 005930, 엔비디아, NVDA)" '
       + 'oninput="doSearch()" autocomplete="off"><button class="sbtn" onclick="doSearch()">검색</button></div>'
       + '<div id="sres"><div class="empty">종목명 또는 코드를 입력하세요.</div></div>';

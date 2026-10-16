@@ -27,6 +27,8 @@ const CASES=[
  ['18_애널-랭킹순',()=>{ const a=LISTS.analyst.analysts.find(x=>x.rank<=25&&(x.picks||[]).length); return listPrompt('analyst',a.picks[0].ticker,a.rank); }],
  ['19_13F',()=>listPrompt('f13',LISTS.f13.lists.new[0].ticker)],
  ['20_애널-추천수순',()=>listPrompt('analyst',LISTS.analyst.stocks[0].ticker)],
+ ['21_지수-코스피',()=>buildIndexPrompt('KOSPI')],
+ ['22_지수-S&P500',()=>buildIndexPrompt('^GSPC')],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[
