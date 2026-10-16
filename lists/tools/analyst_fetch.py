@@ -17,7 +17,7 @@
   curl_cffi(브라우저 흉내)가 있으면 그걸로, 없으면 curl로 — GitHub 서버에선 curl도 막혀 curl_cffi가 필요하다
 - 순위표를 못 받거나 애널리스트 10% 넘게 못 받으면 기존 파일을 덮지 않고 멈춘다
 """
-import json, os, re, subprocess, sys, datetime as dt, urllib.parse
+import json, os, re, subprocess, sys, time, datetime as dt, urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..'))
@@ -39,8 +39,10 @@ except Exception:
     _cr = None
 
 
-def get(url, tries=2):
+def get(url, tries=3):
     for i in range(tries):
+        if i:
+            time.sleep(1.0 * i)        # 몰아서 부르면 Cloudflare가 일부를 막는다(실측: 10개 동시에 30명 실패) — 쉬었다 다시
         if _cr is not None:
             try:
                 r = _cr.get(url, impersonate='chrome' if i == 0 else 'safari', timeout=30, headers={'Accept': 'application/json'})
@@ -86,8 +88,12 @@ def main(argv):
     if not isinstance(top, list) or not top:
         sys.exit('★ 순위표(getTop)를 받지 못함 — 기존 파일 유지 (HTTP %s · %s)' % (LAST.get('code'), LAST.get('head')))
     top = sorted(top, key=lambda a: a['rank'])[:N_POOL]
-    with ThreadPoolExecutor(10) as ex:
+    with ThreadPoolExecutor(4) as ex:
         got = list(ex.map(stocks_of, top))
+    for i, a in enumerate(top):                      # 못 받은 애널리스트는 한 명씩 천천히 다시
+        if got[i] is None:
+            time.sleep(1.5)
+            got[i] = stocks_of(a)
     names = json.load(open(NAMES, encoding='utf-8')) if os.path.exists(NAMES) else {}
 
     analysts, failed, agg = [], [], {}
