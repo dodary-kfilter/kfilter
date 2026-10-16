@@ -1,0 +1,24 @@
+name: 접속 시험 (임시)
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/debug-tipranks.yml']
+jobs:
+  t:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: curl_cffi로 TipRanks·Dataroma 접속 시험
+        run: |
+          pip install -q curl_cffi
+          python3 - <<'PY'
+          from curl_cffi import requests as cr
+          for imp in ("chrome", "safari", "chrome124"):
+              for url in ("https://www.tipranks.com/api/experts/getTop/?expertType=analyst&numExperts=3",
+                          "https://www.dataroma.com/m/home.php"):
+                  try:
+                      r = cr.get(url, impersonate=imp, timeout=25)
+                      print(imp, url.split('/')[2], r.status_code, r.text[:90].replace('\n',' '))
+                  except Exception as e:
+                      print(imp, url.split('/')[2], 'ERR', e)
+          PY
