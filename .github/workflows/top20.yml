@@ -1,0 +1,39 @@
+name: TOP 20 숫자 자동 갱신
+
+on:
+  schedule:
+    # 매주 토요일 08:30 한국시간(= 금요일 23:30 UTC) — 국장·미장 모두 금요일 종가가 나온 뒤
+    - cron: '30 23 * * 5'
+  push:
+    # 이 파일이나 갱신기를 고치면 한 번 돈다
+    branches: [main]
+    paths: ['.github/workflows/top20.yml', 'top20/tools/refresh.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 숫자 갱신 (가격·변동성·확률·순위 — 판단 항목과 판단일은 그대로)
+        run: |
+          python3 top20/tools/refresh.py top20/top20.json /tmp/top20.json
+          # 못 받은 종목이 10개를 넘으면(야후·CBOE가 막힌 날) 덮어쓰지 않는다
+          python3 -c "import json,sys; s=json.load(open('/tmp/top20.json'))['meta'].get('stale') or []; print('못 받은 항목', len(s), s[:10]); sys.exit(1 if len(s) > 10 else 0)"
+          cp /tmp/top20.json top20/top20.json
+
+      - name: 결과 커밋
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add top20/top20.json
+          if git diff --cached --quiet; then echo "변경 없음"; exit 0; fi
+          git commit -m "TOP 20 숫자 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push origin HEAD:main

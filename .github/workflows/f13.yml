@@ -1,0 +1,47 @@
+name: 13F 자동 수집
+
+on:
+  schedule:
+    # 매주 토요일 08:00 한국시간(= 금요일 23:00 UTC).
+    # 수집기가 '공시 마감(분기 말+45일, 주말이면 다음 월요일) + 이틀'이 지난 최신 분기를 찾아, 그 파일이 없을 때만 만든다
+    #   → 마감 뒤 첫 토요일에 한 번 만들고, 다음 분기 마감 전까진 매주 건너뛴다(예: 2026년 3분기분 = 11월 21일)
+    - cron: '0 23 * * 5'
+  push:
+    # 이 파일이나 수집기를 고치면 한 번 돌아 접속만 시험한다(최신 분기를 쓰지 않고 요약만)
+    branches: [main]
+    paths: ['.github/workflows/f13.yml', 'lists/tools/f13_fetch.py']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@v4
+
+      - name: 브라우저 흉내 설치
+        run: pip install -q curl_cffi
+
+      - name: 수집 (Dataroma 슈퍼투자자 분기 거래)
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            Q=$(python3 -c "import json;print(json.load(open('lists/13f/index.json'))['latest'])")
+            python3 lists/tools/f13_fetch.py --quarter "$Q" --dry
+          else
+            python3 lists/tools/f13_fetch.py
+          fi
+
+      - name: 결과 커밋
+        if: ${{ github.event_name != 'push' }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add lists/13f/
+          if git diff --cached --quiet; then echo "변경 없음"; exit 0; fi
+          git commit -m "13F 자동 수집 $(TZ=Asia/Seoul date +%Y-%m-%d)"
+          git pull --rebase origin main
+          git push origin HEAD:main

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-17c (저가매수형 v2.1 — 최근 분기 가중·카드에 반기 영업이익·순현금, PBR 뺌) / 이전: 2026-10-17b (저가매수형 v2) -->
+<!-- build: 2026-10-17d (TOP 20 기준 줄에 숫자 갱신일·판단일 분리) / 이전: 2026-10-17c (저가매수형 v2.1) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1703,7 +1703,9 @@ function listRule(k){
   const d=LISTS[k];
   if(!d) return '기준: '+LIST_NAME[k]+' 자료를 불러오는 중…';
   if(k==='top20'){ const M=d.meta||{};
-    return '기준: <b>'+esc(M.record_date||'—')+'</b> 기록 · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·상승 시 평균 · '+esc(M.basis||''); }
+    // 숫자(가격·변동성·확률)는 매주 토요일 자동 갱신, 판단(고유 기대·후보)은 채팅에서 — 둘의 날짜를 나눠 보인다
+    const dd=(M.judged && M.judged!==M.record_date) ? '숫자 <b>'+esc(M.record_date||'—')+'</b> 갱신 · 판단 <b>'+esc(M.judged)+'</b>' : '<b>'+esc(M.record_date||'—')+'</b> 기록';
+    return '기준: '+dd+' · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·상승 시 평균 · '+esc(M.basis||''); }
   if(k==='analyst'){ const w=d.window||{}, R=d.rules||{};
     return '기준: TipRanks 애널리스트 순위 · 최근 <b>'+esc(w.days||28)+'일</b>('+lMd(w.from)+'~'+lMd(w.to)+') 미국 상장 종목 매수 의견 · 랭킹순 <b>상위 '+esc(R.rank_top||25)
       +'위</b> · 추천 수순 <b>상위 '+esc(R.pool||100)+'위 중 '+esc(R.min_count||2)+'명 이상</b>'+((d.failed||[]).length ? ' · 못 받은 애널리스트 '+d.failed.length+'명' : ''); }

@@ -13,7 +13,8 @@
   최근 28일(오늘 포함) 안에 낸 매수(Buy) 의견만, 미국 상장(티커에 ':' 없음)·거래 중인 종목만 쓴다
 - 랭킹순 화면 = 상위 25위 각자의 매수 의견 / 추천 수순 화면 = 상위 100위 중 2명 이상이 매수한 종목
 - 한글 종목명은 lists/names_ko.json(티커 → 한글명)에서 붙인다. 없으면 영문명을 쓴다
-- TipRanks 웹 페이지는 Cloudflare로 막혀 있고 파이썬 urllib도 막힌다 → curl로 API만 부른다
+- TipRanks 웹 페이지는 Cloudflare로 막혀 있고 파이썬 urllib도 막힌다 → API만 부른다.
+  curl_cffi(브라우저 흉내)가 있으면 그걸로, 없으면 curl로 — GitHub 서버에선 curl도 막혀 curl_cffi가 필요하다
 - 순위표를 못 받거나 애널리스트 10% 넘게 못 받으면 기존 파일을 덮지 않고 멈춘다
 """
 import json, os, re, subprocess, sys, datetime as dt, urllib.parse
@@ -32,8 +33,25 @@ KST = dt.timezone(dt.timedelta(hours=9))
 LAST = {}       # 마지막 실패의 HTTP 상태·응답 앞부분 — 막혔을 때 원인을 로그에 남긴다
 
 
+try:                   # GitHub 서버에선 TipRanks가 일반 curl을 Cloudflare로 막는다(403 'Just a moment') — 브라우저 흉내로 받는다
+    from curl_cffi import requests as _cr
+except Exception:
+    _cr = None
+
+
 def get(url, tries=2):
-    for _ in range(tries):
+    for i in range(tries):
+        if _cr is not None:
+            try:
+                r = _cr.get(url, impersonate='chrome' if i == 0 else 'safari', timeout=30, headers={'Accept': 'application/json'})
+                try:
+                    return r.json()
+                except Exception:
+                    LAST.update(code=str(r.status_code), head=r.text[:160].replace('\n', ' '))
+                    continue
+            except Exception as e:
+                LAST.update(code='ERR', head=str(e)[:160])
+                continue
         r = subprocess.run(['curl', '-s', '-L', '-A', UA, '-H', 'Accept: application/json', '--max-time', '30',
                             '-w', '\n%{http_code}', url], capture_output=True)
         body, _, code = r.stdout.rpartition(b'\n')

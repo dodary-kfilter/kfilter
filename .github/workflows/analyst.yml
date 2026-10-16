@@ -8,7 +8,7 @@ on:
   push:
     # 이 파일을 올리거나 고칠 때 한 번 돌아 접속을 시험한다 (실패 시 로그에 HTTP 상태가 남는다)
     branches: [main]
-    paths: ['.github/workflows/analyst.yml']
+    paths: ['.github/workflows/analyst.yml', 'lists/tools/analyst_fetch.py']
   workflow_dispatch:
     inputs:
       dry:
@@ -26,6 +26,9 @@ jobs:
     steps:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
+
+      - name: 브라우저 흉내 설치 (GitHub 서버에선 일반 curl이 Cloudflare에 막힌다)
+        run: pip install -q curl_cffi
 
       - name: 수집 (TipRanks 상위 애널리스트)
         run: |
