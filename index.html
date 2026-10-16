@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-16a (검색 탭에 지수 리포트 5종 — 언제든 프롬프트 복사) / 이전: 2026-10-11e (애널 추천 — TipRanks 직접 수집) -->
+<!-- build: 2026-10-17a (시황 종합 리포트, 하단 새로고침 → 맨 위로) / 이전: 2026-10-16a (검색 탭에 지수 리포트 5종) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -264,7 +264,7 @@
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
   <div class="refresh">
-    <button onclick="hardReload()">새로고침</button>
+    <button onclick="toTop()">↑ 맨 위로</button>
     <button id="screenbtn" class="screenbtn" onclick="copyScreen(event)">일괄 스크리닝 프롬프트</button>
   </div>
 </div>
@@ -922,7 +922,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v43';
+const PROMPT_VER='v44';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1002,13 +1002,17 @@ const UNIT = {
 };
 function reportPrompt(o){
   const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
-  const batch = o.kind==='batch', macro = o.kind==='macro', u = UNIT[o.unit||'stock'];
+  const batch = o.kind==='batch', macro = o.kind==='macro', market = o.kind==='market', u = UNIT[o.unit||'stock'];
   const steps = batch
     ? `1. 본질 — 무엇으로 돈을 버는 회사인가
 2. 특징 — 지금 값을 가르는 이 회사의 상태
 3. 기타 — 눈에 띄지만 판단을 바꾸지 않는 것
 4. 전망 — 앞으로 어떻게 진행될지에 대한 본인의 판단
 5. 결론 — 종합적 판단, 기대수익, 액션`
+    : market
+    ? `1. 특징 — 지금 이 지수를 가르는 상태
+2. 전망 — 앞으로 어떻게 진행될지에 대한 본인의 판단
+3. 결론 — 종합적 판단, 기대수익, 액션`
     : macro
     ? `1. 본질 — 무엇으로 이루어졌고 무엇이 값을 정하는 대상인가
 2. 배경 — 이 대상이 놓인 판
@@ -1028,7 +1032,7 @@ function reportPrompt(o){
 ${o.title}${o.note?`\n${o.note}`:''}${o.bg?'\n선별 조건은 후보를 고른 배경일 뿐입니다.':''}
 
 [목적]
-이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 하며, 판단을 빠르고 정확하게 받아 보려 합니다.${batch?' 이 리포트는 후보 수와 관계없이 10분 안에 완성되어야 합니다. 본문은 6,000자 안에서 씁니다.':' 이 리포트는 5분 안에 완성되어야 합니다. 본문은 3,000자 안에서 씁니다.'} 리포트에는 ${o.subj}에 대한 종합적 판단과, 그 판단에서 나온 기대수익과 액션을 담습니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.
+이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 하며, 판단을 빠르고 정확하게 받아 보려 합니다.${batch?' 이 리포트는 후보 수와 관계없이 10분 안에 완성되어야 합니다. 본문은 6,000자 안에서 씁니다.':market?' 이 리포트는 10분 안에 완성되어야 합니다. 본문은 6,000자 안에서 씁니다.':' 이 리포트는 5분 안에 완성되어야 합니다. 본문은 3,000자 안에서 씁니다.'} 리포트에는 ${o.subj}에 대한 종합적 판단과, 그 판단에서 나온 기대수익과 액션을 담습니다. 액션은 지금 매수, 가격 대기, 매수하지 않음, 매도 가운데 하나입니다. 시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.
 
 [자료]
 ${o.cmd}
@@ -1037,15 +1041,15 @@ ${o.data}
 자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다. 검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 주고, 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.
 
 [리포트]
-${batch?'맨 앞에 후보 전체에 걸리는 배경을 한 문단으로 씁니다. 매수하지 않기로 한 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다. 나머지 종목은 아래 순서로 전개하고, 기대수익 순으로 배열합니다. 전개할 종목이 없으면 한 줄 판단만 적습니다.':'리포트는 다음 순서로 전개합니다.'}
+${batch?'맨 앞에 후보 전체에 걸리는 배경을 한 문단으로 씁니다. 매수하지 않기로 한 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다. 나머지 종목은 아래 순서로 전개하고, 기대수익 순으로 배열합니다. 전개할 종목이 없으면 한 줄 판단만 적습니다.':market?'맨 앞에 오늘 시장 전체에 대한 판단, 곧 위험을 늘릴 때인지 줄일 때인지와 그 근거를 한 문단으로 씁니다. 이어서 금리·달러·원달러 환율·유가·변동성 지수(VIX)가 그 판단에 어떻게 작용하는지 한 문단으로 씁니다. 그다음 코스피, 코스닥, S&P 500, 나스닥, 필라델피아 반도체 순서로 지수마다 아래 순서로 전개합니다. 마지막에는 오늘 종목 분석에 쓸 시사점, 곧 유리한 업종과 피할 업종, 주의할 일정을 한 문단으로 씁니다.':'리포트는 다음 순서로 전개합니다.'}
 
 ${steps}
 
-기타는 한 줄로 끝납니다. 시간과 분량은 특징과 전망에 씁니다. 자료 명령은 한 번에 5~20초, 검색은 결과를 읽는 데까지 한 번에 1분 남짓, 쓰는 데는 1,000자에 20초 남짓 걸립니다.
+${market?'':'기타는 한 줄로 끝납니다. '}시간과 분량은 특징과 전망에 씁니다. 자료 명령은 한 번에 5~20초, 검색은 결과를 읽는 데까지 한 번에 1분 남짓, 쓰는 데는 1,000자에 20초 남짓 걸립니다.
 
 가격 대기로 판단한 경우에는 ${u.buyObj} 함께 제시합니다.${batch?'':' 매수하지 않기로 했다면 그 이유를 밝힙니다.'}
 
-결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. ${batch?'':`매수하지 않더라도 ${u.expObj} 정할 수 있으면 그대로 씁니다. `}${u.expObj} 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
+${market?'지수마다 ':''}결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. ${batch?'':`매수하지 않더라도 ${u.expObj} 정할 수 있으면 그대로 씁니다. `}${u.expObj} 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (${u.cur}) → 예상 (${u.exp})  (+N.N%)**
 ## **${batch?`지금 매수 / 가격 대기 (${u.buy}) / 매도`:`지금 매수 / 가격 대기 (${u.buy}) / 매수하지 않음 / 매도`}**
 그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.
@@ -1053,14 +1057,14 @@ ${steps}
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
 
 [기록 블록]
-${batch?'검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 한 줄로 적은 종목에는 두지 않습니다.':'리포트 첫머리에는 아래 기록 블록을 두어, 리포트의 첫 글자가 ---이 되게 합니다.'} 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
+${batch?'검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 한 줄로 적은 종목에는 두지 않습니다.':market?'지수마다 그 지수를 설명하기 직전에 아래 기록 블록을 둡니다.':'리포트 첫머리에는 아래 기록 블록을 두어, 리포트의 첫 글자가 ---이 되게 합니다.'} 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
 prompt: ${PROMPT_VER}
 start: ${stamp}
-code: ${batch?'(종목코드)':o.code}
-name: ${batch?'(종목명)':o.name}
+code: ${batch?'(종목코드)':market?'(지수 코드 — KOSPI, KOSDAQ, ^GSPC, ^IXIC, ^SOX 가운데 하나)':o.code}
+name: ${batch?'(종목명)':market?'(지수 이름)':o.name}
 price: (${u.curRec}, 숫자만)
 target: (${u.expRec}, 숫자만${batch?'':'. 액션이 매수하지 않음이면 비워 둡니다'})
 entry: (${u.buyRec}, 숫자만. 액션이 가격 대기가 아니면 비워 둡니다)
@@ -1955,8 +1959,20 @@ function buildIndexPrompt(k){
     cmd:cmdUS(x.px), data:`위 명령은 배경에 쓸 미국 주요 지수와 금리·달러·환율·유가와 시장 뉴스 제목, 특징에 쓸 ${x.name} 지수를 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
     code:x.k, name:x.name});
 }
+// 시황 종합 — 다섯 지수와 금리·달러·환율·유가·변동성을 한 리포트로. 그날 종목 분석에 앞서 읽는다
+function buildMarketPrompt(){
+  const kr=IDX_LIST.filter(x=>x.mk==='kr'), us=IDX_LIST.filter(x=>x.mk==='us');
+  return reportPrompt({kind:'market', unit:'index', subj:'각 지수',
+    title:`오늘 시황 — ${IDX_LIST.map(x=>x.name).join('·')}를 한 리포트로 종합합니다.`,
+    note:'분석 대상은 각 지수 자체입니다. 아래 명령의 ETF는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다. 이 리포트는 그날 종목 분석에 앞서 읽습니다.',
+    cmd:`${cmdKR(kr.map(x=>x.px).join(' '),'--brief')}\n${cmdUS(us.map(x=>x.px).join(' '))}`,
+    data:`첫 번째 명령은 국장 지수를 따르는 KODEX 200(코스피200)·KODEX 코스닥150(코스닥150)의 자료 카드와 함께, 배경에 쓸 코스피·코스닥 지수의 기간별 등락과 투자자별 순매수, 해외 지수·금리·환율·유가와 시장 뉴스 제목을 보여 줍니다. `
+      +`두 번째 명령은 미국 지수를 따르는 ${us.map(x=>x.px+'('+x.name+')').join('·')}의 시세와 가격 위치·기관과 공매도 자료, 배경에 쓸 미국 주요 지수와 금리·달러·환율·유가와 시장 뉴스 제목을 보여 줍니다.`,
+    code:'MARKET', name:'시황 종합'});
+}
 function idxBlock(){
-  return '<div class="idxbox"><div class="idxh">지수 리포트 <span>누르면 프롬프트가 복사됩니다</span></div><div class="idxrow">'
+  return '<div class="idxbox"><div class="idxh">지수 리포트 <span>누르면 프롬프트 복사 · 시황 종합은 다섯 지수를 한 리포트로</span></div><div class="idxrow">'
+    +'<button type="button" class="copybtn mkt" data-label="시황 종합" onclick="copyIndex(event,\'MARKET\')" title="시황 종합 리포트 프롬프트 → Claude에 붙여넣기">시황 종합</button>'
     +IDX_LIST.map(x=>'<button type="button" class="copybtn" data-label="'+esc(x.name)+'" onclick="copyIndex(event,\''+x.k+'\')" title="'+esc(x.name)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(x.name)+'</button>').join('')
     +'</div></div>';
 }
@@ -1964,13 +1980,16 @@ function copyIndex(ev, k){
   ev.stopPropagation();
   const btn=ev.currentTarget;
   let text;
-  try{ text=buildIndexPrompt(k); if(!text) throw new Error('지수를 찾지 못함 '+k); }catch(e){ copyFailed(btn,e); return; }
+  try{ text=(k==='MARKET') ? buildMarketPrompt() : buildIndexPrompt(k); if(!text) throw new Error('지수를 찾지 못함 '+k); }catch(e){ copyFailed(btn,e); return; }
   const done=()=>{ const o=btn.dataset.label||btn.textContent; btn.textContent='복사됨 ✓'; btn.classList.add('copied');
     setTimeout(()=>{btn.textContent=o; btn.classList.remove('copied');},1600); };
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
   }else{ fallbackCopy(text,done); }
 }
+
+// 하단 '맨 위로' — 긴 목록 끝에서 탭으로 바로 돌아간다
+function toTop(){ try{ window.scrollTo({top:0, behavior:'smooth'}); }catch(_){ window.scrollTo(0,0); } }
 
 function render(){
   const content=document.getElementById('content');
