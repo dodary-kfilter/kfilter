@@ -30,6 +30,9 @@ const CASES=[
  ['21_지수-코스피',()=>buildIndexPrompt('KOSPI')],
  ['22_지수-S&P500',()=>buildIndexPrompt('^GSPC')],
  ['23_시황종합',()=>buildMarketPrompt()],
+ ['24_자산-미국채권',()=>buildIndexPrompt('TLT')],
+ ['25_자산-금',()=>buildIndexPrompt('GC=F')],
+ ['26_자산-비트코인',()=>buildIndexPrompt('BTC-USD')],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[
@@ -42,6 +45,7 @@ const RULES=[
  ['자료설명',   t=>t.includes('자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다.') && t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.')],
  ['자료대상',   t=>{ if(!t.includes('시장 뉴스 제목')) return false; if(t.includes('후보 전체의 개요')) return t.includes('상세 자료에는 본질에 쓸 사업 요약') && t.includes('배경에 쓸 시장·금리·환율·유가') && t.includes('상세 자료는 종목당 4KB 안팎');
                    if(t.includes('각 지수에 대한')) return t.includes('첫 번째 명령은 국장 지수를') && t.includes('두 번째 명령은 미국 지수를') && t.includes('배경에 쓸 미국 주요 지수');
+                   if(t.includes('이 자산에 대한')) return t.includes('위 명령은 배경에 쓸 미국 주요 지수와 금리(단기·10년·30년)·달러·환율·유가·금·비트코인') && t.includes('기록 블록의 현재가·예상 가격·매수 가격은 ');
                    if(/이 (지수|섹터)에 대한/.test(t)) return /위 명령은 배경에 쓸 (코스피·코스닥 지수의|미국 주요 지수)|위 명령은 본질에 쓸 구성종목/.test(t);
                    return /python3 - us /.test(t) ? t.includes('위 명령은 배경에 쓸 미국 시장') : t.includes('위 명령은 본질에 쓸 사업 요약') && t.includes('부문별 매출·수주'); }],
  ['시간',       t=>{ const s=['이 리포트는 5분 안에 완성되어야 합니다. 본문은 3,000자 안에서 씁니다.'];

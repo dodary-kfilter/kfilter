@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-17e (첫 화면·새로고침 = 종목 검색 탭) / 이전: 2026-10-17d (TOP 20 숫자 갱신일·판단일 분리) -->
+<!-- build: 2026-10-17f (탭 재배치 — 지수 탭·수급 통합·검색 2칸, 금·미국 채권·비트코인 리포트) / 이전: 2026-10-17e (첫 화면 종목 검색) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -54,6 +54,13 @@
   .tab.active[data-k="foreign"]{border-color:var(--foreign)}
   .tab.active[data-k="pension"]{border-color:var(--pension)}
   .tab.active[data-k="both"]{border-color:var(--both)}
+  .tab.wide{grid-column:span 2}            /* 종목 검색은 두 칸 — 나중에 탭이 하나 늘면 한 칸으로 줄며 자리를 내준다 */
+  .tab[data-k="index"] .c{color:#58a6ff; font-size:20px} .tab.active[data-k="index"]{border-color:#58a6ff}
+  .tab[data-k="flow"] .c{color:var(--both)} .tab.active[data-k="flow"]{border-color:var(--both)}
+  .mk2.fl button.on.f{border-color:var(--foreign)} .mk2.fl button.on.p{border-color:var(--pension)} .mk2.fl button.on.b{border-color:var(--both)}
+  .mk2.fl button.f span{color:var(--foreign)} .mk2.fl button.p span{color:var(--pension)} .mk2.fl button.b span{color:var(--both)}
+  .idxg{margin:0 0 12px} .idxg:last-child{margin-bottom:0}
+  .idxgt{font-size:12px; font-weight:700; color:var(--dim); margin:0 0 6px} .idxgt span{font-weight:400; margin-left:6px}
   .tab[data-k="portfolio"] .c{color:var(--port)}
   .tab.active[data-k="portfolio"]{border-color:var(--port)}
   table{width:100%; border-collapse:collapse; font-size:14px}
@@ -251,16 +258,15 @@
   </header>
   <div class="rule" id="rule">판정 기준을 불러오는 중…</div>
   <div class="tabs">
-    <div class="tab" data-k="foreign" onclick="show('foreign')"><div class="c" id="c-foreign">—</div><div class="l">외국인</div></div>
-    <div class="tab" data-k="pension" onclick="show('pension')"><div class="c" id="c-pension">—</div><div class="l">연기금</div></div>
-    <div class="tab" data-k="both" onclick="show('both')"><div class="c" id="c-both">—</div><div class="l">동시 수급</div></div>
+    <div class="tab active" data-k="index" onclick="show('index')"><div class="c" id="c-index">📈</div><div class="l">지수</div></div>
+    <div class="tab" data-k="flow" onclick="show('flow')"><div class="c" id="c-flow">—</div><div class="l">수급</div></div>
     <div class="tab" data-k="value_pick" onclick="show('value_pick')"><div class="c" id="c-value_pick">—</div><div class="l">저가매수</div></div>
     <div class="tab" data-k="momentum" onclick="show('momentum')"><div class="c" id="c-momentum">—</div><div class="l">모멘텀</div></div>
-    <div class="tab" data-k="top20" onclick="show('top20')"><div class="c" id="c-top20">—</div><div class="l">TOP 20</div></div>
-    <div class="tab" data-k="analyst" onclick="show('analyst')"><div class="c" id="c-analyst">—</div><div class="l">애널 추천</div></div>
     <div class="tab" data-k="f13" onclick="show('f13')"><div class="c" id="c-f13">—</div><div class="l">13F</div></div>
+    <div class="tab" data-k="analyst" onclick="show('analyst')"><div class="c" id="c-analyst">—</div><div class="l">애널 추천</div></div>
+    <div class="tab" data-k="top20" onclick="show('top20')"><div class="c" id="c-top20">—</div><div class="l">TOP 20</div></div>
     <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">관심종목</div></div>
-    <div class="tab active" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
+    <div class="tab wide" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
   <div class="refresh">
@@ -269,7 +275,9 @@
   </div>
 </div>
 <script>
-let DATA=null, CUR='search';   // 처음 오거나 새로고침하면 종목 검색 탭(지수 리포트가 맨 위)
+let DATA=null, CUR='index', FLOW='both';   // 처음 오거나 새로고침하면 지수 탭 · 수급 탭은 처음에 동시 수급
+const FLOW_KEYS=['foreign','pension','both'];
+const tabOf=k=>FLOW_KEYS.includes(k)?'flow':k;   // 외국인·연기금·동시 수급은 수급 탭 하나 안에서 전환
 const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 function naverUrl(code){
   return IS_MOBILE
@@ -922,7 +930,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v45';
+const PROMPT_VER='v46';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -999,6 +1007,7 @@ const UNIT = {
   stock: {cur:'현재가', exp:'예상 주가', expObj:'예상 주가를', buy:'매수 가격', buyObj:'매수 가격을', curRec:'현재가', expRec:'예상 주가', buyRec:'매수 가격'},
   index: {cur:'현재 지수', exp:'예상 지수', expObj:'예상 지수를', buy:'매수할 지수', buyObj:'매수할 지수를', curRec:'현재 지수 수준', expRec:'예상 지수', buyRec:'매수할 지수 수준'},
   etn:   {cur:'현재가', exp:'예상 가격', expObj:'예상 가격을', buy:'매수 가격', buyObj:'매수 가격을', curRec:'ETN 현재가', expRec:'예상 가격', buyRec:'매수 가격'},
+  asset: {cur:'현재가', exp:'예상 가격', expObj:'예상 가격을', buy:'매수 가격', buyObj:'매수 가격을', curRec:'현재가', expRec:'예상 가격', buyRec:'매수 가격'},
 };
 function reportPrompt(o){
   const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
@@ -1041,7 +1050,7 @@ ${o.data}
 자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다. 검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 주고, 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.
 
 [리포트]
-${batch?'맨 앞에 후보 전체에 걸리는 배경을 한 문단으로 씁니다. 매수하지 않기로 한 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다. 나머지 종목은 아래 순서로 전개하고, 기대수익 순으로 배열합니다. 전개할 종목이 없으면 한 줄 판단만 적습니다.':market?'맨 앞에 오늘 시장 전체에 대한 판단, 곧 위험을 늘릴 때인지 줄일 때인지와 그 근거를 한 문단으로 씁니다. 이어서 금리·달러·원달러 환율·유가·변동성 지수(VIX)가 그 판단에 어떻게 작용하는지 한 문단으로 씁니다. 그다음 코스피, 코스닥, S&P 500, 나스닥, 필라델피아 반도체 순서로 지수마다 아래 순서로 전개합니다. 마지막에는 오늘 종목 분석에 쓸 시사점, 곧 유리한 업종과 피할 업종, 주의할 일정을 한 문단으로 씁니다.':'리포트는 다음 순서로 전개합니다.'}
+${batch?'맨 앞에 후보 전체에 걸리는 배경을 한 문단으로 씁니다. 매수하지 않기로 한 종목은 그 판단을 한 줄로 적습니다. 분량이 짧을 뿐 판단의 근거는 같습니다. 나머지 종목은 아래 순서로 전개하고, 기대수익 순으로 배열합니다. 전개할 종목이 없으면 한 줄 판단만 적습니다.':market?'맨 앞에 오늘 시장 전체에 대한 판단, 곧 위험을 늘릴 때인지 줄일 때인지와 그 근거를 한 문단으로 씁니다. 이어서 금리(단기·10년·30년)·달러·원달러 환율·유가·금·비트코인·변동성 지수(VIX)가 그 판단에 어떻게 작용하는지 한 문단으로 씁니다. 그다음 S&P 500, 나스닥, 필라델피아 반도체, 코스피, 코스닥 순서로 지수마다 아래 순서로 전개합니다. 마지막에는 오늘 종목 분석에 쓸 시사점, 곧 유리한 업종과 피할 업종, 주의할 일정을 한 문단으로 씁니다.':'리포트는 다음 순서로 전개합니다.'}
 
 ${steps}
 
@@ -1717,6 +1726,7 @@ function ruleFor(k){
   const rl=document.getElementById('rule'); if(!rl) return;
   if(rl.innerHTML!==RULE_LIST_LAST) RULE_SCAN=rl.innerHTML;          // 리스트 문구가 아니면 스캔 판정 문구(또는 불러오는 중)다
   if(LIST_TABS.includes(k)){ rl.innerHTML=listRule(k); RULE_LIST_LAST=rl.innerHTML; }
+  else if(k==='index'){ rl.innerHTML='지수·자산 리포트: 누르면 프롬프트 복사 · 가격 위치·수급은 각각을 따르는 <b>ETF</b>로, 배경은 <b>금리(단기·10년·30년)·달러·환율·유가·금·비트코인</b>으로'; RULE_LIST_LAST=rl.innerHTML; }
   else if(RULE_LIST_LAST!==null){ rl.innerHTML=RULE_SCAN; RULE_LIST_LAST=null; }
 }
 function renderList(k){
@@ -1956,40 +1966,55 @@ function copyList(ev, kind, a, b){
 // ── 지수 리포트 — 검색 탭에서 언제든 (관심종목 지수 리포트와 같은 틀) ──
 //   가격 위치·수급은 지수를 따르는 ETF로, 지수 등락·투자자별 순매수·해외 지수·금리·환율은 번들의 시장 묶음으로 받는다.
 const IDX_LIST=[
-  {k:'KOSPI',  name:'코스피',            mk:'kr', px:'069500', pxName:'코스피200을 따르는 KODEX 200'},
-  {k:'KOSDAQ', name:'코스닥',            mk:'kr', px:'229200', pxName:'코스닥150을 따르는 KODEX 코스닥150'},
-  {k:'^GSPC',  name:'S&P 500',           mk:'us', px:'SPY'},
-  {k:'^IXIC',  name:'나스닥',            mk:'us', px:'QQQ'},
-  {k:'^SOX',   name:'필라델피아 반도체', mk:'us', px:'SOXX'},
+  // 넓은 대상 → 좁은 대상: 미장(밤사이 다음 날 국장을 이끈다) → 국장 → 자산. 지수 안에서도 넓은 지수 → 업종 지수
+  {k:'^GSPC',  g:'us', name:'S&P 500',           mk:'us', px:'SPY'},
+  {k:'^IXIC',  g:'us', name:'나스닥',            mk:'us', px:'QQQ'},
+  {k:'^SOX',   g:'us', name:'필라델피아 반도체', mk:'us', px:'SOXX'},
+  {k:'KOSPI',  g:'kr', name:'코스피',            mk:'kr', px:'069500', pxName:'코스피200을 따르는 KODEX 200'},
+  {k:'KOSDAQ', g:'kr', name:'코스닥',            mk:'kr', px:'229200', pxName:'코스닥150을 따르는 KODEX 코스닥150'},
+  // 자산 — 대상은 자산 자체, 가격 위치·수급·옵션은 따르는 ETF로. 기록 블록의 가격 기준(measure)을 못 박는다
+  {k:'TLT',     g:'asset', name:'미국 채권', mk:'asset', px:'TLT',  desc:'미국 장기 국채(만기 20년 이상)', measure:'TLT 가격(달러)'},
+  {k:'GC=F',    g:'asset', name:'금',        mk:'asset', px:'GLD',  desc:'국제 금값',                     measure:'국제 금값(금 선물, 달러/온스)'},
+  {k:'BTC-USD', g:'asset', name:'비트코인',  mk:'asset', px:'IBIT', desc:'비트코인',                      measure:'비트코인 가격(달러)'},
 ];
+const US_BG='배경에 쓸 미국 주요 지수와 금리(단기·10년·30년)·달러·환율·유가·금·비트코인과 시장 뉴스 제목';
+// 을/를 — 마지막 한글 글자의 받침으로 고른다(괄호·숫자 뒤면 그 앞의 한글 기준)
+function eulReul(w){ const m=String(w).match(/[가-힣](?=[^가-힣]*$)/); if(!m) return '를'; return ((m[0].charCodeAt(0)-0xAC00)%28)?'을':'를'; }
 function buildIndexPrompt(k){
   const x=IDX_LIST.find(v=>v.k===k);
   if(!x) return null;
+  if(x.mk==='asset') return reportPrompt({kind:'macro', unit:'asset', subj:'이 자산', title:`${x.name} — 지켜보고 있는 자산입니다.`,
+    note:`분석 대상은 ${x.desc} 자체입니다. 기록 블록의 현재가·예상 가격·매수 가격은 ${x.measure} 기준입니다. 아래 명령의 ${x.px}는 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 운용은 다루지 않습니다.`,
+    cmd:cmdUS(x.px), data:`위 명령은 ${US_BG}, 특징에 쓸 ${x.desc}${eulReul(x.desc)} 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
+    code:x.k, name:x.name});
   if(x.mk==='kr') return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,
     note:`분석 대상은 ${x.name} 지수 자체입니다. 아래 명령의 ETF는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다.`,
     cmd:cmdKR(x.px,'--brief'), data:`위 명령은 배경에 쓸 코스피·코스닥 지수의 기간별 등락과 투자자별 순매수, 해외 지수·금리·환율·유가와 시장 뉴스 제목, 특징에 쓸 ${x.pxName}의 가격 위치·거래량·수급을 보여 줍니다.`,
     code:x.k, name:x.name});
   return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,
     note:`분석 대상은 ${x.name} 지수 자체입니다. 아래 명령의 ${x.px}는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다.`,
-    cmd:cmdUS(x.px), data:`위 명령은 배경에 쓸 미국 주요 지수와 금리·달러·환율·유가와 시장 뉴스 제목, 특징에 쓸 ${x.name} 지수를 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
+    cmd:cmdUS(x.px), data:`위 명령은 ${US_BG}, 특징에 쓸 ${x.name} 지수를 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
     code:x.k, name:x.name});
 }
-// 시황 종합 — 다섯 지수와 금리·달러·환율·유가·변동성을 한 리포트로. 그날 종목 분석에 앞서 읽는다
+// 시황 종합 — 다섯 지수와 금리·달러·환율·유가·금·비트코인·변동성을 한 리포트로. 그날 종목 분석에 앞서 읽는다
 function buildMarketPrompt(){
-  const kr=IDX_LIST.filter(x=>x.mk==='kr'), us=IDX_LIST.filter(x=>x.mk==='us');
+  const idx=IDX_LIST.filter(x=>x.mk!=='asset'), kr=idx.filter(x=>x.mk==='kr'), us=idx.filter(x=>x.mk==='us');
   return reportPrompt({kind:'market', unit:'index', subj:'각 지수',
-    title:`오늘 시황 — ${IDX_LIST.map(x=>x.name).join('·')}를 한 리포트로 종합합니다.`,
+    title:`오늘 시황 — ${idx.map(x=>x.name).join('·')} 다섯 지수를 한 리포트로 종합합니다.`,
     note:'분석 대상은 각 지수 자체입니다. 아래 명령의 ETF는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다. 이 리포트는 그날 종목 분석에 앞서 읽습니다.',
     cmd:`${cmdKR(kr.map(x=>x.px).join(' '),'--brief')}\n${cmdUS(us.map(x=>x.px).join(' '))}`,
     data:`첫 번째 명령은 국장 지수를 따르는 KODEX 200(코스피200)·KODEX 코스닥150(코스닥150)의 자료 카드와 함께, 배경에 쓸 코스피·코스닥 지수의 기간별 등락과 투자자별 순매수, 해외 지수·금리·환율·유가와 시장 뉴스 제목을 보여 줍니다. `
-      +`두 번째 명령은 미국 지수를 따르는 ${us.map(x=>x.px+'('+x.name+')').join('·')}의 시세와 가격 위치·기관과 공매도 자료, 배경에 쓸 미국 주요 지수와 금리·달러·환율·유가와 시장 뉴스 제목을 보여 줍니다.`,
+      +`두 번째 명령은 미국 지수를 따르는 ${us.map(x=>x.px+'('+x.name+')').join('·')}의 시세와 가격 위치·기관과 공매도 자료, ${US_BG}을 보여 줍니다.`,
     code:'MARKET', name:'시황 종합'});
 }
+// 지수 탭 — 시황 종합 → 미장 → 국장 → 자산
 function idxBlock(){
-  return '<div class="idxbox"><div class="idxh">지수 리포트 <span>누르면 프롬프트 복사 · 시황 종합은 다섯 지수를 한 리포트로</span></div><div class="idxrow">'
-    +'<button type="button" class="copybtn mkt" data-label="시황 종합" onclick="copyIndex(event,\'MARKET\')" title="시황 종합 리포트 프롬프트 → Claude에 붙여넣기">시황 종합</button>'
-    +IDX_LIST.map(x=>'<button type="button" class="copybtn" data-label="'+esc(x.name)+'" onclick="copyIndex(event,\''+x.k+'\')" title="'+esc(x.name)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(x.name)+'</button>').join('')
-    +'</div></div>';
+  const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';
+  const grp=(title,sub,g)=>'<div class="idxg"><div class="idxgt">'+title+(sub?' <span>'+sub+'</span>':'')+'</div><div class="idxrow">'+IDX_LIST.filter(x=>x.g===g).map(x=>btn(x.k,x.name)).join('')+'</div></div>';
+  return '<div class="idxbox">'
+    +'<div class="idxg"><div class="idxgt">시황 종합 <span>다섯 지수와 금리·달러·환율·유가·금·비트코인을 한 리포트로 — 종목 분석에 앞서</span></div><div class="idxrow">'+btn('MARKET','시황 종합','mkt')+'</div></div>'
+    +grp('미장','', 'us')+grp('국장','', 'kr')+grp('자산','가격 위치·수급은 따르는 ETF(TLT·GLD·IBIT)로','asset')
+    +'</div>';
 }
 function copyIndex(ev, k){
   ev.stopPropagation();
@@ -2009,12 +2034,12 @@ function toTop(){ try{ window.scrollTo({top:0, behavior:'smooth'}); }catch(_){ w
 function render(){
   const content=document.getElementById('content');
   if(LIST_TABS.includes(CUR)){ renderList(CUR); return; }   // 리스트 탭 — 각자 JSON, data.json과 무관
+  if(CUR==='index'){ content.innerHTML=idxBlock(); return; }  // 지수 탭 — 자료 없이도 버튼은 늘 뜬다
   if(!DATA){content.innerHTML='<div class="empty">데이터 없음</div>';return;}
   const items=DATA[CUR]||[];
   // [검색 탭] 필터를 안 거친 종목 — 백지 상태 종합 진단용
   if(CUR==='search'){
-    content.innerHTML = idxBlock() +   // 지수 리포트(언제든 복사)
-      '<div class="srow"><input id="sq" class="sinput" type="search" placeholder="종목명·코드·미국 종목 (예: 삼성전자, 005930, 엔비디아, NVDA)" '
+    content.innerHTML = '<div class="srow"><input id="sq" class="sinput" type="search" placeholder="종목명·코드·미국 종목 (예: 삼성전자, 005930, 엔비디아, NVDA)" '
       + 'oninput="doSearch()" autocomplete="off"><button class="sbtn" onclick="doSearch()">검색</button></div>'
       + '<div id="sres"><div class="empty">종목명 또는 코드를 입력하세요.</div></div>';
     loadUniverse().then(()=>{
@@ -2041,18 +2066,23 @@ function render(){
     return;
   }
   const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
-  if(items.length===0){content.innerHTML='<div class="empty">'+label+' 종목이 없습니다.</div>';return;}
+  // 수급 탭 안 전환 — 큰 대상부터(외국인 → 연기금 → 동시), 처음엔 동시 수급
+  const seg='<div class="mk2 fl">'+[['foreign','외국인','f'],['pension','연기금','p'],['both','동시','b']].map(([k,l,c])=>
+    '<button type="button" class="'+c+(k===CUR?' on':'')+'" onclick="show(\''+k+'\')">'+l+' <span>'+((DATA[k]||[]).length)+'</span></button>').join('')+'</div>';
+  if(items.length===0){content.innerHTML=seg+'<div class="empty">'+label+' 종목이 없습니다.</div>';return;}
   const kospi=items.filter(x=>x.market==='KOSPI');
   const kosdaq=items.filter(x=>x.market==='KOSDAQ');
   if(CUR==='both'){
-    content.innerHTML = sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
+    content.innerHTML = seg + sectionBoth('KOSPI', kospi, 'kospi') + sectionBoth('KOSDAQ', kosdaq, 'kosdaq');
   }else{
-    content.innerHTML = sectionSingle('KOSPI', kospi, 'kospi') + sectionSingle('KOSDAQ', kosdaq, 'kosdaq');
+    content.innerHTML = seg + sectionSingle('KOSPI', kospi, 'kospi') + sectionSingle('KOSDAQ', kosdaq, 'kosdaq');
   }
 }
 function show(k){
+  if(k==='flow') k=FLOW;                       // 수급 탭은 마지막으로 본 전환(처음엔 동시 수급)으로 연다
+  if(FLOW_KEYS.includes(k)) FLOW=k;
   CUR=k;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===k));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.k===tabOf(k)));
   const b=document.getElementById('screenbtn');
   if(b){
     b.textContent = '일괄 스크리닝 프롬프트';   // 탭 무관 통일 (내용은 탭별로 다름)
@@ -2074,13 +2104,12 @@ async function load(){
     catch(_){ res=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error(); }
     DATA=await res.json();
     document.getElementById('updated').textContent=DATA.updated;
-    document.getElementById('c-foreign').textContent=DATA.foreign.length;
-    document.getElementById('c-pension').textContent=DATA.pension.length;
-    document.getElementById('c-both').textContent=DATA.both.length;
+    document.getElementById('c-flow').textContent=DATA.both.length;     // 수급 탭 숫자 = 동시 수급(0순위)
     document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
     document.getElementById('c-momentum').textContent=(DATA.momentum||[]).length;
     document.getElementById('c-portfolio').textContent=(DATA.portfolio||[]).length;
     document.getElementById('rule').innerHTML='판정: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수 <b>&gt; 0</b> 그리고 순매수일 <b>'+DATA.buy_ratio+'% 이상</b> · 스캔 <b>'+DATA.scanned+'종목</b>';
+    RULE_LIST_LAST=null; ruleFor(CUR);   // 스캔 판정 문구를 기억해 두고, 지금 탭이 지수·리스트면 그 탭의 문구로
     render();
   }catch(e){
     if(!LIST_TABS.includes(CUR))

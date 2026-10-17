@@ -735,8 +735,15 @@ def ychart(sym, rng='2y'):
         ERR.append('야후 시계열 없음 ' + sym)
         return None
     rows = []
+    close = list(q['close'])
+    # ★장이 끝났는데 마지막 봉의 종가가 한동안 비어 있다(국장·ETF 실측 2026-10-17) — 그대로 버리면 하루 전으로 계산된다.
+    #   장이 끝난 봉만 메타의 현재가(=마감가)로 채운다. 장중 봉은 채우지 않는다(#시세가 오늘 등락을 맡는다)
+    m = r.get('meta') or {}
+    end = ((m.get('currentTradingPeriod') or {}).get('regular') or {}).get('end')
+    if close and close[-1] is None and q['open'][-1] and m.get('regularMarketPrice') and end and time.time() > end:
+        close[-1] = m['regularMarketPrice']
     for i, t in enumerate(r.get('timestamp') or []):
-        c = q['close'][i]
+        c = close[i]
         if c is None:
             continue
         rows.append({'date': datetime.fromtimestamp(t, timezone.utc).strftime('%Y-%m-%d'),
@@ -758,7 +765,9 @@ def idx_series(sym):
 
 US_IDX = [('S&P500', '^GSPC', '미국 S&P 500'), ('나스닥', '^IXIC', '미국 나스닥 종합'),
           ('필라델피아반도체', '^SOX', '미국 필라델피아 반도체'), ('VIX', '^VIX', None),
-          ('미국10년물금리', '^TNX', None), ('달러인덱스', 'DX-Y.NYB', None)]
+          ('미국단기금리(13주)', '^IRX', None), ('미국10년물금리', '^TNX', None), ('미국30년물금리', '^TYX', None),
+          ('달러인덱스', 'DX-Y.NYB', None), ('금(선물)', 'GC=F', None), ('비트코인', 'BTC-USD', None)]
+# 단기·10년·30년 금리로 금리 곡선을, 금·비트코인으로 안전자산·위험 선호를 본다(2026-10-17 추가)
 
 
 def us_market_all():
@@ -921,9 +930,14 @@ def us_bundle(tk):
     fy = EX.submit(ychart, tk.replace('.', '-'), '2y')     # 야후는 클래스 주식을 BRK-B처럼 하이픈으로 받는다(지수 심볼은 그대로)
     ff = EX.submit(jget, '%s/report-data/%s.json' % (RAW, tk), None, True)
     info = f['info'].result() or {}
+    summ = f['summ'].result()
+    if not info:      # ★ETF(SPY·QQQ·TLT·GLD·IBIT)는 assetclass=etf로만 열린다 — 주식으로 물으면 빈 응답(실측 2026-10-17)
+        fi2 = EX.submit(nq, '/quote/%s/info?assetclass=etf' % tk)
+        fs2 = EX.submit(nq, '/quote/%s/summary?assetclass=etf' % tk)
+        info, summ = (fi2.result() or {}), fs2.result()
     fn = EX.submit(gnews_en, tk, info.get('companyName') or tk)
     out = ['', '==== %s %s ====' % (tk, clean_name(info.get('companyName')))]
-    out.append('#시세 ' + (J(us_quote(info, f['summ'].result())) if info else '조회 실패'))
+    out.append('#시세 ' + (J(us_quote(info, summ)) if info else '조회 실패'))
     y = fy.result()
     if y:
         ev = y[1]
