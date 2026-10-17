@@ -33,13 +33,14 @@ const CASES=[
  ['24_자산-미국채권',()=>buildIndexPrompt('TLT')],
  ['25_자산-금',()=>buildIndexPrompt('GC=F')],
  ['26_자산-비트코인',()=>buildIndexPrompt('BTC-USD')],
+ ['27_지수-러셀2000',()=>buildIndexPrompt('^RUT')],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[
  ['미치환',     t=>!/\$\{/.test(t)],
  ['이상값',     t=>!/undefined|NaN|\[object Object\]/.test(t)],
  ['자료명령',   t=>{ const n=(t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length;
-                   if(t.includes('각 지수와 자산에 대한')) return n===2 && t.includes('python3 - kr 069500 229200 --brief\n') && /python3 - us SPY QQQ SOXX TLT\n/.test(t);
+                   if(t.includes('각 지수와 자산에 대한')) return n===2 && t.includes('python3 - kr 069500 229200 --brief\n') && /python3 - us SPY IWM QQQ SOXX TLT\n/.test(t);
                    return t.includes('후보 전체의 개요') ? (n===2 && /--overview\n/.test(t) && t.includes('python3 - kr (종목코드) --brief')) : n===1; }],
  ['목적',       t=>t.includes('이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 하며, 판단을 빠르고 정확하게 받아 보려 합니다.') && t.includes('그 판단에서 나온 기대수익과 액션을 담습니다.') && t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.')],
  ['자료설명',   t=>t.includes('자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다.') && t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.')],
@@ -54,8 +55,8 @@ const RULES=[
                    return t.includes('후보 전체의 개요') ? (b.every(x=>t.includes(x)) && !t.includes('5분 안에')) : (s.every(x=>t.includes(x)) && !t.includes('10분 안에')); }],
  ['액션넷',     t=>['지금 매수','가격 대기','매수하지 않음'].every(w=>t.includes(w)) && !t.includes('중립')],
  ['전개순서',   t=>t.includes('각 지수와 자산에 대한')
-   ? (/\n1\. 공통 배경 — [^\n]+\n2\. 지수·자산별 판단 — 미국 채권, 금, 비트코인, S&P 500, 나스닥, 필라델피아 반도체, 코스피, 코스닥 순서로, 각각 특징 → 전망 → 결론\n3\. 종합 판단 — [^\n]+\n4\. 종목 분석 시사점 — [^\n]+\n/.test(t)
-      && t.includes('# **핵심 원인…가장 크게 움직인 지수·자산과 숫자, 판단 숫자**') && t.includes('## **오늘 판단: 위험을 늘릴 때 / 유지할 때 / 줄일 때**') && t.includes('### **현재 (현재 수준) → 예상 (예상 수준)')
+   ? (/\n1\. 공통 배경 — [^\n]+\n2\. 지수·자산별 판단 — 미국 장기 국채, 금, 비트코인, S&P 500, 러셀 2000, 나스닥, 필라델피아 반도체, 코스피, 코스닥 순서로, 각각 특징 → 전망 → 결론\n3\. 종합 판단 — [^\n]+\n4\. 종목 분석 시사점 — [^\n]+\n/.test(t)
+      && t.includes('# **핵심 원인…가장 크게 움직인 지수·자산과 숫자, 판단 숫자**') && t.includes('\n### **오늘 판단: 위험을 늘릴 때 / 유지할 때 / 줄일 때**') && t.includes('\n#### **현재 (현재 수준) → 예상 (예상 수준)') && t.includes('세 갈래를 확률로 가중한 값') && t.includes('비트코인만 15%를 기준으로')
       && t.includes('세 갈래는 전망에서만 다루고 결론에서 다시 늘어놓지 않습니다.') && t.includes('한 시장만 다루거나') && !t.includes('여러 갈래의 시나리오를 나열하지 않습니다'))
    : t.includes('후보 전체의 개요')
    ? /\n1\. 본질 — 무엇으로 돈을 버는 회사인가\n2\. 특징 — 지금 값을 가르는 이 회사의 상태\n3\. 기타 — 눈에 띄지만 판단을 바꾸지 않는 것\n4\. 전망 — 앞으로 어떻게 진행될지에 대한 본인의 판단\n5\. 결론 — 종합적 판단, 기대수익, 액션\n/.test(t)

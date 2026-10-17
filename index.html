@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-18b (시황 종합 v51 — 15분·10,000자, 특징·전망 문단화) / 이전: 2026-10-18a (v50 업그레이드 나열식) -->
+<!-- build: 2026-10-18c (시황 종합 v52 — 러셀 2000, 글자 크기 단계, 이름 고정, 왔다 갔다 금지, 갈래 기준) / 이전: 2026-10-18b (v51) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -930,7 +930,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v51';
+const PROMPT_VER='v52';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1011,9 +1011,11 @@ const UNIT = {
   market:{cur:'현재 수준', exp:'예상 수준', expObj:'예상 수준을', buy:'매수할 수준', buyObj:'매수할 수준을', curRec:'현재 수준 — 지수는 지수, 자산은 위에 적은 기준의 가격', expRec:'예상 수준', buyRec:'매수할 수준'},
 };
 // 시황 종합 규칙 — 한 규칙은 한 번만 쓴다(서로 부딪치는 지시가 생기지 않게). 지수·자산 리포트와 종목 리포트에는 쓰지 않는다
-const MKT_RULES = '1의 전제는 한 문단입니다. 원인은 원인마다 무엇이 바뀌었나 → 어떻게 번졌나 → 지수·자산에 나타난 숫자 순서로 씁니다. 시장 전체에 공통된 이야기는 1에서만 씁니다.\n\n'
-  + '2는 지수·자산마다 이름을 굵은 글씨로 한 줄 쓰고 시작합니다. 특징에는 이 대상의 가격을 지금 정하고 있는 것을 원인 → 작용 → 결과로 이어 한 문단으로 씁니다. 1의 원인이 이 대상에 어떻게 다르게 작용했는지와 이 대상에만 있는 재료를 쓰며, 1에서 다룬 원인을 다시 설명하지 않습니다.\n\n'
-  + '전망은 방향을 먼저 정하지 않습니다. 상승·횡보·하락 세 갈래마다, 그 갈래가 오려면 무엇이 일어나야 하는지와 그 근거가 되는 숫자를 한두 문장으로 쓰고 확률을 매깁니다(합 100%). 확률은 근거의 무게대로 매기며, 고르게 나누어 판단을 피하지 않습니다. 이어서 바닥과 목표를 숫자, 시점, 틀렸다고 볼 신호와 함께 씁니다. 주식 지수의 바닥은 이익과 배수(PER), 그리고 매도 물량이 끝나는 조건으로 따집니다.\n\n'
+const MKT_RULES = '큰 단락 이름은 ## 제목(예: ## 1. 공통 배경), 2의 대상 이름은 ### 제목으로 씁니다. 대상은 2에 적은 이름 하나로만 부르며, 제목·본문·기록 블록의 name에 같은 이름을 씁니다.\n\n'
+  + '1의 전제는 한 문단입니다. 원인은 원인마다 무엇이 바뀌었나 → 어떻게 번졌나 → 가장 크게 영향을 받은 대상과 그 숫자 순서로 씁니다. 다른 대상에 미친 영향은 2의 그 대상 단락에서 씁니다. 시장 전체에 공통된 이야기는 1에서만 씁니다.\n\n'
+  + '2의 대상 단락은 그 대상만 다룹니다. 다른 대상과의 비교는 판단에 꼭 필요할 때만 한 문장으로 씁니다. 특징에는 이 대상의 가격을 지금 정하고 있는 것을 원인 → 작용 → 결과로 이어 한 문단으로 씁니다. 1의 원인이 이 대상에 어떻게 다르게 작용했는지와 이 대상에만 있는 재료를 쓰며, 1에서 다룬 원인을 다시 설명하지 않습니다. '
+  + '대용 ETF의 숫자는 "(QQQ 기준) 20일 평균선 -4.4%"처럼 비율로만 옮기고, 바닥·목표·지지 구간 같은 가격 수준은 대상 자체의 단위로만 씁니다. 미국 장기 국채만 TLT 가격이 기준입니다.\n\n'
+  + '전망은 방향을 먼저 정하지 않습니다. 세 갈래는 석 달 뒤 지금 수준보다 5% 넘게 오르면 상승, 5% 안에서 움직이면 횡보, 5% 넘게 내리면 하락이며, 비트코인만 15%를 기준으로 합니다. 세 갈래마다, 그 갈래가 오려면 무엇이 일어나야 하는지와 그 근거가 되는 숫자를 한두 문장으로 쓰고 확률을 매깁니다(합 100%). 확률은 근거의 무게대로 매기며, 고르게 나누어 판단을 피하지 않습니다. 이어서 바닥과 목표를 숫자, 시점, 틀렸다고 볼 신호와 함께 씁니다. 주식 지수의 바닥은 이익과 배수(PER), 그리고 매도 물량이 끝나는 조건으로 따집니다.\n\n'
   + '2의 순서는 모든 자산 가격의 기준인 금리를 먼저 두고, 주식은 미국에서 한국으로, 넓은 지수에서 업종 지수로 내려갑니다. 어느 지수·자산도 특징 한 문단과 전망 한 문단보다 짧게 쓰지 않습니다. 재료는 판단을 움직인 것만 골라 문장 속에 녹여 쓰며, 재료를 늘어놓지 않습니다.\n\n'
   + '3과 4는 각각 한 문단입니다. 시간과 분량은 1과 2에 씁니다.';
 const MKT_SEARCH = '코스피 12개월 선행 PER과 신용융자 잔고·반대매매는 자료 명령에 들어 있지 않습니다. 이 두 재료는 검색 결과 목록에서 숫자를 확인하고 원문은 열지 않으며, 이 리포트의 검색은 모두 세 번까지입니다. 찾지 못한 재료는 판단에 쓰지 않고, 3의 끝에 "확인하지 못한 재료" 한 줄로 모읍니다.';
@@ -1028,7 +1030,7 @@ function reportPrompt(o){
 5. 결론 — 종합적 판단, 기대수익, 액션`
     : market
     ? `1. 공통 배경 — 전제(오늘 시장이 놓인 큰 판)와 원인(이번에 시장을 움직인 것 2~3개, 영향이 큰 순서로)
-2. 지수·자산별 판단 — 미국 채권, 금, 비트코인, S&P 500, 나스닥, 필라델피아 반도체, 코스피, 코스닥 순서로, 각각 특징 → 전망 → 결론
+2. 지수·자산별 판단 — 미국 장기 국채, 금, 비트코인, S&P 500, 러셀 2000, 나스닥, 필라델피아 반도체, 코스피, 코스닥 순서로, 각각 특징 → 전망 → 결론
 3. 종합 판단 — 오늘 판단과 자산 배분 방향
 4. 종목 분석 시사점 — 유리한 업종, 피할 업종, 주의할 일정`
     : macro
@@ -1071,12 +1073,12 @@ ${market?`타이틀은 아래 한 줄입니다. 리포트에서 가장 큰 글�
 # **핵심 원인…가장 크게 움직인 지수·자산과 숫자, 판단 숫자**
 
 2의 지수·자산마다 결론은 아래 두 줄입니다. 매수하지 않더라도 ${u.expObj} 정할 수 있으면 그대로 씁니다. ${u.expObj} 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
-### **현재 (${u.cur}) → 예상 (${u.exp})  (+N.N%)**
+#### **현재 (${u.cur}) → 예상 (${u.exp})  (+N.N%)**
 #### **지금 매수 / 가격 대기 (${u.buy}) / 매수하지 않음 / 매도**
-결론의 값은 하나로 제시하며, 세 갈래는 전망에서만 다루고 결론에서 다시 늘어놓지 않습니다.
+결론의 예상 수준은 세 갈래를 확률로 가중한 값 하나로 제시하며, 세 갈래는 전망에서만 다루고 결론에서 다시 늘어놓지 않습니다.
 
 3은 아래 한 줄로 시작하고, 그렇게 판단한 근거와 자산 배분 방향을 한 문단으로 씁니다.
-## **오늘 판단: 위험을 늘릴 때 / 유지할 때 / 줄일 때**`
+### **오늘 판단: 위험을 늘릴 때 / 유지할 때 / 줄일 때**`
 :`결론은 아래 두 줄로 시작합니다. 리포트에서 가장 큰 글자입니다. ${batch?'':`매수하지 않더라도 ${u.expObj} 정할 수 있으면 그대로 씁니다. `}${u.expObj} 정할 근거가 없을 때만 첫 줄을 빼고 액션만 씁니다.
 # **현재 (${u.cur}) → 예상 (${u.exp})  (+N.N%)**
 ## **${batch?`지금 매수 / 가격 대기 (${u.buy}) / 매도`:`지금 매수 / 가격 대기 (${u.buy}) / 매수하지 않음 / 매도`}**
@@ -1085,13 +1087,13 @@ ${market?`타이틀은 아래 한 줄입니다. 리포트에서 가장 큰 글�
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
 
 [기록 블록]
-${batch?'검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 한 줄로 적은 종목에는 두지 않습니다.':market?'2의 지수·자산마다 이름 줄 바로 다음에 아래 기록 블록을 둡니다.':'리포트 첫머리에는 아래 기록 블록을 두어, 리포트의 첫 글자가 ---이 되게 합니다.'} 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
+${batch?'검토를 전개한 종목은 그 종목을 설명하기 직전에 아래 기록 블록을 둡니다. 한 줄로 적은 종목에는 두지 않습니다.':market?'2의 지수·자산마다 이름 제목 바로 다음에 아래 기록 블록을 둡니다.':'리포트 첫머리에는 아래 기록 블록을 두어, 리포트의 첫 글자가 ---이 되게 합니다.'} 코드블록으로 감싸지 않으며, 키와 순서는 그대로 두고 값만 채우되 숫자에는 쉼표나 기호를 넣지 않습니다.
 
 ---
 date: (오늘 날짜 YYYY-MM-DD)
 prompt: ${PROMPT_VER}
 start: ${stamp}
-code: ${batch?'(종목코드)':market?'(지수·자산 코드 — TLT, GC=F, BTC-USD, ^GSPC, ^IXIC, ^SOX, KOSPI, KOSDAQ 가운데 하나)':o.code}
+code: ${batch?'(종목코드)':market?'(지수·자산 코드 — TLT, GC=F, BTC-USD, ^GSPC, ^RUT, ^IXIC, ^SOX, KOSPI, KOSDAQ 가운데 하나)':o.code}
 name: ${batch?'(종목명)':market?'(지수·자산 이름)':o.name}
 price: (${u.curRec}, 숫자만)
 target: (${u.expRec}, 숫자만${batch?'':'. 액션이 매수하지 않음이면 비워 둡니다'})
@@ -1988,24 +1990,28 @@ function copyList(ev, kind, a, b){
 const IDX_LIST=[
   // 넓은 대상 → 좁은 대상: 미장(밤사이 다음 날 국장을 이끈다) → 국장 → 자산. 지수 안에서도 넓은 지수 → 업종 지수
   {k:'^GSPC',  g:'us', name:'S&P 500',           mk:'us', px:'SPY'},
+  {k:'^RUT',   g:'us', name:'러셀 2000',          mk:'us', px:'IWM'},
   {k:'^IXIC',  g:'us', name:'나스닥',            mk:'us', px:'QQQ'},
   {k:'^SOX',   g:'us', name:'필라델피아 반도체', mk:'us', px:'SOXX'},
   {k:'KOSPI',  g:'kr', name:'코스피',            mk:'kr', px:'069500', pxName:'코스피200을 따르는 KODEX 200'},
   {k:'KOSDAQ', g:'kr', name:'코스닥',            mk:'kr', px:'229200', pxName:'코스닥150을 따르는 KODEX 코스닥150'},
   // 자산 — 대상은 자산 자체, 가격 위치·수급·옵션은 따르는 ETF로. 기록 블록의 가격 기준(measure)을 못 박는다
-  {k:'TLT',     g:'asset', name:'미국 채권', mk:'asset', px:'TLT',  desc:'미국 장기 국채(만기 20년 이상)', measure:'TLT 가격(달러)'},
+  {k:'TLT',     g:'asset', name:'미국 장기 국채', mk:'asset', px:'TLT',  desc:'미국 장기 국채(만기 20년 이상)', measure:'TLT 가격(달러)'},
   {k:'GC=F',    g:'asset', name:'금',        mk:'asset', px:'GLD',  desc:'국제 금값',                     measure:'국제 금값(금 선물, 달러/온스)'},
   {k:'BTC-USD', g:'asset', name:'비트코인',  mk:'asset', px:'IBIT', desc:'비트코인',                      measure:'비트코인 가격(달러)'},
 ];
+const KNUM={4:'네',5:'다섯',6:'여섯',7:'일곱',8:'여덟'};
 const US_BG='배경에 쓸 미국 주요 지수와 금리(단기·10년·30년)·달러·환율·유가·금·비트코인과 시장 뉴스 제목';
 // 을/를 — 마지막 한글 글자의 받침으로 고른다(괄호·숫자 뒤면 그 앞의 한글 기준)
 function eulReul(w){ const m=String(w).match(/[가-힣](?=[^가-힣]*$)/); if(!m) return '를'; return ((m[0].charCodeAt(0)-0xAC00)%28)?'을':'를'; }
+// 영문 약어 뒤 조사 — 끝 글자를 우리말로 읽어 받침(엘·엠·엔·알)이 있으면 은/을
+function josaEn(w,a,b){ return /[LMNR]$/i.test(String(w))?a:b; }
 function eunNeun(w){ const m=String(w).match(/[가-힣](?=[^가-힣]*$)/); if(!m) return '는'; return ((m[0].charCodeAt(0)-0xAC00)%28)?'은':'는'; }
 function buildIndexPrompt(k){
   const x=IDX_LIST.find(v=>v.k===k);
   if(!x) return null;
   if(x.mk==='asset') return reportPrompt({kind:'macro', unit:'asset', subj:'이 자산', title:`${x.name} — 지켜보고 있는 자산입니다.`,
-    note:`분석 대상은 ${x.desc} 자체입니다. 기록 블록의 현재가·예상 가격·매수 가격은 ${x.measure} 기준입니다. 아래 명령의 ${x.px}는 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 운용은 다루지 않습니다.`,
+    note:`분석 대상은 ${x.desc} 자체입니다. 기록 블록의 현재가·예상 가격·매수 가격은 ${x.measure} 기준입니다. 아래 명령의 ${x.px}${josaEn(x.px,'은','는')} 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 운용은 다루지 않습니다.`,
     cmd:cmdUS(x.px), data:`위 명령은 ${US_BG}, 특징에 쓸 ${x.desc}${eulReul(x.desc)} 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
     code:x.k, name:x.name});
   if(x.mk==='kr') return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,
@@ -2013,16 +2019,16 @@ function buildIndexPrompt(k){
     cmd:cmdKR(x.px,'--brief'), data:`위 명령은 배경에 쓸 코스피·코스닥 지수의 기간별 등락과 투자자별 순매수, 해외 지수·금리·환율·유가와 시장 뉴스 제목, 특징에 쓸 ${x.pxName}의 가격 위치·거래량·수급을 보여 줍니다.`,
     code:x.k, name:x.name});
   return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,
-    note:`분석 대상은 ${x.name} 지수 자체입니다. 아래 명령의 ${x.px}는 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다.`,
+    note:`분석 대상은 ${x.name} 지수 자체입니다. 아래 명령의 ${x.px}${josaEn(x.px,'은','는')} 지수의 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 가격은 다루지 않습니다.`,
     cmd:cmdUS(x.px), data:`위 명령은 ${US_BG}, 특징에 쓸 ${x.name} 지수를 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
     code:x.k, name:x.name});
 }
-// 시황 종합 — 다섯 지수와 세 자산(미국 채권·금·비트코인), 금리·달러·환율·유가·변동성을 한 리포트로. 그날 종목 분석에 앞서 읽는다
+// 시황 종합 — 여섯 지수와 세 자산(미국 장기 국채·금·비트코인), 금리·달러·환율·유가·변동성을 한 리포트로. 그날 종목 분석에 앞서 읽는다
 function buildMarketPrompt(){
   const idx=IDX_LIST.filter(x=>x.mk!=='asset'), kr=idx.filter(x=>x.mk==='kr'), us=idx.filter(x=>x.mk==='us'), as=IDX_LIST.filter(x=>x.mk==='asset');
   const bond=as.find(x=>x.k==='TLT');
   return reportPrompt({kind:'market', unit:'market', subj:'각 지수와 자산',
-    title:`오늘 시황 — ${idx.map(x=>x.name).join('·')} 다섯 지수와 ${as.map(x=>x.name).join('·')}${eulReul(as[as.length-1].name)} 한 리포트로 종합합니다.`,
+    title:`오늘 시황 — ${idx.map(x=>x.name).join('·')} ${KNUM[idx.length]||idx.length+'개'} 지수와 ${as.map(x=>x.name).join('·')}${eulReul(as[as.length-1].name)} 한 리포트로 종합합니다.`,
     note:'분석 대상은 각 지수와 자산 자체입니다. 아래 명령의 ETF는 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 운용은 다루지 않습니다. '
       +'기록 블록의 가격은 지수는 지수 수준, '+as.map(x=>x.name+eunNeun(x.name)+' '+x.measure).join(', ')+' 기준입니다. 이 리포트는 그날 종목 분석에 앞서 읽습니다.',
     cmd:`${cmdKR(kr.map(x=>x.px).join(' '),'--brief')}\n${cmdUS(us.map(x=>x.px).concat(bond?[bond.px]:[]).join(' '))}`,
@@ -2035,7 +2041,7 @@ function idxBlock(){
   const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';
   const grp=(title,sub,g)=>'<div class="idxg"><div class="idxgt">'+title+(sub?' <span>'+sub+'</span>':'')+'</div><div class="idxrow">'+IDX_LIST.filter(x=>x.g===g).map(x=>btn(x.k,x.name)).join('')+'</div></div>';
   return '<div class="idxbox">'
-    +'<div class="idxg"><div class="idxgt">시황 종합 <span>다섯 지수와 미국 채권·금·비트코인을 한 리포트로 — 종목 분석에 앞서</span></div><div class="idxrow">'+btn('MARKET','시황 종합','mkt')+'</div></div>'
+    +'<div class="idxg"><div class="idxgt">시황 종합 <span>'+(KNUM[IDX_LIST.filter(x=>x.mk!=='asset').length]||'')+' 지수와 미국 장기 국채·금·비트코인을 한 리포트로 — 종목 분석에 앞서</span></div><div class="idxrow">'+btn('MARKET','시황 종합','mkt')+'</div></div>'
     +grp('미장','', 'us')+grp('국장','', 'kr')+grp('자산','가격 위치·수급은 따르는 ETF(TLT·GLD·IBIT)로','asset')
     +'</div>';
 }

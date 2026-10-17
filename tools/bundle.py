@@ -763,7 +763,7 @@ def idx_series(sym):
     return [round(c[0], 2), ch(5), ch(20), ch(60)]
 
 
-US_IDX = [('S&P500', '^GSPC', '미국 S&P 500'), ('나스닥', '^IXIC', '미국 나스닥 종합'),
+US_IDX = [('S&P500', '^GSPC', '미국 S&P 500'), ('러셀2000', '^RUT', None), ('나스닥', '^IXIC', '미국 나스닥 종합'),
           ('필라델피아반도체', '^SOX', '미국 필라델피아 반도체'), ('VIX', '^VIX', None),
           ('미국단기금리(13주)', '^IRX', None), ('미국10년물금리', '^TNX', None), ('미국30년물금리', '^TYX', None),
           ('달러인덱스', 'DX-Y.NYB', None), ('금(선물)', 'GC=F', None), ('비트코인', 'BTC-USD', None)]
