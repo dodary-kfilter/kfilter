@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-17f (탭 재배치 — 지수 탭·수급 통합·검색 2칸, 금·미국 채권·비트코인 리포트) / 이전: 2026-10-17e (첫 화면 종목 검색) -->
+<!-- build: 2026-10-17g (애널 랭킹순 빈 자리에 이유·설명 두 줄) / 이전: 2026-10-17f (탭 재배치·지수 탭·자산 리포트) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1875,7 +1875,8 @@ function anView(d){
             +'<div class="pinfo">'+lMd(p.date)+' · '+esc(AN_ACT[p.action]||p.action||'의견')+' · 목표가 '+pt
             +((g.count||0)>1 ? ' · 상위 '+pool+'위 중 <b>'+esc(g.count)+'명</b> 매수' : '')
             +(p.link ? ' · <a class="lnk" href="'+esc(p.link)+'" target="_blank" rel="noopener">기사</a>' : '')+'</div></div>'; }).join('')
-        : '<div class="en-empty" style="padding:8px 2px">최근 '+days+'일 미국 상장 종목 매수 의견 없음</div>');
+        : (a.why ? '<div class="en-empty" style="padding:8px 2px 2px">'+esc(a.why)+'</div><div class="en-empty" style="padding:0 2px 8px; font-size:12px; opacity:.85">'+esc(a.why_more||'')+'</div>'
+                 : '<div class="en-empty" style="padding:8px 2px">최근 '+days+'일 미국 상장 종목 매수 의견 없음</div>'));   // 빈 자리 — 이유 한 줄 + 설명 한 줄
   }).join('');
   return seg+(body || '<div class="empty">애널리스트 자료가 없습니다.</div>');
 }
