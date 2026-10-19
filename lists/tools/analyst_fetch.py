@@ -141,11 +141,14 @@ def main(argv):
     if not isinstance(top, list) or not top:
         sys.exit('★ 순위표(getTop)를 받지 못함 — 기존 파일 유지 (HTTP %s · %s)' % (LAST.get('code'), LAST.get('head')))
     top = sorted(top, key=lambda a: a['rank'])[:N_POOL]
-    with ThreadPoolExecutor(4) as ex:
-        got = list(ex.map(stocks_of, top))
-    for i, a in enumerate(top):                      # 못 받은 애널리스트는 한 명씩 천천히 다시
+    def paced(a):                                    # 몰아 부르면 Cloudflare가 막는다 — 두 줄로 나눠 사이를 두고 부른다
+        time.sleep(0.6)
+        return stocks_of(a)
+    with ThreadPoolExecutor(2) as ex:
+        got = list(ex.map(paced, top))
+    for i, a in enumerate(top):                      # 못 받은 애널리스트는 한 명씩 더 천천히 다시
         if got[i] is None:
-            time.sleep(1.5)
+            time.sleep(3)
             got[i] = stocks_of(a)
     names = json.load(open(NAMES, encoding='utf-8')) if os.path.exists(NAMES) else {}
     # 전날 파일 — 못 받은 애널리스트를 이어 붙일 자료
