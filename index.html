@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-20a (애널 랭킹순에 이어 붙인 애널의 자료 날짜 표시) / 이전: 2026-10-18e (v54) -->
+<!-- build: 2026-10-20b (TOP 20 v3 — 안정형 20·공격형 20, 대표 지수 후보) / 이전: 2026-10-20a (애널 이어 붙인 자료 날짜) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -54,7 +54,9 @@
   .tab.active[data-k="foreign"]{border-color:var(--foreign)}
   .tab.active[data-k="pension"]{border-color:var(--pension)}
   .tab.active[data-k="both"]{border-color:var(--both)}
-  .tab.wide{grid-column:span 2}            /* 종목 검색은 두 칸 — 나중에 탭이 하나 늘면 한 칸으로 줄며 자리를 내준다 */
+  .tab.wide{grid-column:span 2}
+  .tag.both{background:rgba(163,113,247,.16); color:#a371f7; white-space:nowrap}
+  .t20p{font-size:12px; color:var(--dim); margin:2px 0}            /* 종목 검색은 두 칸 — 나중에 탭이 하나 늘면 한 칸으로 줄며 자리를 내준다 */
   .tab[data-k="index"] .c{color:#58a6ff; font-size:20px} .tab.active[data-k="index"]{border-color:#58a6ff}
   .tab[data-k="flow"] .c{color:var(--both)} .tab.active[data-k="flow"]{border-color:var(--both)}
   .mk2.fl button.on.f{border-color:var(--foreign)} .mk2.fl button.on.p{border-color:var(--pension)} .mk2.fl button.on.b{border-color:var(--both)}
@@ -930,7 +932,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v54';
+const PROMPT_VER='v55';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1719,7 +1721,7 @@ const F13_LISTS=[['new','신규 편입','buy'],['add','비중 확대','buy'],['r
 function lCnt(k){
   // 탭 숫자 = 화면에 나오는 행 수 (기존 탭처럼 구간 합)
   const d=LISTS[k]; if(!d) return null;
-  if(k==='top20') return (((d.kr||{}).top)||[]).length+(((d.us||{}).top)||[]).length;
+  if(k==='top20') return ['kr','us'].reduce((n,m)=>{ const D=d[m]||{}; return n+new Set([...(D.stable||[]),...(D.aggressive||[])].map(r=>r.code)).size; },0);
   if(k==='analyst'){ const top=((d.rules||{}).rank_top)||25, set=new Set();
     (d.analysts||[]).forEach(a=>{ if(a.rank<=top) (a.picks||[]).forEach(p=>set.add(p.ticker)); }); return set.size; }
   return F13_LISTS.reduce((a,[x])=>a+(((d.lists||{})[x])||[]).length, 0);
@@ -1736,7 +1738,8 @@ function listRule(k){
   if(k==='top20'){ const M=d.meta||{};
     // 숫자(가격·변동성·확률)는 매주 토요일 자동 갱신, 판단(고유 기대·후보)은 채팅에서 — 둘의 날짜를 나눠 보인다
     const dd=(M.judged && M.judged!==M.record_date) ? '숫자 <b>'+esc(M.record_date||'—')+'</b> 갱신 · 판단 <b>'+esc(M.judged)+'</b>' : '<b>'+esc(M.record_date||'—')+'</b> 기록';
-    return '기준: '+dd+' · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> 상승 확률·상승 시 평균 · '+esc(M.basis||''); }
+    const U=M.universe||{};
+    return '기준: '+dd+' · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> · 후보 국장 <b>'+esc(U.kr||'—')+'</b>(코스피 200·코스닥 150, 시총 순 근사)·미장 <b>'+esc(U.us||'—')+'</b>(S&P 500·나스닥 100) · 안정형 = 상승 확률 순 · 공격형 = 상승 확률 <b>'+esc(M.aggr_floor||51)+'% 이상</b> 중 오르면 순'; }
   if(k==='analyst'){ const w=d.window||{}, R=d.rules||{};
     return '기준: TipRanks 애널리스트 순위 · 최근 <b>'+esc(w.days||28)+'일</b>('+lMd(w.from)+'~'+lMd(w.to)+') 미국 상장 종목 매수 의견 · 랭킹순 <b>상위 '+esc(R.rank_top||25)
       +'위</b> · 추천 수순 <b>상위 '+esc(R.pool||100)+'위 중 '+esc(R.min_count||2)+'명 이상</b>'+((d.failed||[]).length ? ' · 못 받은 애널리스트 '+d.failed.length+'명' : ''); }
@@ -1795,38 +1798,50 @@ function t20Cap(r,mk){
   const unit=mk==='kr' ? '' : ' 달러';
   return r.mcap>=10000 ? (r.mcap/10000).toFixed(1)+'조'+unit : Math.round(r.mcap).toLocaleString('ko-KR')+'억'+unit;
 }
+const T20_L={stable:['안정형','상승 확률 높은 순'], aggressive:['공격형','오를 확률이 내릴 확률보다 높은 종목 중 오르면 큰 순']};
 function t20View(d){
-  const mk=T20_MK, top=((d[mk]||{}).top)||[];
-  const sk=T20_OPT[mk].some(([v])=>v===T20_SORT[mk]) ? T20_SORT[mk] : 'pup';
-  const [k,dir]=T20_KEY[sk];
-  const val=r=> k==='est' ? ((r.up==null&&r.dn==null) ? null : (r.up||0)-(r.dn||0)) : r[k];
-  const rows=top.map((r,i)=>({r,i})).sort((x,y)=>{                   // i = 원본 위치(프롬프트 버튼이 가리킨다)
-    const vx=val(x.r), vy=val(y.r);
-    if(vx==null&&vy==null) return 0; if(vx==null) return 1; if(vy==null) return -1;
-    return ((vx-vy)*dir) || ((y.r.Eup||0)-(x.r.Eup||0)) || ((y.r.Pup||0)-(x.r.Pup||0)); });
+  const mk=T20_MK, D=d[mk]||{};
+  const cnt=m=>{ const X=d[m]||{}; return new Set([...(X.stable||[]),...(X.aggressive||[])].map(r=>r.code)).size; };
   const seg='<div class="mk2">'+[['kr','국장'],['us','미장']].map(([m,l])=>'<button type="button"'+(m===mk?' class="on"':'')+' onclick="t20Mk(\''+m+'\')">'+l
-      +' <span>'+((((d[m]||{}).top)||[]).length)+'</span></button>').join('')+'</div>';
-  return seg+lSortRow(sk, T20_OPT[mk], 't20Sort')
-    +(rows.length ? '<div class="cards">'+rows.map((x,j)=>t20Card(x.r, j+1, mk, x.i)).join('')+'</div>'
-                  : '<div class="empty" style="padding:20px 0">종목이 없습니다.</div>');
+      +' <span>'+cnt(m)+'</span></button>').join('')+'</div>';
+  if(!D.stable) return seg+'<div class="empty" style="padding:20px 0">새 TOP 20 자료를 기다리는 중입니다.</div>';
+  const sec=t=>{ const L=D[t]||[], [nm,desc]=T20_L[t];
+    return '<div class="sec"><div class="sechd">'+nm+' '+L.length+' <span style="color:var(--dim);font-weight:400">'+desc+'</span></div>'
+      +(L.length ? '<div class="cards">'+L.map((r,i)=>t20Card(r,i+1,mk,t,i)).join('')+'</div>' : '<div class="empty" style="padding:12px 0">종목이 없습니다.</div>')+'</div>'; };
+  return seg+sec('stable')+sec('aggressive');
 }
-function t20Card(r, rank, mk, idx){
-  const isKR=(mk==='kr'), id='t20-'+mk+'-'+(r.code||r.name);
-  const mkt=/\.KQ$/.test(r.sym||'') ? 'KOSDAQ' : /\.KS$/.test(r.sym||'') ? 'KOSPI' : '';
+const t20v=v=>(v==null||v===''||Number.isNaN(v)) ? '—' : v;                 // 빠진 값은 —
+const t20p=v=>(v==null||Number.isNaN(+v)) ? '—' : fmtPct(+v);
+function t20Card(r, rank, mk, t, idx){
+  const isKR=(mk==='kr'), id='t20-'+mk+'-'+t+'-'+r.code;
   const name=isKR
-    ? '<a href="'+naverUrl(r.code)+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name)+'</a>'+(mkt?'<span class="tag '+mkt+'">'+mkt+'</span>':'')
-    : '<a href="'+esc(r.link||('https://finance.yahoo.com/quote/'+r.name))+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name)+'</a>'
-      +(r.kn?'<span class="psub">'+esc(r.kn)+'</span>':'');
+    ? '<a href="'+naverUrl(r.code)+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name)+'</a><span class="tag '+esc(r.market||'')+'">'+esc(r.market||'')+'</span>'
+    : '<a href="https://finance.yahoo.com/quote/'+esc(r.sym||r.code)+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name_ko||r.name)+'</a><span class="psub">'+esc(r.code)+'</span>';
   return '<div class="card" data-code="'+id+'">'
     +'<div class="card-h" onclick="toggleCard(\''+id+'\')">'
     +'<span class="rank">'+rank+'</span>'
-    +'<div class="cmid"><span class="cn">'+name+'</span>'
-    +'<span class="cs"><span><span class="lk2">상승 확률</span> <b>'+esc(r.Pup)+'%</b></span>'
-    +'<span><span class="lk2">상승 시 평균</span> '+fmtPct(r.Eup)+'</span>'
-    +'<span><span class="lk2">시총</span> <b>'+t20Cap(r,mk)+'</b></span></span></div>'
-    +'<button class="copybtn" onclick="copyList(event,\'top20\',\''+mk+'\','+idx+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>'
+    +'<div class="cmid"><span class="cn">'+name+(r.both?'<span class="tag both">두 목록</span>':'')+'</span>'
+    +'<span class="cs"><span><span class="lk2">상승 확률</span> <b>'+esc(t20v(r.p_up))+'%</b></span>'
+    +'<span><span class="lk2">오르면</span> '+t20p(r.up)+'</span>'
+    +'<span><span class="lk2">내리면</span> '+t20p(r.dn)+'</span></span>'
+    +'<span class="t20p">'+(r.judged ? ((r.p_mkt!=null && r.delta!=null) ? '시장 몫 '+esc(r.p_mkt)+'% '+(r.delta>=0?'+ ':'− ')+esc(Math.abs(r.delta))+'%p 판단' : '판단 반영') : '판단 전 · 시장 몫만')+'</span></div>'
+    +'<button class="copybtn" onclick="copyList(event,\'top20\',\''+mk+'|'+t+'\','+idx+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>'
     +'<span class="chev">⌄</span></div>'
-    +'<div class="card-b">'+t20Body(r,mk)+'</div></div>';
+    +'<div class="card-b">'+t20Body3(r,mk)+'</div></div>';
+}
+function t20Body3(r, mk){
+  const cap=r.mcap ? (mk==='kr' ? (r.mcap>=1e12 ? (r.mcap/1e12).toFixed(1)+'조 원' : Math.round(r.mcap/1e8).toLocaleString()+'억 원') : (r.mcap>=1e12 ? (r.mcap/1e12).toFixed(2)+'조 달러' : Math.round(r.mcap/1e9).toLocaleString()+'억 달러')) : '—';
+  const px=v=> mk==='kr' ? Math.round(v).toLocaleString()+'원' : '$'+Number(v).toLocaleString(undefined,{maximumFractionDigits:2});
+  const pxv=v=>(v==null||Number.isNaN(+v)) ? '—' : px(v);
+  const L=[
+    '<b>상승 확률 '+esc(t20v(r.p_up))+'%</b> = 시장 몫 '+esc(t20v(r.p_mkt))+'%(지수 민감도 베타 '+esc(t20v(r.beta))+' · 고유 흔들림 석 달 '+esc(t20v(r.sigma))+'%)'
+      +(r.judged ? (r.delta!=null ? ' '+(r.delta>=0?'+ ':'− ')+esc(Math.abs(r.delta))+'%p 종목 판단' : ' · 종목 판단 반영') : ' · 종목 판단 전'),
+    '<b>폭</b>: 오르면 평균 '+t20p(r.up)+', 내리면 평균 '+t20p(r.dn)+' — 종목 판단을 넣지 않고 시장 갈래와 흔들림으로만 계산',
+    '<b>가격</b>: '+pxv(r.cur)+' · 1년 고점 '+pxv(r.peak)+' 대비 '+t20p(r.dd),
+    '<b>업종</b>: '+esc(r.sector||'—')+' · 시총 '+cap
+  ];
+  if(r.why) L.push('<b>판단 근거</b>: '+esc(r.why));
+  return '<div class="kv">'+L.map(x=>'<div>'+x+'</div>').join('')+'</div>';
 }
 function t20Body(r, mk){
   const isKR=(mk==='kr'), mw=r.mw||{}, money=v=>t20Money(v,mk);
@@ -1931,13 +1946,15 @@ function f13View(d){
 // ── 리스트 종목 프롬프트 — 기존 틀 그대로, 대상 소개만 리스트별 ──
 function listPrompt(kind, a, b){
   if(kind==='top20'){
-    const r=(((LISTS.top20||{})[a]||{}).top||[])[b];
+    const [m,t]=String(a).split('|');
+    const r=((((LISTS.top20||{})[m])||{})[t]||[])[b];
     if(!r) return null;
-    if(a==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 향후 3개월 상승 확률과 상승 시 평균 수익률을 기준으로 고른 국장 TOP 20 종목으로 선별되었습니다.`,
+    const lab=(t==='stable') ? '상승 확률이 높은 순서로 고른 안정형' : '오를 확률이 내릴 확률보다 높은 종목 중 오를 폭이 큰 순서로 고른 공격형';
+    if(m==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 향후 3개월 ${lab} 국장 TOP 20 종목으로 선별되었습니다.`,
       bg:true, cmd:cmdKR(r.code,'--brief'), data:DATA_KR, code:r.code, name:r.name});
-    const nm=r.kn||r.name;
-    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.name}) — 향후 3개월 상승 확률과 상승 시 평균 수익률을 기준으로 고른 미장 TOP 20 종목으로 선별되었습니다.`,
-      bg:true, cmd:cmdUS(r.name), data:DATA_US, code:r.name, name:nm});
+    const nm=r.name_ko||r.name;
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.code}) — 향후 3개월 ${lab} 미장 TOP 20 종목으로 선별되었습니다.`,
+      bg:true, cmd:cmdUS(r.code), data:DATA_US, code:r.code, name:nm});
   }
   if(kind==='analyst'){
     const d=LISTS.analyst;

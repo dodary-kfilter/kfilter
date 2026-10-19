@@ -1,4 +1,4 @@
-name: TOP 20 숫자 자동 갱신
+name: TOP 20 자동 갱신
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
   push:
     # 이 파일이나 갱신기를 고치면 한 번 돈다
     branches: [main]
-    paths: ['.github/workflows/top20.yml', 'top20/tools/refresh.py']
+    paths: ['.github/workflows/top20.yml', 'top20/tools/build.py']
   workflow_dispatch:
 
 permissions:
@@ -21,12 +21,8 @@ jobs:
       - name: 저장소 체크아웃
         uses: actions/checkout@v4
 
-      - name: 숫자 갱신 (가격·변동성·확률·순위 — 판단 항목과 판단일은 그대로)
-        run: |
-          python3 top20/tools/refresh.py top20/top20.json /tmp/top20.json
-          # 못 받은 종목이 10개를 넘으면(야후·CBOE가 막힌 날) 덮어쓰지 않는다
-          python3 -c "import json,sys; s=json.load(open('/tmp/top20.json'))['meta'].get('stale') or []; print('못 받은 항목', len(s), s[:10]); sys.exit(1 if len(s) > 10 else 0)"
-          cp /tmp/top20.json top20/top20.json
+      - name: 계산 (안정형 20·공격형 20 — 시장 몫·폭은 새로, 종목 판단은 top20/judgments.json 그대로)
+        run: python3 top20/tools/build.py
 
       - name: 결과 커밋
         # 파일을 올려서 돈 시험 실행은 커밋하지 않는다(장중이면 미장 가격이 중간값이라) — 예약·수동 실행만 커밋

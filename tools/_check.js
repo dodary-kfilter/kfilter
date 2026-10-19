@@ -22,8 +22,8 @@ const CASES=[
  ['13_관심-미국지수',()=>buildPrompt(_P.find(x=>x.ptype==='us'&&x.us_kind==='index'))],
  ['14_검색-국내',()=>buildSearchOne('005930','삼성전자')],
  ['15_검색-미국',()=>buildSearchUS('NVDA')],
- ['16_TOP20-국장',()=>listPrompt('top20','kr',0)],
- ['17_TOP20-미장',()=>listPrompt('top20','us',0)],
+ ['16_TOP20-국장',()=>listPrompt('top20','kr|stable',0)],
+ ['17_TOP20-미장',()=>listPrompt('top20','us|stable',0)],
  ['18_애널-랭킹순',()=>{ const a=LISTS.analyst.analysts.find(x=>x.rank<=25&&(x.picks||[]).length); return listPrompt('analyst',a.picks[0].ticker,a.rank); }],
  ['19_13F',()=>listPrompt('f13',LISTS.f13.lists.new[0].ticker)],
  ['20_애널-추천수순',()=>listPrompt('analyst',LISTS.analyst.stocks[0].ticker)],
@@ -34,6 +34,8 @@ const CASES=[
  ['25_자산-금',()=>buildIndexPrompt('GC=F')],
  ['26_자산-비트코인',()=>buildIndexPrompt('BTC-USD')],
  ['27_지수-러셀2000',()=>buildIndexPrompt('^RUT')],
+ ['28_TOP20-국장공격',()=>listPrompt('top20','kr|aggressive',0)],
+ ['29_TOP20-미장공격',()=>listPrompt('top20','us|aggressive',0)],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[
