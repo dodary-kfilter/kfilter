@@ -16,6 +16,8 @@
 - TipRanks 웹 페이지는 Cloudflare로 막혀 있고 파이썬 urllib도 막힌다 → API만 부른다.
   curl_cffi(브라우저 흉내)가 있으면 그걸로, 없으면 curl로 — GitHub 서버에선 curl도 막혀 curl_cffi가 필요하다
 - 순위표를 못 받거나 애널리스트 10% 넘게 못 받으면 기존 파일을 덮지 않고 멈춘다
+- 못 받은 애널리스트는 전날 파일의 자료로 이어 붙이고 stale(실제 받은 날)로 표시한다 — GitHub 서버에서 TipRanks가 일부를 막아도
+  매일 갱신이 끊기지 않게. 이어 붙인 의견도 28일 창으로 다시 거르고, 받은 지 7일이 넘은 자료는 잇지 않는다. 절반 넘게 못 받으면 멈춘다
 - 랭킹순(상위 25위)에서 보여 줄 의견이 0건인 애널리스트는 왜 비었는지 한 줄(why)과 설명 한 줄(why_more)을 남긴다
   (미국 밖 상장만 매수 / 마지막 매수가 28일 밖 / 매수 없이 보유·매도만 / 의견 없음 / 자료를 못 받음)
 """
@@ -29,6 +31,7 @@ NAMES = os.path.join(ROOT, 'lists', 'names_ko.json')
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
 API = 'https://www.tipranks.com/api/experts/'
 N_POOL, N_RANK, MIN_CNT, DAYS = 100, 25, 2, 28
+CARRY_MAX_DAYS = 7      # 이어 붙이는 전날 자료는 받은 지 7일 안의 것만
 KST = dt.timezone(dt.timedelta(hours=9))
 COUNTRY = {'GB': '영국', 'DE': '독일', 'FR': '프랑스', 'IT': '이탈리아', 'ES': '스페인', 'NL': '네덜란드', 'CH': '스위스',
            'SE': '스웨덴', 'NO': '노르웨이', 'DK': '덴마크', 'FI': '핀란드', 'BE': '벨기에', 'IE': '아일랜드', 'AT': '오스트리아',
@@ -145,12 +148,41 @@ def main(argv):
             time.sleep(1.5)
             got[i] = stocks_of(a)
     names = json.load(open(NAMES, encoding='utf-8')) if os.path.exists(NAMES) else {}
+    # 전날 파일 — 못 받은 애널리스트를 이어 붙일 자료
+    try:
+        prev = json.load(open(OUT, encoding='utf-8'))
+    except Exception:
+        prev = {}
+    prev_by = {x.get('name'): x for x in (prev.get('analysts') or []) if not x.get('failed')}
+    prev_day = prev.get('updated') or ''
 
-    analysts, failed, agg = [], [], {}
+    analysts, failed, carried, agg = [], [], [], {}
     for a, d in zip(top, got):
         if d is None:
             failed.append(a['name'])
-            if a['rank'] <= N_RANK:      # 랭킹순 자리를 비우지 않고 이유를 보인다
+            old = prev_by.get(a['name'].strip())
+            got_day = (old or {}).get('stale') or prev_day                  # 그 자료를 실제로 받은 날
+            fresh_enough = bool(got_day) and (today - dt.date.fromisoformat(got_day)).days <= CARRY_MAX_DAYS
+            if old and fresh_enough:     # 전날 자료로 이어 붙인다 — 순위·적중률은 오늘 순위표 값, 의견은 28일 창으로 다시 거른다
+                tot = a.get('totalRecommendations') or 0
+                picks = [dict(p) for p in (old.get('picks') or []) if (p.get('date') or '') >= cut]
+                if a['rank'] > N_RANK:
+                    for p in picks: p.pop('link', None)
+                rec = {'rank': a['rank'], 'name': a['name'].strip(), 'company': (a.get('company') or '').strip(),
+                       'success_pct': round(100 * (a.get('goodRecommendations') or 0) / tot) if tot else None,
+                       'avg_return_pct': round(100 * a['profit'], 1) if a.get('profit') is not None else None,
+                       'ratings': tot, 'picks': picks, 'stale': got_day}
+                if a['rank'] <= N_RANK and not picks:
+                    rec['why'] = old.get('why') or '최근 %d일 미국 상장 종목 매수 의견 없음' % DAYS
+                    rec['why_more'] = old.get('why_more') or ''
+                analysts.append(rec)
+                carried.append(a['name'])
+                for p in picks:
+                    g = agg.setdefault(p['ticker'], {'ticker': p['ticker'], 'name': p['name'], 'by': []})
+                    g['by'].append({'rank': rec['rank'], 'name': rec['name'], 'company': rec['company'], 'date': p['date'],
+                                    'action': p.get('action') or '', 'pt': p.get('pt')})
+                continue
+            if a['rank'] <= N_RANK:      # 이을 자료도 없으면 랭킹순 자리를 비우지 않고 이유를 보인다
                 analysts.append({'rank': a['rank'], 'name': a['name'].strip(), 'company': (a.get('company') or '').strip(),
                                  'success_pct': None, 'avg_return_pct': None, 'ratings': a.get('totalRecommendations') or 0,
                                  'picks': [], 'failed': True, 'why': '자료를 받지 못함',
@@ -181,7 +213,7 @@ def main(argv):
             g = agg.setdefault(p['ticker'], {'ticker': p['ticker'], 'name': p['name'], 'by': []})
             g['by'].append({'rank': rec['rank'], 'name': rec['name'], 'company': rec['company'], 'date': p['date'],
                             'action': p['action'], 'pt': p['pt']})
-    if len(failed) > N_POOL // 10:
+    if len(failed) > N_POOL // 2:      # 절반 넘게 막힌 날은 이어 붙인 자료가 너무 많아진다 — 멈추고 기존 파일 유지
         sys.exit('★ 애널리스트 %d명을 받지 못함(%s…) — 기존 파일 유지' % (len(failed), ', '.join(failed[:5])))
     for g in agg.values():
         g['by'].sort(key=lambda b: b['rank'])
@@ -197,11 +229,11 @@ def main(argv):
                      'count_view': '상위 %d위 중 %d명 이상이 최근 %d일에 매수 의견을 낸 종목, 인원순' % (N_POOL, MIN_CNT, DAYS),
                      'scope': '미국 상장·거래 중 종목, 최신 의견이 매수(Buy)인 것만',
                      'pool': N_POOL, 'rank_top': N_RANK, 'min_count': MIN_CNT},
-           'analysts': analysts, 'stocks': stocks, 'failed': failed}
+           'analysts': analysts, 'stocks': stocks, 'failed': failed, 'carried': carried}
 
     rank_rows = [p for a in analysts if a['rank'] <= N_RANK for p in a['picks']]
     multi = [g for g in stocks if g['count'] >= MIN_CNT]
-    print('기준 %s~%s · 순위표 %d명 · 못 받음 %s' % (cut, today, len(top), failed or '없음'))
+    print('기준 %s~%s · 순위표 %d명 · 못 받음 %d명(전날 자료로 이음 %d명) %s' % (cut, today, len(top), len(failed), len(carried), failed[:8] or ''))
     print('랭킹순(상위 %d위): 매수 의견 %d건 · 종목 %d개' % (N_RANK, len(rank_rows), len({p['ticker'] for p in rank_rows})))
     print('추천 수순(상위 %d위 중 %d명 이상): %d종목 — %s' % (N_POOL, MIN_CNT, len(multi),
           ', '.join('%s %d명' % (g['ticker'], g['count']) for g in multi[:10])))

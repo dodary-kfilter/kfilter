@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-18e (v54 — 기록 블록이 큰 제목으로 그려지던 것 수정, 시황 종합 대상 이름 ##·결론 ###) / 이전: 2026-10-18d (v53) -->
+<!-- build: 2026-10-20a (애널 랭킹순에 이어 붙인 애널의 자료 날짜 표시) / 이전: 2026-10-18e (v54) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1886,7 +1886,7 @@ function anView(d){
       +(rows || '<div class="empty">해당 종목이 없습니다.</div>')+'</div>';
   }
   const body=A.map(a=>{
-    const st=[a.company, a.success_pct!=null ? '적중률 '+a.success_pct+'%' : '', a.avg_return_pct!=null ? '평균 수익률 '+(a.avg_return_pct>0?'+':'')+a.avg_return_pct+'%' : '']
+    const st=[a.company, a.success_pct!=null ? '적중률 '+a.success_pct+'%' : '', a.avg_return_pct!=null ? '평균 수익률 '+(a.avg_return_pct>0?'+':'')+a.avg_return_pct+'%' : '', a.stale ? (+a.stale.slice(5,7))+'/'+(+a.stale.slice(8,10))+' 자료(그날 받은 것을 이어 씀)' : '']
       .filter(Boolean).map(esc).join(' · ');
     const picks=a.picks||[];
     return '<div class="mkt-head an">'+esc(a.rank)+'위 '+esc(a.name)+' <span>'+st+'</span></div>'
