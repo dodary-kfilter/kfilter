@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-20b (TOP 20 v3 — 안정형 20·공격형 20, 대표 지수 후보) / 이전: 2026-10-20a (애널 이어 붙인 자료 날짜) -->
+<!-- build: 2026-10-20c (TOP 20 — 상승 확률·기대 수익 선택 버튼) / 이전: 2026-10-20b (TOP 20 v3) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -55,6 +55,7 @@
   .tab.active[data-k="pension"]{border-color:var(--pension)}
   .tab.active[data-k="both"]{border-color:var(--both)}
   .tab.wide{grid-column:span 2}
+  .mk2.t20t button.on{border-color:#58a6ff}
   .tag.both{background:rgba(163,113,247,.16); color:#a371f7; white-space:nowrap}
   .t20p{font-size:12px; color:var(--dim); margin:2px 0}            /* 종목 검색은 두 칸 — 나중에 탭이 하나 늘면 한 칸으로 줄며 자리를 내준다 */
   .tab[data-k="index"] .c{color:#58a6ff; font-size:20px} .tab.active[data-k="index"]{border-color:#58a6ff}
@@ -932,7 +933,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v55';
+const PROMPT_VER='v56';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -1739,7 +1740,7 @@ function listRule(k){
     // 숫자(가격·변동성·확률)는 매주 토요일 자동 갱신, 판단(고유 기대·후보)은 채팅에서 — 둘의 날짜를 나눠 보인다
     const dd=(M.judged && M.judged!==M.record_date) ? '숫자 <b>'+esc(M.record_date||'—')+'</b> 갱신 · 판단 <b>'+esc(M.judged)+'</b>' : '<b>'+esc(M.record_date||'—')+'</b> 기록';
     const U=M.universe||{};
-    return '기준: '+dd+' · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> · 후보 국장 <b>'+esc(U.kr||'—')+'</b>(코스피 200·코스닥 150, 시총 순 근사)·미장 <b>'+esc(U.us||'—')+'</b>(S&P 500·나스닥 100) · 안정형 = 상승 확률 순 · 공격형 = 상승 확률 <b>'+esc(M.aggr_floor||51)+'% 이상</b> 중 오르면 순'; }
+    return '기준: '+dd+' · 향후 <b>'+esc(M.horizon_months||3)+'개월</b> · 후보 국장 <b>'+esc(U.kr||'—')+'</b>(코스피 200·코스닥 150, 시총 순 근사)·미장 <b>'+esc(U.us||'—')+'</b>(S&P 500·나스닥 100) · 상승 확률 = 상승 확률 높은 순 · 기대 수익 = 상승 확률 <b>'+esc(M.aggr_floor||51)+'% 이상</b> 중 오르면 큰 순'; }
   if(k==='analyst'){ const w=d.window||{}, R=d.rules||{};
     return '기준: TipRanks 애널리스트 순위 · 최근 <b>'+esc(w.days||28)+'일</b>('+lMd(w.from)+'~'+lMd(w.to)+') 미국 상장 종목 매수 의견 · 랭킹순 <b>상위 '+esc(R.rank_top||25)
       +'위</b> · 추천 수순 <b>상위 '+esc(R.pool||100)+'위 중 '+esc(R.min_count||2)+'명 이상</b>'+((d.failed||[]).length ? ' · 못 받은 애널리스트 '+d.failed.length+'명' : ''); }
@@ -1798,17 +1799,20 @@ function t20Cap(r,mk){
   const unit=mk==='kr' ? '' : ' 달러';
   return r.mcap>=10000 ? (r.mcap/10000).toFixed(1)+'조'+unit : Math.round(r.mcap).toLocaleString('ko-KR')+'억'+unit;
 }
-const T20_L={stable:['안정형','상승 확률 높은 순'], aggressive:['공격형','오를 확률이 내릴 확률보다 높은 종목 중 오르면 큰 순']};
+const T20_L={stable:['상승 확률','상승 확률 높은 순'], aggressive:['기대 수익','오를 확률이 내릴 확률보다 높은 종목 중 오르면 큰 순']};
+let T20_T='stable';                               // 상승 확률 / 기대 수익 — 국장·미장을 바꿔도 유지
+function t20T(t){ if(t===T20_T) return; T20_T=t; renderList('top20'); }
 function t20View(d){
   const mk=T20_MK, D=d[mk]||{};
   const cnt=m=>{ const X=d[m]||{}; return new Set([...(X.stable||[]),...(X.aggressive||[])].map(r=>r.code)).size; };
   const seg='<div class="mk2">'+[['kr','국장'],['us','미장']].map(([m,l])=>'<button type="button"'+(m===mk?' class="on"':'')+' onclick="t20Mk(\''+m+'\')">'+l
       +' <span>'+cnt(m)+'</span></button>').join('')+'</div>';
   if(!D.stable) return seg+'<div class="empty" style="padding:20px 0">새 TOP 20 자료를 기다리는 중입니다.</div>';
-  const sec=t=>{ const L=D[t]||[], [nm,desc]=T20_L[t];
-    return '<div class="sec"><div class="sechd">'+nm+' '+L.length+' <span style="color:var(--dim);font-weight:400">'+desc+'</span></div>'
-      +(L.length ? '<div class="cards">'+L.map((r,i)=>t20Card(r,i+1,mk,t,i)).join('')+'</div>' : '<div class="empty" style="padding:12px 0">종목이 없습니다.</div>')+'</div>'; };
-  return seg+sec('stable')+sec('aggressive');
+  const t=T20_T, L=D[t]||[], desc=T20_L[t][1];
+  const pick='<div class="mk2 t20t">'+['stable','aggressive'].map(k=>'<button type="button"'+(k===t?' class="on"':'')+' onclick="t20T(\''+k+'\')">'+T20_L[k][0]
+      +' <span>'+((D[k]||[]).length)+'</span></button>').join('')+'</div>';
+  return seg+pick+'<div class="sec"><div class="sechd" style="color:var(--dim);font-weight:400">'+desc+'</div>'
+    +(L.length ? '<div class="cards">'+L.map((r,i)=>t20Card(r,i+1,mk,t,i)).join('')+'</div>' : '<div class="empty" style="padding:12px 0">종목이 없습니다.</div>')+'</div>';
 }
 const t20v=v=>(v==null||v===''||Number.isNaN(v)) ? '—' : v;                 // 빠진 값은 —
 const t20p=v=>(v==null||Number.isNaN(+v)) ? '—' : fmtPct(+v);
@@ -1949,7 +1953,7 @@ function listPrompt(kind, a, b){
     const [m,t]=String(a).split('|');
     const r=((((LISTS.top20||{})[m])||{})[t]||[])[b];
     if(!r) return null;
-    const lab=(t==='stable') ? '상승 확률이 높은 순서로 고른 안정형' : '오를 확률이 내릴 확률보다 높은 종목 중 오를 폭이 큰 순서로 고른 공격형';
+    const lab=(t==='stable') ? '상승 확률이 높은 순서로 고른' : '오를 확률이 내릴 확률보다 높은 종목 중 오를 폭이 큰 순서로 고른';
     if(m==='kr') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — 향후 3개월 ${lab} 국장 TOP 20 종목으로 선별되었습니다.`,
       bg:true, cmd:cmdKR(r.code,'--brief'), data:DATA_KR, code:r.code, name:r.name});
     const nm=r.name_ko||r.name;
