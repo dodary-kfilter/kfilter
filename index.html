@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-20c (TOP 20 — 상승 확률·기대 수익 선택 버튼) / 이전: 2026-10-20b (TOP 20 v3) -->
+<!-- build: 2026-10-20d (13F — 네 목록·합의 강도를 버튼으로 골라 보기) / 이전: 2026-10-20c (TOP 20 선택 버튼) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -56,6 +56,8 @@
   .tab.active[data-k="both"]{border-color:var(--both)}
   .tab.wide{grid-column:span 2}
   .mk2.t20t button.on{border-color:#58a6ff}
+  .mk2.f13t{display:grid; grid-template-columns:repeat(5,1fr)} .mk2.f13t button.on{border-color:#ff7b72}
+  @media (max-width:640px){ .mk2.f13t{grid-template-columns:repeat(3,1fr)} }
   .tag.both{background:rgba(163,113,247,.16); color:#a371f7; white-space:nowrap}
   .t20p{font-size:12px; color:var(--dim); margin:2px 0}            /* 종목 검색은 두 칸 — 나중에 탭이 하나 늘면 한 칸으로 줄며 자리를 내준다 */
   .tab[data-k="index"] .c{color:#58a6ff; font-size:20px} .tab.active[data-k="index"]{border-color:#58a6ff}
@@ -1925,25 +1927,31 @@ function anView(d){
 // ── 13F — 신규 편입 · 비중 확대 · 비중 축소 · 청산 구간과 합의 강도 ──
 function f13Q(d){ const m=String(d.quarter||'').match(/^(\d{4})Q(\d)$/); return m ? {y:m[1], q:m[2]} : {y:'', q:''}; }
 function f13Price(x){ const k=Object.keys(x).find(k=>/^price_/.test(k)); return k ? x[k] : null; }   // 분기마다 price_0630·price_0930…
+// 13F — 네 목록과 합의 강도를 버튼으로 골라 본다(TOP 20처럼 한 번에 하나만). 고른 것은 다시 열어도 유지
+const F13_DESC={new:'이번 분기에 처음 산 슈퍼투자자 수 순', add:'비중을 늘린 슈퍼투자자 수 순', reduce:'비중을 줄인 슈퍼투자자 수 순', exit:'전량 판 슈퍼투자자 수 순', cons:'리스트 종목의 매수:매도 인원 — 한쪽으로 쏠리면 합의, 비슷하면 의견이 갈린 것'};
+let F13_T='new';
+function f13T(t){ if(t===F13_T) return; F13_T=t; renderList('f13'); }
 function f13View(d){
-  const L=d.lists||{}, asOf=String(d.as_of||'');
+  const L=d.lists||{}, asOf=String(d.as_of||''), C=d.consensus||{};
   const mon=/^\d{4}-\d{2}/.test(asOf) ? (+asOf.slice(5,7))+'월 말' : '분기 말';
-  let h='';
-  for(const [k,lab,side] of F13_LISTS){
-    const arr=L[k]||[];
-    h+='<div class="mkt-head '+side+'">'+lab+' <span>'+arr.length+'</span></div>';
-    h+=arr.length ? arr.map((x,j)=>'<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(x.name_ko||x.name||x.ticker)+'</b> <span class="pcode">'+esc(x.ticker)+'</span></div>'
-        +'<button class="copybtn" onclick="copyList(event,\'f13\',\''+esc(x.ticker)+'\')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
-        +'<div class="pinfo">'+lab+' <b>'+esc(x.count)+'명</b> · 매수 '+esc(x.buy)+'명 : 매도 '+esc(x.sell)+'명 · '+mon+' 종가 '+lUsd(f13Price(x),2)+'</div></div>').join('')
-      : '<div class="empty" style="padding:16px 0">해당 종목이 없습니다.</div>';
+  const short={new:'신규 편입', add:'비중 확대', reduce:'비중 축소', exit:'청산', cons:'합의 강도'};
+  const nCons=(C.buy_tilt||[]).length+(C.sell_tilt||[]).length+(C.split||[]).length;
+  const btns=[...F13_LISTS.map(([k])=>[k,(L[k]||[]).length]), ['cons',nCons]];
+  const t=btns.some(([k])=>k===F13_T) ? F13_T : 'new';
+  const pick='<div class="mk2 f13t">'+btns.map(([k,n])=>'<button type="button"'+(k===t?' class="on"':'')+' onclick="f13T(\''+k+'\')">'+short[k]+' <span>'+n+'</span></button>').join('')+'</div>';
+  let h=pick+'<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">'+F13_DESC[t]+'</div>';
+  if(t==='cons'){
+    const chips=a=>(a||[]).length ? '<div class="peer-row">'+a.map(x=>'<span class="peer">'+esc(x.name_ko||x.ticker)+' <b>'+esc(x.buy)+':'+esc(x.sell)+'</b></span>').join('')+'</div>'
+                                  : '<div class="en-empty" style="padding:4px 0">없음</div>';
+    return h+'<div class="en-sec" style="border-top:0"><div class="en-h">매수 우위</div>'+chips(C.buy_tilt)+'</div>'
+      +'<div class="en-sec"><div class="en-h">매도 우위</div>'+chips(C.sell_tilt)+'</div>'
+      +'<div class="en-sec"><div class="en-h">의견 분산</div>'+chips(C.split)+'</div>';
   }
-  const C=d.consensus||{};
-  const chips=a=>(a||[]).length ? '<div class="peer-row">'+a.map(x=>'<span class="peer">'+esc(x.name_ko||x.ticker)+' <b>'+esc(x.buy)+':'+esc(x.sell)+'</b></span>').join('')+'</div>'
-                                : '<div class="en-empty" style="padding:4px 0">없음</div>';
-  h+='<div class="mkt-head neu">합의 강도 <span>매수:매도 인원</span></div>'
-    +'<div class="en-sec" style="border-top:0"><div class="en-h">매수 우위</div>'+chips(C.buy_tilt)+'</div>'
-    +'<div class="en-sec"><div class="en-h">매도 우위</div>'+chips(C.sell_tilt)+'</div>'
-    +'<div class="en-sec"><div class="en-h">의견 분산</div>'+chips(C.split)+'</div>';
+  const lab=(F13_LISTS.find(([k])=>k===t)||[])[1]||'', arr=L[t]||[];
+  h+=arr.length ? arr.map((x,j)=>'<div class="pcard"><div class="prow"><div class="pname">'+(j+1)+'. <b>'+esc(x.name_ko||x.name||x.ticker)+'</b> <span class="pcode">'+esc(x.ticker)+'</span></div>'
+      +'<button class="copybtn" onclick="copyList(event,\'f13\',\''+esc(x.ticker)+'\')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
+      +'<div class="pinfo">'+lab+' <b>'+esc(x.count)+'명</b> · 매수 '+esc(x.buy)+'명 : 매도 '+esc(x.sell)+'명 · '+mon+' 종가 '+lUsd(f13Price(x),2)+'</div></div>').join('')
+    : '<div class="empty" style="padding:16px 0">해당 종목이 없습니다.</div>';
   return h;
 }
 
