@@ -15,6 +15,8 @@
 """
 import sys
 import re
+import csv
+import io
 import json
 import html
 import time
@@ -784,6 +786,75 @@ def us_market_all():
             d['기준일'] = g[gk][2]
         mk[nm] = d
     return mk, {k: v for k, v in g.items() if re.search(r'USD/KRW|WTI', k)}
+
+
+# 미국 시장 심리·신용 — 시황 종합과 미장 리포트의 배경(2026-10-21 추가)
+#   공포·탐욕: CNN 지수(0~100, 낮을수록 공포)와 구성 일곱 가지 / 신용: 하이일드 채권 ETF ÷ 중기 국채 ETF(내리면 빚 시장의 위험 회피)
+#   VIX 기간 구조: VIX ÷ 3개월 VIX(1을 넘으면 당장의 공포가 석 달 뒤 공포보다 큼) / 2년물: 재무부 금리 곡선(연준 금리 기대)
+FG_RATE = {'extreme fear': '극단적 공포', 'fear': '공포', 'neutral': '중립', 'greed': '탐욕', 'extreme greed': '극단적 탐욕'}
+FG_PART = [('market_momentum_sp500', '모멘텀(S&P 500 대 125일선)'), ('stock_price_strength', '신고가·신저가'),
+           ('stock_price_breadth', '상승·하락 종목 거래량'), ('put_call_options', '풋옵션 비중'), ('market_volatility_vix', '변동성(VIX)'),
+           ('junk_bond_demand', '정크본드 수요'), ('safe_haven_demand', '안전자산 쏠림')]
+
+
+def us_sentiment():
+    out = {}
+    try:                                                           # 1) CNN 공포·탐욕
+        s_ = fetch('https://production.dataviz.cnn.io/index/fearandgreed/graphdata', 'https://edition.cnn.com/markets/fear-and-greed',
+                   extra={'Accept': 'application/json', 'Origin': 'https://edition.cnn.com'}, quiet_err=True)
+        j = json.loads(s_) if s_ else None
+        fg = (j or {}).get('fear_and_greed') or {}
+        if fg.get('score') is not None:
+            r1 = lambda v: round(v, 1) if isinstance(v, (int, float)) else None
+            out['공포탐욕'] = {'점수': r1(fg['score']), '상태': FG_RATE.get(fg.get('rating'), fg.get('rating')), '전일': r1(fg.get('previous_close')),
+                           '1주전': r1(fg.get('previous_1_week')), '1달전': r1(fg.get('previous_1_month')), '기준': str(fg.get('timestamp') or '')[:10],
+                           '구성': {nm: '%s(%s)' % (r1((j.get(k) or {}).get('score')), FG_RATE.get((j.get(k) or {}).get('rating'), '-'))
+                                    for k, nm in FG_PART if (j.get(k) or {}).get('score') is not None}}
+        else:
+            ERR.append('공포·탐욕 지수 받지 못함')
+    except Exception as e:
+        ERR.append('공포·탐욕 지수 실패 — %s' % type(e).__name__)
+
+    def ratio(a, b, n):                                            # 날짜를 맞춘 두 시계열의 비율(최근이 앞)
+        ya, yb = ychart(a, '6mo'), ychart(b, '6mo')
+        if not ya or not yb:
+            return None
+        db = {r['date']: r['tradePrice'] for r in yb[0]}
+        return [ra['tradePrice'] / db[ra['date']] for ra in ya[0] if db.get(ra['date'])][:n]
+    pc = lambda r, k: round((r[0] / r[k] - 1) * 100, 2) if len(r) > k else None
+    try:                                                           # 2) 신용 — 하이일드 채권 ÷ 국채
+        r = ratio('HYG', 'IEF', 64)
+        if r:
+            out['신용(하이일드채권÷국채)'] = {'비율': round(r[0], 4), '5일%': pc(r, 5), '20일%': pc(r, 20),
+                                         '60일고점대비%': round((r[0] / max(r) - 1) * 100, 2)}
+    except Exception as e:
+        ERR.append('신용 비율 실패 — %s' % type(e).__name__)
+    try:                                                           # 3) VIX 기간 구조
+        r = ratio('^VIX', '^VIX3M', 25)
+        if r:
+            out['VIX기간구조(VIX÷3개월VIX)'] = {'비율': round(r[0], 2), '5일전': round(r[5], 2) if len(r) > 5 else None,
+                                            '20일전': round(r[20], 2) if len(r) > 20 else None}
+    except Exception as e:
+        ERR.append('VIX 기간 구조 실패 — %s' % type(e).__name__)
+    try:                                                           # 4) 2년물 — 재무부 금리 곡선(올해, 모자라면 작년까지)
+        rows = []
+        for yr in (NOW.year, NOW.year - 1):
+            t = fetch('https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/%d/all'
+                      '?type=daily_treasury_yield_curve&field_tdr_date_value=%d&page&_format=csv' % (yr, yr), quiet_err=True)
+            if t:
+                rows += [r for r in csv.DictReader(io.StringIO(t))]
+            if len(rows) > 25:
+                break
+        f = lambda r, k: float(r[k]) if r.get(k) not in (None, '', 'N/A') else None
+        if rows and f(rows[0], '2 Yr') is not None:
+            two, ten = f(rows[0], '2 Yr'), f(rows[0], '10 Yr')
+            out['미국2년물'] = {'금리': two, '20일전': f(rows[20], '2 Yr') if len(rows) > 20 else None,
+                             '10년-2년': round(ten - two, 2) if ten is not None else None, '기준': rows[0].get('Date')}
+        else:
+            ERR.append('2년물 금리 받지 못함')
+    except Exception as e:
+        ERR.append('2년물 금리 실패 — %s' % type(e).__name__)
+    return out
 
 
 US_STATUS = {'Open': '정규장 중 — 확정 종가 아님', 'Pre-Market': '프리마켓 — 정규장 시세는 전일 종가',
@@ -1569,6 +1640,7 @@ def main(argv):
         else:
             fm = top.submit(us_market_all)
             fus, fnews = None, EX.submit(gnews, '뉴욕증시', 8)
+            fsent = EX.submit(us_sentiment)
             parts, ctxs = list(top.map(safe_us, codes)), []
         mk, gl = fm.result()
     head_note = '깊게' if deep else '얕게 %d종목' % len(codes)
@@ -1621,7 +1693,7 @@ def main(argv):
     if mode == 'kr':
         head += ['#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
     else:
-        head += ['#미국시장 ' + J(mk), '#환율·유가 ' + J(gl)] + market_news(fnews)
+        head += ['#미국시장 ' + J(mk), '#미국 심리·신용 ' + J(fsent.result()), '#환율·유가 ' + J(gl)] + market_news(fnews)
     MAXB = int(os.environ.get('BUNDLE_MAX_BYTES', '40000'))
     body = [ln for part in parts for ln in part]
     size = lambda ls: sum(len(ln.encode('utf-8')) + 1 for ln in ls)
