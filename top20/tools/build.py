@@ -205,6 +205,8 @@ def main(argv):
     meta = dict(M)
     for k in ('thresholds', 'stale'):
         meta.pop(k, None)
+    if (J.get('meta') or {}).get('judged'):
+        meta['judged'] = J['meta']['judged']                    # 판단일은 판단 파일을 따른다
     meta.update(version=3, record_date=today.isoformat(), stale=stale, aggr_floor=AGGR_FLOOR,
                 basis='가격 국장 %s, 미장 %s 기준' % (last.get('kr', '-'), last.get('us', '-')),
                 method='상승 확률 = 시장 몫 + 종목 판단, 높은 순 · 기대 수익 = 상승 확률 × 오르면 + 하락 확률 × 내리면, 상승 확률 %d%% 이상 중 큰 순 · 폭은 종목 판단을 넣지 않고 계산' % AGGR_FLOOR,
