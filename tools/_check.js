@@ -42,8 +42,9 @@ const RULES=[
  ['미치환',     t=>!/\$\{/.test(t)],
  ['이상값',     t=>!/undefined|NaN|\[object Object\]/.test(t)],
  ['자료명령',   t=>{ const n=(t.match(/bundle\.py \| python3 - (kr|us) /g)||[]).length;
-                   if(t.includes('각 지수와 자산에 대한')) return n===2 && t.includes('python3 - kr 069500 229200 --brief\n') && /python3 - us SPY IWM QQQ SOXX TLT\n/.test(t);
-                   return t.includes('후보 전체의 개요') ? (n===2 && /--overview\n/.test(t) && t.includes('python3 - kr (종목코드) --brief')) : n===1; }],
+                   if(t.includes('각 지수와 자산에 대한')) return n===2 && /python3 - kr 069500 229200 --brief --ver v\d+\n/.test(t) && /python3 - us SPY IWM QQQ SOXX TLT --ver v\d+\n/.test(t);
+                   const tagged=(t.match(/bundle\.py \| python3 - (kr|us) [^\n]* --ver v\d+(\n|$)/g)||[]).length;   // 명령마다 버전 꼬리표
+                   return tagged===n && (t.includes('후보 전체의 개요') ? (n===2 && /--overview --ver v\d+\n/.test(t) && t.includes('python3 - kr (종목코드) --brief --ver ')) : n===1); }],
  ['목적',       t=>t.includes('이 리포트를 읽는 사람은 본인의 자금으로 투자해 수익을 내려 하며, 판단을 빠르고 정확하게 받아 보려 합니다.') && t.includes('그 판단에서 나온 기대수익과 액션을 담습니다.') && t.includes('시장의 판단은 비교 대상으로만 삼고, 결론은 본인의 판단으로 정합니다.')],
  ['자료설명',   t=>t.includes('자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다.') && t.includes('페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.')],
  ['자료대상',   t=>{ if(!t.includes('시장 뉴스 제목')) return false; if(t.includes('후보 전체의 개요')) return t.includes('상세 자료에는 본질에 쓸 사업 요약') && t.includes('배경에 쓸 시장·금리·환율·유가') && t.includes('상세 자료는 종목당 4KB 안팎');

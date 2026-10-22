@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-21a (미장 자료에 시장 심리·신용 — 공포·탐욕·하이일드÷국채·VIX 기간 구조·2년물) / 이전: 2026-10-20d (13F 선택 버튼) -->
+<!-- build: 2026-10-22a (v58 — #거시 블록·버전 꼬리표·국면 판정·분배금 포함) / 이전: 2026-10-21a (v57) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -935,7 +935,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v57';
+const PROMPT_VER='v58';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -960,7 +960,7 @@ document.addEventListener('DOMContentLoaded',checkVer);
 window.addEventListener('pageshow',ev=>{ if(ev.persisted){ verChecked=0; checkVer(); } });
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') checkVer(); });
 const BUNDLE_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/tools/bundle.py';
-function cmdKR(codes, flag){ return `curl -s ${BUNDLE_URL} | python3 - kr ${codes} ${flag}`; }
+function cmdKR(codes, flag){ return `curl -s ${BUNDLE_URL} | python3 - kr ${[codes, flag, '--ver '+PROMPT_VER].filter(Boolean).join(' ')}`; }
 
 const RULE_BUNDLE_KR = `[★자료 — 번들 한 번으로 끝낸다]
 ★위 명령을 ★첫 동작으로 한 번만 실행한다. 그 출력(번들)이 이 리포트 자료의 ★전부다.
@@ -985,7 +985,7 @@ const RULE_BUNDLE_KR = `[★자료 — 번들 한 번으로 끝낸다]
 ★외국인 지분율 변화와 순매수 합계가 크게 어긋나면 장외 이동이다. "장외 유입 추정, 사유 확인 불가"로 쓴다.
 ★업황·전방 수요는 번들 안(공시·정기보고서·뉴스·시장)에서만 읽는다. 판단을 바꾸는 빈칸이면 무엇이 확인되면 판단이 바뀌는지를 쓴다.`;
 
-function cmdUS(tk){ return `curl -s ${BUNDLE_URL} | python3 - us ${tk}`; }
+function cmdUS(tk){ return `curl -s ${BUNDLE_URL} | python3 - us ${tk} --ver ${PROMPT_VER}`; }
 
 const RULE_BUNDLE_US = `[★자료 — 번들 한 번으로 끝낸다]
 ★위 명령을 ★첫 동작으로 한 번만 실행한다. 그 출력(번들)이 이 리포트 자료의 ★전부다.
@@ -1018,11 +1018,14 @@ const UNIT = {
 };
 // 시황 종합 규칙 — 한 규칙은 한 번만 쓴다(서로 부딪치는 지시가 생기지 않게). 지수·자산 리포트와 종목 리포트에는 쓰지 않는다
 const MKT_RULES = '큰 단락 이름과 2의 대상 이름은 ## 제목으로 씁니다. 대상은 2에 적은 이름 하나로만 부르며, 타이틀·제목·본문·기록 블록의 name에 같은 이름을 씁니다.\n\n'
+  + '1의 전제는 #거시로 시작합니다. 지금 시장의 걱정이 긴축(물가·금리) 쪽인지, 성장(고용·경기) 쪽인지, 둘이 섞였는지를 양쪽 근거의 숫자를 나란히 놓고 판정하며, 어느 쪽도 분명하지 않으면 혼재로 둡니다. '
+  + '주식과 채권이 함께 움직일지 반대로 움직일지는 과거의 상관이 아니라 이 판정으로 봅니다. 긴축이 원인이면 함께 내리기 쉽고, 성장 우려가 원인이면 반대로 움직이기 쉽습니다.\n\n'
   + '1의 전제는 한 문단입니다. 원인은 원인마다 무엇이 바뀌었나 → 어떻게 번졌나 → 가장 크게 영향을 받은 대상과 그 숫자 순서로 씁니다. 다른 대상에 미친 영향은 2의 그 대상 단락에서 씁니다. 시장 전체에 공통된 이야기는 1에서만 씁니다.\n\n'
   + '2의 대상 단락은 그 대상만 다룹니다. 다른 대상과의 비교는 판단에 꼭 필요할 때만 한 문장으로 씁니다. 특징에는 이 대상의 가격을 지금 정하고 있는 것을 원인 → 작용 → 결과로 이어 한 문단으로 씁니다. 1의 원인이 이 대상에 어떻게 다르게 작용했는지와 이 대상에만 있는 재료를 쓰며, 1에서 다룬 원인을 다시 설명하지 않습니다. '
   + '대용 ETF의 숫자는 "(QQQ 기준) 20일 평균선 -4.4%"처럼 비율로만 옮기고, 바닥·목표·지지 구간 같은 가격 수준은 대상 자체의 단위로만 씁니다. 미국 장기 국채만 TLT 가격이 기준입니다.\n\n'
   + '전망은 방향을 먼저 정하지 않습니다. 세 갈래는 석 달 뒤 지금 수준보다 5% 넘게 오르면 상승, 5% 안에서 움직이면 횡보, 5% 넘게 내리면 하락이며, 비트코인만 15%를 기준으로 합니다. 세 갈래마다, 그 갈래가 오려면 무엇이 일어나야 하는지와 그 근거가 되는 숫자를 한두 문장으로 쓰고 확률을 매깁니다(합 100%). 확률은 근거의 무게대로 매기며, 고르게 나누어 판단을 피하지 않습니다. 이어서 바닥과 목표를 숫자, 시점, 틀렸다고 볼 신호와 함께 씁니다. 주식 지수의 바닥은 이익과 배수(PER), 그리고 매도 물량이 끝나는 조건으로 따집니다.\n\n'
   + '2의 순서는 모든 자산 가격의 기준인 금리를 먼저 두고, 주식은 미국에서 한국으로, 넓은 지수에서 업종 지수로 내려갑니다. 어느 지수·자산도 특징 한 문단과 전망 한 문단보다 짧게 쓰지 않습니다. 재료는 판단을 움직인 것만 골라 문장 속에 녹여 쓰며, 재료를 늘어놓지 않습니다.\n\n'
+  + '미국 장기 국채처럼 이자를 주는 자산의 예상 수익률은 가격 변화에 석 달치 분배금을 더한 값이며, 결론 줄의 수익률 뒤에 분배금 포함이라고 적습니다. 전망의 세 갈래와 확률, 결론의 예상과 액션은 서로 어긋나지 않게 맞춥니다.\n\n'
   + '3과 4는 각각 한 문단입니다. 시간과 분량은 1과 2에 씁니다.';
 const MKT_SEARCH = '코스피 12개월 선행 PER과 신용융자 잔고·반대매매는 자료 명령에 들어 있지 않습니다. 이 두 재료는 검색 결과 목록에서 숫자를 확인하고 원문은 열지 않으며, 이 리포트의 검색은 모두 세 번까지입니다. 찾지 못한 재료는 판단에 쓰지 않고, 3의 끝에 "확인하지 못한 재료" 한 줄로 모읍니다.';
 function reportPrompt(o){
@@ -1062,7 +1065,7 @@ ${o.title}${o.note?`\n${o.note}`:''}${o.bg?'\n선별 조건은 후보를 고른 
 
 [자료]
 ${o.cmd}
-${o.data}
+${o.data} 번들 맨 앞의 #거시는 물가·경기·정책 경로·지정학·향후 2주 일정을 기준 기간과 발표일과 함께 보여 줍니다. 번들이 '옛 프롬프트' 줄 하나만 내고 자료를 내주지 않으면 리포트를 쓰지 않고, 그 줄의 안내만 사용자에게 전합니다.
 
 자료에 없는 사실은 지어내지 않습니다. 필요한 정보가 자료에 없으면 웹 검색으로 확인할 수 있습니다. 검색 결과 목록은 어떤 정보가 있는지 한눈에 보여 주고, 페이지 원문은 그 가운데 필요한 내용을 자세히 담고 있습니다.${market?'\n\n'+MKT_SEARCH:''}
 
@@ -2042,7 +2045,8 @@ function buildIndexPrompt(k){
   const x=IDX_LIST.find(v=>v.k===k);
   if(!x) return null;
   if(x.mk==='asset') return reportPrompt({kind:'macro', unit:'asset', subj:'이 자산', title:`${x.name} — 지켜보고 있는 자산입니다.`,
-    note:`분석 대상은 ${x.desc} 자체입니다. 기록 블록의 현재가·예상 가격·매수 가격은 ${x.measure} 기준입니다. 아래 명령의 ${x.px}${josaEn(x.px,'은','는')} 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 운용은 다루지 않습니다.`,
+    note:`분석 대상은 ${x.desc} 자체입니다. 기록 블록의 현재가·예상 가격·매수 가격은 ${x.measure} 기준입니다. 아래 명령의 ${x.px}${josaEn(x.px,'은','는')} 가격 위치와 수급을 보기 위한 대용 자료이며, ETF의 구조나 운용은 다루지 않습니다.`
+      +(x.k==='TLT' ? ' 이자를 주는 자산이므로 예상 수익률은 가격 변화에 석 달치 분배금을 더한 값이며, 결론 줄의 수익률 뒤에 분배금 포함이라고 적습니다.' : ''),
     cmd:cmdUS(x.px), data:`위 명령은 ${US_BG}, 특징에 쓸 ${x.desc}${eulReul(x.desc)} 따르는 ${x.px}의 시세와 가격 위치·기관과 공매도 자료를 보여 줍니다.`,
     code:x.k, name:x.name});
   if(x.mk==='kr') return reportPrompt({kind:'macro', unit:'index', subj:'이 지수', title:`${x.name} — 지켜보고 있는 지수입니다.`,

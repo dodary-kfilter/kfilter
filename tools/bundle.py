@@ -37,7 +37,8 @@ DART = 'https://dart.fss.or.kr'
 RAW = 'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main'
 ERR = []
 T_START = time.time()
-_N_CODES = max(1, sum(1 for a in sys.argv[2:] if not a.startswith('--')))
+_ARGS = [a for i, a in enumerate(sys.argv) if not (i > 0 and sys.argv[i - 1] == '--ver')]      # --ver 값은 종목이 아니다
+_N_CODES = max(1, sum(1 for a in _ARGS[2:] if not a.startswith('--')))
 DEADLINE = T_START + float(os.environ.get('BUNDLE_DEADLINE', '15' if _N_CODES <= 1 else '40'))   # 수집 마감
 
 
@@ -857,6 +858,124 @@ def us_sentiment():
     return out
 
 
+# ───────── 프롬프트 버전 확인 ─────────
+# 사이트 프롬프트(v58부터)는 명령 끝에 --ver vNN을 붙인다. 번들은 실행할 때마다 저장소에서 새로 받아 오므로 지금 최신 버전을 안다.
+# 옛 프롬프트(꼬리표가 없거나 최신보다 낮음)면 자료를 내주지 않고 안내 한 줄만 낸다 — 자료가 없으니 리포트를 쓸 수 없다.
+# 저장소 파일은 배포 직후 몇 분간 옛 버전으로 보일 수 있어, 최신보다 '낮을 때만' 막는다. 직접 실행은 --ver dev.
+STALE_MSG = ('★리포트를 쓰지 않는다. 사용자에게 "사이트를 새로고침한 뒤 프롬프트를 다시 복사해 붙여 넣어 주세요."라고만 전한다.')
+
+
+def version_gate(ver):
+    if ver == 'dev':
+        return None
+    if ver is None:
+        return ('#옛 프롬프트 — 버전 꼬리표가 없는 실행이다. 사이트 프롬프트로 실행했다면 v58 이전 판이다. ' + STALE_MSG
+                + ' (사이트 프롬프트가 아니라 직접 실행한 것이면 명령 끝에 --ver dev를 붙여 다시 실행한다)')
+    m = re.match(r'^v(\d+)$', ver or '')
+    if not m:
+        return '#옛 프롬프트 — 버전 꼬리표(%s)를 읽지 못했다. ' % ver + STALE_MSG
+    page = fetch(RAW + '/index.html', quiet_err=True) or ''
+    mm = re.search(r"const PROMPT_VER='v(\d+)'", page)
+    if not mm:
+        ERR.append('최신 프롬프트 버전 확인 불가(저장소 index.html)')
+        return None
+    if int(m.group(1)) < int(mm.group(1)):
+        return '#옛 프롬프트 — 이 프롬프트는 %s, 지금 사이트는 v%s이다. ' % (ver, mm.group(1)) + STALE_MSG
+    return None
+
+
+# ───────── 거시 — cache/macro.json(GitHub Actions가 하루 두 번 모은다)을 읽어 '#거시'로 ─────────
+def macro_lines():
+    s_ = fetch(RAW + '/cache/macro.json', quiet_err=True)
+    try:
+        M = json.loads(s_)
+    except Exception:
+        return ['#거시 확인 불가 — cache/macro.json을 받지 못함']
+    NA = '확인 불가'
+    md = lambda d: ('%d/%d' % (int(d[5:7]), int(d[8:10]))) if d and re.match(r'\d{4}-\d\d-\d\d', d) else (d or '')
+    mon = lambda per: '%d월분' % int(per[5:7]) if per else ''
+    pct = lambda v, sign=False: NA if v is None else (('%+.1f%%' if sign else '%.1f%%') % v)
+    def rel(d):
+        return ('%s 발표' % md(d)) if d else '발표일 확인 불가'
+    B, H, R = M.get('bls') or {}, M.get('hist') or {}, M.get('rates') or {}
+    def last(key):
+        v = H.get(key) or {}
+        if not v:
+            return None, None
+        per = sorted(v)[-1]
+        return per, v[per]
+    L = []
+    age = ''
+    try:
+        t = datetime.strptime(M.get('collected_at', '')[:16], '%Y-%m-%d %H:%M')
+        days = (NOW.replace(tzinfo=None) - t).days
+        age = ' · ★모은 지 %d일' % days if days >= 2 else ''
+    except Exception:
+        pass
+    L.append('#거시 모은 시각 %s%s — 값마다 (기준 기간·발표일, 직전). 비어 있으면 확인 불가' % (M.get('collected_at', NA), age))
+    # 물가
+    c, k = B.get('CPI') or {}, B.get('CORE_CPI') or {}
+    pp, pc_ = last('PCE_YOY'); cp, cc = last('CORE_PCE_YOY')
+    imp, im = last('ISM_MFG_PRICES'); isp, isv = last('ISM_SVC_PRICES')
+    be = R.get('be10') or {}
+    a = B.get('AHE') or {}
+    L.append('물가 · CPI 전년비 %s(%s·%s, 직전 %s) · 전월비 %s(직전 %s) · 근원 CPI 전년비 %s(직전 %s) · 근원 3개월 연율 %s · 근원 PCE 전년비 %s(%s·%s, 직전 %s) · 시간당 임금 전년비 %s(%s, 직전 %s) · ISM 가격지수 제조 %s(%s·%s, 직전 %s)·서비스 %s(%s, 직전 %s) · 10년 기대인플레이션 %s(%s, 20일 전 %s)' % (
+        pct(c.get('yoy')), mon(c.get('per')), rel(c.get('rel')), pct(c.get('yoy_prev')), pct(c.get('mom')), pct(c.get('mom_prev')),
+        pct(k.get('yoy')), pct(k.get('yoy_prev')), pct(k.get('ann3')),
+        pct(cc['v']) if cc else NA, mon(cp) if cp else '', rel(cc['rel']) if cc else '', pct(cc.get('prev')) if cc else NA,
+        pct(a.get('yoy')), mon(a.get('per')), pct(a.get('yoy_prev')),
+        im['v'] if im else NA, mon(imp) if imp else '', rel(im['rel']) if im else '', im.get('prev', NA) if im else NA,
+        isv['v'] if isv else NA, mon(isp) if isp else '', isv.get('prev', NA) if isv else NA,
+        ('%.2f%%' % be['v']) if be.get('v') is not None else NA, md(be.get('date', '')[6:] + '-' + be.get('date', '')[:2] + '-' + be.get('date', '')[3:5]) if be.get('date') else '',
+        ('%.2f%%' % be['d20']) if be.get('d20') is not None else NA))
+    # 경기
+    n, u = B.get('NFP') or {}, B.get('UNRATE') or {}
+    clp, cl = last('CLAIMS4W'); mp, mm = last('ISM_MFG'); sp, sv = last('ISM_SVC')
+    kn = lambda v: NA if v is None else '%+dK' % v
+    L.append('경기 · 비농업 고용 %s(%s·%s%s, 직전 %s, 3개월 평균 %s) · 실업률 %s(직전 %s) · 샘 룰 %s(실업률 3개월 평균이 지난 12개월 최저보다 0.5%%p 이상 오르면 경기 침체 신호, %s) · 신규 실업수당 청구 4주 평균 %s(%s 발표, 직전 %s) · ISM 제조 %s(%s, 직전 %s)·서비스 %s(직전 %s) — 50 아래면 위축' % (
+        kn(n.get('v')), mon(n.get('per')), rel(n.get('rel')), ', 잠정' if n.get('prelim') else '', kn(n.get('prev')), kn(n.get('avg3')),
+        pct(u.get('v')), pct(u.get('prev')), ('%.2f' % u['sahm']) if u.get('sahm') is not None else NA, '신호' if u.get('sahm_on') else '신호 아님' if u.get('sahm') is not None else NA,
+        ('%.1fK' % cl['v']) if cl else NA, md(cl['rel']) if cl else '', ('%.1fK' % cl['prev']) if cl and cl.get('prev') is not None else NA,
+        mm['v'] if mm else NA, mon(mp) if mp else '', mm.get('prev', NA) if mm else NA, sv['v'] if sv else NA, sv.get('prev', NA) if sv else NA))
+    # 정책
+    ef, y2, y10, bok = R.get('effr') or {}, R.get('y2') or {}, R.get('y10') or {}, M.get('bok') or {}
+    nxt = [f for f in (M.get('fomc') or []) if f.get('end', '') >= NOW.strftime('%Y-%m-%d')]
+    gap = round(y2['v'] - ef['v'], 2) if y2.get('v') is not None and ef.get('v') is not None else None
+    br = bok.get('rate') or {}
+    L.append('정책 · 연준 목표 %s(실효 %s, %s) · 다음 FOMC %s · 2년물 %s(20일 전 %s) − 실효 기준금리 = %s(양수면 시장이 앞으로 기준금리를 지금보다 높게 본다는 뜻) · 10년물 %s(20일 전 %s) · 한은 기준금리 %s(%s 결정, 직전 %s) · 다음 한은 회의 %s' % (
+        ('%.2f~%.2f%%' % (ef['lo'], ef['hi'])) if ef.get('lo') is not None else NA, ('%.2f%%' % ef['v']) if ef.get('v') is not None else NA, md(ef.get('date', '')),
+        ('%s~%s%s' % (md(nxt[0]['start']), md(nxt[0]['end']), '(경제 전망 발표)' if nxt[0].get('sep') else '')) if nxt else NA,
+        ('%.2f%%' % y2['v']) if y2.get('v') is not None else NA, ('%.2f%%' % y2['d20']) if y2.get('d20') is not None else NA,
+        ('%+.2f%%p' % gap) if gap is not None else NA,
+        ('%.2f%%' % y10['v']) if y10.get('v') is not None else NA, ('%.2f%%' % y10['d20']) if y10.get('d20') is not None else NA,
+        ('%.2f%%' % br['v']) if br.get('v') is not None else NA, md(br.get('since', '')), ('%.2f%%' % br['prev']) if br.get('prev') is not None else NA,
+        md(bok.get('next', '')) or NA))
+    # 지정학
+    oil, g = M.get('oil') or {}, M.get('gpr') or {}
+    ol = lambda o, nm: ('%s %.2f달러(5일 %+.1f%%, 20일 %+.1f%%)' % (nm, o['v'], o['d5'], o['d20'])) if o else '%s %s' % (nm, NA)
+    news = ' / '.join('%s %s' % (x.get('date', ''), x.get('title', '')) for x in (M.get('geo_news') or [])[:5]) or NA
+    L.append('지정학 · %s · %s · 지정학 위험 지수 %s(%s, 직전 %s, 12개월 평균 %s — 1985~2019 평균 = 100) · 최근 7일 사건 제목: %s' % (
+        ol(oil.get('wti'), 'WTI'), ol(oil.get('brent'), '브렌트'),
+        g.get('v', NA) if g else NA, ('%d월' % int(g['month'][5:7])) if g and g.get('month') else '', g.get('prev', NA) if g else NA, g.get('avg12', NA) if g else NA, news))
+    # 일정(2주)
+    today = NOW.strftime('%Y-%m-%d'); end = (NOW + timedelta(days=14)).strftime('%Y-%m-%d')
+    ev = []
+    ev += ['%s~%s FOMC' % (md(f['start']), md(f['end'])) for f in (M.get('fomc') or []) if today <= f.get('end', '') <= end]
+    if bok.get('next') and today <= bok['next'] <= end:
+        ev.append('%s 한은 통화정책 회의' % md(bok['next']))
+    KO = {'CPI': 'CPI', 'Core PCE Price Index': '근원 PCE', 'Nonfarm Payrolls': '고용 보고서', 'ISM Manufacturing PMI': 'ISM 제조',
+          'ISM Non-Manufacturing PMI': 'ISM 서비스', 'ISM Services PMI': 'ISM 서비스', 'GDP (QoQ)': 'GDP', 'PPI': 'PPI'}
+    ev += ['%s %s' % (md(x['date']), KO.get(x['name'], x['name'])) for x in (M.get('upcoming') or []) if today <= x['date'] <= end]
+    ev += ['%s %s 실적%s' % (md(x['date']), x['tk'], '(' + x['when'] + ')' if x.get('when') else '') for x in (M.get('earnings') or []) if today <= x['date'] <= end]
+    def keyd(sx):
+        m_ = re.match(r'(\d+)/(\d+)', sx)
+        return (int(m_.group(1)), int(m_.group(2))) if m_ else (99, 99)
+    L.append('일정(2주) · ' + (' · '.join(sorted(ev, key=keyd)) if ev else NA))
+    if M.get('err'):
+        L.append('거시 수집 오류: ' + '; '.join(M['err'][:6]))
+    return L
+
+
 US_STATUS = {'Open': '정규장 중 — 확정 종가 아님', 'Pre-Market': '프리마켓 — 정규장 시세는 전일 종가',
              'After-Hours': '애프터마켓 — 정규장 종가 확정, 장외 시세는 장외 항목', 'Closed': '장 마감 — 확정 종가'}
 
@@ -1626,6 +1745,15 @@ def main(argv):
     if len(argv) < 2 or argv[0] not in ('kr', 'us'):
         print(__doc__)
         return 1
+    ver = None
+    if '--ver' in argv:
+        i = argv.index('--ver')
+        ver = argv[i + 1] if i + 1 < len(argv) else ''
+        argv = argv[:i] + argv[i + 2:]
+    stop = version_gate(ver)
+    if stop:
+        print(stop)
+        return 0
     overview = '--overview' in argv
     brief = '--brief' in argv or overview
     mode, codes = argv[0], [a for a in argv[1:] if a not in ('--brief', '--overview')]
@@ -1694,6 +1822,7 @@ def main(argv):
         head += ['#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
     else:
         head += ['#미국시장 ' + J(mk), '#미국 심리·신용 ' + J(fsent.result()), '#환율·유가 ' + J(gl)] + market_news(fnews)
+    head[1:1] = macro_lines()                                  # 거시 — kr·us 공통, 맨 앞 머리줄 바로 다음
     MAXB = int(os.environ.get('BUNDLE_MAX_BYTES', '40000'))
     body = [ln for part in parts for ln in part]
     size = lambda ls: sum(len(ln.encode('utf-8')) + 1 for ln in ls)

@@ -1,0 +1,44 @@
+name: 거시 자료 수집
+
+# 하루 두 번 cache/macro.json을 새로 만든다 — 번들이 '#거시'로 읽는다(tools/macro_fetch.py 머리말 참고)
+#   07:30 한국시간(= 22:30 UTC 전날): 미국 지표(동부 08:30 발표)가 나온 뒤 국장 리포트 전에
+#   23:10 한국시간(= 14:10 UTC): 그날 미국 발표(서머타임이면 21:30, 아니면 22:30 한국시간) 직후 미장 리포트 전에
+on:
+  schedule:
+    - cron: '30 22 * * *'
+    - cron: '10 14 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/macro.yml', 'tools/macro_fetch.py']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: macro
+  cancel-in-progress: false
+
+jobs:
+  macro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 준비(지정학 위험 지수 엑셀 읽기)
+        run: pip install -q xlrd
+      - name: 수집
+        run: python3 tools/macro_fetch.py
+      - name: 결과 커밋 (push로 돈 시험 실행은 커밋하지 않음)
+        if: github.event_name != 'push'
+        run: |
+          git config user.name 'kfilter-bot'
+          git config user.email 'kfilter-bot@users.noreply.github.com'
+          git add cache/macro.json
+          if git diff --cached --quiet; then echo '바뀐 것 없음'; exit 0; fi
+          git commit -q -m "거시 자료 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep 5; done
+          exit 1
