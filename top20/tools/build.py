@@ -23,7 +23,9 @@ GitHub Actions(.github/workflows/top20.yml)가 매주 토요일 08:30(한국시�
 
 선발
   안정형 20 = P↑ 높은 순(같으면 σ 작은 순)
-  공격형 20 = P↑ 51% 이상(오를 확률이 내릴 확률보다 높은 것) 중 오르면 큰 순 — 내릴 확률이 더 큰데 폭만 큰 종목은 뺀다
+  기대 수익 20 = P↑ 51% 이상(오를 확률이 내릴 확률보다 높은 것) 중 기대 수익 큰 순 — 내릴 확률이 더 큰 종목은 뺀다
+    기대 수익 = P↑ × 오르면 + (1 − P↑) × 내리면  (2026-10-23: '오르면'만으로 줄 세우면 크게 흔들리는 종목을 고르는 복권이 된다.
+    내릴 때의 폭까지 넣어야 흔들림이 공짜로 유리해지지 않는다) · 기대 수익이 0 이하인 종목은 넣지 않는다
     ★바닥이 50%면 판단 없는 종목(시장 몫 중앙 50.2%, 사실상 동전 던지기)이 흔들림이 크다는 이유만으로
       공격형을 채운다(실측 2026-10-20: 국장 20개 전부). 51%는 내릴 확률보다 2%p 이상 높다는 최소한의 방향 우위다
   판단에서 제외(excluded)한 종목은 두 목록에 넣지 않는다
@@ -179,15 +181,17 @@ def main(argv):
             j = (J.get(mk) or {}).get(x['code']) or {}
             delta = float(j.get('delta') or 0)
             c = [v for _, v in d]; hi = max(c[-250:])
+            pu = min(95, max(5, pm * 100 + delta))
             rows.append(dict(x, cur=round(c[-1], 2), peak=round(hi, 2), dd=round((c[-1] / hi - 1) * 100, 1),
                              beta=round(b, 2), sigma=round(s * 100, 1), p_mkt=round(pm * 100, 1), delta=round(delta, 1),
-                             p_up=round(min(95, max(5, pm * 100 + delta)), 1), up=round(up * 100, 1), dn=round(dn * 100, 1),
+                             p_up=round(pu, 1), up=round(up * 100, 1), dn=round(dn * 100, 1),
+                             exp=round(pu / 100 * up * 100 + (1 - pu / 100) * dn * 100, 1),
                              judged=bool(j), excluded=bool(j.get('excluded')), why=j.get('why') or '',
                              name_ko=names.get(x['code'], '') if mk == 'us' else ''))
             last[mk] = max(last.get(mk, ''), d[-1][0])
         cand = [r for r in rows if not r['excluded']]
         stable = sorted(cand, key=lambda r: (-r['p_up'], r['sigma']))[:N_PICK]
-        aggr = sorted([r for r in cand if r['p_up'] >= AGGR_FLOOR], key=lambda r: -r['up'])[:N_PICK]
+        aggr = sorted([r for r in cand if r['p_up'] >= AGGR_FLOOR and r['exp'] > 0], key=lambda r: -r['exp'])[:N_PICK]
         both = {r['code'] for r in stable} & {r['code'] for r in aggr}
         for L in (stable, aggr):
             for i, r in enumerate(L, 1):
@@ -203,7 +207,7 @@ def main(argv):
         meta.pop(k, None)
     meta.update(version=3, record_date=today.isoformat(), stale=stale, aggr_floor=AGGR_FLOOR,
                 basis='가격 국장 %s, 미장 %s 기준' % (last.get('kr', '-'), last.get('us', '-')),
-                method='안정형 = 상승 확률(시장 몫 + 종목 판단) 높은 순 · 공격형 = 상승 확률 %d%% 이상 중 오르면 큰 순 · 폭은 종목 판단을 넣지 않고 계산' % AGGR_FLOOR,
+                method='상승 확률 = 시장 몫 + 종목 판단, 높은 순 · 기대 수익 = 상승 확률 × 오르면 + 하락 확률 × 내리면, 상승 확률 %d%% 이상 중 큰 순 · 폭은 종목 판단을 넣지 않고 계산' % AGGR_FLOOR,
                 universe={'kr': res['kr']['n'], 'us': res['us']['n'], 'sp500': n_sp, 'ndx': n_nq})
     out = {'meta': meta, 'kr': res['kr'], 'us': res['us']}
     print('후보 국장 %d · 미장 %d (S&P %d · 나스닥100 %d) · 받지 못함 %d' % (res['kr']['n'], res['us']['n'], n_sp, n_nq, len(stale)))
@@ -211,7 +215,7 @@ def main(argv):
         R = res[mk]
         print('[%s] 판단 %d개' % (mk, R['judged_n']))
         print('  안정형:', ', '.join('%s %.0f%%' % (r['name'], r['p_up']) for r in R['stable'][:10]), '…')
-        print('  공격형:', ', '.join('%s +%.0f%%(%.0f%%)' % (r['name'], r['up'], r['p_up']) for r in R['aggressive'][:10]), '…')
+        print('  기대 수익:', ', '.join('%s %+.1f%%(%.0f%%·%+.0f/%+.0f)' % (r['name'], r['exp'], r['p_up'], r['up'], r['dn']) for r in R['aggressive'][:10]), '…')
     if dry:
         return 0
     with open(OUT, 'w', encoding='utf-8') as f:
