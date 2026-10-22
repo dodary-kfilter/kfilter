@@ -807,7 +807,7 @@ def us_sentiment():
         fg = (j or {}).get('fear_and_greed') or {}
         if fg.get('score') is not None:
             r1 = lambda v: round(v, 1) if isinstance(v, (int, float)) else None
-            out['공포탐욕'] = {'점수': r1(fg['score']), '상태': FG_RATE.get(fg.get('rating'), fg.get('rating')), '전일': r1(fg.get('previous_close')),
+            out['CNN공포탐욕지수(0~100, 낮을수록 공포)'] = {'점수': r1(fg['score']), '상태': FG_RATE.get(fg.get('rating'), fg.get('rating')), '전일': r1(fg.get('previous_close')),
                            '1주전': r1(fg.get('previous_1_week')), '1달전': r1(fg.get('previous_1_month')), '기준': str(fg.get('timestamp') or '')[:10],
                            '구성': {nm: '%s(%s)' % (r1((j.get(k) or {}).get('score')), FG_RATE.get((j.get(k) or {}).get('rating'), '-'))
                                     for k, nm in FG_PART if (j.get(k) or {}).get('score') is not None}}
@@ -826,14 +826,14 @@ def us_sentiment():
     try:                                                           # 2) 신용 — 하이일드 채권 ÷ 국채
         r = ratio('HYG', 'IEF', 64)
         if r:
-            out['신용(하이일드채권÷국채)'] = {'비율': round(r[0], 4), '5일%': pc(r, 5), '20일%': pc(r, 20),
+            out['하이일드채권÷국채(하이일드 스프레드가 벌어지면 내려감)'] = {'비율': round(r[0], 4), '5일%': pc(r, 5), '20일%': pc(r, 20),
                                          '60일고점대비%': round((r[0] / max(r) - 1) * 100, 2)}
     except Exception as e:
         ERR.append('신용 비율 실패 — %s' % type(e).__name__)
     try:                                                           # 3) VIX 기간 구조
         r = ratio('^VIX', '^VIX3M', 25)
         if r:
-            out['VIX기간구조(VIX÷3개월VIX)'] = {'비율': round(r[0], 2), '5일전': round(r[5], 2) if len(r) > 5 else None,
+            out['VIX기간구조(VIX÷3개월VIX, 1을 넘으면 당장의 공포가 더 큼)'] = {'비율': round(r[0], 2), '5일전': round(r[5], 2) if len(r) > 5 else None,
                                             '20일전': round(r[20], 2) if len(r) > 20 else None}
     except Exception as e:
         ERR.append('VIX 기간 구조 실패 — %s' % type(e).__name__)
@@ -919,7 +919,7 @@ def macro_lines():
     imp, im = last('ISM_MFG_PRICES'); isp, isv = last('ISM_SVC_PRICES')
     be = R.get('be10') or {}
     a = B.get('AHE') or {}
-    L.append('물가 · CPI 전년비 %s(%s·%s, 직전 %s) · 전월비 %s(직전 %s) · 근원 CPI 전년비 %s(직전 %s) · 근원 3개월 연율 %s · 근원 PCE 전년비 %s(%s·%s, 직전 %s) · 시간당 임금 전년비 %s(%s, 직전 %s) · ISM 가격지수 제조 %s(%s·%s, 직전 %s)·서비스 %s(%s, 직전 %s) · 10년 기대인플레이션 %s(%s, 20일 전 %s)' % (
+    L.append('물가 · 소비자물가(CPI) 전년비 %s(%s·%s, 직전 %s) · 전월비 %s(직전 %s) · 근원 CPI(식품·에너지 제외) 전년비 %s(직전 %s) · 근원 CPI 최근 3개월 연율 %s · 근원 개인소비지출(PCE) 물가 전년비 %s(%s·%s, 직전 %s) · 시간당 평균 임금 전년비 %s(%s, 직전 %s) · ISM 제조업 가격지수(기업이 원자재 등을 사들일 때 치르는 가격 흐름, 50을 넘으면 상승) %s(%s·%s, 직전 %s)·서비스업 가격지수 %s(%s, 직전 %s) · 10년 기대인플레이션율(BEI, 10년물 금리 − 물가연동국채 금리) %s(%s, 20일 전 %s)' % (
         pct(c.get('yoy')), mon(c.get('per')), rel(c.get('rel')), pct(c.get('yoy_prev')), pct(c.get('mom')), pct(c.get('mom_prev')),
         pct(k.get('yoy')), pct(k.get('yoy_prev')), pct(k.get('ann3')),
         pct(cc['v']) if cc else NA, mon(cp) if cp else '', rel(cc['rel']) if cc else '', pct(cc.get('prev')) if cc else NA,
@@ -932,7 +932,7 @@ def macro_lines():
     n, u = B.get('NFP') or {}, B.get('UNRATE') or {}
     clp, cl = last('CLAIMS4W'); mp, mm = last('ISM_MFG'); sp, sv = last('ISM_SVC')
     kn = lambda v: NA if v is None else '%+dK' % v
-    L.append('경기 · 비농업 고용 %s(%s·%s%s, 직전 %s, 3개월 평균 %s) · 실업률 %s(직전 %s) · 샘 룰 %s(실업률 3개월 평균이 지난 12개월 최저보다 0.5%%p 이상 오르면 경기 침체 신호, %s) · 신규 실업수당 청구 4주 평균 %s(%s 발표, 직전 %s) · ISM 제조 %s(%s, 직전 %s)·서비스 %s(직전 %s) — 50 아래면 위축' % (
+    L.append('경기 · 비농업 신규 고용 %s(%s·%s%s, 직전 %s, 3개월 평균 %s) · 실업률 %s(직전 %s) · 샴의 법칙 %s(실업률 3개월 평균이 지난 12개월 최저보다 0.5%%p 이상 오르면 경기 침체 신호, %s) · 신규 실업수당 청구 건수 4주 평균 %s(%s 발표, 직전 %s) · ISM 제조업 구매관리자지수(PMI) %s(%s, 직전 %s)·서비스업 PMI %s(직전 %s) — 50 아래면 경기 위축' % (
         kn(n.get('v')), mon(n.get('per')), rel(n.get('rel')), ', 잠정' if n.get('prelim') else '', kn(n.get('prev')), kn(n.get('avg3')),
         pct(u.get('v')), pct(u.get('prev')), ('%.2f' % u['sahm']) if u.get('sahm') is not None else NA, '신호' if u.get('sahm_on') else '신호 아님' if u.get('sahm') is not None else NA,
         ('%.1fK' % cl['v']) if cl else NA, md(cl['rel']) if cl else '', ('%.1fK' % cl['prev']) if cl and cl.get('prev') is not None else NA,
@@ -942,7 +942,7 @@ def macro_lines():
     nxt = [f for f in (M.get('fomc') or []) if f.get('end', '') >= NOW.strftime('%Y-%m-%d')]
     gap = round(y2['v'] - ef['v'], 2) if y2.get('v') is not None and ef.get('v') is not None else None
     br = bok.get('rate') or {}
-    L.append('정책 · 연준 목표 %s(실효 %s, %s) · 다음 FOMC %s · 2년물 %s(20일 전 %s) − 실효 기준금리 = %s(양수면 시장이 앞으로 기준금리를 지금보다 높게 본다는 뜻) · 10년물 %s(20일 전 %s) · 한은 기준금리 %s(%s 결정, 직전 %s) · 다음 한은 회의 %s' % (
+    L.append('정책 · 연준 기준금리 목표 범위 %s(실효 연방기금금리 %s, %s) · 다음 FOMC(연준 통화정책 회의) %s · 2년물 국채 금리 %s(20일 전 %s) − 실효 연방기금금리 = %s(양수면 시장이 앞으로 기준금리를 지금보다 높게 본다는 뜻) · 10년물 국채 금리 %s(20일 전 %s) · 한은 기준금리 %s(%s 결정, 직전 %s) · 다음 한은 금융통화위원회 %s' % (
         ('%.2f~%.2f%%' % (ef['lo'], ef['hi'])) if ef.get('lo') is not None else NA, ('%.2f%%' % ef['v']) if ef.get('v') is not None else NA, md(ef.get('date', '')),
         ('%s~%s%s' % (md(nxt[0]['start']), md(nxt[0]['end']), '(경제 전망 발표)' if nxt[0].get('sep') else '')) if nxt else NA,
         ('%.2f%%' % y2['v']) if y2.get('v') is not None else NA, ('%.2f%%' % y2['d20']) if y2.get('d20') is not None else NA,
@@ -954,7 +954,7 @@ def macro_lines():
     oil, g = M.get('oil') or {}, M.get('gpr') or {}
     ol = lambda o, nm: ('%s %.2f달러(5일 %+.1f%%, 20일 %+.1f%%)' % (nm, o['v'], o['d5'], o['d20'])) if o else '%s %s' % (nm, NA)
     news = ' / '.join('%s %s' % (x.get('date', ''), x.get('title', '')) for x in (M.get('geo_news') or [])[:5]) or NA
-    L.append('지정학 · %s · %s · 지정학 위험 지수 %s(%s, 직전 %s, 12개월 평균 %s — 1985~2019 평균 = 100) · 최근 7일 사건 제목: %s' % (
+    L.append('지정학 · %s · %s · 지정학적 위험 지수(GPR, 전쟁·테러 관련 보도량으로 만든 지수, 1985~2019 평균 = 100) %s(%s, 직전 %s, 12개월 평균 %s) · 최근 7일 사건 제목: %s' % (
         ol(oil.get('wti'), 'WTI'), ol(oil.get('brent'), '브렌트'),
         g.get('v', NA) if g else NA, ('%d월' % int(g['month'][5:7])) if g and g.get('month') else '', g.get('prev', NA) if g else NA, g.get('avg12', NA) if g else NA, news))
     # 일정(2주)
@@ -962,9 +962,9 @@ def macro_lines():
     ev = []
     ev += ['%s~%s FOMC' % (md(f['start']), md(f['end'])) for f in (M.get('fomc') or []) if today <= f.get('end', '') <= end]
     if bok.get('next') and today <= bok['next'] <= end:
-        ev.append('%s 한은 통화정책 회의' % md(bok['next']))
-    KO = {'CPI': 'CPI', 'Core PCE Price Index': '근원 PCE', 'Nonfarm Payrolls': '고용 보고서', 'ISM Manufacturing PMI': 'ISM 제조',
-          'ISM Non-Manufacturing PMI': 'ISM 서비스', 'ISM Services PMI': 'ISM 서비스', 'GDP (QoQ)': 'GDP', 'PPI': 'PPI'}
+        ev.append('%s 한은 금융통화위원회' % md(bok['next']))
+    KO = {'CPI': '소비자물가(CPI)', 'Core PCE Price Index': '근원 PCE 물가', 'Nonfarm Payrolls': '고용 보고서', 'ISM Manufacturing PMI': 'ISM 제조업 PMI',
+          'ISM Non-Manufacturing PMI': 'ISM 서비스업 PMI', 'ISM Services PMI': 'ISM 서비스업 PMI', 'GDP (QoQ)': 'GDP', 'PPI': '생산자물가(PPI)'}
     ev += ['%s %s' % (md(x['date']), KO.get(x['name'], x['name'])) for x in (M.get('upcoming') or []) if today <= x['date'] <= end]
     ev += ['%s %s 실적%s' % (md(x['date']), x['tk'], '(' + x['when'] + ')' if x.get('when') else '') for x in (M.get('earnings') or []) if today <= x['date'] <= end]
     def keyd(sx):
