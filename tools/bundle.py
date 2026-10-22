@@ -861,7 +861,7 @@ def us_sentiment():
 # ───────── 프롬프트 버전 확인 ─────────
 # 사이트 프롬프트(v58부터)는 명령 끝에 --ver vNN을 붙인다. 번들은 실행할 때마다 저장소에서 새로 받아 오므로 지금 최신 버전을 안다.
 # 옛 프롬프트(꼬리표가 없거나 최신보다 낮음)면 자료를 내주지 않고 안내 한 줄만 낸다 — 자료가 없으니 리포트를 쓸 수 없다.
-# 저장소 파일은 배포 직후 몇 분간 옛 버전으로 보일 수 있어, 최신보다 '낮을 때만' 막는다. 직접 실행은 --ver dev.
+# 비교 기준은 배포된 사이트의 버전이고, 최신보다 '낮을 때만' 막는다(사이트 캐시가 늦어도 새 프롬프트는 통과). 직접 실행은 --ver dev.
 STALE_MSG = ('★리포트를 쓰지 않는다. 사용자에게 "사이트를 새로고침한 뒤 프롬프트를 다시 복사해 붙여 넣어 주세요."라고만 전한다.')
 
 
@@ -874,8 +874,13 @@ def version_gate(ver):
     m = re.match(r'^v(\d+)$', ver or '')
     if not m:
         return '#옛 프롬프트 — 버전 꼬리표(%s)를 읽지 못했다. ' % ver + STALE_MSG
-    page = fetch(RAW + '/index.html', quiet_err=True) or ''
+    # 비교 기준은 사용자가 실제로 복사하는 사이트(GitHub Pages)다. 저장소 파일은 배포보다 먼저 바뀌어서,
+    # 그것과 비교하면 배포가 끝나기 전 몇 분 동안 새로고침해도 받을 수 없는 버전을 요구하게 된다(2026-10-23 실측)
+    page = fetch('https://dodary-kfilter.github.io/kfilter/?v=%d' % int(time.time()), quiet_err=True) or ''
     mm = re.search(r"const PROMPT_VER='v(\d+)'", page)
+    if not mm:
+        page = fetch(RAW + '/index.html', quiet_err=True) or ''
+        mm = re.search(r"const PROMPT_VER='v(\d+)'", page)
     if not mm:
         ERR.append('최신 프롬프트 버전 확인 불가(저장소 index.html)')
         return None
