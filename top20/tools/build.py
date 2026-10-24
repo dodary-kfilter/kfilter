@@ -18,8 +18,14 @@ GitHub Actions(.github/workflows/top20.yml)가 매주 토요일 08:30(한국시�
     Φ: 정규분포에서 0보다 클 확률
   Δ: 종목 판단(±%p, top20/judgments.json) — 판단이 없으면 0
 
-2단계 폭 — 크기만 본다
-  오르면·내리면 = Δ를 넣지 않은 분포(시장 갈래 × 베타 + 고유 흔들림)에서 오른 경우·내린 경우의 평균
+2단계 폭 — 크기만 본다. 오를 폭과 내릴 폭을 서로 다른 근거로 따로 계산한다(2026-10-23)
+  흔들림 기본값: Δ를 넣지 않은 분포(시장 갈래 × 베타 + 고유 흔들림)에서 오른 경우·내린 경우의 평균 — 정규분포라 크기가 거의 같다
+  오를 폭 = 지금 가격에서 위쪽 저항까지: 최근 120거래일 거래대금이 가장 몰린 가격대(매물대), 없으면 1년 고점
+  내릴 폭 = 지금 가격에서 아래쪽 지지까지: 최근 120거래일 거래대금이 가장 몰린 가격대, 없으면 1년 저점
+            국장은 PBR 1배 가격(주당 순자산)이 지금 가격 아래에 있으면 더 가까운 쪽을 지지로 본다
+  쓰는 범위: 판단한 종목에만(판단 없는 종목은 흔들림 기본값) — 판단 없는 동전 던지기가 구조 폭만으로 목록에 들어오지 않게
+  현실 범위: 구조 폭은 흔들림 기본값과 반씩 섞고 0.67~1.5배 안으로 / 판단(judgments.json의 up·dn, %)이 있으면 그 값을 쓴다
+  ★한 분포에서 같이 뽑으면 기대 수익이 '(2 × 상승 확률 − 1) × 흔들림'이 되어 상승 확률 목록과 같은 종목을 고르게 된다
 
 선발
   안정형 20 = P↑ 높은 순(같으면 σ 작은 순)
@@ -124,14 +130,15 @@ def daily(sym):
         m = r.get('meta') or {}
         if close and close[-1] is None and q['open'][-1] and m.get('regularMarketPrice'):
             close[-1] = m['regularMarketPrice']                     # 장 마감 뒤 비어 있는 마지막 종가는 현재가로
-        return [(dt.datetime.fromtimestamp(ts, dt.timezone.utc).strftime('%Y-%m-%d'), c)
-                for ts, c in zip(r['timestamp'], close) if c]
+        vol = list(q.get('volume') or [0] * len(close))
+        return [(dt.datetime.fromtimestamp(ts, dt.timezone.utc).strftime('%Y-%m-%d'), c, v or 0)
+                for ts, c, v in zip(r['timestamp'], close, vol) if c]
     except Exception:
         return None
 
 
 def beta_sigma(d, di, N=120):
-    a_ = dict(d); b_ = dict(di)
+    a_ = {t: c for t, c, *_ in d}; b_ = {t: c for t, c, *_ in di}
     days = sorted(set(a_) & set(b_)); N = min(N, len(days) - 1); days = days[-(N + 1):]
     a = [math.log(a_[days[i + 1]] / a_[days[i]]) for i in range(N)]
     b = [math.log(b_[days[i + 1]] / b_[days[i]]) for i in range(N)]
@@ -152,6 +159,29 @@ def market_part(b, s, sc):
     return P, Eu / max(P, 1e-9), Ed / max(1 - P, 1e-9)
 
 
+def levels(d, cur, bps=None, N=120, bins=24):
+    """(위쪽 저항, 아래쪽 지지, 근거 이름들) — 최근 N거래일 거래대금이 가장 몰린 가격대, 없으면 1년 고점·저점, 국장은 PBR 1배"""
+    seg = d[-N:]
+    lo, hi = min(x[1] for x in seg), max(x[1] for x in seg)
+    res = sup = None; rs = ss = ''
+    if hi > lo:
+        w = (hi - lo) / bins; h = [0.0] * bins
+        for _, c, v in seg:
+            h[min(bins - 1, int((c - lo) / w))] += (v or 0) * c
+        cen = lambda i: lo + (i + 0.5) * w
+        big = 0.4 * max(h)                                          # 의미 있는 구간 = 가장 많이 거래된 구간의 40% 이상
+        up_b = [cen(i) for i in range(bins) if cen(i) > cur * 1.01 and h[i] >= big]
+        dn_b = [cen(i) for i in range(bins) if cen(i) < cur * 0.99 and h[i] >= big]
+        if up_b: res, rs = min(up_b), '매물대'                        # 위로 가장 가까운 벽
+        if dn_b: sup, ss = max(dn_b), '거래 밀집'                     # 아래로 가장 가까운 바닥
+    y = d[-250:]; H, L = max(x[1] for x in y), min(x[1] for x in y)
+    if res is None and H > cur * 1.02: res, rs = H, '1년 고점'
+    if sup is None and L < cur * 0.98: sup, ss = L, '1년 저점'
+    if bps and cur * 0.5 < bps < cur * 0.99 and (sup is None or bps > sup):
+        sup, ss = bps, 'PBR 1배'                                  # 순자산 가격이 더 가까운 지지
+    return res, sup, rs, ss
+
+
 def main(argv):
     dry = '--dry' in argv
     today = dt.datetime.now(KST).date()
@@ -160,6 +190,7 @@ def main(argv):
     SC = M.get('scenarios') or {}
     J = json.load(open(JUDGE, encoding='utf-8')) if os.path.exists(JUDGE) else {'kr': {}, 'us': {}}
     names = json.load(open(NAMES, encoding='utf-8')) if os.path.exists(NAMES) else {}
+    fd = (json.load(open(FUND, encoding='utf-8')).get('data') or {}) if os.path.exists(FUND) else {}    # 국장 PBR 1배 가격(주당 순자산)
 
     kr = kr_universe(); us, n_sp, n_nq = us_universe()
     if len(kr) < 300 or len(us) < 450:
@@ -177,14 +208,37 @@ def main(argv):
                 stale.append(x['name']); continue
             b, s = beta_sigma(d, di)
             sc = SC.get(x['idx']) or SC.get('SPY')
-            pm, up, dn = market_part(b, s, sc)
+            pm, up0, dn0 = market_part(b, s, sc)
             j = (J.get(mk) or {}).get(x['code']) or {}
             delta = float(j.get('delta') or 0)
-            c = [v for _, v in d]; hi = max(c[-250:])
+            c = [z[1] for z in d]; hi = max(c[-250:])
+            bps = (fd.get('A' + x['code']) or {}).get('bps') if mk == 'kr' else None
+            rl, sl, rs, ss = levels(d, c[-1], bps)
+            clip = lambda v, a, b_: max(a, min(b_, v))
+            # 가격 구조는 판단한 종목에만 쓴다 — 판단 없는 종목에 쓰면 확률 51% 동전 던지기가 구조 폭만으로 기대 수익 목록을 채운다(복권, 2026-10-23 실측)
+            # 구조 폭은 흔들림 기본값과 반씩 섞고 0.67~1.5배 안으로 — 많이 빠진 종목일수록 위 벽이 멀고 아래 바닥이 가까워 한쪽으로 치우치기 쉽다
+            def mix(raw, base):
+                return clip(base + 0.5 * (raw - base), 0.67 * base, 1.5 * base)
+            if j.get('up') is not None:
+                up, up_src = float(j['up']) / 100, '판단'
+            elif j and rl:
+                up, up_src = mix(rl / c[-1] - 1, up0), rs
+            else:
+                up, up_src = up0, '흔들림 기본'
+            if j.get('dn') is not None:
+                dn, dn_src = -abs(float(j['dn'])) / 100, '판단'
+            elif j and sl:
+                dn, dn_src = -mix(1 - sl / c[-1], -dn0), ss
+            else:
+                dn, dn_src = dn0, '흔들림 기본'
             pu = min(95, max(5, pm * 100 + delta))
             rows.append(dict(x, cur=round(c[-1], 2), peak=round(hi, 2), dd=round((c[-1] / hi - 1) * 100, 1),
                              beta=round(b, 2), sigma=round(s * 100, 1), p_mkt=round(pm * 100, 1), delta=round(delta, 1),
                              p_up=round(pu, 1), up=round(up * 100, 1), dn=round(dn * 100, 1),
+                             up0=round(up0 * 100, 1), dn0=round(dn0 * 100, 1), up_src=up_src, dn_src=dn_src,
+                             up_lv=round(rl, 2) if rl and up_src in ('매물대', '1년 고점') else None,
+                             dn_lv=round(sl, 2) if sl and dn_src in ('거래 밀집', '1년 저점', 'PBR 1배') else None,
+                             why_mag=j.get('why_mag') or '',
                              exp=round(pu / 100 * up * 100 + (1 - pu / 100) * dn * 100, 1),
                              judged=bool(j), excluded=bool(j.get('excluded')), why=j.get('why') or '',
                              name_ko=names.get(x['code'], '') if mk == 'us' else ''))
@@ -209,7 +263,7 @@ def main(argv):
         meta['judged'] = J['meta']['judged']                    # 판단일은 판단 파일을 따른다
     meta.update(version=3, record_date=today.isoformat(), stale=stale, aggr_floor=AGGR_FLOOR,
                 basis='가격 국장 %s, 미장 %s 기준' % (last.get('kr', '-'), last.get('us', '-')),
-                method='상승 확률 = 시장 몫 + 종목 판단, 높은 순 · 기대 수익 = 상승 확률 × 오르면 + 하락 확률 × 내리면, 상승 확률 %d%% 이상 중 큰 순 · 폭은 종목 판단을 넣지 않고 계산' % AGGR_FLOOR,
+                method='상승 확률 = 시장 몫 + 종목 판단, 높은 순 · 기대 수익 = 상승 확률 × 오를 폭 + 하락 확률 × 내릴 폭, 상승 확률 %d%% 이상 중 큰 순 · 오를 폭은 위로 가장 가까운 매물대(없으면 1년 고점), 내릴 폭은 아래로 가장 가까운 거래 밀집(없으면 1년 저점, 국장은 PBR 1배도)까지 — 판단한 종목만, 흔들림 기본값과 반씩 섞어 0.67~1.5배 안' % AGGR_FLOOR,
                 universe={'kr': res['kr']['n'], 'us': res['us']['n'], 'sp500': n_sp, 'ndx': n_nq})
     out = {'meta': meta, 'kr': res['kr'], 'us': res['us']}
     print('후보 국장 %d · 미장 %d (S&P %d · 나스닥100 %d) · 받지 못함 %d' % (res['kr']['n'], res['us']['n'], n_sp, n_nq, len(stale)))
