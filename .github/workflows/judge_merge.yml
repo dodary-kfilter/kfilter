@@ -1,0 +1,59 @@
+name: 매일 판단 반영
+
+# Claude Code 예약 작업(tools/daily_judge.md)이 claude/judge-* 브랜치로 올린 판단을 main으로 옮긴다
+#   옮기는 파일은 세 가지뿐: top20/picks.json, top20/top20.json, top20/log/*.md — 다른 파일이 섞여 있으면 멈춘다
+#   (예약 작업은 claude/ 브랜치에만 올릴 수 있고, main에는 자동 갱신 봇의 커밋이 섞여 있어 직접 올리지 못한다)
+on:
+  push:
+    branches: ['claude/judge-*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: judge-merge
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 바뀐 파일 점검과 판단 파일 검사
+        run: |
+          git fetch -q origin main
+          CHANGED=$(git diff --name-only origin/main...HEAD)
+          echo "$CHANGED"
+          BAD=$(echo "$CHANGED" | grep -v -E '^(top20/picks\.json|top20/top20\.json|top20/log/[0-9-]+\.md)$' || true)
+          if [ -n "$BAD" ]; then echo "★ 옮길 수 없는 파일: $BAD"; exit 1; fi
+          python3 - <<'PY'
+          import json
+          d = json.load(open('top20/picks.json', encoding='utf-8'))
+          for m in ('kr', 'us'):
+              for t in ('stable', 'aggressive'):
+                  L = d[m][t]
+                  assert len(L) == 20, (m, t, len(L))
+                  for x in L:
+                      assert x['code'] and 0 < x['p'] < 100 and x['target'] > 0 and x['stop'] > 0 and len(x['why']) == 3 and x['risk'], x
+          assert d['meta'].get('judged')
+          print('판단 파일 정상')
+          PY
+      - name: main으로 옮기기
+        run: |
+          BR="${GITHUB_REF_NAME}"
+          git config user.name 'kfilter-bot'
+          git config user.email 'kfilter-bot@users.noreply.github.com'
+          FILES=$(git diff --name-only origin/main...HEAD)
+          git checkout -q -B main origin/main
+          git checkout "origin/$BR" -- $FILES
+          git add $FILES
+          if git diff --cached --quiet; then echo '바뀐 것 없음'; exit 0; fi
+          git commit -q -m "$(git log -1 --format=%s "origin/$BR") — $BR에서 옮김"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+          git push -q origin --delete "$BR" || true

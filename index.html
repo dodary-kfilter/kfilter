@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-24a (v62 — TOP 20 애널리스트 판단: 안정형 20·적극형 20) / 이전: 2026-10-23d -->
+<!-- build: 2026-10-24b (매일 판단 — 지수 탭에 오늘의 시황 판단, TOP 20에 갱신 시각·오늘 바뀐 것) / 이전: 2026-10-24a (v62) -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -58,6 +58,7 @@
   .mk2.t20t button.on{border-color:#58a6ff}
   .mk2.f13t{display:grid; grid-template-columns:repeat(5,1fr)} .mk2.f13t button.on{border-color:#ff7b72}
   @media (max-width:640px){ .mk2.f13t{grid-template-columns:repeat(3,1fr)} }
+  .t20at{font-size:11.5px; margin-top:4px; opacity:.8} .t20chg{font-size:12.5px; color:var(--dim); margin:-4px 0 10px; padding:0 10px}
   .t20view{font-size:13px; line-height:1.55; color:var(--dim); border-left:2px solid #a371f7; padding:6px 10px; margin:4px 0 10px}
   .tag.hit{background:rgba(63,185,80,.15); color:#3fb950; white-space:nowrap} .tag.stop{background:rgba(248,81,73,.15); color:#f85149; white-space:nowrap}
   .tag.both{background:rgba(163,113,247,.16); color:#a371f7; white-space:nowrap}
@@ -1719,7 +1720,7 @@ function loadList(k){
     const ix=await listJSON('lists/13f/index.json');          // 최신 분기 파일을 가리키는 색인
     if(!ix || !ix.latest) throw new Error('lists/13f/index.json에 latest 없음');
     return listJSON('lists/13f/'+ix.latest+'.json');
-  })().then(d=>{ LISTS[k]=d; LIST_ERR[k]=''; listBadge(k); return d; },
+  })().then(d=>{ LISTS[k]=d; LIST_ERR[k]=''; listBadge(k); if(k==='top20' && CUR==='index' && DATA) render(); return d; },   // 지수 탭의 '오늘의 시황 판단'을 채운다(data.json이 실패해 안내 중이면 덮지 않음)
             e=>{ LIST_ERR[k]=String((e&&e.message)||e||'받기 실패'); return null; })
      .finally(()=>{ delete LIST_BUSY[k]; });
   LIST_BUSY[k]=p;
@@ -1825,8 +1826,9 @@ function t20View(d){
   const t=T20_T, L=D[t]||[], desc=T20_L[t][1];
   const pick='<div class="mk2 t20t">'+['stable','aggressive'].map(k=>'<button type="button"'+(k===t?' class="on"':'')+' onclick="t20T(\''+k+'\')">'+T20_L[k][0]
       +' <span>'+((D[k]||[]).length)+'</span></button>').join('')+'</div>';
-  const view=((d.meta||{})['view_'+mk]||'');
-  return seg+pick+(view?'<div class="t20view">'+esc(view)+'</div>':'')+'<div class="sec"><div class="sechd" style="color:var(--dim);font-weight:400">'+desc+'</div>'
+  const view=((d.meta||{})['view_'+mk]||''), chg=((d.meta||{}).changes||[]);
+  return seg+pick+(view?'<div class="t20view">'+esc(view)+'<div class="t20at">판단 갱신 '+esc((d.meta||{}).judged_at||(d.meta||{}).judged||'')+' · 매일 07:30 Claude가 다시 판단</div></div>':'')
+    +(chg.length?'<div class="t20chg"><b>오늘 바뀐 판단</b> '+chg.map(esc).join(' · ')+'</div>':'')+'<div class="sec"><div class="sechd" style="color:var(--dim);font-weight:400">'+desc+'</div>'
     +(L.length ? '<div class="cards">'+L.map((r,i)=>t20Card(r,i+1,mk,t,i)).join('')+'</div>' : '<div class="empty" style="padding:12px 0">종목이 없습니다.</div>')+'</div>';
 }
 const t20v=v=>(v==null||v===''||Number.isNaN(v)) ? '—' : v;                 // 빠진 값은 —
@@ -2080,7 +2082,11 @@ function buildMarketPrompt(){
 function idxBlock(){
   const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';
   const grp=(title,sub,g)=>'<div class="idxg"><div class="idxgt">'+title+(sub?' <span>'+sub+'</span>':'')+'</div><div class="idxrow">'+IDX_LIST.filter(x=>x.g===g).map(x=>btn(x.k,x.name)).join('')+'</div></div>';
-  return '<div class="idxbox">'
+  const TM=((LISTS.top20||{}).meta)||{};
+  const today=(TM.view_kr||TM.view_us) ? '<div class="idxg"><div class="idxgt">오늘의 시황 판단 <span>Claude · '+esc(TM.judged_at||TM.judged||'')+' · 매일 07:30 갱신</span></div>'
+      +(TM.view_kr?'<div class="t20view"><b>국장</b> '+esc(TM.view_kr)+'</div>':'')+(TM.view_us?'<div class="t20view"><b>미장</b> '+esc(TM.view_us)+'</div>':'')
+      +((TM.changes||[]).length?'<div class="t20chg"><b>오늘 바뀐 판단</b> '+TM.changes.map(esc).join(' · ')+'</div>':'')+'</div>' : '';
+  return '<div class="idxbox">'+today
     +'<div class="idxg"><div class="idxgt">시황 종합 <span>'+(KNUM[IDX_LIST.filter(x=>x.mk!=='asset').length]||'')+' 지수와 미국 장기 국채·금·비트코인을 한 리포트로 — 종목 분석에 앞서</span></div><div class="idxrow">'+btn('MARKET','시황 종합','mkt')+'</div></div>'
     +grp('미장','', 'us')+grp('국장','', 'kr')+grp('자산','가격 위치·수급은 따르는 ETF(TLT·GLD·IBIT)로','asset')
     +'</div>';
