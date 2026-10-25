@@ -1,5 +1,5 @@
 {
- "collected_at": "2026-10-25 09:30 KST",
+ "collected_at": "2026-10-26 02:39 KST",
  "hist": {
   "ISM_MFG": {
    "2025-06": {
@@ -640,7 +640,48 @@
    }
   }
  },
- "bls": {},
+ "bls": {
+  "CPI": {
+   "per": "2026-09",
+   "rel": "2026-10-15",
+   "yoy": 3.7,
+   "yoy_prev": 3.4,
+   "mom": 0.6,
+   "mom_prev": 0.4,
+   "ann3": 4.6
+  },
+  "CORE_CPI": {
+   "per": "2026-09",
+   "rel": "2026-10-15",
+   "yoy": 2.6,
+   "yoy_prev": 2.4,
+   "mom": 0.3,
+   "mom_prev": 0.3,
+   "ann3": 3.4
+  },
+  "UNRATE": {
+   "per": "2026-09",
+   "rel": null,
+   "v": 4.2,
+   "prev": 4.1,
+   "sahm": 0.0,
+   "sahm_on": false
+  },
+  "NFP": {
+   "per": "2026-09",
+   "rel": null,
+   "v": 29,
+   "prev": 133,
+   "prelim": true,
+   "avg3": 51
+  },
+  "AHE": {
+   "per": "2026-09",
+   "rel": null,
+   "yoy": 3.0,
+   "yoy_prev": 3.1
+  }
+ },
  "seen": {
   "_init": true,
   "CPI": {
@@ -780,9 +821,9 @@
    "date": "2026-10-24"
   },
   "brent": {
-   "v": 116.72,
-   "d5": 6.2,
-   "d20": 11.9,
+   "v": 111.7,
+   "d5": 1.7,
+   "d20": 7.1,
    "date": "2026-10-24"
   }
  },
@@ -795,6 +836,10 @@
   "act": 144.3
  },
  "geo_news": [
+  {
+   "date": "10-25",
+   "title": "日 다이이치생명, 포트폴리오 1% 금에 투자 - CNews"
+  },
   {
    "date": "10-24",
    "title": "중동전쟁에 유럽시위 유탄까지…유럽 명품업계 주가 급락 - 연합뉴스"
@@ -814,10 +859,6 @@
   {
    "date": "10-24",
    "title": "선거 다급한 트럼프, 캐나다 관세 일부 철회…접전지 지원(종합) - 연합뉴스"
-  },
-  {
-   "date": "10-24",
-   "title": "중간선거 표심 급한 트럼프, 캐나다 50% 관세 '핀셋 면제' - 머니투데이 - 머니투데이"
   }
  ],
  "earnings": [
@@ -856,19 +897,7 @@
   {
    "date": "2026-11-03",
    "name": "ISM Manufacturing PMI"
-  },
-  {
-   "date": "2026-11-05",
-   "name": "ISM Non-Manufacturing PMI"
   }
  ],
- "err": [
-  "BLS CPI_SA 받지 못함",
-  "BLS CPI_NSA 받지 못함",
-  "BLS CORE_SA 받지 못함",
-  "BLS CORE_NSA 받지 못함",
-  "BLS UNRATE 받지 못함",
-  "BLS PAYEMS 받지 못함",
-  "BLS AHE 받지 못함"
- ]
+ "err": []
 }
