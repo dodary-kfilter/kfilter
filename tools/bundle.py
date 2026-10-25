@@ -1782,6 +1782,7 @@ def main(argv):
                % ('후보 개요' if overview else '총평판', NOW.strftime('%Y-%m-%d %H:%M:%S'), len(codes)),
                '#후보 개요 — 종목마다 한 줄, 코드가 원자료에서 계산했다' if overview else '#자료 카드 — 코드가 원자료에서 계산했다',
                '#시장 ' + J(mk), '#해외·환율 ' + J(gl)]
+        out[1:1] = macro_lines()                               # 거시 — 국장 총평판·후보 개요에도(2026-10-26: 이 경로엔 빠져 있었음)
         usr = wait(fus, '미국 금리·달러', None) if fus else None
         if usr and usr[0]:
             out.append('#미국 금리·달러 ' + J({k: usr[0][k] for k in ('미국10년물금리', '달러인덱스', 'VIX') if k in usr[0]}))
