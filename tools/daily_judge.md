@@ -71,3 +71,6 @@ python3 top20/tools/build.py
 - `top20/picks.json`, `top20/top20.json`, `top20/log/YYYY-MM-DD.md` 세 파일만 커밋한다. 다른 파일은 건드리지 않는다.
 - 브랜치 `claude/judge-YYYYMMDD`로 올린다. 저장소의 워크플로(`.github/workflows/judge_merge.yml`)가 이 세 파일을 main으로 옮기고 사이트에 반영한다.
 - 커밋 메시지: `TOP 20·시황 판단 YYYY-MM-DD (매일 자동)`
+
+## 8. 마치며
+- 파일에 쓰는 모든 글(시황 판단·이유·위험·기록)과 마지막 보고는 한국어로 쓴다. 보고는 바꾼 것과 그 이유만 짧게.
