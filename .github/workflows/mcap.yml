@@ -1,0 +1,39 @@
+name: 시총순 자료
+
+# 시총순 탭(lists/mcap.json) — 코스피 상위 200·코스닥 상위 150·S&P 500·나스닥 100을 시가총액 큰 순으로
+#   한국시간 07:20(미장 마감 뒤)·16:40(국장 마감 뒤, 평일)
+on:
+  schedule:
+    - cron: '20 22 * * *'
+    - cron: '40 7 * * 1-5'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['tools/mcap_fetch.py', '.github/workflows/mcap.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mcap
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 시총 순위 받기
+        run: python3 tools/mcap_fetch.py
+      - name: 바뀌었으면 올리기
+        run: |
+          git config user.name 'kfilter-bot'
+          git config user.email 'kfilter-bot@users.noreply.github.com'
+          git add lists/mcap.json
+          if git diff --cached --quiet; then echo '바뀐 것 없음'; exit 0; fi
+          git commit -q -m "시총순 자료 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done

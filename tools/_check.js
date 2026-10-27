@@ -5,7 +5,7 @@ const _D=DATA, _P=_D.portfolio, _pick=t=>_P.find(x=>x.ptype===t);
 // 리스트 탭 — 각 폴더 JSON을 실물 그대로 읽는다(사이트가 받는 것과 같은 파일)
 const _rd=p=>JSON.parse(_fs.readFileSync(_path.join(process.env.KF_ROOT,p),'utf8'));
 LISTS.top20=_rd('top20/top20.json'); LISTS.analyst=_rd('lists/analyst.json');
-LISTS.f13=_rd('lists/13f/'+_rd('lists/13f/index.json').latest+'.json');
+LISTS.f13=_rd('lists/13f/'+_rd('lists/13f/index.json').latest+'.json'); LISTS.mcap=_rd('lists/mcap.json');
 const CASES=[
  ['01_동시수급-일괄',()=>buildScreenPrompt()],
  ['02_저가매수-일괄',()=>buildValuePrompt()],
@@ -36,6 +36,8 @@ const CASES=[
  ['27_지수-러셀2000',()=>buildIndexPrompt('^RUT')],
  ['28_TOP20-국장공격',()=>listPrompt('top20','kr|aggressive',0)],
  ['29_TOP20-미장공격',()=>listPrompt('top20','us|aggressive',0)],
+ ['30_시총순-코스피',()=>listPrompt('mcap','kospi',0)],
+ ['31_시총순-S&P500',()=>listPrompt('mcap','sp500',0)],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[

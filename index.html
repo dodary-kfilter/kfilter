@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-28a (오늘의 리포트 세로 한 줄 읽기 — 분석 보고서 .rp 이름 충돌 해소, 관심종목 코스피·코스닥·S&P 500·나스닥 시총순) / 이전: 2026-10-26a -->
+<!-- build: 2026-10-28b (관심종목 탭 → 시총순 탭: 코스피 200·코스닥 150·S&P 500·나스닥 100, 시가총액 큰 순) / 이전: 2026-10-28a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -76,8 +76,8 @@
   .mk2.fl button.f span{color:var(--foreign)} .mk2.fl button.p span{color:var(--pension)} .mk2.fl button.b span{color:var(--both)}
   .idxg{margin:0 0 12px} .idxg:last-child{margin-bottom:0}
   .idxgt{font-size:12px; font-weight:700; color:var(--dim); margin:0 0 6px} .idxgt span{font-weight:400; margin-left:6px}
-  .tab[data-k="portfolio"] .c{color:var(--port)}
-  .tab.active[data-k="portfolio"]{border-color:var(--port)}
+  .tab[data-k="portfolio"] .c, .tab[data-k="mcap"] .c{color:var(--port)}
+  .tab.active[data-k="portfolio"], .tab.active[data-k="mcap"]{border-color:var(--port)}
   table{width:100%; border-collapse:collapse; font-size:14px}
   thead th{text-align:left; font-size:11.5px; font-weight:600; color:var(--dim); text-transform:uppercase;
     letter-spacing:.5px; padding:10px 12px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg)}
@@ -243,6 +243,7 @@
     border:1px solid var(--line); border-radius:9px; padding:10px; cursor:pointer}
   .mk2 button span{font-family:'Space Mono',monospace; font-size:12px; font-weight:400; margin-left:4px}
   .mk2 button.on{color:var(--txt); border-color:#a371f7}
+  .mk2.mc4{display:grid; grid-template-columns:1fr 1fr}
   .mk2 button:focus-visible{outline:2px solid var(--port); outline-offset:2px}
   .cs .lk2{color:var(--dim); font-family:'IBM Plex Sans KR',sans-serif; font-weight:400}
   .card-b > .en-sec:first-child{border-top:0}
@@ -280,7 +281,7 @@
     <div class="tab" data-k="f13" onclick="show('f13')"><div class="c" id="c-f13">—</div><div class="l">13F</div></div>
     <div class="tab" data-k="analyst" onclick="show('analyst')"><div class="c" id="c-analyst">—</div><div class="l">애널 추천</div></div>
     <div class="tab" data-k="top20" onclick="show('top20')"><div class="c" id="c-top20">—</div><div class="l">TOP 20</div></div>
-    <div class="tab" data-k="portfolio" onclick="show('portfolio')"><div class="c" id="c-portfolio">—</div><div class="l">관심종목</div></div>
+    <div class="tab" data-k="mcap" onclick="show('mcap')"><div class="c" id="c-mcap">—</div><div class="l">시총순</div></div>
     <div class="tab wide" data-k="search" onclick="show('search')"><div class="c" id="c-search">🔍</div><div class="l">종목 검색</div></div>
   </div>
   <div id="content"><div class="loading">데이터를 불러오는 중…</div></div>
@@ -1721,11 +1722,11 @@ function fmtN(v){ return v==null?'—':Number(v).toLocaleString('ko-KR'); }
 //   기존 탭과 같은 틀(판정 줄 · 시장 구간 · 카드)로 각 폴더 JSON을 보여 주기만 한다. data.json·스캔과 독립이라 자료가 깨져도 그 탭만 빈다.
 //   보유·매수 같은 행동 정보와 판단 문구는 싣지 않고 자료만 보여 준다.
 //   종목별 프롬프트는 기존 리포트 틀(reportPrompt) 그대로 — 대상 소개에는 리스트에 오른 사실만 쓰고 예측 숫자(확률·고유 기대·목표가)는 넣지 않는다.
-const LIST_TABS=['top20','analyst','f13'];
-const LIST_NAME={top20:'TOP 20', analyst:'애널 추천', f13:'13F'};
+const LIST_TABS=['top20','analyst','f13','mcap'];
+const LIST_NAME={top20:'TOP 20', analyst:'애널 추천', f13:'13F', mcap:'시총순'};
 const LIST_RAW='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/';
-const LISTS={top20:null, analyst:null, f13:null};
-const LIST_ERR={top20:'', analyst:'', f13:''};
+const LISTS={top20:null, analyst:null, f13:null, mcap:null};
+const LIST_ERR={top20:'', analyst:'', f13:'', mcap:''};
 const LIST_BUSY={};
 async function listJSON(path){
   // data.json과 같은 방식 — 원본 저장소에서 캐시 없이 받고, 안 되면 같은 사이트 경로로 받는다
@@ -1738,6 +1739,7 @@ function loadList(k){
   const p=(async()=>{
     if(k==='top20') return listJSON('top20/top20.json');
     if(k==='analyst') return listJSON('lists/analyst.json');
+    if(k==='mcap') return listJSON('lists/mcap.json');
     const ix=await listJSON('lists/13f/index.json');          // 최신 분기 파일을 가리키는 색인
     if(!ix || !ix.latest) throw new Error('lists/13f/index.json에 latest 없음');
     return listJSON('lists/13f/'+ix.latest+'.json');
@@ -1761,6 +1763,7 @@ function lCnt(k){
   if(k==='top20') return ['kr','us'].reduce((n,m)=>{ const D=d[m]||{}; return n+new Set([...(D.stable||[]),...(D.aggressive||[])].map(r=>r.code)).size; },0);
   if(k==='analyst'){ const top=((d.rules||{}).rank_top)||25, set=new Set();
     (d.analysts||[]).forEach(a=>{ if(a.rank<=top) (a.picks||[]).forEach(p=>set.add(p.ticker)); }); return set.size; }
+  if(k==='mcap') return MC_L.reduce((n,[m])=>n+((d[m]||[]).length),0);
   return F13_LISTS.reduce((a,[x])=>a+(((d.lists||{})[x])||[]).length, 0);
 }
 function listBadge(k){
@@ -1780,6 +1783,8 @@ function listRule(k){
   if(k==='analyst'){ const w=d.window||{}, R=d.rules||{};
     return '기준: TipRanks 애널리스트 순위 · 최근 <b>'+esc(w.days||28)+'일</b>('+lMd(w.from)+'~'+lMd(w.to)+') 미국 상장 종목 매수 의견 · 랭킹순 <b>상위 '+esc(R.rank_top||25)
       +'위</b> · 추천 수순 <b>상위 '+esc(R.pool||100)+'위 중 '+esc(R.min_count||2)+'명 이상</b>'+((d.failed||[]).length ? ' · 못 받은 애널리스트 '+d.failed.length+'명' : ''); }
+  if(k==='mcap'){ const M=d.meta||{};
+    return '기준: <b>'+esc(M.updated||'—')+'</b> 갱신 · 시가총액 큰 순 · 코스피 상위 <b>200</b>·코스닥 상위 <b>150</b>(보통주 — ETF·ETN·우선주·스팩·리츠 제외) · S&P 500·나스닥 100 전 종목 · 하루 두 번(07:20·16:40) 자동'; }
   const q=f13Q(d), r=d.rules||{};
   return '기준: <b>'+q.y+'년 '+q.q+'분기</b> 13F('+esc(lMd2(d.as_of))+' 보유) · 슈퍼투자자 '+esc(d.tracked)+'명 중 공시 <b>'+esc(d.filed)+'명</b> · 같은 행동 <b>'
     +esc(r.min_count||2)+'명 이상</b>'+(r.exclude?' · 제외: '+esc(r.exclude):'');
@@ -1806,7 +1811,7 @@ function renderList(k){
     return;
   }
   try{
-    content.innerHTML='<div class="lst">'+(k==='top20' ? t20View(d) : k==='analyst' ? anView(d) : f13View(d))+'</div>';
+    content.innerHTML='<div class="lst">'+(k==='top20' ? t20View(d) : k==='analyst' ? anView(d) : k==='mcap' ? mcView(d) : f13View(d))+'</div>';
   }catch(e){
     console.error('리스트 표시 실패:', e);
     content.innerHTML='<div class="empty">'+LIST_NAME[k]+' 자료를 표시하지 못했습니다.<br><span style="font-size:12px;color:var(--dim)">자료 형식이 바뀌었는지 확인해야 합니다 — '+esc((e&&e.message)||e)+'</span></div>';
@@ -1819,6 +1824,38 @@ function lSortRow(cur, opts, fn){
 }
 
 // ── TOP 20 — 국장/미장 탭, 여러 기준 정렬(상승 확률 · 기대수익 · 시총 먼저) ──
+// ── 시총순 — 코스피 200·코스닥 150·S&P 500·나스닥 100, 시가총액 큰 순(lists/mcap.json, 하루 두 번 자동) ──
+const MC_L=[['kospi','코스피'],['kosdaq','코스닥'],['sp500','S&P 500'],['ndx','나스닥 100']];
+let MC_MK='kospi';                                   // 다른 탭에 갔다 와도 유지
+function mcMk(m){ if(m===MC_MK) return; MC_MK=m; renderList('mcap'); }
+function mcCap(v, us){
+  if(v==null || isNaN(v)) return '—';
+  if(us) return v>=1e12 ? '$'+(v/1e12).toFixed(2)+'T' : v>=1e9 ? '$'+(v/1e9).toFixed(1)+'B' : '$'+Math.round(v/1e6)+'M';
+  return v>=1e12 ? (v/1e12).toLocaleString(undefined,{maximumFractionDigits:v>=1e14?0:1})+'조' : Math.round(v/1e8).toLocaleString()+'억';
+}
+function mcView(d){
+  const mk=MC_MK, L=d[mk]||[], us=(mk==='sp500'||mk==='ndx');
+  const MC_B={kospi:'코스피 200', kosdaq:'코스닥 150', sp500:'S&P 500', ndx:'나스닥 100'};      // 버튼은 이름만 — 숫자를 붙이면 'S&P 500 503'처럼 겹친다
+  const seg='<div class="mk2 mc4">'+MC_L.map(([m])=>'<button type="button"'+(m===mk?' class="on"':'')+' onclick="mcMk(\''+m+'\')">'+MC_B[m]+'</button>').join('')+'</div>';
+  if(!L.length) return seg+'<div class="empty" style="padding:20px 0">자료가 없습니다.</div>';
+  return seg+'<div class="cards">'+L.map((r,i)=>mcCard(r,mk,i,us)).join('')+'</div>';
+}
+function mcCard(r, mk, idx, us){
+  const id='mc-'+mk+'-'+r.code;
+  const name=us
+    ? '<a href="https://finance.yahoo.com/quote/'+esc(String(r.code).replace('.','-'))+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name_ko||r.name)+'</a><span class="psub">'+esc(r.code)+'</span>'
+    : '<a href="'+naverUrl(r.code)+'" target="_blank" onclick="event.stopPropagation()">'+esc(r.name)+'</a>';
+  const px=us ? lUsd(r.price,2) : (r.price!=null ? Math.round(r.price).toLocaleString()+'원' : '—');
+  const body='<div class="kv"><div><b>업종</b>: '+esc(r.sector||'—')+(us && r.industry ? ' · '+esc(r.industry) : '')+'</div>'
+    +(us ? '' : '<div><b>외국인 지분</b>: '+(r.foreign!=null ? esc(r.foreign)+'%' : '—')+'</div>')
+    +'<div><b>시가총액</b>: '+mcCap(r.mcap,us)+' · '+esc(MC_L.find(x=>x[0]===mk)[1])+' '+esc(r.rank)+'위</div></div>';
+  return '<div class="card" data-code="'+id+'"><div class="card-h" onclick="toggleCard(\''+id+'\')">'
+    +'<span class="rank">'+esc(r.rank)+'</span>'
+    +'<div class="cmid"><span class="cn">'+name+'</span>'
+    +'<span class="cs"><span><span class="lk2">시총</span> <b>'+mcCap(r.mcap,us)+'</b></span><span><span class="lk2">현재가</span> '+px+'</span><span><span class="lk2">등락</span> '+t20p(r.chg)+'</span></span></div>'
+    +'<button class="copybtn" onclick="copyList(event,\'mcap\',\''+mk+'\','+idx+')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>'
+    +'<span class="chev">⌄</span></div><div class="card-b">'+body+'</div></div>';
+}
 let T20_MK='kr';
 const T20_SORT={kr:'pup', us:'pup'};
 const T20_OPT_C=[['pup','상승 확률 높은 순'],['eup','상승 시 평균 큰 순'],['mcap','시가총액 큰 순'],['mcap_a','시가총액 작은 순'],
@@ -2000,6 +2037,16 @@ function listPrompt(kind, a, b){
     const nm=r.name_ko||r.name;
     return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.code}) — 향후 3개월 ${lab} 미장 TOP 20 종목으로 선별되었습니다.`+((r.p_up!=null&&r.target!=null&&r.stop!=null)?` 판단 당시 상승 확률 ${r.p_up}%, 목표가 $${r.target}, 손절가 $${r.stop}이며, 이 리포트는 그 판단을 다시 검증합니다.`:''),
       bg:true, cmd:cmdUS(r.code), data:DATA_US, code:r.code, name:nm});
+  }
+  if(kind==='mcap'){
+    const r=((LISTS.mcap||{})[a]||[])[b];
+    if(!r) return null;
+    const lab=(MC_L.find(x=>x[0]===a)||[0,''])[1];
+    if(a==='kospi' || a==='kosdaq') return reportPrompt({kind:'one', subj:'이 종목', title:`${r.name}(${r.code}) — ${lab} 시가총액 ${r.rank}위 종목입니다.`,
+      bg:false, cmd:cmdKR(r.code,'--brief'), data:DATA_KR, code:r.code, name:r.name});
+    const nm=r.name_ko||r.name;
+    return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${r.code}) — ${lab} 시가총액 ${r.rank}위 종목입니다.`,
+      bg:false, cmd:cmdUS(r.code), data:DATA_US, code:r.code, name:nm});
   }
   if(kind==='analyst'){
     const d=LISTS.analyst;
@@ -2230,7 +2277,7 @@ async function load(){
     document.getElementById('c-flow').textContent=DATA.both.length;     // 수급 탭 숫자 = 동시 수급(0순위)
     document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
     document.getElementById('c-momentum').textContent=(DATA.momentum||[]).length;
-    document.getElementById('c-portfolio').textContent=(DATA.portfolio||[]).length;
+    { const cp=document.getElementById('c-portfolio'); if(cp) cp.textContent=(DATA.portfolio||[]).length; }   // 관심종목 탭은 시총순으로 바뀜(자료는 data.json에 그대로)
     document.getElementById('rule').innerHTML='판정: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수 <b>&gt; 0</b> 그리고 순매수일 <b>'+DATA.buy_ratio+'% 이상</b> · 스캔 <b>'+DATA.scanned+'종목</b>';
     RULE_LIST_LAST=null; ruleFor(CUR);   // 스캔 판정 문구를 기억해 두고, 지금 탭이 지수·리스트면 그 탭의 문구로
     render();
