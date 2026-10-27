@@ -18,4 +18,4 @@
 - 절차서: `tools/daily_judge.md` — 매일 07:30(한국시간) 예약 작업이 따른다. 시황 판단(국장·미장)과 TOP 20 80종목(안정형·적극형)을 다시 판단해 `top20/picks.json`을 고치고 `top20/log/날짜.md`에 기록
 - 자료: `python3 tools/daily_collect.py` — 번들 머리 줄(거시·시장·심리·신용·뉴스), 지정학·정책 뉴스 제목, TOP 20 종목 상태를 한 번에(10초 안팎)
 - 반영: 예약 작업은 `claude/judge-YYYYMMDD` 브랜치로 올리고, `.github/workflows/judge_merge.yml`이 세 파일(picks.json·top20.json·log)만 점검해 main으로 옮긴다
-- 사이트: 지수 탭 '오늘의 시황 판단', TOP 20 '판단 갱신 시각·오늘 바뀐 판단'
+- 사이트: 지수 탭 버튼 아래 '오늘의 시황 리포트'(meta.report — 타이틀·국면 판정·국장·미장·오늘 판단·TOP 20 바뀐 것), TOP 20 목록 아래 판단 요지·오늘 바뀐 판단(리포트 모양)
