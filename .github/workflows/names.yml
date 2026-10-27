@@ -1,0 +1,35 @@
+name: 미장 한글 이름
+
+# lists/names_ko.json을 토스 표기로 다시 받고, 시총순·TOP 20·애널 추천·13F 자료의 name_ko에 바로 반영
+#   매주 일요일 05:00(한국시간) — 새로 들어온 종목과 바뀐 표기를 채운다
+on:
+  schedule:
+    - cron: '0 20 * * 6'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: names
+  cancel-in-progress: false
+
+jobs:
+  names:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 토스 표기로 받기·반영
+        run: python3 tools/names_fetch.py --all --apply
+      - name: 바뀌었으면 올리기
+        run: |
+          git config user.name 'kfilter-bot'
+          git config user.email 'kfilter-bot@users.noreply.github.com'
+          git add lists/names_ko.json lists/mcap.json top20/top20.json lists/analyst.json lists/13f/*.json
+          if git diff --cached --quiet; then echo '바뀐 것 없음'; exit 0; fi
+          git commit -q -m "미장 한글 이름(토스 표기) $(TZ=Asia/Seoul date '+%Y-%m-%d')"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
