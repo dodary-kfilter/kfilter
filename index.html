@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-26a (지수 탭·TOP 20 — 버튼·목록을 위로, 오늘의 시황 리포트를 리포트 모양으로 아래에) / 이전: 2026-10-24b -->
+<!-- build: 2026-10-28a (오늘의 리포트 세로 한 줄 읽기 — 분석 보고서 .rp 이름 충돌 해소, 관심종목 코스피·코스닥·S&P 500·나스닥 시총순) / 이전: 2026-10-26a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -59,13 +59,13 @@
   .mk2.f13t{display:grid; grid-template-columns:repeat(5,1fr)} .mk2.f13t button.on{border-color:#ff7b72}
   @media (max-width:640px){ .mk2.f13t{grid-template-columns:repeat(3,1fr)} }
   .t20at{font-size:11.5px; margin-top:4px; opacity:.8} .t20chg{font-size:12.5px; color:var(--dim); margin:-4px 0 10px; padding:0 10px}
-  .rp{margin:18px 0 6px; padding:16px 16px 10px; border:1px solid var(--line); border-radius:12px; background:var(--panel)}
-  .rp-at{font-size:12px; color:var(--dim); margin:0 0 10px}
-  .rp-title{font-size:20px; font-weight:800; line-height:1.4; margin:0 0 12px}
-  .rp-h2{font-size:16.5px; font-weight:700; margin:16px 0 6px; padding-top:10px; border-top:1px solid var(--line)}
-  .rp-h3{font-size:17.5px; font-weight:800; line-height:1.45; margin:12px 0 6px; color:#d2a8ff}
-  .rp-p{font-size:15px; line-height:1.75; margin:0 0 8px}
-  .rp-ul{margin:0 0 8px; padding-left:18px; font-size:14.5px; line-height:1.7} .rp-ul li{margin:2px 0}
+  .drp{display:block; margin:18px 0 6px; padding:16px 16px 10px; border:1px solid var(--line); border-radius:12px; background:var(--panel)}
+  .drp-at{font-size:12px; color:var(--dim); margin:0 0 10px}
+  .drp-title{font-size:20px; font-weight:800; line-height:1.4; margin:0 0 12px}
+  .drp-h2{font-size:16.5px; font-weight:700; margin:16px 0 6px; padding-top:10px; border-top:1px solid var(--line)}
+  .drp-h3{font-size:17.5px; font-weight:800; line-height:1.45; margin:12px 0 6px; color:#d2a8ff}
+  .drp-p{font-size:15px; line-height:1.75; margin:0 0 8px}
+  .drp-ul{margin:0 0 8px; padding-left:18px; font-size:14.5px; line-height:1.7} .drp-ul li{margin:2px 0}
   .t20view{font-size:13px; line-height:1.55; color:var(--dim); border-left:2px solid #a371f7; padding:6px 10px; margin:4px 0 10px}
   .tag.hit{background:rgba(63,185,80,.15); color:#3fb950; white-space:nowrap} .tag.stop{background:rgba(248,81,73,.15); color:#f85149; white-space:nowrap}
   .tag.both{background:rgba(163,113,247,.16); color:#a371f7; white-space:nowrap}
@@ -473,9 +473,23 @@ function cardPort(it,i){
     <div class="card-b">${body}</div>
   </div>`;
 }
+function portGroup(it){
+  if(it.ptype==='us'){ const s=[it.name,it.us_target,it.us_ticker,it.code].join(' '); return /500|S&P|SPX|SPY/i.test(s) ? 'S&P 500' : '나스닥'; }
+  return it.market==='KOSDAQ' ? '코스닥' : '코스피';
+}
 function sectionPort(list){
-  const cards=list.map((it,idx)=>cardPort(it,idx+1)).join('');
-  return `<div class="cards">${cards}</div>`;
+  const cap=it=>((it.enrich||{}).valuation||{}).marketCap;
+  const cls={'코스피':'kospi','코스닥':'kosdaq','S&P 500':'kospi','나스닥':'kosdaq'};
+  return ['코스피','코스닥','S&P 500','나스닥'].map(g=>{
+    const L=list.map((it,i)=>[it,i]).filter(([it])=>portGroup(it)===g).sort((a,b)=>{
+      const ca=cap(a[0]), cb=cap(b[0]);
+      if(ca!=null && cb!=null) return cb-ca;
+      if(ca!=null) return -1; if(cb!=null) return 1;
+      return a[1]-b[1];
+    }).map(x=>x[0]);
+    if(!L.length) return '';
+    return `<div class="mkt-head ${cls[g]}">${g} <span>${L.length}</span></div><div class="cards">${L.map((it,i)=>cardPort(it,i+1)).join('')}</div>`;
+  }).join('');
 }
 
 // ── 리포트 프롬프트 조립 (긁어온 데이터 전부 + 작성 지시문) ──
@@ -1835,7 +1849,7 @@ function t20View(d){
       +' <span>'+((D[k]||[]).length)+'</span></button>').join('')+'</div>';
   const M=d.meta||{}, view=(M['view_'+mk]||''), chg=(M.changes||[]);
   const md=[view?'## '+(mk==='kr'?'국장':'미장')+' 판단 요지\n'+view:'', chg.length?'## 오늘 바뀐 판단\n'+chg.map(c=>'- '+c).join('\n'):''].filter(Boolean).join('\n');
-  const rp=md ? '<div class="rp"><div class="rp-at">판단 갱신 '+esc(M.judged_at||M.judged||'')+' · 매일 07:30 Claude가 다시 판단</div>'+rpRender(md)+'</div>' : '';
+  const rp=md ? '<div class="drp"><div class="drp-at">판단 갱신 '+esc(M.judged_at||M.judged||'')+' · 매일 07:30 Claude가 다시 판단</div>'+rpRender(md)+'</div>' : '';
   return seg+pick+'<div class="sec"><div class="sechd" style="color:var(--dim);font-weight:400">'+desc+'</div>'
     +(L.length ? '<div class="cards">'+L.map((r,i)=>t20Card(r,i+1,mk,t,i)).join('')+'</div>' : '<div class="empty" style="padding:12px 0">종목이 없습니다.</div>')+'</div>'+rp;
 }
@@ -2090,16 +2104,16 @@ function buildMarketPrompt(){
 function rpInline(t){ return esc(t).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); }
 function rpRender(md){
   const out=[]; let ul=null;
-  const flush=()=>{ if(ul){ out.push('<ul class="rp-ul">'+ul.join('')+'</ul>'); ul=null; } };
+  const flush=()=>{ if(ul){ out.push('<ul class="drp-ul">'+ul.join('')+'</ul>'); ul=null; } };
   for(const raw of String(md||'').split('\n')){
     const l=raw.trim();
     if(!l){ flush(); continue; }
     let m;
-    if((m=l.match(/^#\s+(.*)$/))){ flush(); out.push('<div class="rp-title">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
-    else if((m=l.match(/^##\s+(.*)$/))){ flush(); out.push('<div class="rp-h2">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
-    else if((m=l.match(/^###+\s+(.*)$/))){ flush(); out.push('<div class="rp-h3">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
+    if((m=l.match(/^#\s+(.*)$/))){ flush(); out.push('<div class="drp-title">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
+    else if((m=l.match(/^##\s+(.*)$/))){ flush(); out.push('<div class="drp-h2">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
+    else if((m=l.match(/^###+\s+(.*)$/))){ flush(); out.push('<div class="drp-h3">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^[-*]\s+(.*)$/))){ (ul=ul||[]).push('<li>'+rpInline(m[1])+'</li>'); }
-    else { flush(); out.push('<p class="rp-p">'+rpInline(l)+'</p>'); }
+    else { flush(); out.push('<p class="drp-p">'+rpInline(l)+'</p>'); }
   }
   flush(); return out.join('');
 }
@@ -2114,7 +2128,7 @@ function dailyReportMd(TM){
 }
 function dailyReport(TM){
   if(!(TM.report||TM.view_kr||TM.view_us)) return '';
-  return '<div class="rp"><div class="rp-at">오늘의 시황 리포트 · Claude · '+esc(TM.judged_at||TM.judged||'')+' · 매일 07:30 갱신</div>'+rpRender(dailyReportMd(TM))+'</div>';
+  return '<div class="drp"><div class="drp-at">오늘의 시황 리포트 · Claude · '+esc(TM.judged_at||TM.judged||'')+' · 매일 07:30 갱신</div>'+rpRender(dailyReportMd(TM))+'</div>';
 }
 function idxBlock(){
   const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';
