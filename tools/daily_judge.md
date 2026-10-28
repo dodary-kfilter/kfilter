@@ -44,7 +44,16 @@ python3 tools/daily_collect.py > /tmp/today.txt
 - 숫자는 뜻과 함께, 자료가 보여 주는 만큼만 쓴다. 용어는 국내 증권 기사에서 쓰는 이름으로 쓰고 처음 나올 때 짧게 풀이한다.
 - `{{추천 종목}}` 줄은 그대로 둔다 — 사이트가 그 자리에 meta.recos를 카드로 그린다.
 
-### 2-2. 오늘의 추천 종목 (meta.recos — 지수 탭 리포트의 '오늘 판단' 아래, TOP 20 목록에 '오늘 추천' 표시)
+### 2-2. 전체 비중 (meta.alloc — 리포트 '오늘 판단' 아래 막대로 나온다)
+- 모든 돈을 100으로 놓고 어디에 얼마나 둘지: 국장 주식(kr)·미장 주식(us)·채권(bond)·금(gold)·비트코인(btc)·현금(cash). 합계 100.
+- 오늘 판단과 맞물린다: 주식(kr+us)은 위험을 늘릴 때 70~80%, 유지할 때 55~65%, 줄일 때 35~45%를 기준으로 판단해서 정한다.
+- prev에는 어제 meta.alloc의 숫자(prev 빼고)를 그대로 옮겨 적는다 — 사이트가 어제 대비를 보여 준다. note는 한 줄: 왜 이렇게 나눴는지, 바꿨다면 무엇 때문인지.
+```
+alloc: {kr, us, bond, gold, btc, cash, prev: {kr, us, bond, gold, btc, cash} 또는 null, note}
+```
+- 오늘의 추천 종목 비중은 이 안에 들어간다: 국장 추천 합계 ≤ kr, 미장 추천 합계 ≤ us.
+
+### 2-3. 오늘의 추천 종목 (meta.recos — 지수 탭 리포트의 '오늘 판단' 아래, TOP 20 목록에 '오늘 추천' 표시)
 - TOP 20 80종목 안에서 국장·미장 각 최대 3개. '오늘 움직일 이유'가 있는 종목만: 새 근거(실적·사건)가 생겼거나, 가격이 진입하기 좋은 자리에 왔거나, 손절까지 거리가 짧아 위험 대비 이익이 좋은 종목.
 - 오늘 판단과 맞물린다: 위험을 늘릴 때는 적극형 위주, 유지할 때는 섞어서, 줄일 때는 안정형만 또는 비운다. 추천할 종목이 없으면 `recos: []`로 두고 리포트에 그 이유를 쓴다.
 - 액션은 셋 중 하나: '지금 매수'(진입 가격대 안에 있음) / '분할 매수 시작'(셋으로 나눠 첫 번째만) / '기다림'(확인할 사건이나 가격을 이유에 쓴다).
@@ -71,7 +80,7 @@ recos: [{mk: 'kr'|'us', list: 'stable'|'aggressive', code, name, action, entry: 
 ## 4. 파일 쓰기
 `top20/picks.json`을 고친다. 형식은 그대로 둔다.
 ```
-meta: judged(YYYY-MM-DD), judged_at(YYYY-MM-DD HH:MM, 한국시간), by, horizon, note, view_kr, view_us, changes(오늘 바뀐 것을 짧은 문장 목록으로, 없으면 []), report(2-1의 리포트 마크다운, 줄바꿈은 \n), recos(2-2의 오늘의 추천 종목)
+meta: judged(YYYY-MM-DD), judged_at(YYYY-MM-DD HH:MM, 한국시간), by, horizon, note, view_kr, view_us, changes(오늘 바뀐 것을 짧은 문장 목록으로, 없으면 []), report(2-1의 리포트 마크다운, 줄바꿈은 \n), alloc(2-2의 전체 비중), recos(2-3의 오늘의 추천 종목)
 kr·us → stable·aggressive → 각 20개: code, p(상승 확률 %), target(목표가), stop(손절가), ref(판단을 바꾼 날의 가격 — 바꾸지 않은 종목은 그대로), why(세 줄), risk(한 줄)
 ```
 - 국장 코드는 6자리, 미장은 티커(BRK.B처럼 점 포함 가능). 가격은 국장 원 단위 정수, 미장 달러 소수 둘째 자리.

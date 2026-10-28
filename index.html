@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-28c (오늘의 추천 종목 + 화면 문구 다듬기: 탭별 기준 줄·줄임말 풀기·한글 시장 표시·순현금 표시) / 이전: 2026-10-28b -->
+<!-- build: 2026-10-28d (오늘 판단 아래 전체 비중 — 국장·미장 주식·채권·금·비트코인·현금 막대와 어제 대비) / 이전: 2026-10-28c -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -69,6 +69,10 @@
   .tag.reco{background:rgba(210,168,255,.18); color:#d2a8ff; white-space:nowrap}
   .rcact{display:inline-block; font-size:12px; font-weight:800; padding:1px 7px; border-radius:6px; margin-left:6px; white-space:nowrap}
   .rcact.buy{background:rgba(248,81,73,.16); color:#ff7b72} .rcact.split{background:rgba(219,171,9,.16); color:#e3b341} .rcact.wait{background:rgba(139,152,169,.18); color:var(--dim)}
+  .alc{margin:6px 0 12px} .alc-row{display:flex; align-items:center; gap:8px; margin:5px 0; font-size:13.5px}
+  .alc-n{width:74px; flex:none} .alc-bar{flex:1; height:10px; border-radius:5px; background:var(--line); overflow:hidden}
+  .alc-bar i{display:block; height:100%; border-radius:5px} .alc-v{width:92px; flex:none; text-align:right; font-family:'Space Mono',monospace; font-size:12.5px}
+  .alc-note{font-size:13px; color:var(--dim); line-height:1.6; margin-top:6px}
   .rcl{display:block; font-size:13px; line-height:1.6; margin-top:2px} .rcl .lk2{margin-right:3px}
   .t20view{font-size:13px; line-height:1.55; color:var(--dim); border-left:2px solid #a371f7; padding:6px 10px; margin:4px 0 10px}
   .tag.hit{background:rgba(63,185,80,.15); color:#3fb950; white-space:nowrap} .tag.stop{background:rgba(248,81,73,.15); color:#f85149; white-space:nowrap}
@@ -2213,9 +2217,23 @@ function recoCards(recos){
       +'</div></div>';
   }).join('')+'</div>';
 }
+// 전체 비중(meta.alloc) — 모든 돈을 100으로 놓고 어디에 얼마. prev가 있으면 어제 대비
+const ALC=[['kr','국장 주식','#58a6ff'],['us','미장 주식','#a371f7'],['bond','채권','#3fb950'],['gold','금','#e3b341'],['btc','비트코인','#f0883e'],['cash','현금','#8b98a9']];
+function allocBlock(TM){
+  const A=TM.alloc; if(!A) return '';
+  const P=A.prev||null;
+  const rows=ALC.filter(([k])=>A[k]!=null && (A[k]>0 || (P&&P[k]>0))).map(([k,n,c])=>{
+    const v=Number(A[k])||0, d=(P&&P[k]!=null) ? v-Number(P[k]) : null;
+    const dd=(d==null||d===0) ? '' : ' <span style="color:'+(d>0?'#ff7b72':'#4493f8')+'">'+(d>0?'+':'')+d+'%p</span>';
+    return '<div class="alc-row"><span class="alc-n">'+n+'</span><span class="alc-bar"><i style="width:'+Math.max(0,Math.min(100,v))+'%;background:'+c+'"></i></span><span class="alc-v"><b>'+v+'%</b>'+dd+'</span></div>';
+  }).join('');
+  const eq=(Number(A.kr)||0)+(Number(A.us)||0), rc=(TM.recos||[]).reduce((n,x)=>n+(Number(x.weight)||0),0);
+  return '<div class="drp-h2">전체 비중</div><div class="alc">'+rows
+    +'<div class="alc-note">전체 자금을 100으로 놓은 배분 · 주식 '+eq+'%'+(rc?'(그중 오늘의 추천 종목 '+rc+'%)':'')+(P?' · 숫자 옆은 어제 대비':'')+(A.note?' · '+esc(A.note):'')+'</div></div>';
+}
 function dailyReport(TM){
   if(!(TM.report||TM.view_kr||TM.view_us)) return '';
-  const md=dailyReportMd(TM), rc=recoCards(TM.recos);
+  const md=dailyReportMd(TM), rc=allocBlock(TM)+recoCards(TM.recos);
   let html;
   if(!rc) html=rpRender(md);
   else if(md.includes('{{추천 종목}}')){ const [a,b]=md.split('{{추천 종목}}'); html=rpRender(a)+rc+rpRender(b); }

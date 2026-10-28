@@ -46,7 +46,14 @@ jobs:
           assert isinstance(R, list) and len(R) <= 6, '추천 종목은 최대 6개'
           for x in R:
               assert x['mk'] in ('kr', 'us') and x['action'] in ('지금 매수', '분할 매수 시작', '기다림') and 0 < float(x['weight']) <= 10 and x['target'] > 0 and x['stop'] > 0, x
-          print('판단 파일 정상 · 추천 %d개' % len(R))
+          A = d['meta'].get('alloc')
+          if A:
+              keys = ('kr', 'us', 'bond', 'gold', 'btc', 'cash')
+              tot = sum(float(A.get(k) or 0) for k in keys)
+              assert all(0 <= float(A.get(k) or 0) <= 100 for k in keys) and abs(tot - 100) <= 1, ('전체 비중 합계', tot)
+              assert sum(float(x['weight']) for x in R if x['mk'] == 'kr') <= float(A.get('kr') or 0) + 0.01, '국장 추천 합계가 국장 주식 비중보다 큼'
+              assert sum(float(x['weight']) for x in R if x['mk'] == 'us') <= float(A.get('us') or 0) + 0.01, '미장 추천 합계가 미장 주식 비중보다 큼'
+          print('판단 파일 정상 · 추천 %d개 · 전체 비중 %s' % (len(R), '있음' if A else '없음'))
           PY
       - name: main으로 옮기기
         run: |
