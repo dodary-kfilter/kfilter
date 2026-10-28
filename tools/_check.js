@@ -38,6 +38,8 @@ const CASES=[
  ['29_TOP20-미장공격',()=>listPrompt('top20','us|aggressive',0)],
  ['30_시총순-코스피',()=>listPrompt('mcap','kospi',0)],
  ['31_시총순-S&P500',()=>listPrompt('mcap','sp500',0)],
+ ['32_오늘추천-국장',()=>listPrompt('reco','0',0)],
+ ['33_오늘추천-미장',()=>listPrompt('reco','3',0)],
 ];
 // 규칙 — 여기 추가하면 앞으로 전 경로에 걸린다 (v31 통일 틀 기준)
 const RULES=[

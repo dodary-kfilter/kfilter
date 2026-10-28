@@ -42,7 +42,11 @@ jobs:
                   for x in L:
                       assert x['code'] and 0 < x['p'] < 100 and x['target'] > 0 and x['stop'] > 0 and len(x['why']) == 3 and x['risk'], x
           assert d['meta'].get('judged')
-          print('판단 파일 정상')
+          R = d['meta'].get('recos') or []
+          assert isinstance(R, list) and len(R) <= 6, '추천 종목은 최대 6개'
+          for x in R:
+              assert x['mk'] in ('kr', 'us') and x['action'] in ('지금 매수', '분할 매수 시작', '기다림') and 0 < float(x['weight']) <= 10 and x['target'] > 0 and x['stop'] > 0, x
+          print('판단 파일 정상 · 추천 %d개' % len(R))
           PY
       - name: main으로 옮기기
         run: |
