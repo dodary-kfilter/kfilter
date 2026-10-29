@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-29a (자료 갱신 버튼 — GitHub 워크플로 실행·진행 표시, 판단 요지·리포트 긴 문단을 문장 목록으로) / 이전: 2026-10-28d -->
+<!-- build: 2026-10-29b (자료 갱신 토큰을 한 번 누르는 링크로 저장 — #gh=토큰, 주소에서 바로 지움) / 이전: 2026-10-29a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1398,6 +1398,10 @@ async function ghRun(){
   };
   setTimeout(tick, 20*1000);
 }
+// 한 번 누르는 설정 링크(…/kfilter/#gh=토큰) — 토큰을 이 기기에 저장하고 주소·방문 기록에서 바로 지운다(#뒤는 서버로 가지 않음)
+(function(){ try{ const m=(location.hash||'').match(/^#gh=([A-Za-z0-9_]{20,})$/);
+  if(m){ localStorage.setItem(GH_KEY, m[1]); history.replaceState(null,'',location.pathname+location.search);
+    setTimeout(()=>ghMsg('자료 갱신 토큰을 이 기기에 저장했어요. 이제 ⚙ 자료 갱신만 누르면 돼요.'), 400); } }catch(e){} })();
 function hardReload(){
   // 캐시 무시 재접속: 주소에 현재 시각을 붙여 브라우저가 index.html을 새로 받게 한다
   const u = location.origin + location.pathname + '?t=' + Date.now();
