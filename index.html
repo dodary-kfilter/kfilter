@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-29b (자료 갱신 토큰을 한 번 누르는 링크로 저장 — #gh=토큰, 주소에서 바로 지움) / 이전: 2026-10-29a -->
+<!-- build: 2026-10-29c (자료 갱신 — 토큰 지우기 없앰, 실패해도 토큰을 지우지 않음) / 이전: 2026-10-29b -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1358,7 +1358,6 @@ function fallbackCopy(text, done){
 const GH_REPO='dodary-kfilter/kfilter', GH_KEY='kf_gh_token';
 const GH_FLOWS=[['update.yml','수급'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시']];
 function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h; }
-function ghForget(){ try{ localStorage.removeItem(GH_KEY); }catch(e){} ghMsg('저장된 토큰을 지웠어요. 다음에 누르면 다시 묻습니다.'); return false; }
 async function ghRun(){
   const btn=document.getElementById('ghbtn'); if(!btn || btn.disabled) return;
   let tok=null; try{ tok=localStorage.getItem(GH_KEY); }catch(e){}
@@ -1375,13 +1374,13 @@ async function ghRun(){
   const ok=st.filter(x=>x===204).length;
   if(!ok){
     btn.disabled=false; btn.textContent='⚙ 자료 갱신';
-    if(st.some(x=>x===401||x===403||x===404)){ ghForget(); ghMsg('토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요). 다시 누르면 새 토큰을 묻습니다.'); }
+    if(st.some(x=>x===401||x===403||x===404)) ghMsg('토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요). 설정 링크를 다시 열면 새 토큰으로 바뀝니다.');   // 토큰은 지우지 않는다
     else ghMsg('GitHub에 닿지 못했어요. 잠시 뒤 다시 눌러 주세요.');
     return;
   }
   const names=GH_FLOWS.filter((x,i)=>st[i]===204).map(x=>x[1]).join('·');
   btn.textContent='갱신 중 0/'+ok;
-  ghMsg(names+' 수집을 시작했어요. 보통 3~5분 걸려요 · <a href="#" onclick="return ghForget()">토큰 지우기</a>');
+  ghMsg(names+' 수집을 시작했어요. 보통 3~5분 걸려요');
   const until=Date.now()+15*60*1000;
   const tick=async()=>{
     let runs=[];
