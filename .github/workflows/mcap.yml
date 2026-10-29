@@ -4,8 +4,10 @@ name: 시총순 자료
 #   한국시간 07:20(미장 마감 뒤)·16:40(국장 마감 뒤, 평일)
 on:
   schedule:
-    - cron: '20 22 * * *'
-    - cron: '40 7 * * 1-5'
+    - cron: '19 22 * * *'
+    - cron: '49 23 * * *'
+    - cron: '41 7 * * 1-5'
+    - cron: '11 12 * * 1-5'
   workflow_dispatch:
   push:
     branches: [main]

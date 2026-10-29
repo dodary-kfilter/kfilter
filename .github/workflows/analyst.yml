@@ -4,7 +4,9 @@ on:
   schedule:
     # 매일 07:00 한국시간(= 전날 22:00 UTC) — 미국 장 마감 뒤, 수급 스캔(09:30~)보다 앞
     #   ※ GitHub 예약은 부하 시 지연될 수 있음
-    - cron: '0 22 * * *'
+    # 정각은 예약이 몰려 밀린다 — 엇갈린 분에, 빠질 때를 대비해 한 번 더(10:13)
+    - cron: '13 22 * * *'
+    - cron: '13 1 * * *'
   push:
     # 이 파일을 올리거나 고칠 때 한 번 돌아 접속을 시험한다 (실패 시 로그에 HTTP 상태가 남는다)
     branches: [main]
@@ -18,6 +20,10 @@ on:
 
 permissions:
   contents: write
+
+concurrency:
+  group: analyst
+  cancel-in-progress: false
 
 jobs:
   fetch:
