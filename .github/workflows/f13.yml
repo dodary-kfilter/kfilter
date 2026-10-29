@@ -44,5 +44,5 @@ jobs:
           git add lists/13f/
           if git diff --cached --quiet; then echo "변경 없음"; exit 0; fi
           git commit -m "13F 자동 수집 $(TZ=Asia/Seoul date +%Y-%m-%d)"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
+          exit 1

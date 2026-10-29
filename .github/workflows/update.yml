@@ -47,5 +47,7 @@ jobs:
           rm -rf __pycache__
           git rm -r --cached __pycache__ --ignore-unmatch -q || true
           git add -A
-          git commit -m "데이터 갱신 $(date -u +%Y-%m-%d)" || echo "변경 없음"
-          git push
+          git commit -m "데이터 갱신 $(date -u +%Y-%m-%d)" || { echo "변경 없음"; exit 0; }
+          # 스캔(3~5분) 사이에 다른 수집이 main에 먼저 올리면 그냥 push는 거절된다(10/29 자료 갱신 버튼 시험에서 실패) — 받아 합치고 다시
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
+          exit 1

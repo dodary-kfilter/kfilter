@@ -33,5 +33,5 @@ jobs:
           git add top20/top20.json
           if git diff --cached --quiet; then echo "변경 없음"; exit 0; fi
           git commit -m "TOP 20 숫자 자동 갱신 $(TZ=Asia/Seoul date +%Y-%m-%d)"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
+          exit 1
