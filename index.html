@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-28d (오늘 판단 아래 전체 비중 — 국장·미장 주식·채권·금·비트코인·현금 막대와 어제 대비) / 이전: 2026-10-28c -->
+<!-- build: 2026-10-29a (자료 갱신 버튼 — GitHub 워크플로 실행·진행 표시, 판단 요지·리포트 긴 문단을 문장 목록으로) / 이전: 2026-10-28d -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -66,6 +66,7 @@
   .drp-h3{font-size:17.5px; font-weight:800; line-height:1.45; margin:12px 0 6px; color:#d2a8ff}
   .drp-p{font-size:15px; line-height:1.75; margin:0 0 8px}
   .drp-ul{margin:0 0 8px; padding-left:18px; font-size:14.5px; line-height:1.7} .drp-ul li{margin:2px 0}
+  .drp-sents{font-size:15px; line-height:1.7} .drp-sents li{margin:0 0 9px; padding-left:2px}
   .tag.reco{background:rgba(210,168,255,.18); color:#d2a8ff; white-space:nowrap}
   .rcact{display:inline-block; font-size:12px; font-weight:800; padding:1px 7px; border-radius:6px; margin-left:6px; white-space:nowrap}
   .rcact.buy{background:rgba(248,81,73,.16); color:#ff7b72} .rcact.split{background:rgba(219,171,9,.16); color:#e3b341} .rcact.wait{background:rgba(139,152,169,.18); color:var(--dim)}
@@ -212,6 +213,10 @@
   .hdbtn:active{transform:translateY(1px)}
   /* 새로고침 — 파랑 */
   .hdbtn.reload{color:#58a6ff; border-color:#58a6ff; background:rgba(88,166,255,.10)}
+  .hdbtns{display:flex; gap:8px; width:100%} .hdbtns .hdbtn{flex:1}
+  .hdbtn.ghrun{color:#3fb950; border-color:#3fb950; background:rgba(63,185,80,.10)} .hdbtn.ghrun:disabled{opacity:.7}
+  .ghmsg{font-size:12px; color:var(--dim); text-align:center; min-height:0} .ghmsg:empty{display:none}
+  .ghmsg a{color:var(--dim)}
   .hdbtn.reload:hover{color:#fff; background:#1f6feb; border-color:#1f6feb;
     box-shadow:0 2px 10px rgba(88,166,255,.35)}
   /* 모바일 — 헤더 세로 정렬, 버튼 나란히 폭 채움 */
@@ -276,7 +281,9 @@
   <header>
     <h1>수급 필터</h1>
     <div class="hd-r">
-      <button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
+      <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
+      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="GitHub에서 수급·시총순·애널·거시 수집을 지금 돌립니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
+      <div class="ghmsg" id="ghmsg"></div>
       <div class="meta">최종 갱신 <b id="updated">—</b> · 프롬프트 <b id="pver">—</b></div>
     </div>
   </header>
@@ -1345,6 +1352,52 @@ function fallbackCopy(text, done){
   try{ document.execCommand('copy'); }catch(e){}
   document.body.removeChild(ta); done();
 }
+// ── 자료 갱신 — GitHub 워크플로(수급 스캔·시총순·애널 추천·거시)를 지금 돌리고 끝나면 다시 불러온다 ──
+//   토큰은 사이트 코드에 넣지 않는다(공개 저장소라 누구나 본다). 처음 누를 때 붙여 넣은 토큰을 이 기기의 브라우저에만 저장
+//   토큰 권한: kfilter 저장소의 Actions 읽기·쓰기만 — 실행 단추를 누르는 권한일 뿐 코드·자료는 못 바꾼다
+const GH_REPO='dodary-kfilter/kfilter', GH_KEY='kf_gh_token';
+const GH_FLOWS=[['update.yml','수급'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시']];
+function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h; }
+function ghForget(){ try{ localStorage.removeItem(GH_KEY); }catch(e){} ghMsg('저장된 토큰을 지웠어요. 다음에 누르면 다시 묻습니다.'); return false; }
+async function ghRun(){
+  const btn=document.getElementById('ghbtn'); if(!btn || btn.disabled) return;
+  let tok=null; try{ tok=localStorage.getItem(GH_KEY); }catch(e){}
+  if(!tok){
+    tok=(prompt('GitHub 토큰을 붙여 넣어 주세요.\n이 기기의 브라우저에만 저장되고 사이트 코드에는 들어가지 않아요.\n(권한: kfilter 저장소 Actions 읽기·쓰기)')||'').trim();
+    if(!tok) return;
+    try{ localStorage.setItem(GH_KEY, tok); }catch(e){}
+  }
+  const H={'Authorization':'Bearer '+tok, 'Accept':'application/vnd.github+json'};
+  btn.disabled=true; btn.textContent='요청 중…'; ghMsg('');
+  const since=new Date(Date.now()-90*1000).toISOString();
+  const st=await Promise.all(GH_FLOWS.map(([f])=>fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/'+f+'/dispatches',
+      {method:'POST', headers:H, body:JSON.stringify({ref:'main'})}).then(r=>r.status).catch(()=>0)));
+  const ok=st.filter(x=>x===204).length;
+  if(!ok){
+    btn.disabled=false; btn.textContent='⚙ 자료 갱신';
+    if(st.some(x=>x===401||x===403||x===404)){ ghForget(); ghMsg('토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요). 다시 누르면 새 토큰을 묻습니다.'); }
+    else ghMsg('GitHub에 닿지 못했어요. 잠시 뒤 다시 눌러 주세요.');
+    return;
+  }
+  const names=GH_FLOWS.filter((x,i)=>st[i]===204).map(x=>x[1]).join('·');
+  btn.textContent='갱신 중 0/'+ok;
+  ghMsg(names+' 수집을 시작했어요. 보통 3~5분 걸려요 · <a href="#" onclick="return ghForget()">토큰 지우기</a>');
+  const until=Date.now()+15*60*1000;
+  const tick=async()=>{
+    let runs=[];
+    try{ const j=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/runs?event=workflow_dispatch&per_page=20&created=%3E'+encodeURIComponent(since),{headers:H}).then(r=>r.json()); runs=(j&&j.workflow_runs)||[]; }catch(e){}
+    const done=runs.filter(x=>x.status==='completed').length, fail=runs.filter(x=>x.conclusion && x.conclusion!=='success').length;
+    btn.textContent='갱신 중 '+done+'/'+ok;
+    if((runs.length>=ok && done>=ok) || Date.now()>until){
+      btn.textContent='끝 — 다시 불러오는 중';
+      ghMsg(fail ? '끝났지만 '+fail+'개는 실패했어요. 나머지는 반영됩니다.' : '모두 끝났어요. 1분 뒤 새 자료로 다시 불러옵니다.');
+      setTimeout(hardReload, 60*1000);                 // 끝난 뒤 저장소에 올라가고 배포되는 시간
+      return;
+    }
+    setTimeout(tick, 20*1000);
+  };
+  setTimeout(tick, 20*1000);
+}
 function hardReload(){
   // 캐시 무시 재접속: 주소에 현재 시각을 붙여 브라우저가 index.html을 새로 받게 한다
   const u = location.origin + location.pathname + '?t=' + Date.now();
@@ -2171,6 +2224,8 @@ function buildMarketPrompt(){
 }
 // 지수 탭 — 시황 종합 → 미장 → 국장 → 자산
 function rpInline(t){ return esc(t).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); }
+// 긴 문단을 문장 단위로 쪼갠다 — '다. ' 같은 문장 끝에서만(3.00%의 점은 뒤에 빈칸이 없어 안 쪼개짐)
+function rpSents(t){ return String(t||'').split(/(?<=[다요함음됨임])[.:]\s+/).map(x=>x.trim()).filter(Boolean).map(x=>/[.:!?]$/.test(x)?x:x+'.'); }
 function rpRender(md){
   const out=[]; let ul=null;
   const flush=()=>{ if(ul){ out.push('<ul class="drp-ul">'+ul.join('')+'</ul>'); ul=null; } };
@@ -2182,6 +2237,7 @@ function rpRender(md){
     else if((m=l.match(/^##\s+(.*)$/))){ flush(); out.push('<div class="drp-h2">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^###+\s+(.*)$/))){ flush(); out.push('<div class="drp-h3">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^[-*]\s+(.*)$/))){ (ul=ul||[]).push('<li>'+rpInline(m[1])+'</li>'); }
+    else if(l.length>150 && rpSents(l).length>1){ flush(); out.push('<ul class="drp-ul drp-sents">'+rpSents(l).map(x=>'<li>'+rpInline(x)+'</li>').join('')+'</ul>'); }
     else { flush(); out.push('<p class="drp-p">'+rpInline(l)+'</p>'); }
   }
   flush(); return out.join('');
