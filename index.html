@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-29c (자료 갱신 — 토큰 지우기 없앰, 실패해도 토큰을 지우지 않음) / 이전: 2026-10-29b -->
+<!-- build: 2026-10-31a (수급 출처 막힘 안내를 기준 줄에 빨갛게) / 이전: 2026-10-29c -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -2401,7 +2401,7 @@ async function load(){
     document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
     document.getElementById('c-momentum').textContent=(DATA.momentum||[]).length;
     { const cp=document.getElementById('c-portfolio'); if(cp) cp.textContent=(DATA.portfolio||[]).length; }   // 관심종목 탭은 시총순으로 바뀜(자료는 data.json에 그대로)
-    document.getElementById('rule').innerHTML='기준: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수가 플러스이고, 그중 <b>'+DATA.buy_ratio+'% 이상</b>의 날에 순매수 · <b>'+DATA.scanned+'종목</b>을 살핌';
+    document.getElementById('rule').innerHTML='기준: 최근 <b>'+DATA.window+'거래일</b> 누적 순매수가 플러스이고, 그중 <b>'+DATA.buy_ratio+'% 이상</b>의 날에 순매수 · <b>'+DATA.scanned+'종목</b>을 살핌'+(DATA.supply_note?' · <b style="color:var(--red)">'+esc(DATA.supply_note)+'</b>':'');
     RULE_LIST_LAST=null; ruleFor(CUR);   // 스캔 판정 문구를 기억해 두고, 지금 탭이 지수·리스트면 그 탭의 문구로
     render();
   }catch(e){
