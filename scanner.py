@@ -1607,6 +1607,11 @@ def main():
                 print(f"{done}/{len(kept)}", flush=True)
     if failed:
         print(f"  [경고] 수급 조회 실패 {len(failed)}종목: {failed[:10]}{'...' if len(failed)>10 else ''}", flush=True)
+    # [출처 막힘 가드] 2026-10-30 새벽부터 토스 API가 모든 요청에 400을 내 수급 목록이 이틀 동안 빈 채로 덮어써졌다
+    #   → 절반 넘게 실패하면 이번 결과를 믿지 않고 직전 결과를 살린다(아래 universe_ok 가드와 같은 방식)
+    flows_ok = len(failed) <= len(kept) * 0.5
+    if not flows_ok:
+        print(f"[경고] 수급 조회 {len(failed)}/{len(kept)}종목 실패 — 출처 막힘으로 본다. 수급 결과는 직전 값을 유지한다", flush=True)
 
     foreign_pass.sort(key=lambda x: x["net"], reverse=True)
     pension_pass.sort(key=lambda x: x["net"], reverse=True)
@@ -1715,7 +1720,7 @@ def main():
     print(f"report 정리: {removed}개 삭제, 유지 {len(keep)}개", flush=True)
 
     supply_note = ""
-    if not universe_ok:                    # 목록을 못 받은 회차 — 0으로 덮어쓰지 않고 직전 결과를 살린다
+    if not universe_ok or not flows_ok:    # 목록이나 수급을 못 받은 회차 — 0으로 덮어쓰지 않고 직전 결과를 살린다
         try:
             with open("data.json", encoding="utf-8") as f:
                 prev = json.load(f)
@@ -1725,7 +1730,7 @@ def main():
             foreign_pass = prev.get("foreign", [])
             pension_pass = prev.get("pension", [])
             both = prev.get("both", [])
-            supply_note = f"수급 스캔 실패({now_kst().strftime('%m-%d %H:%M')}) — 이전 결과 표시"
+            supply_note = prev.get("supply_note") or f"수급 스캔 실패({now_kst().strftime('%m-%d %H:%M')}) — 이전 결과 표시"
             print(f"[경고] {supply_note}", flush=True)
 
     result = {
