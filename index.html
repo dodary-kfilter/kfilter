@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-31c (수급 두 번째 주체를 data.json second로 — 지금 기관(다음 금융), 화면·프롬프트의 연기금을 바꿔 씀) / 이전: 2026-10-31b -->
+<!-- build: 2026-10-31d (v63 — 운영 정보 걷어냄: 기준 상자·출처·버전 표시, 리포트 가독성·명료성 규칙) / 이전: 2026-10-31c -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -284,10 +284,10 @@
       <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
       <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="GitHub에서 수급·시총순·애널·거시 수집을 지금 돌립니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
       <div class="ghmsg" id="ghmsg"></div>
-      <div class="meta">최종 갱신 <b id="updated">—</b> · 프롬프트 <b id="pver">—</b></div>
+      <div class="meta">최종 갱신 <b id="updated">—</b><span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
     </div>
   </header>
-  <div class="rule" id="rule">판정 기준을 불러오는 중…</div>
+  <div class="rule" id="rule" style="display:none"></div>
   <div class="tabs">
     <div class="tab active" data-k="index" onclick="show('index')"><div class="c" id="c-index">📈</div><div class="l">지수</div></div>
     <div class="tab" data-k="flow" onclick="show('flow')"><div class="c" id="c-flow">—</div><div class="l">수급</div></div>
@@ -977,7 +977,7 @@ ${RULE_BUDGET}
 ★ 외국인 비중 변화는 장내 순매수 외 경로(블록딜·시간외·유상증자 배정 등)로도 생긴다. 순매수 합계와 비중 변화가 크게 어긋나면 "장외 유입 추정, 사유 확인 불가"로 명시하라.`;
 
 // ── 번들 경로(국장 개별 5경로) — 자료는 명령 한 번. 수집 지시를 싣지 않는다 ──
-const PROMPT_VER='v62';
+const PROMPT_VER='v63';
 document.addEventListener('DOMContentLoaded',()=>{const e=document.getElementById('pver');if(e)e.textContent=PROMPT_VER;});
 // ── 구버전 감지 — 오래 열려 있던 탭이 옛 페이지로 복원되면 지시문도 옛것이다. 최신 index.html의 PROMPT_VER과 비교해 다르면 표시한다 ──
 let verChecked=0, verStale=false;
@@ -994,6 +994,7 @@ function checkVer(){
       verStale=true;
       const e=document.getElementById('pver');
       if(e){ e.textContent=PROMPT_VER+' → '+m[1]+' 새로고침 필요'; e.style.color='var(--red)'; }
+      const w=document.getElementById('pverw'); if(w) w.style.display='';
       document.querySelectorAll('.hdbtn.reload').forEach(b=>{ b.style.color='var(--red)'; b.style.borderColor='var(--red)'; b.style.background='rgba(239,83,80,.12)'; });
     })
     .catch(()=>{});
@@ -1155,6 +1156,8 @@ ${market?`타이틀은 아래 한 줄입니다. 리포트에서 가장 큰 글�
 그 뒤에 왜 그 값과 액션인지, 견해가 틀렸을 때 어디까지 내려가는지, 무엇이 확인되면 틀린 것인지를 씁니다. 하나의 값으로 제시하며 여러 갈래의 시나리오를 나열하지 않습니다.`}
 
 리포트는 존댓말 문어체로 작성합니다. 구어체, 반말, 비문, 어미를 생략한 표현을 쓰지 않으며, 한 문장에 하나의 사실 또는 하나의 판단만 담습니다. 일상어로 뜻을 뭉뚱그리지 말고 그 자리에 맞는 말을 씁니다.
+읽기 쉽게 씁니다. 분량은 줄이지 않되 문단을 잘게 나눕니다. 한 문단은 한 가지 이야기만 하고, 이야기가 바뀌면 새 문단을 엽니다. 문단의 첫 문장에 그 문단의 판단을 굵게 쓰고, 근거는 그 뒤에 이어 씁니다. 나란히 놓이는 근거가 셋 이상이면 짧은 목록으로 씁니다. 괄호는 꼭 필요한 풀이에만 쓰고, 괄호 안에 괄호를 넣지 않습니다.
+헷갈리거나 모호하게 쓰지 않습니다. 누가(무엇이), 어느 방향으로, 얼마나, 언제까지, 무엇과 비교해서인지를 문장 안에 밝힙니다. '다소', '어느 정도', '일정 부분', '~할 수도 있다', '주목할 만하다', '변수다'처럼 판단을 흐리는 말로 결론을 피하지 않습니다. '이는', '이것', '그'처럼 가리키는 대상이 불분명한 말 대신 이름을 다시 쓰고, 같은 대상은 끝까지 같은 이름으로 부릅니다.
 숫자는 그 뜻과 함께, 자료가 보여 주는 만큼만 씁니다. 수준은 무엇과 비교해 높거나 낮은지, 변화는 판단을 어느 쪽으로 움직이는지를 붙이고, 뜻을 붙일 수 없는 숫자는 쓰지 않습니다. 용어는 국내 증권 기사에서 쓰는 이름으로 쓰고, 처음 나올 때 짧게 풀이합니다.
 
 [기록 블록]
@@ -1793,7 +1796,8 @@ function sectionScreen(items, isV){
       +'<div class="pinfo">'+line2+'</div>'
       +'</div>';
   }).join('');
-  const vsub = (isV && items.length && items[0].ev_ebit!=null) ? ' <span style="color:var(--dim);font-weight:400">1년 영업이익률이 업종 이상 · 영업이익 대비 기업가치가 업종보다 싼 순(최근 분기에 무게)</span>' : '';
+  const vsub = (isV && items.length && items[0].ev_ebit!=null) ? ' <span style="color:var(--dim);font-weight:400">1년 영업이익률이 업종 이상 · 영업이익 대비 기업가치가 업종보다 싼 순(최근 분기에 무게)</span>'
+    : (!isV && items.length) ? ' <span style="color:var(--dim);font-weight:400">이동평균선 정배열(짧은 선이 긴 선 위)에 들어선 지 20일 안 · 1개월 수익률 상위 20% · 최근 20일 거래량이 60일 평균보다 많음</span>' : '';
   return '<div class="sec"><div class="sechd">'+(isV?'저가매수형':'모멘텀형')+' '+items.length+'종목'+vsub+'</div>'+rows+'</div>';
 }
 function fmtPct(v){ if(v==null) return '—'; const t=(v>=0?'+':'')+v.toFixed(1)+'%'; return '<span style="color:'+(v>=0?'#f85149':'#4493f8')+'">'+t+'</span>'; }
@@ -1878,6 +1882,11 @@ function ruleFor(k){
   else if(k==='momentum'){ rl.innerHTML='기준: 이동평균선이 <b>정배열</b>(짧은 선이 긴 선 위)로 들어선 지 <b>20일 안</b> · 1개월 수익률 <b>상위 20%</b> · 최근 20일 거래량이 60일 평균보다 많음 · 하루 한 번 갱신'; RULE_LIST_LAST=rl.innerHTML; }
   else if(k==='search'){ rl.innerHTML='기준: 종목명이나 코드로 찾아 리포트 프롬프트를 바로 만듦 · 국장·미장 모두'; RULE_LIST_LAST=rl.innerHTML; }
   else if(RULE_LIST_LAST!==null){ rl.innerHTML=RULE_SCAN; RULE_LIST_LAST=null; }
+  // 출처·갱신 시각표·살핀 종목 수 같은 운영 정보는 보이지 않는다(2026-10-31). 수급 자료가 낡았다는 경고만 띄운다
+  const note=(typeof DATA!=='undefined' && DATA && DATA.supply_note)||'';
+  const warn=(['both','foreign','pension'].includes(k) && /이전 결과|응답 없음|실패/.test(note)) ? note : '';
+  if(warn) rl.innerHTML='<b style="color:var(--red)">'+esc(warn)+'</b>';
+  rl.style.display=warn ? '' : 'none';
 }
 function renderList(k){
   const content=document.getElementById('content');
@@ -1955,7 +1964,7 @@ function t20Cap(r,mk){
   const unit=mk==='kr' ? '' : ' 달러';
   return r.mcap>=10000 ? (r.mcap/10000).toFixed(1)+'조'+unit : Math.round(r.mcap).toLocaleString('ko-KR')+'억'+unit;
 }
-const T20_L={stable:['안정형','크게 흔들리지 않으면서 오를 가능성이 분명한 종목 · 상승 확률 높은 순'], aggressive:['적극형','위험을 감수하되 맞으면 크게 오를 종목 · 기대 수익 큰 순']};
+const T20_L={stable:['안정형','향후 3개월 · 크게 흔들리지 않으면서 오를 가능성이 분명한 종목 · 상승 확률 높은 순'], aggressive:['적극형','향후 3개월 · 위험을 감수하되 맞으면 크게 오를 종목 · 기대 수익 큰 순']};
 let T20_T='stable';                               // 상승 확률 / 기대 수익 — 국장·미장을 바꿔도 유지
 function t20T(t){ if(t===T20_T) return; T20_T=t; renderList('top20'); }
 function t20View(d){
@@ -1969,7 +1978,7 @@ function t20View(d){
       +' <span>'+((D[k]||[]).length)+'</span></button>').join('')+'</div>';
   const M=d.meta||{}, view=(M['view_'+mk]||''), chg=(M.changes||[]);
   const md=[view?'## '+(mk==='kr'?'국장':'미장')+' 판단 요지\n'+view:'', chg.length?'## 오늘 바뀐 판단\n'+chg.map(c=>'- '+c).join('\n'):''].filter(Boolean).join('\n');
-  const rp=md ? '<div class="drp"><div class="drp-at">판단 갱신 '+esc(M.judged_at||M.judged||'')+' · 매일 07:30 Claude가 다시 판단</div>'+rpRender(md)+'</div>' : '';
+  const rp=md ? '<div class="drp"><div class="drp-at">'+esc(M.judged_at||M.judged||'')+' 판단</div>'+rpRender(md)+'</div>' : '';
   return seg+pick+'<div class="sec"><div class="sechd" style="color:var(--dim);font-weight:400">'+desc+'</div>'
     +(L.length ? '<div class="cards">'+L.map((r,i)=>t20Card(r,i+1,mk,t,i)).join('')+'</div>' : '<div class="empty" style="padding:12px 0">종목이 없습니다.</div>')+'</div>'+rp;
 }
@@ -2056,7 +2065,7 @@ function anView(d){
         +'<button class="copybtn" onclick="copyList(event,\'analyst\',\''+esc(g.ticker)+'\')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button></div>'
         +'<div class="pinfo"><b>'+esc(g.count)+'명</b> 매수 · 최고 '+esc(b.rank)+'위 '+esc(b.name)+'('+esc(b.company)+') · 최근 '+lMd(g.latest)+'</div>'
         +'<div class="pinfo">추천 순위 '+(g.by||[]).map(x=>esc(x.rank)).join('·')+'위</div></div>'; }).join('');
-    return seg+'<div class="sec"><div class="sechd">상위 '+pool+'위 중 '+minc+'명 이상 매수 '+S.length+'종목</div>'
+    return seg+'<div class="sec"><div class="sechd">최근 '+days+'일 · 적중률 순위 상위 '+pool+'위 중 '+minc+'명 이상 매수 '+S.length+'종목</div>'
       +(rows || '<div class="empty">해당 종목이 없습니다.</div>')+'</div>';
   }
   const body=A.map(a=>{
@@ -2074,7 +2083,7 @@ function anView(d){
         : (a.why ? '<div class="en-empty" style="padding:8px 2px 2px">'+esc(a.why)+'</div><div class="en-empty" style="padding:0 2px 8px; font-size:12px; opacity:.85">'+esc(a.why_more||'')+'</div>'
                  : '<div class="en-empty" style="padding:8px 2px">최근 '+days+'일 미국 상장 종목 매수 의견 없음</div>'));   // 빈 자리 — 이유 한 줄 + 설명 한 줄
   }).join('');
-  return seg+(body || '<div class="empty">애널리스트 자료가 없습니다.</div>');
+  return seg+(body ? '<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">최근 '+days+'일 매수 의견 · 적중률 순위 상위 '+top+'명</div>'+body : '<div class="empty">애널리스트 자료가 없습니다.</div>');
 }
 
 // ── 13F — 신규 편입 · 비중 확대 · 비중 축소 · 청산 구간과 합의 강도 ──
@@ -2092,7 +2101,8 @@ function f13View(d){
   const btns=[...F13_LISTS.map(([k])=>[k,(L[k]||[]).length]), ['cons',nCons]];
   const t=btns.some(([k])=>k===F13_T) ? F13_T : 'new';
   const pick='<div class="mk2 f13t">'+btns.map(([k,n])=>'<button type="button"'+(k===t?' class="on"':'')+' onclick="f13T(\''+k+'\')">'+short[k]+' <span>'+n+'</span></button>').join('')+'</div>';
-  let h=pick+'<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">'+F13_DESC[t]+'</div>';
+  const qq=f13Q(d);
+  let h=pick+'<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">'+qq.y+'년 '+qq.q+'분기 보유 기준 · '+F13_DESC[t]+'</div>';
   if(t==='cons'){
     const chips=a=>(a||[]).length ? '<div class="peer-row">'+a.map(x=>'<span class="peer">'+esc(x.name_ko||x.ticker)+' <b>'+esc(x.buy)+':'+esc(x.sell)+'</b></span>').join('')+'</div>'
                                   : '<div class="en-empty" style="padding:4px 0">없음</div>';
@@ -2312,7 +2322,7 @@ function dailyReport(TM){
   else if(md.includes('{{추천 종목}}')){ const [a,b]=md.split('{{추천 종목}}'); html=rpRender(a)+rc+rpRender(b); }
   else { const L=md.split('\n'), i=L.findIndex(l=>/^##\s+(4\.|TOP 20)/.test(l.trim()));
     html = i>=0 ? rpRender(L.slice(0,i).join('\n'))+rc+rpRender(L.slice(i).join('\n')) : rpRender(md)+rc; }
-  return '<div class="drp"><div class="drp-at">오늘의 시황 리포트 · Claude · '+esc(TM.judged_at||TM.judged||'')+' · 매일 07:30 갱신</div>'+html+'</div>';
+  return '<div class="drp"><div class="drp-at">오늘의 시황 리포트 · '+esc(TM.judged_at||TM.judged||'')+' 기준</div>'+html+'</div>';
 }
 function idxBlock(){
   const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';
@@ -2320,7 +2330,7 @@ function idxBlock(){
   const TM=((LISTS.top20||{}).meta)||{};
   return '<div class="idxbox">'
     +'<div class="idxg"><div class="idxgt">시황 종합 <span>'+(KNUM[IDX_LIST.filter(x=>x.mk!=='asset').length]||'')+' 지수와 미국 장기 국채·금·비트코인을 한 리포트로 — 종목 분석에 앞서</span></div><div class="idxrow">'+btn('MARKET','시황 종합','mkt')+'</div></div>'
-    +grp('미장','', 'us')+grp('국장','', 'kr')+grp('자산','가격 위치·수급은 따르는 ETF(TLT·GLD·IBIT)로','asset')
+    +grp('미장','', 'us')+grp('국장','', 'kr')+grp('자산','','asset')
     +'</div>'+dailyReport(TM);                                   // 버튼 아래에 오늘의 시황 리포트
 }
 function copyIndex(ev, k){
@@ -2379,10 +2389,11 @@ function render(){
   if(items.length===0){content.innerHTML=seg+'<div class="empty">'+label+' 종목이 없습니다.</div>';return;}
   const kospi=items.filter(x=>x.market==='KOSPI');
   const kosdaq=items.filter(x=>x.market==='KOSDAQ');
+  const fhd='<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">최근 '+(DATA.window||10)+'거래일 누적 순매수가 플러스이고, '+(DATA.window||10)+'일 중 '+Math.ceil((DATA.window||10)*(DATA.buy_ratio||70)/100)+'일 이상 순매수'+(CUR==='both'?' — '+label:'')+'</div>';
   if(CUR==='both'){
-    content.innerHTML = seg + sectionBoth('코스피', kospi, 'kospi') + sectionBoth('코스닥', kosdaq, 'kosdaq');
+    content.innerHTML = seg + fhd + sectionBoth('코스피', kospi, 'kospi') + sectionBoth('코스닥', kosdaq, 'kosdaq');
   }else{
-    content.innerHTML = seg + sectionSingle('코스피', kospi, 'kospi') + sectionSingle('코스닥', kosdaq, 'kosdaq');
+    content.innerHTML = seg + fhd + sectionSingle('코스피', kospi, 'kospi') + sectionSingle('코스닥', kosdaq, 'kosdaq');
   }
 }
 function show(k){

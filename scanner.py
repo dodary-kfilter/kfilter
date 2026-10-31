@@ -1737,7 +1737,7 @@ def main():
                     print(f"  report 삭제 실패 {fn}: {e}", flush=True)
     print(f"report 정리: {removed}개 삭제, 유지 {len(keep)}개", flush=True)
 
-    supply_note = f"수급 출처: {FLOW_SRC}(외국인·{SECOND_LAB}) — 토스가 막혀 연기금 대신 {SECOND_LAB}" if SECOND_LAB != "연기금" else ""
+    supply_note = ""                       # 출처 안내는 사이트에 보이지 않는다(2026-10-31) — 자료를 못 받았을 때의 경고만 쓴다
     if not universe_ok or not flows_ok:    # 목록이나 수급을 못 받은 회차 — 0으로 덮어쓰지 않고 직전 결과를 살린다
         try:
             with open("data.json", encoding="utf-8") as f:
