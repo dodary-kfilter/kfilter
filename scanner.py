@@ -3,7 +3,7 @@
 외국인·연기금 수급 스캐너 + 동시(both) 종목 분석 데이터 (Phase 1)
 ---------------------------------------------------------------
 - 종목 명단: 네이버 시총순 (ETF·우선주·스팩 제외, 코스피 500 + 코스닥 300)
-- 수급: 토스 trading-trend API (외국인·연기금 일별 순매수)
+- 수급: 다음 금융 투자자별 매매(외국인·기관 일별 순매수) — 2026-10-31부터. 토스 비공식 API가 막혀 연기금 대신 기관(SECOND_LAB)
 - 판정(각각 독립): 최근 WINDOW 거래일 누적 순매수>0 AND 순매수일 ≥ 70%
 - 0순위(both) = 외국인 AND 연기금 둘 다 통과
 - [신규] both 종목에만 분석 데이터(enrich) 부착:
@@ -98,6 +98,33 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
 HDR_NAVER = {"User-Agent": UA, "Referer": "https://finance.naver.com/"}
 HDR_TOSS  = {"User-Agent": UA, "Accept": "application/json",
              "Referer": "https://www.tossinvest.com/"}
+
+# ── 수급 출처 (2026-10-31) ──
+#   토스 비공식 trading-trend가 10/30부터 모든 요청에 400 → 다음 금융 투자자별 매매로 바꿈.
+#   다음은 외국인·기관(기관계)만 준다 — 연기금·개인·금융투자 등 세부가 없다. 두 번째 주체 이름은 SECOND_LAB.
+#   data.json 키(pension·p_net·p_buydays 등)는 그대로 두고 뜻만 '기관'으로 쓴다 → 사이트는 data.json의 second로 이름을 바꿔 보여 준다.
+FLOW_SRC   = "다음 금융"
+SECOND_LAB = "기관"          # 화면·프롬프트에 보이는 이름 (토스로 돌아가면 '연기금')
+SECOND_KEY = "기관계"        # supply_detail 안의 이름 (토스로 돌아가면 '연기금')
+DAUM_INV_URL = "https://finance.daum.net/api/investor/days?symbolCode=A{code}&page=1&perPage={n}"
+
+def daum_flows(code, n=60):
+    """다음 금융 투자자별 일별(최신순) → 토스 body와 같은 키로 맞춘 목록. 실패 시 None."""
+    try:
+        r = requests.get(DAUM_INV_URL.format(code=code, n=n), headers=HDR_DAUM, timeout=10)
+        if r.status_code != 200:
+            return None
+        rows = (r.json() or {}).get("data") or []
+    except Exception:
+        return None
+    out = []
+    for x in rows:
+        fr = x.get("foreignOwnSharesRate")
+        out.append({"baseDate": str(x.get("date") or "")[:10], "close": x.get("tradePrice"),
+                    "foreignerRatio": round(fr * 100, 2) if isinstance(fr, (int, float)) else None,   # 토스처럼 % 단위
+                    "netForeignerBuyVolume": x.get("foreignStraightPurchaseVolume"),
+                    "netInstitutionBuyVolume": x.get("institutionStraightPurchaseVolume")})
+    return out or None
 
 TOSS_URL = ("https://wts-info-api.tossinvest.com/api/v1/stock-infos/trade/trend/"
             "trading-trend?productCode=A{code}&size=60")
@@ -504,16 +531,13 @@ def get_list(sosok, want):
     return out[:want]
 
 def get_trend(code):
-    try:
-        r = requests.get(TOSS_URL.format(code=code), headers=HDR_TOSS, timeout=10)
-        if r.status_code != 200:
-            return None
-        body = r.json().get("result", {}).get("body", [])
-    except Exception:
+    """(외국인, 두 번째 주체) 일별 순매수 — 최신순. 두 번째 주체는 지금 기관(SECOND_LAB)."""
+    body = daum_flows(code, 60)
+    if not body:
         return None
-    foreign = [row.get("netForeignerBuyVolume", 0) or 0 for row in body]
-    pension = [row.get("netPensionFundBuyVolume", 0) or 0 for row in body]
-    return foreign, pension
+    foreign = [row.get("netForeignerBuyVolume") or 0 for row in body]
+    second = [row.get("netInstitutionBuyVolume") or 0 for row in body]
+    return foreign, second
 
 def judge(series):
     recent = series[:WINDOW]
@@ -660,7 +684,7 @@ def enhance_supply(sd):
 
         return {
             "cum_21_60d": c2160,
-            "pattern": {lab: pattern(lab) for lab in ("외국인", "연기금", "기관계", "개인", "사모", "금융투자")},
+            "pattern": {lab: pattern(lab) for lab in ("외국인", "연기금", "기관계", "개인", "사모", "금융투자") if lab in c60},   # 없는 주체는 '혼조'로 꾸며 내지 않는다
             "foreign_avg_price": favg,
             "foreign_avg_note": favg_note,
             "foreign_avg_vs_now_pct": (round((cur / favg - 1) * 100, 1) if (favg and cur) else None),
@@ -851,15 +875,16 @@ def build_supply_detail(body):
     """토스 일별 투자자별 → 최근 HIST_DAYS일 + 누적(5/20/60일) by 투자주체 + 외인보유율 추이."""
     if not body:
         return None
+    fields = [(k, lab) for k, lab in INV_FIELDS if k in body[0]]      # 자료에 있는 주체만(다음: 외국인·기관계)
     daily = []
     for r in body[:HIST_DAYS]:
         rec = {"date": r.get("baseDate"), "close": toi(r.get("close")),
                "foreignRatio": r.get("foreignerRatio")}
-        for k, lab in INV_FIELDS:
+        for k, lab in fields:
             rec[lab] = toi(r.get(k))
         daily.append(rec)
     def cum(n):
-        return {lab: sum(toi(row.get(k)) for row in body[:n]) for k, lab in INV_FIELDS}
+        return {lab: sum(toi(row.get(k)) for row in body[:n]) for k, lab in fields}
     fr = [{"date": r.get("baseDate"), "ratio": r.get("foreignerRatio")} for r in body[:HIST_DAYS]]
     return {"recent_daily": daily, "cum_5d": cum(5), "cum_20d": cum(20), "cum_60d": cum(60),
             "foreign_ratio_trend": fr}
@@ -874,7 +899,7 @@ def supply_cum_summary(sd):
     for win in ("5d", "20d", "60d"):
         c = sd.get("cum_" + win) or {}
         out["f" + win] = c.get("외국인")
-        out["p" + win] = c.get("연기금")
+        out["p" + win] = c.get(SECOND_KEY)                  # 두 번째 주체(지금 기관계)
     f5, f20, f60 = out.get("f5d"), out.get("f20d"), out.get("f60d")
     # 방향 판정: 세 구간이 같은 방향인가, 전환 중인가, 차익실현 국면인가.
     if None in (f5, f20, f60):
@@ -964,13 +989,10 @@ def fetch_all(code):
     except Exception as e:
         out["daum_fin"] = None
         out["daum_fin_err"] = str(e)
-    # 토스 투자자별 상세
-    try:
-        tr = requests.get(TOSS_URL.format(code=code), headers=HDR_TOSS, timeout=10)
-        out["toss"] = tr.json().get("result", {}).get("body", [])
-    except Exception as e:
-        out["toss"] = None
-        out["toss_err"] = str(e)
+    # 투자자별 상세 — 다음 금융(외국인·기관). 키 이름 'toss'는 아래 코드와 맞추려고 그대로 둔다
+    out["toss"] = daum_flows(code, 60)
+    if out["toss"] is None:
+        out["toss_err"] = "다음 투자자별 매매 조회 실패"
     return out
 
 def _parse_report_header(text):
@@ -1475,13 +1497,9 @@ def fetch_us_quote(ticker):
 
 
 def latest_trade_date():
-    """기준 종목(삼성전자) 토스 최신 baseDate = 최신 거래일. 실패 시 None."""
-    try:
-        r = requests.get(TOSS_URL.format(code="005930"), headers=HDR_TOSS, timeout=10)
-        body = r.json().get("result", {}).get("body", [])
-        return body[0].get("baseDate") if body else None
-    except Exception:
-        return None
+    """기준 종목(삼성전자) 다음 투자자별 최신 날짜 = 최신 거래일. 실패 시 None."""
+    body = daum_flows("005930", 5)
+    return body[0].get("baseDate") if body else None
 
 
 def main():
@@ -1719,7 +1737,7 @@ def main():
                     print(f"  report 삭제 실패 {fn}: {e}", flush=True)
     print(f"report 정리: {removed}개 삭제, 유지 {len(keep)}개", flush=True)
 
-    supply_note = ""
+    supply_note = f"수급 출처: {FLOW_SRC}(외국인·{SECOND_LAB}) — 토스가 막혀 연기금 대신 {SECOND_LAB}" if SECOND_LAB != "연기금" else ""
     if not universe_ok or not flows_ok:    # 목록이나 수급을 못 받은 회차 — 0으로 덮어쓰지 않고 직전 결과를 살린다
         try:
             with open("data.json", encoding="utf-8") as f:
@@ -1739,6 +1757,7 @@ def main():
         "window": WINDOW, "buy_ratio": int(BUY_RATIO_MIN * 100),
         "scanned": len(kept),
         "supply_note": supply_note,
+        "second": SECOND_LAB, "flow_src": FLOW_SRC,            # 두 번째 수급 주체 이름(사이트가 이 이름으로 보여 준다)
         "foreign": foreign_pass,
         "pension": pension_pass,
         "both": both,
@@ -1750,7 +1769,7 @@ def main():
     }
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, separators=(",", ":"))
-    print(f"완료. 외국인 {len(foreign_pass)} / 연기금 {len(pension_pass)} / 동시 {len(both)} / 포트 {len(portfolio)}"
+    print(f"완료. 외국인 {len(foreign_pass)} / {SECOND_LAB} {len(pension_pass)} / 동시 {len(both)} / 포트 {len(portfolio)}"
           f" / 저가매수 {len(screen.get('value_pick', []))} / 모멘텀 {len(screen.get('momentum', []))} → data.json", flush=True)
 
 def build_us_universe():

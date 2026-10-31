@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-31b (사이트 이름: 수급 필터 → 투자 분석) / 이전: 2026-10-31a -->
+<!-- build: 2026-10-31c (수급 두 번째 주체를 data.json second로 — 지금 기관(다음 금융), 화면·프롬프트의 연기금을 바꿔 씀) / 이전: 2026-10-31b -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -427,7 +427,7 @@ function cardBoth(it,i){
           <span class="tag ${tag}">${mkKo(tag)}</span></span>
         <span class="cs">
           <b style="color:var(--foreign)">외국인 ${volShort(it.f_net)}주 · ${bdKo(it.f_buydays)}</b>
-          <b style="color:var(--pension)">연기금 ${volShort(it.p_net)}주 · ${bdKo(it.p_buydays)}</b></span>
+          <b style="color:var(--pension)">${pLab()} ${volShort(it.p_net)}주 · ${bdKo(it.p_buydays)}</b></span>
       </div>
       <button class="copybtn" onclick="copyPrompt(event,'${it.code}')" title="리포트 프롬프트 → Claude에 붙여넣기">프롬프트</button>
       <span class="chev">⌄</span>
@@ -742,7 +742,7 @@ ${RULE_APIWARN}
 function fmtScreenList(items, isV){
   return items.map((x,i)=>{
     const s=(x.labels&&x.labels.supply)||null, v=(x.labels&&x.labels.valuation)||{};
-    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / 연 ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' 동시수급':''}` : '최근 10거래일 기준 외국인·연기금 모두 순매수 조건 미달';
+    const sup = s ? `외 ${s.f_buydays||'-'} ${s.f_net!=null?s.f_net.toLocaleString():''} / ${pLab().slice(0,1)} ${s.p_buydays||'-'} ${s.p_net!=null?s.p_net.toLocaleString():''}${s.is_zero_rank?' 동시수급':''}` : '최근 10거래일 기준 외국인·연기금 모두 순매수 조건 미달';
     const per = x.per!=null ? x.per.toFixed(1)+'배' : '—';
     const sec = v.sector_valid ? `업종 ${v.sectorPer.toFixed(1)}배` : '업종PER 무효';
     const base = `${i+1}. ${x.name}(${x.code}) · ${x.sector||''} · ${Math.round(x.cur).toLocaleString()}원 ${(x.changeRate>=0?'+':'')+x.changeRate.toFixed(2)}%
@@ -861,7 +861,7 @@ function buildMomentumPrompt(){
 
 function buildScreenPrompt(){
   const items=(DATA&&DATA.both)||[];
-  if(!items.length) return '오늘 외국인과 연기금이 동시에 순매수한 종목이 없다.';
+  if(!items.length) return '오늘 외국인과 '+pLab()+'이 동시에 순매수한 종목이 없다.';
   return batchOf('외국인과 연기금이 동시에 순매수한 종목입니다.', items);
 }
 // ── 공통: 데이터 취득·우선순위 규칙 (국내 / 미국) ──
@@ -1075,7 +1075,19 @@ const MKT_RULES = '큰 단락 이름과 2의 대상 이름은 ## 제목으로 �
   + '미국 장기 국채처럼 이자를 주는 자산의 예상 수익률은 가격 변화에 석 달치 분배금을 더한 값이며, 결론 줄의 수익률 뒤에 분배금 포함이라고 적습니다. 전망의 세 갈래와 확률, 결론의 예상과 액션은 서로 어긋나지 않게 맞춥니다.\n\n'
   + '3과 4는 각각 한 문단입니다. 시간과 분량은 1과 2에 씁니다.';
 const MKT_SEARCH = '코스피 12개월 선행 PER과 신용융자 잔고·반대매매는 자료 명령에 들어 있지 않습니다. 이 두 재료는 검색 결과 목록에서 숫자를 확인하고 원문은 열지 않으며, 이 리포트의 검색은 모두 세 번까지입니다. 찾지 못한 재료는 판단에 쓰지 않고, 3의 끝에 "확인하지 못한 재료" 한 줄로 모읍니다.';
-function reportPrompt(o){
+// ── 두 번째 수급 주체 (2026-10-31) ── data.json의 second(지금 '기관'). 토스가 막혀 연기금 자료가 없는 동안
+//   화면과 프롬프트의 '연기금'을 이 이름으로 바꿔 쓴다 — 없는 연기금을 근거로 판단하지 않게. 토스(연기금)로 돌아가면 저절로 원래대로
+function pLab(){ return (typeof DATA!=='undefined' && DATA && DATA.second) || '연기금'; }
+function pFix(t){
+  if(typeof t!=='string' || pLab()==='연기금') return t;
+  const L=pLab();
+  return t.replace(/연기금/g, L)
+    .replace(L+' 매수를 무조건 호재로 읽지 마라.', L+' 순매수에는 증권사·투신의 단기 매매가 섞여 있어 연기금 매수와 다르다. '+L+' 매수를 무조건 호재로 읽지 마라.')
+    .replace('(11개 주체, '+L+'·개인 포함)', '(지금은 외국인·기관계 둘뿐 — 다음 금융 자료라 개인·연기금 세부 없음)')
+    .replace('최근 10거래일 외인·'+L+' → supply_10d', '최근 10거래일 외인·'+L+' → supply_10d (pension_* 키가 지금은 '+L+')');
+}
+function reportPrompt(o){ return pFix(reportPrompt0(o)); }
+function reportPrompt0(o){
   const stamp = new Date().toLocaleString('sv-SE',{timeZone:'Asia/Seoul'});
   const batch = o.kind==='batch', macro = o.kind==='macro', market = o.kind==='market', u = UNIT[o.unit||'stock'];
   const steps = batch
@@ -1750,7 +1762,7 @@ function sectionScreen(items, isV){
     const sup = (x.labels&&x.labels.supply)||null;
     const val = (x.labels&&x.labels.valuation)||{};
     const supTxt = sup
-      ? '<span style="color:var(--foreign)">외국인 '+bdKo(sup.f_buydays)+'</span> · <span style="color:var(--pension)">연기금 '+bdKo(sup.p_buydays)+'</span> 순매수'+(sup.is_zero_rank?' <b style="color:var(--both)">동시</b>':'')
+      ? '<span style="color:var(--foreign)">외국인 '+bdKo(sup.f_buydays)+'</span> · <span style="color:var(--pension)">'+pLab()+' '+bdKo(sup.p_buydays)+'</span> 순매수'+(sup.is_zero_rank?' <b style="color:var(--both)">동시</b>':'')
       : '<span style="color:#6e7681">수급 신호 없음</span>';
     const perTxt = (x.per!=null? x.per.toFixed(1)+'배':'—')
       + (val.sector_valid? ' <span style="color:var(--dim)">(업종 '+val.sectorPer.toFixed(1)+')</span>'
@@ -2358,9 +2370,9 @@ function render(){
     content.innerHTML = sectionScreen(items, isV);
     return;
   }
-  const label=CUR==='foreign'?'외국인':CUR==='pension'?'연기금':'외국인·연기금 동시';
+  const label=CUR==='foreign'?'외국인':CUR==='pension'?pLab():'외국인·'+pLab()+' 동시';
   // 수급 탭 안 전환 — 큰 대상부터(외국인 → 연기금 → 동시), 처음엔 동시 수급
-  const seg='<div class="mk2 fl">'+[['foreign','외국인','f'],['pension','연기금','p'],['both','동시','b']].map(([k,l,c])=>
+  const seg='<div class="mk2 fl">'+[['foreign','외국인','f'],['pension',pLab(),'p'],['both','동시','b']].map(([k,l,c])=>
     '<button type="button" class="'+c+(k===CUR?' on':'')+'" onclick="show(\''+k+'\')">'+l+' <span>'+((DATA[k]||[]).length)+'</span></button>').join('')+'</div>';
   if(items.length===0){content.innerHTML=seg+'<div class="empty">'+label+' 종목이 없습니다.</div>';return;}
   const kospi=items.filter(x=>x.market==='KOSPI');

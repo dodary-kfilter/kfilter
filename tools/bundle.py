@@ -337,8 +337,8 @@ def mark_consensus(fin):
 
 FILE_MAP = '''#수급파일 키 지도 — 속독층이 요약한 값(컨센·과거 상승폭·직전 진척·거래량·잠정실적)은 뺐다. 원문 확인용만 남겼다
 price_daily: ma 이평 · ma.vs 이격 · pocket 매물대 구간별 거래비중 | idxRel: 고점·지수 대비
-supply_detail: cum_5d·cum_20d·cum_60d 11개 주체 누적(연기금·개인 포함) · recent_daily {cols,rows} 최신순 20행, foreignRatio는 이미 %
-supply_derived: cum_21_60d 21~60일 구간 · pattern 주체별 판정 · foreign_avg_price | supply_10d: 최근 10거래일 외국인·연기금
+supply_detail: cum_5d·cum_20d·cum_60d 주체별 누적(자료에 있는 주체만 — 2026-10-31부터 다음 금융이라 외국인·기관계 둘, 개인·연기금 세부 없음) · recent_daily {cols,rows} 최신순 20행, foreignRatio는 이미 %
+supply_derived: cum_21_60d 21~60일 구간 · pattern 주체별 판정 · foreign_avg_price | supply_10d: 최근 10거래일 외국인·기관(키 이름 pension_*은 지금 기관을 뜻함 — 연기금 아님)
 valuation_derived: PBR 판정 | financials_confirmed: 확정 실적(분기·연간) | consensus_est: 네이버 컨센 추정(E)
 industry_peers: 동종 시총·현재가·등락률 | prev_report: 직전 리포트 앞부분 | splits: 권리락 이력(파일 안 주가는 이미 보정)'''
 
@@ -1324,7 +1324,8 @@ def digest_kr(x, mk):
         if fa and price:
             g = (price / fa - 1) * 100
             extra.append('외국인 평균 매수단가 %s원 — 현재가가 %s' % (_c(fa), ('%.0f%% 위' % g) if g >= 0 else ('%.0f%% 아래' % -g)))
-        L.append('수급(11개 주체, 수급파일 %s 기준): %s · %s' % (_sd(f.get('updated')), ' · '.join(seg) or '판정 없음', ' · '.join(extra)))
+        _who = '·'.join(k for k in c20) or '주체 없음'                                    # 자료에 있는 주체만(지금 외국인·기관계)
+        L.append('수급(%s, 수급파일 %s 기준): %s · %s' % (_who, _sd(f.get('updated')), ' · '.join(seg) or '판정 없음', ' · '.join(extra)))
         if 'foreignRatio' in cols and '외국인' in cols and len(rows) > 20 and listed:
             fr = cols.index('foreignRatio')
             dshare = (rows[0][fr] - rows[20][fr]) / 100 * listed
