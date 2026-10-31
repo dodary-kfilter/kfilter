@@ -1458,7 +1458,7 @@ def digest_kr(x, mk):
         L.append('권리락: 있음 — 파일 안 주가는 보정됐고 공시·뉴스 속 과거 주가는 보정 전이다 · ' + J(spl)[:160])
     gaps = []
     if not f:
-        gaps.append('수급파일 없음(11개 주체 수급·컨센·직전 판단 없음)')
+        gaps.append('수급파일 없음(주체별 수급·컨센·직전 판단 없음)')
     if not str(x.get('src', '')).startswith('DART'):
         gaps.append('DART 목록 실패(거래소 공시만)')
     if not x.get('rep') and not x.get('brief'):

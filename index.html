@@ -1084,7 +1084,9 @@ function pFix(t){
   return t.replace(/연기금/g, L)
     .replace(L+' 매수를 무조건 호재로 읽지 마라.', L+' 순매수에는 증권사·투신의 단기 매매가 섞여 있어 연기금 매수와 다르다. '+L+' 매수를 무조건 호재로 읽지 마라.')
     .replace('(11개 주체, '+L+'·개인 포함)', '(지금은 외국인·기관계 둘뿐 — 다음 금융 자료라 개인·연기금 세부 없음)')
-    .replace('최근 10거래일 외인·'+L+' → supply_10d', '최근 10거래일 외인·'+L+' → supply_10d (pension_* 키가 지금은 '+L+')');
+    .replace('최근 10거래일 외인·'+L+' → supply_10d', '최근 10거래일 외인·'+L+' → supply_10d (pension_* 키가 지금은 '+L+')')
+    .replace('cols에 date·close·foreignRatio·11개 주체가 들어 있다.', 'cols에 date·close·foreignRatio와 자료에 있는 주체(지금은 외국인·기관계)가 들어 있다.')
+    .replace('국내 수급 판정은 supply_detail(11개 주체)이 1차 기준이다.', '국내 수급 판정은 supply_detail(지금은 외국인·기관계 둘)이 1차 기준이다.');
 }
 function reportPrompt(o){ return pFix(reportPrompt0(o)); }
 function reportPrompt0(o){
