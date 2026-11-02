@@ -1,0 +1,30 @@
+name: 점검
+
+# 자동 갱신이 빠졌는지 2시간마다 검사하고, 오래된 수집(수급·시총순·애널·거시)만 다시 실행한다 — tools/watchdog.py
+#   매일 판단(Claude 루틴)은 대신 돌릴 수 없어 사이트에 빨간 표시만(ROUTINE_TRIGGER_URL·TOKEN 비밀 값이 있으면 루틴 API 트리거)
+on:
+  schedule:
+    - cron: '27 */2 * * *'
+    - cron: '57 23 * * *'          # 한국시간 08:57 — 아침 수집·매일 판단을 한 번 더 확인
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: watchdog
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: 자료 나이 점검·빠진 수집 다시 실행
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ROUTINE_TRIGGER_URL: ${{ secrets.ROUTINE_TRIGGER_URL }}
+          ROUTINE_TRIGGER_TOKEN: ${{ secrets.ROUTINE_TRIGGER_TOKEN }}
+        run: python3 tools/watchdog.py

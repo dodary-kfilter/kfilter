@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-10-31d (v63 — 운영 정보 걷어냄: 기준 상자·출처·버전 표시, 리포트 가독성·명료성 규칙) / 이전: 2026-10-31c -->
+<!-- build: 2026-11-02a (자료 나이 점검 — 자동 갱신이 빠지면 탭·머리·리포트에 빨간 표시) / 이전: 2026-10-31d -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -42,6 +42,8 @@
     padding:13px 10px; cursor:pointer; text-align:center; transition:all .15s}
   .tab .c{font-family:'Space Mono',monospace; font-size:24px; font-weight:700}
   .tab .l{font-size:12px; color:var(--dim); margin-top:2px}
+  .tab.stale .l::after{content:' ●'; color:var(--red)}
+  .stalebar{font-size:13px; font-weight:700; color:var(--red); margin:0 0 10px}
   .tab[data-k="foreign"] .c{color:var(--foreign)}
   .tab[data-k="pension"] .c{color:var(--pension)}
   .tab[data-k="both"] .c{color:var(--both)}
@@ -1827,7 +1829,7 @@ function loadList(k){
     const ix=await listJSON('lists/13f/index.json');          // 최신 분기 파일을 가리키는 색인
     if(!ix || !ix.latest) throw new Error('lists/13f/index.json에 latest 없음');
     return listJSON('lists/13f/'+ix.latest+'.json');
-  })().then(d=>{ LISTS[k]=d; LIST_ERR[k]=''; listBadge(k); if(k==='top20' && CUR==='index' && DATA) render(); return d; },   // 지수 탭의 '오늘의 시황 판단'을 채운다(data.json이 실패해 안내 중이면 덮지 않음)
+  })().then(d=>{ LISTS[k]=d; LIST_ERR[k]=''; listBadge(k); try{ markStale(); }catch(e){} if(k==='top20' && CUR==='index' && DATA) render(); return d; },   // 지수 탭의 '오늘의 시황 판단'을 채운다(data.json이 실패해 안내 중이면 덮지 않음)
             e=>{ LIST_ERR[k]=String((e&&e.message)||e||'받기 실패'); return null; })
      .finally(()=>{ delete LIST_BUSY[k]; });
   LIST_BUSY[k]=p;
@@ -1850,6 +1852,26 @@ function lCnt(k){
   if(k==='mcap') return MC_L.reduce((n,[m])=>n+((d[m]||[]).length),0);
   return F13_LISTS.reduce((a,[x])=>a+(((d.lists||{})[x])||[]).length, 0);
 }
+// ── 자료 나이 점검 (2026-11-02) — 자동 갱신이 빠졌으면 빨갛게. 기준은 tools/watchdog.py와 같다(한국시간)
+//   수급·저가매수·모멘텀(data.json) 평일 10:30~16:30엔 90분, 17:00 이후엔 그날 15:30 이후 · 시총순 14시간 · 애널 11:00 이후 오늘 날짜 · 매일 판단 08:30 이후 오늘
+function kstNow(){ const d=new Date(); return new Date(d.getTime()+(d.getTimezoneOffset()+540)*60000); }
+function kParse(s){ const m=String(s||'').match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/); return m ? new Date(+m[1], m[2]-1, +m[3], +(m[4]||0), +(m[5]||0)) : null; }
+function staleOf(){
+  const now=kstNow(), hm=now.getHours()*60+now.getMinutes(), wk=now.getDay()>=1 && now.getDay()<=5;
+  const today=new Date(now.getFullYear(), now.getMonth(), now.getDate()), out={};
+  if(typeof DATA!=='undefined' && DATA){ const d=kParse(DATA.updated);
+    if(d && wk){ if(hm>=630 && hm<=990) out.flow=(now-d)>90*60000; else if(hm>=1020) out.flow=d<new Date(today.getTime()+930*60000); } }
+  if(LISTS.mcap){ const m=kParse((LISTS.mcap.meta||{}).updated); out.mcap=!m || (now-m)>14*3600000; }
+  if(LISTS.analyst){ const a=kParse(LISTS.analyst.updated); out.analyst=!a || a<(hm>=660 ? today : new Date(today.getTime()-86400000)); }
+  if(LISTS.top20){ const T=LISTS.top20.meta||{}, j=kParse(T.judged_at||T.judged); out.judge=hm>=510 && (!j || j<today); }
+  return out;
+}
+function markStale(){
+  const s=staleOf(), map={flow:s.flow, value_pick:s.flow, momentum:s.flow, mcap:s.mcap, analyst:s.analyst, top20:s.judge, index:s.judge};
+  Object.entries(map).forEach(([k,v])=>{ const t=document.querySelector('.tab[data-k="'+k+'"]'); if(t) t.classList.toggle('stale', !!v); });
+  const u=document.getElementById('updated'); if(u){ u.style.color=s.flow ? 'var(--red)' : ''; u.title=s.flow ? '수급 자료가 예정보다 오래됐어요 — 점검이 2시간 안에 다시 돌립니다' : ''; }
+}
+setInterval(()=>{ try{ markStale(); }catch(e){} }, 10*60*1000);
 function listBadge(k){
   try{ const el=document.getElementById('c-'+k), n=lCnt(k); if(el && n!=null) el.textContent=n; }
   catch(e){ console.error('리스트 개수 표시 실패:', e); }
@@ -2322,7 +2344,8 @@ function dailyReport(TM){
   else if(md.includes('{{추천 종목}}')){ const [a,b]=md.split('{{추천 종목}}'); html=rpRender(a)+rc+rpRender(b); }
   else { const L=md.split('\n'), i=L.findIndex(l=>/^##\s+(4\.|TOP 20)/.test(l.trim()));
     html = i>=0 ? rpRender(L.slice(0,i).join('\n'))+rc+rpRender(L.slice(i).join('\n')) : rpRender(md)+rc; }
-  return '<div class="drp"><div class="drp-at">오늘의 시황 리포트 · '+esc(TM.judged_at||TM.judged||'')+' 기준</div>'+html+'</div>';
+  const late=staleOf().judge ? '<div class="stalebar">오늘 판단이 아직 없습니다 — 아래는 '+esc(TM.judged_at||TM.judged||'')+' 판단입니다</div>' : '';
+  return '<div class="drp">'+late+'<div class="drp-at">오늘의 시황 리포트 · '+esc(TM.judged_at||TM.judged||'')+' 기준</div>'+html+'</div>';
 }
 function idxBlock(){
   const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';
@@ -2422,6 +2445,7 @@ async function load(){
     catch(_){ res=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error(); }
     DATA=await res.json();
     document.getElementById('updated').textContent=DATA.updated;
+  setTimeout(()=>{ try{ markStale(); }catch(e){} }, 0);
     document.getElementById('c-flow').textContent=DATA.both.length;     // 수급 탭 숫자 = 동시 수급(0순위)
     document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
     document.getElementById('c-momentum').textContent=(DATA.momentum||[]).length;
