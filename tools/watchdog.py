@@ -61,7 +61,8 @@ def checks(now):
     g = parse(rd('cache/macro.json').get('collected_at'))
     out.append(('거시', 'macro.yml', g, g is None or (now - g) > dt.timedelta(hours=16)))
     j = parse((rd('top20/picks.json').get('meta') or {}).get('judged_at'))
-    out.append(('매일 판단', None, j, now.strftime('%H:%M') >= '08:30' and (j is None or j.date() < now.date())))
+    force = os.environ.get('FORCE_FIRE', '').lower() == 'true'                 # 수동 시험: 판단이 있어도 루틴을 한 번 부른다
+    out.append(('매일 판단', None, j, force or (now.strftime('%H:%M') >= '08:30' and (j is None or j.date() < now.date()))))
     return out
 
 
@@ -100,7 +101,7 @@ def main(argv):
             print('  정상   %-6s 마지막 %s' % (name, when)); continue
         if not wf:
             url, tok = os.environ.get('ROUTINE_TRIGGER_URL', '').strip(), os.environ.get('ROUTINE_TRIGGER_TOKEN', '').strip()
-            window = '08:30' <= now.strftime('%H:%M') <= '14:00'
+            window = ('08:30' <= now.strftime('%H:%M') <= '14:00') or os.environ.get('FORCE_FIRE', '').lower() == 'true'
             if url and tok and window and not dry:
                 body = json.dumps({'text': '점검: 오늘(%s) 판단이 %s까지 올라오지 않아 다시 실행합니다. 절차서대로 오늘 판단을 갱신하세요.'
                                    % (now.strftime('%m-%d'), now.strftime('%H:%M'))}).encode()

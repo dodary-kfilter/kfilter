@@ -7,6 +7,11 @@ on:
     - cron: '27 */2 * * *'
     - cron: '57 23 * * *'          # 한국시간 08:57 — 아침 수집·매일 판단을 한 번 더 확인
   workflow_dispatch:
+    inputs:
+      fire:
+        description: '루틴 API 트리거 시험(판단이 있어도 한 번 부른다)'
+        type: boolean
+        default: false
 
 permissions:
   actions: write
@@ -27,4 +32,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ROUTINE_TRIGGER_URL: ${{ secrets.ROUTINE_TRIGGER_URL }}
           ROUTINE_TRIGGER_TOKEN: ${{ secrets.ROUTINE_TRIGGER_TOKEN }}
+          FORCE_FIRE: ${{ inputs.fire }}
         run: python3 tools/watchdog.py
