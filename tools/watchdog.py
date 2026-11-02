@@ -10,7 +10,9 @@ GitHub Actions(.github/workflows/watchdog.yml)가 2시간마다 돌린다. GITHU
   시총순(lists/mcap.json)      14시간
   애널(lists/analyst.json)     11:00 이후엔 오늘 날짜 · 그 전엔 어제 날짜까지
   거시(cache/macro.json)       16시간
-  매일 판단(top20/picks.json)  08:30 이후엔 오늘 판단 — GitHub이 대신 돌릴 수 없어 표시만(ROUTINE_TRIGGER_URL·TOKEN이 있으면 Claude 루틴 API 트리거를 부른다)
+  매일 판단(top20/picks.json)  08:30 이후엔 오늘 판단 — ROUTINE_TRIGGER_URL·TOKEN 비밀 값이 있으면 Claude 루틴 API 트리거로 다시 돌린다
+                               (08:30~14:00 사이 점검 때만 — 하루 최대 서너 번, 그 뒤엔 사이트 빨간 표시만)
+루틴 API 트리거: POST {URL}  Authorization: Bearer {TOKEN} · anthropic-beta: experimental-cc-routine-2026-04-01 · 본문 {"text": 왜 다시 돌리는지}
 같은 워크플로가 이미 돌고 있거나 최근 60분 안에 다시 실행한 적이 있으면 또 보내지 않는다(같은 실패를 되풀이해 쌓지 않게).
 """
 import json, os, sys, datetime as dt, urllib.request, urllib.error
@@ -97,14 +99,23 @@ def main(argv):
         if not stale:
             print('  정상   %-6s 마지막 %s' % (name, when)); continue
         if not wf:
-            url, tok = os.environ.get('ROUTINE_TRIGGER_URL', ''), os.environ.get('ROUTINE_TRIGGER_TOKEN', '')
-            if url and tok and not dry:
+            url, tok = os.environ.get('ROUTINE_TRIGGER_URL', '').strip(), os.environ.get('ROUTINE_TRIGGER_TOKEN', '').strip()
+            window = '08:30' <= now.strftime('%H:%M') <= '14:00'
+            if url and tok and window and not dry:
+                body = json.dumps({'text': '점검: 오늘(%s) 판단이 %s까지 올라오지 않아 다시 실행합니다. 절차서대로 오늘 판단을 갱신하세요.'
+                                   % (now.strftime('%m-%d'), now.strftime('%H:%M'))}).encode()
                 try:
-                    r = urllib.request.urlopen(urllib.request.Request(url, method='POST', data=b'{}', headers={
-                        'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json'}), timeout=20)
-                    print('  오래됨 %-6s 마지막 %s → 루틴 API 트리거 %s' % (name, when, r.status))
+                    r = urllib.request.urlopen(urllib.request.Request(url, method='POST', data=body, headers={
+                        'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json',
+                        'anthropic-beta': 'experimental-cc-routine-2026-04-01'}), timeout=30)
+                    sess = (json.loads(r.read() or b'{}') or {}).get('claude_code_session_url', '')
+                    print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 %s %s' % (name, when, r.status, sess))
+                except urllib.error.HTTPError as e:
+                    print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 실패 %s %s' % (name, when, e.code, e.read()[:120]))
                 except Exception as e:
-                    print('  오래됨 %-6s 마지막 %s → 루틴 API 트리거 실패 %s' % (name, when, str(e)[:60]))
+                    print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 실패 %s' % (name, when, str(e)[:60]))
+            elif url and tok and not window:
+                print('  오래됨 %-6s 마지막 %s → 다시 실행 시간대(08:30~14:00) 밖 — 사이트 빨간 표시만' % (name, when))
             else:
                 print('  오래됨 %-6s 마지막 %s → 사이트에 빨간 표시(대신 돌릴 수 없음)' % (name, when))
             continue
