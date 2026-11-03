@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-03a (자료 나이 표시 — 휴장일 인식, 시총순 요일별 기준) / 이전: 2026-11-02a -->
+<!-- build: 2026-11-03b (자료 갱신 — 수집 6가지: 수급·시총순·애널·거시·TOP 20 가격·13F) / 이전: 2026-11-03a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -284,7 +284,7 @@
     <h1>투자 분석</h1>
     <div class="hd-r">
       <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
-      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="GitHub에서 수급·시총순·애널·거시 수집을 지금 돌립니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
+      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급·저가매수·모멘텀·시총순·애널·거시·TOP 20 가격·13F를 지금 새로 받습니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
       <div class="ghmsg" id="ghmsg"></div>
       <div class="meta">최종 갱신 <b id="updated">—</b><span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
     </div>
@@ -1375,7 +1375,8 @@ function fallbackCopy(text, done){
 //   토큰은 사이트 코드에 넣지 않는다(공개 저장소라 누구나 본다). 처음 누를 때 붙여 넣은 토큰을 이 기기의 브라우저에만 저장
 //   토큰 권한: kfilter 저장소의 Actions 읽기·쓰기만 — 실행 단추를 누르는 권한일 뿐 코드·자료는 못 바꾼다
 const GH_REPO='dodary-kfilter/kfilter', GH_KEY='kf_gh_token';
-const GH_FLOWS=[['update.yml','수급'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시']];
+// 자료를 새로 만드는 수집은 모두 — 매일 판단(Claude 루틴)과 한글 이름(토스가 막혀 지금은 실패)만 빼고
+const GH_FLOWS=[['update.yml','수급·저가매수·모멘텀'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시'],['top20.yml','TOP 20 가격'],['f13.yml','13F']];
 function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h; }
 async function ghRun(){
   const btn=document.getElementById('ghbtn'); if(!btn || btn.disabled) return;
@@ -1399,7 +1400,7 @@ async function ghRun(){
   }
   const names=GH_FLOWS.filter((x,i)=>st[i]===204).map(x=>x[1]).join('·');
   btn.textContent='갱신 중 0/'+ok;
-  ghMsg(names+' 수집을 시작했어요. 보통 3~5분 걸려요');
+  ghMsg(names+'를 새로 받고 있어요. 보통 5~7분 걸려요');
   const until=Date.now()+15*60*1000;
   const tick=async()=>{
     let runs=[];
