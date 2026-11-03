@@ -12,7 +12,7 @@ GitHub Actions(.github/workflows/watchdog.yml)가 2시간마다 돌린다. GITHU
   거시(cache/macro.json)       16시간
   매일 판단(top20/picks.json)  08:30 이후엔 오늘 판단 — ROUTINE_TRIGGER_URL·TOKEN 비밀 값이 있으면 Claude 루틴 API 트리거로 다시 돌린다
                                (08:30~14:00 사이 점검 때만 — 하루 최대 서너 번, 그 뒤엔 사이트 빨간 표시만)
-루틴 API 트리거: POST {URL}  Authorization: Bearer {TOKEN} · anthropic-beta: experimental-cc-routine-2026-04-01 · 본문 {"text": 왜 다시 돌리는지}
+루틴 API 트리거: POST {URL}  Authorization: Bearer {TOKEN} · anthropic-version: 2023-06-01 · anthropic-beta: experimental-cc-routine-2026-04-01 · 본문 {"text": 왜 다시 돌리는지}
 같은 워크플로가 이미 돌고 있거나 최근 60분 안에 다시 실행한 적이 있으면 또 보내지 않는다(같은 실패를 되풀이해 쌓지 않게).
 """
 import json, os, sys, datetime as dt, urllib.request, urllib.error
@@ -108,6 +108,7 @@ def main(argv):
                 try:
                     r = urllib.request.urlopen(urllib.request.Request(url, method='POST', data=body, headers={
                         'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json',
+                        'anthropic-version': '2023-06-01',                       # 공식 문서: 필수(2023-06-01만 받음)
                         'anthropic-beta': 'experimental-cc-routine-2026-04-01'}), timeout=30)
                     sess = (json.loads(r.read() or b'{}') or {}).get('claude_code_session_url', '')
                     print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 %s %s' % (name, when, r.status, sess))
