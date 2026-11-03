@@ -1518,6 +1518,16 @@ def main():
             hm = now_kst().strftime("%H:%M")
             if not ("09:00" <= hm <= "09:40"):
                 print(f"[스킵] 오늘({today_kst})은 거래일이 아님 (소스 최신 {new_date}). 예약 실행 생략.", flush=True)
+                # 휴장 표시(하루 한 번) — 점검 담당·사이트가 휴장일의 '갱신 없음'을 빠짐으로 잘못 보지 않게 (2026-11-03)
+                try:
+                    hb_p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "status", "scan.json")
+                    hb = json.load(open(hb_p, encoding="utf-8")) if os.path.exists(hb_p) else {}
+                    if hb.get("date") != today_kst:
+                        os.makedirs(os.path.dirname(hb_p), exist_ok=True)
+                        json.dump({"date": today_kst, "trading_day": False, "latest": new_date,
+                                   "checked": now_kst().strftime("%Y-%m-%d %H:%M")}, open(hb_p, "w", encoding="utf-8"), ensure_ascii=False)
+                except Exception as e:
+                    print("  휴장 표시 실패:", e, flush=True)
                 return
 
     # [#3 우선 처리] 내 종목(포트폴리오)을 유니버스 스캔보다 '먼저' 돌린다.

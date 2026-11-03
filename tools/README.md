@@ -39,7 +39,10 @@
 
 
 ## 점검 (2026-11-02) — 자동 갱신이 빠졌는지 확인하고 다시 돌리기
-- `python3 tools/watchdog.py [--dry]` — 자료 나이로 검사: 수급(평일 장중 90분·17시 이후 그날 15:30 이후)·시총순 14시간·애널(11시 이후 오늘)·거시 16시간·매일 판단(08:30 이후 오늘)
+- `python3 tools/watchdog.py [--dry]` — 자료 나이로 검사: 수급(평일 장중 90분·17시 이후 그날 15:30 이후, 휴장일 제외)·시총순(화~금 14시간, 토·일·월 26시간)·애널(11시 이후 오늘)·거시 16시간·매일 판단(08:30 이후 오늘)
+- 휴장일: 스캐너가 예약을 건너뛸 때 status/scan.json에 하루 한 번 '휴장' 표시 → 점검·사이트가 빠짐으로 보지 않음
+- 매일 판단이 빠지면 08:30~14:00 점검 때 루틴 API 트리거(비밀 값 ROUTINE_TRIGGER_URL·TOKEN), 깨운 시각을 status/watchdog.json에 남겨 100분 안엔 다시 깨우지 않음
+- 판단 반영 워크플로가 루틴의 남은 작업 브랜치(claude/affectionate-… 등, 판단 파일만 바꾸고 2시간 넘은 것)를 치움
 - 오래된 수집만 workflow_dispatch로 다시 실행(GITHUB_TOKEN, actions: write) — 이미 도는 중이거나 60분 안에 다시 돌렸으면 건너뜀
 - 매일 판단(Claude 루틴)은 대신 돌릴 수 없어 사이트 표시만 — 비밀 값 ROUTINE_TRIGGER_URL·ROUTINE_TRIGGER_TOKEN이 있으면 루틴 API 트리거를 부름
 - 자동: `.github/workflows/watchdog.yml` 2시간마다(매시 27분) + 한국시간 08:57

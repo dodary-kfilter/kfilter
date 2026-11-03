@@ -7,13 +7,15 @@ GitHub Actions(.github/workflows/watchdog.yml)가 2시간마다 돌린다. GITHU
 
 나이 기준(한국시간)
   수급(data.json updated)      평일 10:30~16:30엔 90분 · 평일 17:00 이후엔 그날 15:30 이후 갱신 · 주말은 보지 않음
-  시총순(lists/mcap.json)      14시간
+                               휴장일(status/scan.json: 오늘 trading_day=false)도 보지 않음 — 스캐너가 예약 실행을 건너뛰기 때문
+  시총순(lists/mcap.json)      화~금 14시간 · 토·일·월 26시간(주말엔 하루 두 번만 돌아 간격이 22시간까지 벌어진다)
   애널(lists/analyst.json)     11:00 이후엔 오늘 날짜 · 그 전엔 어제 날짜까지
   거시(cache/macro.json)       16시간
   매일 판단(top20/picks.json)  08:30 이후엔 오늘 판단 — ROUTINE_TRIGGER_URL·TOKEN 비밀 값이 있으면 Claude 루틴 API 트리거로 다시 돌린다
                                (08:30~14:00 사이 점검 때만 — 하루 최대 서너 번, 그 뒤엔 사이트 빨간 표시만)
 루틴 API 트리거: POST {URL}  Authorization: Bearer {TOKEN} · anthropic-version: 2023-06-01 · anthropic-beta: experimental-cc-routine-2026-04-01 · 본문 {"text": 왜 다시 돌리는지}
 같은 워크플로가 이미 돌고 있거나 최근 60분 안에 다시 실행한 적이 있으면 또 보내지 않는다(같은 실패를 되풀이해 쌓지 않게).
+루틴은 한 번 깨우면 25~35분 걸린다 — 마지막으로 깨운 시각(status/watchdog.json)에서 100분 안이면 또 깨우지 않는다(겹쳐 돌지 않게).
 """
 import json, os, sys, datetime as dt, urllib.request, urllib.error
 
@@ -44,17 +46,20 @@ def parse(s):
 def checks(now):
     out = []
     wk = now.weekday() < 5
+    hb = rd('status/scan.json')
+    holiday = hb.get('date') == now.strftime('%Y-%m-%d') and hb.get('trading_day') is False
     d = parse(rd('data.json').get('updated'))
     stale = False
-    if d and wk:
+    if d and wk and not holiday:
         t = now.strftime('%H:%M')
         if '10:30' <= t <= '16:30':
             stale = (now - d) > dt.timedelta(minutes=90)
         elif t >= '17:00':
             stale = d < now.replace(hour=15, minute=30, second=0, microsecond=0)
-    out.append(('수급', 'update.yml', d, stale or d is None and wk))
+    out.append(('수급' + (' (휴장)' if holiday else ''), 'update.yml', d, stale or (d is None and wk and not holiday)))
     m = parse((rd('lists/mcap.json').get('meta') or {}).get('updated'))
-    out.append(('시총순', 'mcap.yml', m, m is None or (now - m) > dt.timedelta(hours=14)))
+    lim = 14 if now.weekday() in (1, 2, 3, 4) else 26
+    out.append(('시총순', 'mcap.yml', m, m is None or (now - m) > dt.timedelta(hours=lim)))
     a = parse(rd('lists/analyst.json').get('updated'))
     need = now.date() if now.strftime('%H:%M') >= '11:00' else now.date() - dt.timedelta(days=1)
     out.append(('애널', 'analyst.yml', a, a is None or a.date() < need))
@@ -101,8 +106,12 @@ def main(argv):
             print('  정상   %-6s 마지막 %s' % (name, when)); continue
         if not wf:
             url, tok = os.environ.get('ROUTINE_TRIGGER_URL', '').strip(), os.environ.get('ROUTINE_TRIGGER_TOKEN', '').strip()
-            window = ('08:30' <= now.strftime('%H:%M') <= '14:00') or os.environ.get('FORCE_FIRE', '').lower() == 'true'
-            if url and tok and window and not dry:
+            force = os.environ.get('FORCE_FIRE', '').lower() == 'true'
+            window = ('08:30' <= now.strftime('%H:%M') <= '14:00') or force
+            last = parse(rd('status/watchdog.json').get('last_fire'))
+            if url and tok and window and not force and last and (now - last) < dt.timedelta(minutes=100):
+                print('  오래됨 %-6s 마지막 %s → 루틴을 %s에 깨워 아직 도는 중일 수 있음 — 다시 깨우지 않음' % (name, when, last.strftime('%H:%M')))
+            elif url and tok and window and not dry:
                 body = json.dumps({'text': '점검: 오늘(%s) 판단이 %s까지 올라오지 않아 다시 실행합니다. 절차서대로 오늘 판단을 갱신하세요.'
                                    % (now.strftime('%m-%d'), now.strftime('%H:%M'))}).encode()
                 try:
@@ -112,6 +121,9 @@ def main(argv):
                         'anthropic-beta': 'experimental-cc-routine-2026-04-01'}), timeout=30)
                     sess = (json.loads(r.read() or b'{}') or {}).get('claude_code_session_url', '')
                     print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 %s %s' % (name, when, r.status, sess))
+                    os.makedirs(os.path.join(ROOT, 'status'), exist_ok=True)       # 깨운 시각 기록 — 워크플로가 저장소에 올린다
+                    json.dump({'last_fire': now.strftime('%Y-%m-%d %H:%M'), 'session': sess, 'forced': force},
+                              open(os.path.join(ROOT, 'status', 'watchdog.json'), 'w', encoding='utf-8'), ensure_ascii=False)
                 except urllib.error.HTTPError as e:
                     print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 실패 %s %s' % (name, when, e.code, e.read()[:120]))
                 except Exception as e:

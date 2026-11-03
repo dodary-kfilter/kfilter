@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-02a (자료 나이 점검 — 자동 갱신이 빠지면 탭·머리·리포트에 빨간 표시) / 이전: 2026-10-31d -->
+<!-- build: 2026-11-03a (자료 나이 표시 — 휴장일 인식, 시총순 요일별 기준) / 이전: 2026-11-02a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1856,12 +1856,16 @@ function lCnt(k){
 //   수급·저가매수·모멘텀(data.json) 평일 10:30~16:30엔 90분, 17:00 이후엔 그날 15:30 이후 · 시총순 14시간 · 애널 11:00 이후 오늘 날짜 · 매일 판단 08:30 이후 오늘
 function kstNow(){ const d=new Date(); return new Date(d.getTime()+(d.getTimezoneOffset()+540)*60000); }
 function kParse(s){ const m=String(s||'').match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/); return m ? new Date(+m[1], m[2]-1, +m[3], +(m[4]||0), +(m[5]||0)) : null; }
+let SCANHB=null;        // 휴장 표시(status/scan.json) — 스캐너가 휴장일 예약을 건너뛸 때 하루 한 번 남긴다
 function staleOf(){
   const now=kstNow(), hm=now.getHours()*60+now.getMinutes(), wk=now.getDay()>=1 && now.getDay()<=5;
   const today=new Date(now.getFullYear(), now.getMonth(), now.getDate()), out={};
-  if(typeof DATA!=='undefined' && DATA){ const d=kParse(DATA.updated);
+  const tstr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
+  const holiday=!!(SCANHB && SCANHB.date===tstr && SCANHB.trading_day===false);
+  if(typeof DATA!=='undefined' && DATA && !holiday){ const d=kParse(DATA.updated);
     if(d && wk){ if(hm>=630 && hm<=990) out.flow=(now-d)>90*60000; else if(hm>=1020) out.flow=d<new Date(today.getTime()+930*60000); } }
-  if(LISTS.mcap){ const m=kParse((LISTS.mcap.meta||{}).updated); out.mcap=!m || (now-m)>14*3600000; }
+  if(LISTS.mcap){ const m=kParse((LISTS.mcap.meta||{}).updated), lim=[2,3,4,5].includes(now.getDay()) ? 14 : 26;   // 토·일·월은 26시간(주말엔 하루 두 번만 돈다)
+    out.mcap=!m || (now-m)>lim*3600000; }
   if(LISTS.analyst){ const a=kParse(LISTS.analyst.updated); out.analyst=!a || a<(hm>=660 ? today : new Date(today.getTime()-86400000)); }
   if(LISTS.top20){ const T=LISTS.top20.meta||{}, j=kParse(T.judged_at||T.judged); out.judge=hm>=510 && (!j || j<today); }
   return out;
@@ -1872,6 +1876,8 @@ function markStale(){
   const u=document.getElementById('updated'); if(u){ u.style.color=s.flow ? 'var(--red)' : ''; u.title=s.flow ? '수급 자료가 예정보다 오래됐어요 — 점검이 2시간 안에 다시 돌립니다' : ''; }
 }
 setInterval(()=>{ try{ markStale(); }catch(e){} }, 10*60*1000);
+fetch('https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/status/scan.json?t='+Date.now(), {cache:'no-store'})
+  .then(r=>r.ok ? r.json() : null).then(j=>{ SCANHB=j; try{ markStale(); }catch(e){} }).catch(()=>{});
 function listBadge(k){
   try{ const el=document.getElementById('c-'+k), n=lCnt(k); if(el && n!=null) el.textContent=n; }
   catch(e){ console.error('리스트 개수 표시 실패:', e); }

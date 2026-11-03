@@ -15,7 +15,7 @@ on:
 
 permissions:
   actions: write
-  contents: read
+  contents: write          # 루틴을 깨운 시각(status/watchdog.json)을 남겨, 다음 점검이 겹쳐 깨우지 않게
 
 concurrency:
   group: watchdog
@@ -34,3 +34,12 @@ jobs:
           ROUTINE_TRIGGER_TOKEN: ${{ secrets.ROUTINE_TRIGGER_TOKEN }}
           FORCE_FIRE: ${{ inputs.fire }}
         run: python3 tools/watchdog.py
+      - name: 깨운 시각 기록 올리기(깨운 때만)
+        run: |
+          git config user.name 'kfilter-bot'
+          git config user.email 'kfilter-bot@users.noreply.github.com'
+          git add -A status/watchdog.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo '기록할 것 없음'; exit 0; fi
+          git commit -q -m "점검: 매일 판단 루틴 다시 깨움 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
+          exit 1

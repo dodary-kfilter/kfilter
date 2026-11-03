@@ -68,3 +68,17 @@ jobs:
           git commit -q -m "$(git log -1 --format=%s "origin/$BR") — $BR에서 옮김"
           for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
           git push -q origin --delete "$BR" || true
+      - name: 루틴이 남긴 작업 브랜치 정리(2시간 넘은 것만)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 루틴 세션은 판단 커밋을 claude/judge-* 말고 자기 작업 브랜치(claude/affectionate-… 등)에도 올린다 — 하루 하나씩 쌓이므로 치운다
+          # 판단 파일 세 종류만 바꾼 브랜치이고, 마지막 커밋이 2시간 넘었을 때만 지운다(아직 도는 세션은 건드리지 않음)
+          now=$(date -u +%s)
+          for b in $(gh api "repos/${GITHUB_REPOSITORY}/branches?per_page=100" --jq '.[].name' | grep '^claude/' | grep -v '^claude/judge-'); do
+            info=$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...$b" --jq '[([.files[].filename] | map(test("^(top20/picks\\.json|top20/top20\\.json|top20/log/[0-9-]+\\.md)$")) | all), (.commits[-1].commit.committer.date)] | @tsv' 2>/dev/null) || continue
+            ok=$(echo "$info" | cut -f1); when=$(echo "$info" | cut -f2)
+            [ -z "$when" ] && continue
+            age=$(( now - $(date -u -d "$when" +%s) ))
+            if [ "$ok" = "true" ] && [ $age -gt 7200 ]; then git push -q origin --delete "$b" && echo "지움: $b"; else echo "둠: $b ($ok, ${age}초)"; fi
+          done
