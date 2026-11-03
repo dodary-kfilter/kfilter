@@ -27,11 +27,13 @@ jobs:
         run: python3 tools/us_fund_fetch.py
       - name: 국장 공시 사건
         run: python3 tools/kr_events_fetch.py
+      - name: 거르기(업종·기업 점수 → 후보)
+        run: python3 tools/funnel_screen.py
       - name: 결과 커밋
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add lists/sectors.json lists/us_fund.json lists/events.json
+          git add lists/sectors.json lists/us_fund.json lists/events.json lists/candidates.json
           git commit -m "깔때기 재료 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')" || { echo "변경 없음"; exit 0; }
           for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
           exit 1
