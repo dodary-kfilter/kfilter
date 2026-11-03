@@ -112,8 +112,10 @@ def main(argv):
             if url and tok and window and not force and last and (now - last) < dt.timedelta(minutes=100):
                 print('  오래됨 %-6s 마지막 %s → 루틴을 %s에 깨워 아직 도는 중일 수 있음 — 다시 깨우지 않음' % (name, when, last.strftime('%H:%M')))
             elif url and tok and window and not dry:
-                body = json.dumps({'text': '점검: 오늘(%s) 판단이 %s까지 올라오지 않아 다시 실행합니다. 절차서대로 오늘 판단을 갱신하세요.'
-                                   % (now.strftime('%m-%d'), now.strftime('%H:%M'))}).encode()
+                reason = os.environ.get('FIRE_REASON', '').strip()
+                text = reason if (force and reason) else ('점검: 오늘(%s) 판단이 %s까지 올라오지 않아 다시 실행합니다. 절차서대로 오늘 판단을 갱신하세요.'
+                                                          % (now.strftime('%m-%d'), now.strftime('%H:%M')))
+                body = json.dumps({'text': text}).encode()
                 try:
                     r = urllib.request.urlopen(urllib.request.Request(url, method='POST', data=body, headers={
                         'Authorization': 'Bearer ' + tok, 'Content-Type': 'application/json',

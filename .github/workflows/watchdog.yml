@@ -9,9 +9,13 @@ on:
   workflow_dispatch:
     inputs:
       fire:
-        description: '루틴 API 트리거 시험(판단이 있어도 한 번 부른다)'
+        description: '매일 판단 루틴을 지금 다시 깨운다(판단이 있어도)'
         type: boolean
         default: false
+      reason:
+        description: '루틴에 전할 이유(사이트의 자료 갱신 버튼이 채운다)'
+        type: string
+        default: ''
 
 permissions:
   actions: write
@@ -33,6 +37,7 @@ jobs:
           ROUTINE_TRIGGER_URL: ${{ secrets.ROUTINE_TRIGGER_URL }}
           ROUTINE_TRIGGER_TOKEN: ${{ secrets.ROUTINE_TRIGGER_TOKEN }}
           FORCE_FIRE: ${{ inputs.fire }}
+          FIRE_REASON: ${{ inputs.reason }}
         run: python3 tools/watchdog.py
       - name: 깨운 시각 기록 올리기(깨운 때만)
         run: |
