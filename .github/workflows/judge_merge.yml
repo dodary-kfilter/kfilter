@@ -1,7 +1,7 @@
 name: 매일 판단 반영
 
 # Claude Code 예약 작업(tools/daily_judge.md)이 claude/judge-* 브랜치로 올린 판단을 main으로 옮긴다
-#   옮기는 파일은 세 가지뿐: top20/picks.json, top20/top20.json, top20/log/*.md — 다른 파일이 섞여 있으면 멈춘다
+#   옮기는 파일: top20/picks.json, top20/top20.json, top20/log/*.md, notes/kr|us/*.md(기업 노트) — 다른 파일이 섞여 있으면 멈춘다
 #   (예약 작업은 claude/ 브랜치에만 올릴 수 있고, main에는 자동 갱신 봇의 커밋이 섞여 있어 직접 올리지 못한다)
 on:
   push:
@@ -31,7 +31,7 @@ jobs:
           git fetch -q origin main
           CHANGED=$(git diff --name-only origin/main...HEAD)
           echo "$CHANGED"
-          BAD=$(echo "$CHANGED" | grep -v -E '^(top20/picks\.json|top20/top20\.json|top20/log/[0-9-]+\.md)$' || true)
+          BAD=$(echo "$CHANGED" | grep -v -E '^(top20/picks\.json|top20/top20\.json|top20/log/[0-9-]+\.md|notes/(kr|us)/[A-Za-z0-9._-]+\.md)$' || true)
           if [ -n "$BAD" ]; then echo "★ 옮길 수 없는 파일: $BAD"; exit 1; fi
           python3 - <<'PY'
           import json
@@ -54,7 +54,24 @@ jobs:
               assert all(0 <= float(A.get(k) or 0) <= 100 for k in keys) and abs(tot - 100) <= 1, ('전체 비중 합계', tot)
               assert sum(float(x['weight']) for x in R if x['mk'] == 'kr') <= float(A.get('kr') or 0) + 0.01, '국장 추천 합계가 국장 주식 비중보다 큼'
               assert sum(float(x['weight']) for x in R if x['mk'] == 'us') <= float(A.get('us') or 0) + 0.01, '미장 추천 합계가 미장 주식 비중보다 큼'
-          print('판단 파일 정상 · 추천 %d개 · 전체 비중 %s' % (len(R), '있음' if A else '없음'))
+          G = d['meta'].get('regime')
+          if G is not None:
+              assert isinstance(G, dict) and G.get('phase') and isinstance(G.get('favored', []), list), ('국면', G)
+          S = d['meta'].get('sectors')
+          if S is not None:
+              for m in ('kr', 'us'):
+                  for x in (S.get(m) or []):
+                      assert x.get('name') and x.get('view') in ('확대', '중립', '축소'), ('업종', x)
+          MV = d['meta'].get('moves')
+          if MV is not None:
+              assert isinstance(MV, list), '편입·편출은 목록'
+              for x in MV:
+                  assert x['mk'] in ('kr', 'us') and x['list'] in ('stable', 'aggressive') and x['move'] in ('편입', '편출') and x['code'] and x.get('why'), ('편입·편출', x)
+              cur = {(m, t): {y['code'] for y in d[m][t]} for m in ('kr', 'us') for t in ('stable', 'aggressive')}
+              for x in MV:
+                  if x['move'] == '편입':
+                      assert x['code'] in cur[(x['mk'], x['list'])], ('편입했다는데 목록에 없음', x)
+          print('판단 파일 정상 · 추천 %d개 · 전체 비중 %s · 국면 %s · 업종 %s · 편입·편출 %s' % (len(R), '있음' if A else '없음', '있음' if G else '없음', '있음' if S else '없음', len(MV) if MV is not None else '없음'))
           PY
       - name: main으로 옮기기
         run: |
@@ -77,7 +94,7 @@ jobs:
           # 판단 파일 세 종류만 바꾼 브랜치이고, 마지막 커밋이 2시간 넘었을 때만 지운다(아직 도는 세션은 건드리지 않음)
           now=$(date -u +%s)
           for b in $(gh api "repos/${GITHUB_REPOSITORY}/branches?per_page=100" --jq '.[].name' | grep '^claude/' | grep -v '^claude/judge-'); do
-            info=$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...$b" --jq '[([.files[].filename] | map(test("^(top20/picks\\.json|top20/top20\\.json|top20/log/[0-9-]+\\.md)$")) | all), (.commits[-1].commit.committer.date)] | @tsv' 2>/dev/null) || continue
+            info=$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...$b" --jq '[([.files[].filename] | map(test("^(top20/picks\\.json|top20/top20\\.json|top20/log/[0-9-]+\\.md|notes/(kr|us)/[A-Za-z0-9._-]+\\.md)$")) | all), (.commits[-1].commit.committer.date)] | @tsv' 2>/dev/null) || continue
             ok=$(echo "$info" | cut -f1); when=$(echo "$info" | cut -f2)
             [ -z "$when" ] && continue
             age=$(( now - $(date -u -d "$when" +%s) ))

@@ -5,6 +5,8 @@
   - 번들(tools/bundle.py)을 국장·미장 한 번씩 돌려 머리 줄(#거시·#시장·#미국시장·#미국 심리·신용·#환율·유가·시장 뉴스)만 가져온다
   - 지정학·정책 뉴스 제목(최근 2일): 휴전·공습·관세·금리·수출 규제 등 — 판단을 바꿀 사건을 놓치지 않으려고
   - TOP 20 판단 종목(top20/picks.json) 80개의 지금 가격·1일·5일 등락·판단 때 대비·목표까지·손절까지·도달 여부
+  - 깔때기 재료(2026-11-03): 재료가 오래됐으면 여기서 새로 받고(업종 추세·공시 사건은 매번, 미장 재무는 20시간 넘으면),
+    거르기(tools/funnel_screen.py)를 돌려 업종 점수·후보 표·공시 사건·기업 노트 현황을 붙인다
 받지 못한 것은 '확인 불가'로 적고 멈추지 않는다.
 """
 import html, json, os, re, subprocess, sys, time, datetime as dt, urllib.request, urllib.parse
@@ -71,9 +73,105 @@ def price(sym):
         return None
 
 
+def run_tool(args, timeout):
+    try:
+        r = subprocess.run([sys.executable] + args, capture_output=True, text=True, timeout=timeout, cwd=ROOT)
+        return (r.stdout or '').strip().split('\n')[0][:160] or (r.stderr or '').strip()[-160:]
+    except Exception as e:
+        return '실패 — %s' % type(e).__name__
+
+
+def age_h(path, key='updated'):
+    try:
+        u = json.load(open(os.path.join(ROOT, path), encoding='utf-8')).get(key)
+        t = dt.datetime.strptime(str(u)[:16], '%Y-%m-%d %H:%M').replace(tzinfo=KST)
+        return (dt.datetime.now(KST) - t).total_seconds() / 3600
+    except Exception:
+        return 999
+
+
+def refresh_materials():
+    """깔때기 재료 — GitHub 예약이 빠져도 묵은 재료로 판단하지 않게 여기서 새로 받는다(이 세션 안에서만 쓰고 커밋하지 않는다)"""
+    log = []
+    log.append('업종 추세: ' + run_tool(['tools/sector_fetch.py'], 60))
+    log.append('국장 공시: ' + run_tool(['tools/kr_events_fetch.py'], 120))
+    if age_h('lists/us_fund.json') > 20:
+        log.append('미장 재무·공시: ' + run_tool(['tools/us_fund_fetch.py'], 400))
+    else:
+        log.append('미장 재무·공시: %.0f시간 전 자료 사용(20시간 안)' % age_h('lists/us_fund.json'))
+    log.append('국장 기업 숫자: %.0f시간 전 자료(수급 스캔이 만든다)' % age_h('lists/kr_fund.json'))
+    log.append('거르기: ' + run_tool(['tools/funnel_screen.py'], 60))
+    return log
+
+
+def fmt(v, d=1, pct=False):
+    if v is None or v == '': return '-'
+    if isinstance(v, (int, float)): return ('%+.' + str(d) + 'f' if pct else '%.' + str(d) + 'f') % v
+    return str(v)
+
+
+def note_info(mk, code):
+    p = os.path.join(ROOT, 'notes', mk, code.replace('/', '_') + '.md')
+    if not os.path.exists(p): return '없음'
+    m = re.search(r'업데이트:\s*(\d{4}-\d{2}-\d{2})', open(p, encoding='utf-8').read(400))
+    return m.group(1) if m else '있음'
+
+
+def print_funnel():
+    C = {}
+    try:
+        C = json.load(open(os.path.join(ROOT, 'lists', 'candidates.json'), encoding='utf-8'))
+    except Exception:
+        print('\n## 깔때기 재료 — 확인 불가(후보 파일 없음)'); return
+    print('\n## 업종 점수 (코드 계산 — 3개월·1개월 지수 대비 초과, 50·200일선 추세, 업종 기업 매출 성장 중앙값. 국면 적합성·앞으로의 이익은 네가 판단)')
+    for mk in ('us', 'kr'):
+        print('%s|업종|점수|3개월 초과%%p|1개월 초과%%p|3개월%%|고점 대비%%|200일선 위|매출 성장 중앙값%%' % ('미장' if mk == 'us' else '국장'))
+        for x in (C.get('sectors') or {}).get(mk) or []:
+            print('%s|%s|%.0f|%s|%s|%s|%s|%s|%s' % (mk, x['name'], x['score'], fmt(x.get('rs3m'), pct=True), fmt(x.get('rs1m'), pct=True), fmt(x.get('r3m'), pct=True),
+                                                  fmt(x.get('hi52')), '예' if x.get('above_ma200') else '아니오', fmt(x.get('growth_med'))))
+    print('\n## 후보 (거르기 결과 — 지금 TOP 20 전부 + 안정형·적극형 새 후보 상위 30씩 + 꼭 볼 것). 노트=기업 노트 마지막 업데이트')
+    for mk in ('us', 'kr'):
+        if mk == 'us':
+            print('시장|코드|이름|업종(점수)|안정|적극|지금 TOP20|뽑힌 이유|매출 성장%|최근 분기 성장%|영업이익률%|EV/EBIT|PER|3개월%|고점 대비%|애널|13F|사건|노트')
+        else:
+            print('시장|코드|이름|업종(점수)|안정|적극|지금 TOP20|뽑힌 이유|매출 성장%|영업이익률%(업종)|EV/EBIT(업종)|PER|1개월%|6개월%|고점 대비%|외국인|기관|사건|노트')
+        for r in (C.get(mk) or []):
+            f = r.get('facts') or {}
+            mem = {'stable': '안정형', 'aggressive': '적극형'}.get(r.get('member'), '-')
+            why = '·'.join(w.replace(' 점수 상위', '').replace('(사건·애널·13F·동시 수급)', '') for w in r.get('why_pick') or [])
+            ev = '; '.join('%s %s' % (e['date'][5:], e['kind']) for e in (r.get('events') or [])[:3]) or '-'
+            sec = '%s(%s)' % (r.get('bucket') or '-', fmt(r.get('sector_score'), 0))
+            if r.get('no_numbers'):
+                print('%s|%s|%s|%s|-|-|%s|%s|숫자 없음(적자이거나 목록 밖) — 번들로 볼 것|%s|%s' % (mk, r['code'], r.get('name') or '', sec, mem, why, ev, note_info(mk, r['code']))); continue
+            if mk == 'us':
+                print('us|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s' % (
+                    r['code'], r.get('name'), sec, fmt(r.get('stable'), 0), fmt(r.get('aggressive'), 0), mem, why,
+                    fmt(f.get('rev_g')), fmt(f.get('rev_q_yoy')), fmt(f.get('op_margin')), fmt(f.get('ev_ebit')), fmt(f.get('per')),
+                    fmt(f.get('r3m'), pct=True), fmt(f.get('hi52')), r.get('analysts') or 0, ','.join(r.get('f13') or []) or '-', ev, note_info(mk, r['code'])))
+            else:
+                print('kr|%s|%s|%s|%s|%s|%s|%s|%s|%s(%s)|%s(%s)|%s|%s|%s|%s|%s|%s|%s|%s' % (
+                    r['code'], r.get('name'), sec, fmt(r.get('stable'), 0), fmt(r.get('aggressive'), 0), mem, why,
+                    fmt(f.get('sales_growth')), fmt(f.get('opm_recent')), fmt(f.get('sector_opm')), fmt(f.get('ev_ebit')), fmt(f.get('sector_ev_ebit')),
+                    fmt(f.get('per')), fmt(f.get('r1'), pct=True), fmt(f.get('r6'), pct=True), fmt(f.get('dd_close')),
+                    f.get('f_buydays') or '-', f.get('p_buydays') or '-', ev, note_info(mk, r['code'])))
+    try:
+        E = json.load(open(os.path.join(ROOT, 'lists', 'events.json'), encoding='utf-8'))
+        big = ('합병', '인수', '공개매수', '양수도', '분할', '지배권', '공급계약', '계약 해지', '파산', '정정', '상장 유지')
+        print('\n## 중대 공시 사건 — 후보 밖 기업 포함(최근 3일). 업계 재편·경쟁 구도 변화로 같은 업종 종목을 다시 볼지 판단')
+        for mk in ('us', 'kr'):
+            for e in ((E.get(mk) or {}).get('items') or []):
+                if any(b in e['kind'] for b in big):
+                    print('- %s %s %s(%s) [%s] %s' % (mk, e['date'], e.get('name'), e['code'], e.get('sector') or '', e['kind'] + ((' — ' + e['title'][:60]) if e.get('title') else '')))
+    except Exception:
+        pass
+
+
 def main():
     now = dt.datetime.now(KST)
     print('# 매일 판단 입력 — 모은 시각 %s KST' % now.strftime('%Y-%m-%d %H:%M'))
+    print('## 깔때기 재료 새로 받기')
+    for l in refresh_materials():
+        print('- ' + l)
     with ThreadPoolExecutor(4) as ex:
         fk = ex.submit(bundle, ['kr', '069500', '--brief']); fu = ex.submit(bundle, ['us', 'SPY'])
         fn = [ex.submit(news, q) for q in NEWS_KO] + [ex.submit(news, q, True) for q in NEWS_EN]
@@ -114,6 +212,7 @@ def main():
     print('\n## 지난 판단 요지')
     print('국장:', P['meta'].get('view_kr', '')); print('미장:', P['meta'].get('view_us', ''))
     print('지난 변경:', ' / '.join(P['meta'].get('changes') or []) or '없음')
+    print_funnel()
 
 
 if __name__ == '__main__':
