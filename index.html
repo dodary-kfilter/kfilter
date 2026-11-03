@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-03e (깔때기 4단계 — 지수 탭 리포트에 국면·업종 판단, TOP 20 맨 위에 오늘 편입·편출) / 이전: 2026-11-03d -->
+<!-- build: 2026-11-03f (노크 — 루틴이 안에 있으면 판단을 부르지 않고 5분마다 다시 노크) / 이전: 2026-11-03e -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1394,14 +1394,48 @@ function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h
 //   루틴 토큰은 브라우저에 두지 않는다. 겹치지 않게: 07:20~08:20 정기 판단 중이면 건너뛰고, 40분 안에 다시 시작한 판단이 있으면 건너뛴다
 const RAW_KF='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/';
 function kstStr(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+// ── 노크 (2026-11-03) ── 루틴은 일을 시작할 때 문패(claude/running-YYYYMMDD-HHMM)를 달고 끝나면 뗀다.
+//   문패가 60분 안이면 안에 사람이 있는 것 — 부르지 않고 5분마다 다시 노크한다. 비면 그 판단이 새 자료 뒤인지 보고, 아니면 그때 부른다
+let RETRY_MS=5*60*1000;
+async function routineInside(){
+  try{
+    const L=await fetch('https://api.github.com/repos/'+GH_REPO+'/branches?per_page=100',{cache:'no-store'}).then(r=>r.ok?r.json():[]);
+    const now=kstNow();
+    for(const b of (L||[])){
+      const m=/^claude\/running-(\d{8})-(\d{4})/.exec(b.name||''); if(!m) continue;
+      const t=new Date(+m[1].slice(0,4), +m[1].slice(4,6)-1, +m[1].slice(6,8), +m[2].slice(0,2), +m[2].slice(2,4));
+      if(now-t>=0 && now-t<60*60000) return m[2].slice(0,2)+':'+m[2].slice(2,4);
+    }
+  }catch(e){}
+  return null;
+}
+function startRetry(){
+  let since=null; try{ since=localStorage.getItem('kf_judge_retry'); }catch(e){}
+  const s0=since && kParse(since);
+  if(!s0 || (kstNow()-s0)>60*60000){ try{ localStorage.removeItem('kf_judge_retry'); }catch(e){} return; }
+  setTimeout(async ()=>{
+    let tok=null; try{ tok=localStorage.getItem(GH_KEY); }catch(e){}
+    if(!tok) return;
+    const inside=await routineInside();
+    if(inside){ ghMsg('판단이 진행 중이에요('+inside+' 시작). 5분 뒤 다시 노크할게요.'); startRetry(); return; }
+    let j=null; try{ const t=await fetch(RAW_KF+'top20/top20.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null); j=kParse(t && t.meta && (t.meta.judged_at||t.meta.judged)); }catch(e){}
+    try{ localStorage.removeItem('kf_judge_retry'); }catch(e){}
+    if(j && j>=s0){ ghMsg('진행 중이던 판단이 새 자료로 끝났어요. 새로 불러옵니다.'); setTimeout(hardReload, 1500); return; }
+    ghMsg(await judgeFire({'Authorization':'Bearer '+tok, 'Accept':'application/vnd.github+json'}));
+  }, RETRY_MS);
+}
+setTimeout(()=>{ try{ startRetry(); }catch(e){} }, 1500);       // 다시 열어도 노크를 이어 간다(최대 60분)
 async function judgeFire(H){
   const now=kstNow(), hm=now.getHours()*60+now.getMinutes(), today=new Date(now.getFullYear(), now.getMonth(), now.getDate());
   let j=null; try{ const t=await fetch(RAW_KF+'top20/top20.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null); j=kParse(t && t.meta && (t.meta.judged_at||t.meta.judged)); }catch(e){}
+  const inside=await routineInside();
+  if(inside){ try{ localStorage.setItem('kf_judge_retry', kstStr(now)); }catch(e){} startRetry();
+    return '판단이 이미 진행 중이에요('+inside+' 시작). 5분마다 노크해서, 끝난 판단이 새 자료 전이면 그때 한 번 더 부를게요.'; }
   if(hm>=440 && hm<=500 && (!j || j<today)) return '판단은 07:30 정기 판단이 도는 중이라 따로 다시 하지 않았어요.';
   try{ const w=await fetch(RAW_KF+'status/watchdog.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null);
        const lf=w && kParse(w.last_fire); if(lf && (now-lf)<40*60000) return '판단은 '+String(w.last_fire).slice(11,16)+'에 이미 다시 시작해 진행 중이에요.'; }catch(e){}
   const st=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/watchdog.yml/dispatches', {method:'POST', headers:H,
-      body:JSON.stringify({ref:'main', inputs:{fire:'true', reason:'사용자가 사이트에서 자료 갱신을 눌렀습니다('+kstStr(now)+' KST). 방금 새로 받은 자료로 시황 판단과 TOP 20 판단, 전체 비중, 오늘의 추천을 처음부터 다시 하세요.'}})}).then(r=>r.status).catch(()=>0);
+      body:JSON.stringify({ref:'main', inputs:{fire:'true', reason:'판단 — 사용자가 사이트에서 자료 갱신을 눌렀습니다('+kstStr(now)+' KST). 방금 새로 받은 자료로 가볍게 다시 판단하세요(국면·업종·편입편출·추천·비중, 깊이 보기는 시장마다 3개까지, 노트는 쓰지 않음).'}})}).then(r=>r.status).catch(()=>0);
   if(st===204){ try{ localStorage.setItem('kf_wait_judge', kstStr(now)); }catch(e){} return '판단(시황 리포트·TOP 20·추천·비중)도 다시 시작했어요. 30분 안팎이면 바뀌고, 그때 화면이 알아서 새로 불러와요.'; }
   return '판단 다시 시작은 실패했어요('+st+').';
 }

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """매일 판단 입력 — 거시·시장·뉴스·TOP 20 종목 상태를 한 번에 모은다 (tools/daily_judge.md 절차의 1단계)
 
-사용(저장소 루트): python3 tools/daily_collect.py > /tmp/today.txt
+사용(저장소 루트): python3 tools/daily_collect.py > /tmp/today.txt      (판단 실행)
+                  python3 tools/daily_collect.py --notes                (노트 쌓기 실행 — 노트 쓸 차례 6개만)
   - 번들(tools/bundle.py)을 국장·미장 한 번씩 돌려 머리 줄(#거시·#시장·#미국시장·#미국 심리·신용·#환율·유가·시장 뉴스)만 가져온다
   - 지정학·정책 뉴스 제목(최근 2일): 휴전·공습·관세·금리·수출 규제 등 — 판단을 바꿀 사건을 놓치지 않으려고
   - TOP 20 판단 종목(top20/picks.json) 80개의 지금 가격·1일·5일 등락·판단 때 대비·목표까지·손절까지·도달 여부
@@ -166,7 +167,46 @@ def print_funnel():
         pass
 
 
+def notes_queue(n=6):
+    """노트 쓸 차례 — ① 오늘 편입된 종목 ② 사건이 난 지금 TOP 20 ③ 노트 없는 지금 TOP 20 ④ 노트 없는 새 후보 상위 (노트 쌓기 실행용)"""
+    C = json.load(open(os.path.join(ROOT, 'lists', 'candidates.json'), encoding='utf-8'))
+    P = json.load(open(os.path.join(ROOT, 'top20', 'picks.json'), encoding='utf-8'))
+    rows = {(mk, r['code']): (mk, r) for mk in ('kr', 'us') for r in (C.get(mk) or [])}
+    out, seen = [], set()
+    def add(mk, code, why):
+        if (mk, code) in seen: return
+        r = (rows.get((mk, code)) or (mk, {'code': code}))[1]
+        nd = note_info(mk, code)
+        if why.startswith('사건') and nd not in ('없음', '있음'):
+            if any(e['date'] <= nd for e in (r.get('events') or [])): return     # 사건 뒤에 이미 노트를 고쳤으면 건너뜀
+        elif nd != '없음' and not why.startswith('사건'):
+            return
+        seen.add((mk, code)); out.append((mk, r, why, nd))
+    for x in ((P.get('meta') or {}).get('moves') or []):
+        if x.get('move') == '편입': add(x['mk'], x['code'], '오늘 편입')
+    for mk in ('kr', 'us'):
+        for r in (C.get(mk) or []):
+            if r.get('member') and r.get('events'): add(mk, r['code'], '사건 — ' + ', '.join(e['kind'] for e in r['events'][:2]))
+    for t in ('stable', 'aggressive'):
+        for i in range(20):
+            for mk in ('kr', 'us'):
+                L = (P.get(mk) or {}).get(t) or []
+                if i < len(L): add(mk, L[i]['code'], '지금 TOP 20(' + ('안정형' if t == 'stable' else '적극형') + ' %d위)' % (i + 1))
+    for mk in ('kr', 'us'):
+        for r in sorted([r for r in (C.get(mk) or []) if not r.get('member') and r.get('stable') is not None],
+                        key=lambda r: -max(r.get('stable') or 0, r.get('aggressive') or 0))[:15]:
+            add(mk, r['code'], '새 후보(점수 상위)')
+    print('# 노트 쓸 차례 — 위에서 2개만 쓴다 (모은 시각 %s KST)' % dt.datetime.now(KST).strftime('%Y-%m-%d %H:%M'))
+    print('시장|코드|이름|왜 지금|업종|안정·적극 점수|사건|노트')
+    for mk, r, why, nd in out[:n]:
+        ev = '; '.join('%s %s' % (e['date'][5:], e['kind']) for e in (r.get('events') or [])[:3]) or '-'
+        print('%s|%s|%s|%s|%s|%s·%s|%s|%s' % (mk, r.get('code'), r.get('name') or '', why, r.get('bucket') or '-', fmt(r.get('stable'), 0), fmt(r.get('aggressive'), 0), ev, nd))
+    print('\n깊이 볼 때: python3 tools/bundle.py kr 종목코드 --brief --ver dev / python3 tools/bundle.py us 티커 --ver dev — 숫자는 lists/candidates.json의 facts')
+
+
 def main():
+    if '--notes' in sys.argv:
+        return notes_queue()
     now = dt.datetime.now(KST)
     print('# 매일 판단 입력 — 모은 시각 %s KST' % now.strftime('%Y-%m-%d %H:%M'))
     print('## 깔때기 재료 새로 받기')

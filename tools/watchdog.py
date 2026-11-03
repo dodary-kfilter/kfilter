@@ -18,6 +18,7 @@ GitHub Actions(.github/workflows/watchdog.yml)가 2시간마다 돌린다. GITHU
 같은 워크플로가 이미 돌고 있거나 최근 60분 안에 다시 실행한 적이 있으면 또 보내지 않는다(같은 실패를 되풀이해 쌓지 않게).
 루틴은 한 번 깨우면 25~35분 걸린다 — 마지막으로 깨운 시각(status/watchdog.json)에서 100분 안이면 또 깨우지 않는다(겹쳐 돌지 않게).
 자동으로 깨우는 건 하루 한 번만(auto_date) — 루틴은 사용자의 Claude 사용량을 쓴다(11/03 사용 한도를 다 쓴 일). 사이트 버튼(강제)은 따로.
+노크: 루틴이 들어가 있으면(문패 claude/running-…, 60분 안) 강제든 자동이든 깨우지 않고 다음 점검에서 다시 본다.
 """
 import json, os, sys, datetime as dt, urllib.request, urllib.error
 
@@ -88,6 +89,25 @@ def gh(method, path, body=None):
         return 0, {}
 
 
+def running_lock(now):
+    """노크 — 루틴이 들어가 있으면(문패 claude/running-YYYYMMDD-HHMM, 60분 안) 그 이름을 돌려준다. 멈춘 실행의 오래된 문패는 무시"""
+    try:
+        req = urllib.request.Request('https://api.github.com/repos/%s/branches?per_page=100' % REPO,
+                                     headers=dict({'Accept': 'application/vnd.github+json'}, **({'Authorization': 'Bearer ' + TOKEN} if TOKEN else {})))
+        names = [b['name'] for b in json.loads(urllib.request.urlopen(req, timeout=20).read())]
+    except Exception:
+        return None
+    for nm in names:
+        if not nm.startswith('claude/running-'): continue
+        try:
+            t = dt.datetime.strptime(nm[len('claude/running-'):][:13], '%Y%m%d-%H%M').replace(tzinfo=KST)
+        except Exception:
+            continue
+        if dt.timedelta(0) <= now - t < dt.timedelta(minutes=60):
+            return nm
+    return None
+
+
 def recently_run(wf, now):
     st, j = gh('GET', '/actions/workflows/%s/runs?per_page=5' % wf)
     for r in (j or {}).get('workflow_runs', []):
@@ -114,7 +134,10 @@ def main(argv):
             window = ('08:30' <= now.strftime('%H:%M') <= '14:00') or force
             last = parse(rd('status/watchdog.json').get('last_fire'))
             auto_today = rd('status/watchdog.json').get('auto_date') == now.strftime('%Y-%m-%d')   # 자동으로 깨운 날 — 하루 한 번만(사용량)
-            if url and tok and window and not force and auto_today:
+            inside = running_lock(now) if (url and tok and window and not dry) else None
+            if inside:
+                print('  오래됨 %-6s 마지막 %s → 안에 실행이 있음(%s) — 노크만 하고 다음 점검에서 다시' % (name, when, inside))
+            elif url and tok and window and not force and auto_today:
                 print('  오래됨 %-6s 마지막 %s → 오늘 이미 한 번 자동으로 깨움 — 사용량 때문에 더 깨우지 않음(사이트 빨간 표시만)' % (name, when))
             elif url and tok and window and not force and last and (now - last) < dt.timedelta(minutes=100):
                 print('  오래됨 %-6s 마지막 %s → 루틴을 %s에 깨워 아직 도는 중일 수 있음 — 다시 깨우지 않음' % (name, when, last.strftime('%H:%M')))
