@@ -1,0 +1,37 @@
+name: 깔때기 재료
+
+# 매일 판단(07:30) 전에 업종 추세·미장 기업 재무와 공시·국장 공시 사건을 모은다 — tools/sector_fetch.py · us_fund_fetch.py · kr_events_fetch.py
+#   국장 기업 숫자(lists/kr_fund.json)는 수급 스캔(update.yml)이 함께 만든다
+on:
+  schedule:
+    - cron: '41 21 * * *'          # 한국시간 06:41
+    - cron: '13 3 * * *'           # 한국시간 12:13 — 장중 공시를 한 번 더
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: materials
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: 업종 추세
+        run: python3 tools/sector_fetch.py
+      - name: 미장 재무·추세·공시 사건
+        run: python3 tools/us_fund_fetch.py
+      - name: 국장 공시 사건
+        run: python3 tools/kr_events_fetch.py
+      - name: 결과 커밋
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add lists/sectors.json lists/us_fund.json lists/events.json
+          git commit -m "깔때기 재료 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')" || { echo "변경 없음"; exit 0; }
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
+          exit 1

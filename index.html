@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-03c (자료 갱신이 끝나면 매일 판단도 다시 — 점검 워크플로로 루틴을 깨우고, 새 판단이 올라오면 화면이 알아서 새로 불러옴) / 이전: 2026-11-03b -->
+<!-- build: 2026-11-03d (자료 갱신에 깔때기 재료 — 업종 추세·미장 재무·공시 사건) / 이전: 2026-11-03c -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -284,7 +284,7 @@
     <h1>투자 분석</h1>
     <div class="hd-r">
       <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
-      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급·저가매수·모멘텀·시총순·애널·거시·TOP 20 가격·13F를 새로 받고, 끝나면 매일 판단도 다시 합니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
+      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급·저가매수·모멘텀·시총순·애널·거시·업종·재무·공시·TOP 20 가격·13F를 새로 받고, 끝나면 매일 판단도 다시 합니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
       <div class="ghmsg" id="ghmsg"></div>
       <div class="meta">최종 갱신 <b id="updated">—</b><span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
     </div>
@@ -1376,7 +1376,7 @@ function fallbackCopy(text, done){
 //   토큰 권한: kfilter 저장소의 Actions 읽기·쓰기만 — 실행 단추를 누르는 권한일 뿐 코드·자료는 못 바꾼다
 const GH_REPO='dodary-kfilter/kfilter', GH_KEY='kf_gh_token';
 // 자료를 새로 만드는 수집은 모두 — 매일 판단(Claude 루틴)과 한글 이름(토스가 막혀 지금은 실패)만 빼고
-const GH_FLOWS=[['update.yml','수급·저가매수·모멘텀'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시'],['top20.yml','TOP 20 가격'],['f13.yml','13F']];
+const GH_FLOWS=[['update.yml','수급·저가매수·모멘텀'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시'],['materials.yml','업종·재무·공시'],['top20.yml','TOP 20 가격'],['f13.yml','13F']];
 function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h; }
 // ── 자료를 다 받으면 판단도 다시 (2026-11-03) ── 변화가 큰 국면에서 아침 판단을 하루 내내 두지 않는다
 //   사이트 → 점검 워크플로(fire) → GitHub 비밀 값으로 루틴 API 트리거 → 루틴이 새 자료로 시황·TOP 20·추천·비중을 다시 판단(30분 안팎)

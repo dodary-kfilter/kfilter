@@ -47,3 +47,13 @@
 - 매일 판단(Claude 루틴)은 대신 돌릴 수 없어 사이트 표시만 — 비밀 값 ROUTINE_TRIGGER_URL·ROUTINE_TRIGGER_TOKEN이 있으면 루틴 API 트리거를 부름
 - 자동: `.github/workflows/watchdog.yml` 2시간마다(매시 27분) + 한국시간 08:57
 - 사이트: 같은 기준으로 탭에 빨간 점(수급·저가매수·모멘텀·시총순·애널·TOP 20·지수), 머리 '최종 갱신'을 빨갛게, 오늘 판단이 없으면 리포트 맨 위에 경고
+
+
+## 깔때기 재료 (2026-11-03) — 큰 배경 → 시장 → 업종 → 기업 → 수익 예상 → 줄 세우기
+- `python3 tools/sector_fetch.py` → `lists/sectors.json`: 업종 ETF(미장 17·국장 19)의 1주·1·3·6개월 수익률, 지수 대비 초과(rs1m·rs3m), 1년 고점 대비, 50·200일선 대비, 변동성 (3초)
+- `python3 tools/us_fund_fetch.py [--limit N]` → `lists/us_fund.json` + `lists/events.json`의 us: S&P 500·나스닥 100(518개)
+  SEC 공식 재무로 매출·영업이익·순이익 최근 8분기와 4분기 합·1년 성장·영업이익률·EV/EBIT·PER, 야후 가격 추세, 최근 3일 SEC 공시 사건(8-K 항목·합병 공시) (2~3분)
+  ★회사가 재무 태그를 바꾼 경우(엔비디아 등) 가장 최근 분기까지 이어진 태그를 고른다. 원자료는 받자마자 숫자로 줄인다(메모리)
+- `python3 tools/kr_events_fetch.py` → `lists/events.json`의 kr: 코스피 200·코스닥 150의 최근 3일 공시를 사건 종류로(합병·인수·공급계약·해지·증자·자사주·실적·최대주주·소송·조회공시 등) (15초)
+- `lists/kr_fund.json`: 수급 스캔(screener.run_screeners)이 시총 상위 800 중 흑자 기업 전부(680개 안팎)의 수익성·가치평가·업종 대비·추세·수급을 남긴다
+- 자동: `.github/workflows/materials.yml` 06:41·12:13, 사이트의 자료 갱신에도 포함, 점검이 26시간 넘으면 다시 돌림

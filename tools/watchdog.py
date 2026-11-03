@@ -11,6 +11,7 @@ GitHub Actions(.github/workflows/watchdog.yml)가 2시간마다 돌린다. GITHU
   시총순(lists/mcap.json)      화~금 14시간 · 토·일·월 26시간(주말엔 하루 두 번만 돌아 간격이 22시간까지 벌어진다)
   애널(lists/analyst.json)     11:00 이후엔 오늘 날짜 · 그 전엔 어제 날짜까지
   거시(cache/macro.json)       16시간
+  깔때기 재료(lists/sectors.json) 26시간 — 업종 추세·미장 재무·공시 사건(materials.yml)
   매일 판단(top20/picks.json)  08:30 이후엔 오늘 판단 — ROUTINE_TRIGGER_URL·TOKEN 비밀 값이 있으면 Claude 루틴 API 트리거로 다시 돌린다
                                (08:30~14:00 사이 점검 때만 — 하루 최대 서너 번, 그 뒤엔 사이트 빨간 표시만)
 루틴 API 트리거: POST {URL}  Authorization: Bearer {TOKEN} · anthropic-version: 2023-06-01 · anthropic-beta: experimental-cc-routine-2026-04-01 · 본문 {"text": 왜 다시 돌리는지}
@@ -65,6 +66,8 @@ def checks(now):
     out.append(('애널', 'analyst.yml', a, a is None or a.date() < need))
     g = parse(rd('cache/macro.json').get('collected_at'))
     out.append(('거시', 'macro.yml', g, g is None or (now - g) > dt.timedelta(hours=16)))
+    s_ = parse(rd('lists/sectors.json').get('updated'))                       # 깔때기 재료(업종·미장 재무·공시) — 하루 두 번
+    out.append(('깔때기 재료', 'materials.yml', s_, s_ is None or (now - s_) > dt.timedelta(hours=26)))
     j = parse((rd('top20/picks.json').get('meta') or {}).get('judged_at'))
     force = os.environ.get('FORCE_FIRE', '').lower() == 'true'                 # 수동 시험: 판단이 있어도 루틴을 한 번 부른다
     out.append(('매일 판단', None, j, force or (now.strftime('%H:%M') >= '08:30' and (j is None or j.date() < now.date()))))

@@ -908,6 +908,31 @@ def run_screeners(supply_map=None):
     val = fetch_valuation({x["symbol"]: x.get("market") for x in vitems})
     value_cand, vp_meta = pick_value(vitems, fin, val)
 
+    # 【깔때기 재료】 국장 기업별 숫자 한 장 — 매일 판단이 업종·기업 단계에서 쓴다 (2026-11-03)
+    #   시총 상위 800 중 흑자(1년 흑자 포함) 기업 전부. 저가매수·모멘텀 '선별'과 별개로 원재료를 그대로 남긴다
+    try:
+        keep = ("name", "market", "sector", "mcap", "cur", "per", "pbr", "sectorPer", "dps", "foreignRatio",
+                "sales_growth", "opm_recent", "opm_prev", "opm_growth", "roe_ann", "eps_growth", "eps_turnaround",
+                "ev_ebit", "sector_ev_ebit", "ev_rel", "sector_opm", "r1", "r6", "excess_r1", "excess_r6", "dd_close",
+                "daily_aligned", "entry_days", "v2060")
+        snap = {}
+        for x in vitems:
+            r = {k: (round(x[k], 2) if isinstance(x.get(k), float) else x.get(k)) for k in keep if x.get(k) is not None}
+            if r.get("mcap"):
+                r["mcap"] = round(r["mcap"] / 1e8)                       # 억원
+            sup = supply_map.get(x["code"]) or {}
+            for k in ("f_net", "f_buydays", "p_net", "p_buydays"):
+                if sup.get(k) is not None:
+                    r[k] = sup[k]
+            snap[x["code"]] = r
+        _save(os.path.join(os.path.dirname(os.path.abspath(__file__)), "lists", "kr_fund.json"),
+              {"updated": (datetime.utcnow() + timedelta(hours=9)).strftime("%Y-%m-%d %H:%M"), "n": len(snap),
+               "unit": "mcap 억원 · 비율 % · r1·r6 1·6개월 수익률 % · excess_ 지수 대비 %p · dd_close 고점 대비 % · p_ 두 번째 수급 주체(지금 기관)",
+               "items": snap})
+        print(f"  깔때기 재료 lists/kr_fund.json {len(snap)}종목", flush=True)
+    except Exception as e:
+        print("  kr_fund 저장 실패:", e, flush=True)
+
     # 6-b) ★권리락 제외 — 급락 감지된 종목만 공시 조회(전 종목 호출 금지)
     #   무상·유상증자 권리락은 주가만 기계적으로 떨어지고 주식수는 그대로라
     #   listedSharesCount 필터로는 절대 못 잡는다. 낙폭이 통째로 가짜가 된다.
