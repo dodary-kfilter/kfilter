@@ -17,6 +17,7 @@ GitHub Actions(.github/workflows/watchdog.yml)가 2시간마다 돌린다. GITHU
 루틴 API 트리거: POST {URL}  Authorization: Bearer {TOKEN} · anthropic-version: 2023-06-01 · anthropic-beta: experimental-cc-routine-2026-04-01 · 본문 {"text": 왜 다시 돌리는지}
 같은 워크플로가 이미 돌고 있거나 최근 60분 안에 다시 실행한 적이 있으면 또 보내지 않는다(같은 실패를 되풀이해 쌓지 않게).
 루틴은 한 번 깨우면 25~35분 걸린다 — 마지막으로 깨운 시각(status/watchdog.json)에서 100분 안이면 또 깨우지 않는다(겹쳐 돌지 않게).
+자동으로 깨우는 건 하루 한 번만(auto_date) — 루틴은 사용자의 Claude 사용량을 쓴다(11/03 사용 한도를 다 쓴 일). 사이트 버튼(강제)은 따로.
 """
 import json, os, sys, datetime as dt, urllib.request, urllib.error
 
@@ -112,7 +113,10 @@ def main(argv):
             force = os.environ.get('FORCE_FIRE', '').lower() == 'true'
             window = ('08:30' <= now.strftime('%H:%M') <= '14:00') or force
             last = parse(rd('status/watchdog.json').get('last_fire'))
-            if url and tok and window and not force and last and (now - last) < dt.timedelta(minutes=100):
+            auto_today = rd('status/watchdog.json').get('auto_date') == now.strftime('%Y-%m-%d')   # 자동으로 깨운 날 — 하루 한 번만(사용량)
+            if url and tok and window and not force and auto_today:
+                print('  오래됨 %-6s 마지막 %s → 오늘 이미 한 번 자동으로 깨움 — 사용량 때문에 더 깨우지 않음(사이트 빨간 표시만)' % (name, when))
+            elif url and tok and window and not force and last and (now - last) < dt.timedelta(minutes=100):
                 print('  오래됨 %-6s 마지막 %s → 루틴을 %s에 깨워 아직 도는 중일 수 있음 — 다시 깨우지 않음' % (name, when, last.strftime('%H:%M')))
             elif url and tok and window and not dry:
                 reason = os.environ.get('FIRE_REASON', '').strip()
@@ -127,7 +131,9 @@ def main(argv):
                     sess = (json.loads(r.read() or b'{}') or {}).get('claude_code_session_url', '')
                     print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 %s %s' % (name, when, r.status, sess))
                     os.makedirs(os.path.join(ROOT, 'status'), exist_ok=True)       # 깨운 시각 기록 — 워크플로가 저장소에 올린다
-                    json.dump({'last_fire': now.strftime('%Y-%m-%d %H:%M'), 'session': sess, 'forced': force},
+                    prev = rd('status/watchdog.json')
+                    json.dump({'last_fire': now.strftime('%Y-%m-%d %H:%M'), 'session': sess, 'forced': force,
+                               'auto_date': prev.get('auto_date') if force else now.strftime('%Y-%m-%d')},
                               open(os.path.join(ROOT, 'status', 'watchdog.json'), 'w', encoding='utf-8'), ensure_ascii=False)
                 except urllib.error.HTTPError as e:
                     print('  오래됨 %-6s 마지막 %s → 루틴 다시 실행 실패 %s %s' % (name, when, e.code, e.read()[:120]))
