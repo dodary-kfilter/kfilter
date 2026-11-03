@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write           # 반영 뒤 점검(빠진 수집 다시 실행) — 루틴의 push로 매일 확실히 도는 자리라서
 
 concurrency:
   group: judge-merge
@@ -82,3 +83,9 @@ jobs:
             age=$(( now - $(date -u -d "$when" +%s) ))
             if [ "$ok" = "true" ] && [ $age -gt 7200 ]; then git push -q origin --delete "$b" && echo "지움: $b"; else echo "둠: $b ($ok, ${age}초)"; fi
           done
+      - name: 점검 한 번 더(빠진 수집 다시 실행)
+        # GitHub 예약은 이 저장소에서 자주 빠진다(11/03: 점검 예약이 20시간 동안 2번만 돎). 루틴의 push로 도는 이 워크플로는
+        # 매일 확실히 돌기 때문에, 여기서 한 번 더 점검해 빠진 수집을 따라잡는다
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/watchdog.py || true
