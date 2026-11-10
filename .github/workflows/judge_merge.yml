@@ -96,6 +96,10 @@ jobs:
           for b in $(gh api "repos/${GITHUB_REPOSITORY}/branches?per_page=100" --jq '.[].name' | grep '^claude/' | grep -v '^claude/judge-'); do
             info=$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...$b" --jq '[([.files[].filename] | map(test("^(top20/picks\\.json|top20/top20\\.json|top20/log/[0-9-]+\\.md|notes/(kr|us)/[A-Za-z0-9._-]+\\.md)$")) | all), (.commits[-1].commit.committer.date)] | @tsv' 2>/dev/null) || continue
             ok=$(echo "$info" | cut -f1); when=$(echo "$info" | cut -f2)
+            case "$b" in claude/running-*)                    # 문패는 커밋이 없어 날짜가 비므로 이름의 시각(한국시간)을 쓴다
+              ts=$(echo "$b" | sed -E 's#claude/running-([0-9]{8})-([0-9]{2})([0-9]{2}).*#\1 \2:\3#')
+              when=$(date -u -d @$(TZ=Asia/Seoul date -d "$ts" +%s) +%Y-%m-%dT%H:%M:%SZ 2>/dev/null); ok=true ;;
+            esac
             [ -z "$when" ] && continue
             age=$(( now - $(date -u -d "$when" +%s) ))
             if [ "$ok" = "true" ] && [ $age -gt 7200 ]; then git push -q origin --delete "$b" && echo "지움: $b"; else echo "둠: $b ($ok, ${age}초)"; fi

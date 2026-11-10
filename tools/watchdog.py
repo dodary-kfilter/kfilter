@@ -108,6 +108,27 @@ def running_lock(now):
     return None
 
 
+def sweep_locks(now, dry=False):
+    """떼지 못한 문패(claude/running-…, 2시간 넘은 것)를 치운다 — 루틴이 문패를 못 떼고 끝나는 일이 많다(11/03~11/10에 33개 쌓임)"""
+    try:
+        req = urllib.request.Request('https://api.github.com/repos/%s/branches?per_page=100' % REPO,
+                                     headers=dict({'Accept': 'application/vnd.github+json'}, **({'Authorization': 'Bearer ' + TOKEN} if TOKEN else {})))
+        names = [b['name'] for b in json.loads(urllib.request.urlopen(req, timeout=20).read())]
+    except Exception:
+        return 0
+    n = 0
+    for nm in names:
+        if not nm.startswith('claude/running-'): continue
+        try:
+            t = dt.datetime.strptime(nm[len('claude/running-'):][:13], '%Y%m%d-%H%M').replace(tzinfo=KST)
+        except Exception:
+            continue
+        if now - t > dt.timedelta(hours=2) and not dry and TOKEN:
+            st, _ = gh('DELETE', '/git/refs/heads/' + nm)
+            n += 1 if st == 204 else 0
+    return n
+
+
 def recently_run(wf, now):
     st, j = gh('GET', '/actions/workflows/%s/runs?per_page=5' % wf)
     for r in (j or {}).get('workflow_runs', []):
@@ -124,6 +145,8 @@ def main(argv):
     dry = '--dry' in argv
     now = dt.datetime.now(KST)
     print('점검 %s KST' % now.strftime('%Y-%m-%d %H:%M'))
+    sw = sweep_locks(now, dry)
+    if sw: print('  문패 정리: 2시간 넘은 claude/running-… %d개 지움' % sw)
     for name, wf, t, stale in checks(now):
         when = t.strftime('%m-%d %H:%M') if t else '없음'
         if not stale:
