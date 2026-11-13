@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-03f (노크 — 루틴이 안에 있으면 판단을 부르지 않고 5분마다 다시 노크) / 이전: 2026-11-03e -->
+<!-- build: 2026-11-14a (자료 갱신을 서버에서 끝까지 — 버튼은 refresh_all.yml 하나만 부르고, 화면을 닫아도 판단까지) / 이전: 2026-11-03f -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1455,6 +1455,8 @@ async function judgeFire(H){
   setTimeout(tick, 60*1000);
 })();
 async function ghRun(){
+  // 2026-11-14: 수집 → 판단까지를 서버(refresh_all.yml)가 한다. 예전엔 '수집이 끝나면 판단 부르기'를 이 화면이 해서,
+  //   폰 화면을 끄거나 창을 닫으면 판단이 불리지 않았다. 이제 버튼은 요청 한 번만 보내고, 화면은 진행을 보여 줄 뿐이다
   const btn=document.getElementById('ghbtn'); if(!btn || btn.disabled) return;
   let tok=null; try{ tok=localStorage.getItem(GH_KEY); }catch(e){}
   if(!tok){
@@ -1464,30 +1466,30 @@ async function ghRun(){
   }
   const H={'Authorization':'Bearer '+tok, 'Accept':'application/vnd.github+json'};
   btn.disabled=true; btn.textContent='요청 중…'; ghMsg('');
-  const since=new Date(Date.now()-90*1000).toISOString();
-  const st=await Promise.all(GH_FLOWS.map(([f])=>fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/'+f+'/dispatches',
-      {method:'POST', headers:H, body:JSON.stringify({ref:'main'})}).then(r=>r.status).catch(()=>0)));
-  const ok=st.filter(x=>x===204).length;
-  if(!ok){
+  const since=new Date(Date.now()-90*1000).toISOString(), pressed=kstStr(kstNow());
+  const reason='판단 — 사용자가 사이트에서 자료 갱신을 눌렀습니다('+pressed+' KST). 방금 새로 받은 자료로 가볍게 다시 판단하세요(국면·업종·편입편출·추천·비중, 깊이 보기는 시장마다 3개까지, 노트는 쓰지 않음).';
+  const st=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/refresh_all.yml/dispatches',
+      {method:'POST', headers:H, body:JSON.stringify({ref:'main', inputs:{judge:'true', reason}})}).then(r=>r.status).catch(()=>0);
+  if(st!==204){
     btn.disabled=false; btn.textContent='⚙ 자료 갱신';
-    if(st.some(x=>x===401||x===403||x===404)) ghMsg('토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요). 설정 링크를 다시 열면 새 토큰으로 바뀝니다.');   // 토큰은 지우지 않는다
-    else ghMsg('GitHub에 닿지 못했어요. 잠시 뒤 다시 눌러 주세요.');
+    ghMsg(st===401||st===403||st===404 ? '토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요). 설정 링크를 다시 열면 새 토큰으로 바뀝니다.' : 'GitHub에 닿지 못했어요. 잠시 뒤 다시 눌러 주세요.');
     return;
   }
-  const names=GH_FLOWS.filter((x,i)=>st[i]===204).map(x=>x[1]).join('·');
-  btn.textContent='갱신 중 0/'+ok;
-  ghMsg(names+'를 새로 받고 있어요. 보통 5~7분 걸려요');
-  const until=Date.now()+15*60*1000;
+  try{ localStorage.setItem('kf_wait_judge', pressed); }catch(e){}          // 새 판단이 올라오면 화면이 알아서 새로 불러온다(waitJudge)
+  const n=GH_FLOWS.length;
+  btn.textContent='수집 0/'+n;
+  ghMsg(GH_FLOWS.map(x=>x[1]).join('·')+'를 새로 받고, 끝나면 판단까지 다시 해요. 화면을 닫아도 서버에서 끝까지 진행돼요.');
+  const flows=new Set(GH_FLOWS.map(x=>x[0])), until=Date.now()+20*60*1000;
   const tick=async()=>{
     let runs=[];
-    try{ const j=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/runs?event=workflow_dispatch&per_page=20&created=%3E'+encodeURIComponent(since),{headers:H}).then(r=>r.json()); runs=(j&&j.workflow_runs)||[]; }catch(e){}
-    const done=runs.filter(x=>x.status==='completed').length, fail=runs.filter(x=>x.conclusion && x.conclusion!=='success').length;
-    btn.textContent='갱신 중 '+done+'/'+ok;
-    if((runs.length>=ok && done>=ok) || Date.now()>until){
-      btn.textContent='자료 끝 — 판단 다시 시작';
-      const jm=await judgeFire(H);                      // 자료를 다 받은 뒤에 판단을 다시 — 새 자료로 판단하게
-      ghMsg((fail ? '자료 수집은 끝났지만 '+fail+'개는 실패했어요.' : '자료는 모두 새로 받았어요.')+' '+jm+' 1분 뒤 새 자료로 다시 불러옵니다.');
-      setTimeout(hardReload, 60*1000);                 // 끝난 뒤 저장소에 올라가고 배포되는 시간
+    try{ const j=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/runs?event=workflow_dispatch&per_page=40&created=%3E'+encodeURIComponent(since),{headers:H}).then(r=>r.json()); runs=(j&&j.workflow_runs)||[]; }catch(e){}
+    const seen={}; runs.forEach(r=>{ const f=(r.path||'').split('/').pop(); if(flows.has(f) && !seen[f]) seen[f]=r; });
+    const L=Object.values(seen), done=L.filter(r=>r.status==='completed').length, fail=L.filter(r=>r.conclusion && r.conclusion!=='success').length;
+    btn.textContent='수집 '+done+'/'+n;
+    if(done>=n || Date.now()>until){
+      btn.textContent='자료 끝 — 판단은 서버가';
+      ghMsg((fail ? '자료 수집은 끝났지만 '+fail+'개는 실패했어요. ' : '자료는 모두 새로 받았어요. ')+'판단은 서버가 이어서 불러요(다른 판단이 돌고 있으면 끝날 때까지 기다렸다가). 1분 뒤 새 자료로 다시 불러옵니다.');
+      setTimeout(hardReload, 60*1000);
       return;
     }
     setTimeout(tick, 20*1000);

@@ -1,0 +1,47 @@
+name: 자료 갱신(버튼)
+
+# 사이트의 ⚙ 자료 갱신이 이것 하나만 부른다 — 수집 7가지를 돌려 끝날 때까지 기다리고, 노크해서 판단을 다시 부른다(tools/refresh_all.py)
+#   서버에서 끝까지 하므로 폰 화면을 끄거나 창을 닫아도 판단까지 간다
+on:
+  workflow_dispatch:
+    inputs:
+      judge:
+        description: '수집이 끝나면 판단도 다시 부를지'
+        type: boolean
+        default: true
+      reason:
+        description: '루틴에 전할 이유'
+        type: string
+        default: ''
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: refresh-all
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: 수집 7가지 → 끝나면 노크해서 판단 부르기
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ROUTINE_TRIGGER_URL: ${{ secrets.ROUTINE_TRIGGER_URL }}
+          ROUTINE_TRIGGER_TOKEN: ${{ secrets.ROUTINE_TRIGGER_TOKEN }}
+          JUDGE: ${{ inputs.judge }}
+          FIRE_REASON: ${{ inputs.reason }}
+        run: python3 tools/refresh_all.py
+      - name: 깨운 시각 기록 올리기(부른 때만)
+        run: |
+          git config user.name 'kfilter-bot'
+          git config user.email 'kfilter-bot@users.noreply.github.com'
+          git add -A status/watchdog.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo '기록할 것 없음'; exit 0; fi
+          git commit -q -m "자료 갱신(버튼): 판단 루틴 다시 깨움 $(TZ=Asia/Seoul date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i*5)); done
+          exit 1
