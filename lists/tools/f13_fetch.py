@@ -7,8 +7,9 @@
   python3 lists/tools/f13_fetch.py --quarter 2026Q3  # 분기를 지정한다
   python3 lists/tools/f13_fetch.py --dry             # 쓰지 않고 요약만 본다
   python3 lists/tools/f13_fetch.py --force           # 파일이 있어도 다시 만든다
-  GitHub Actions(.github/workflows/f13.yml)가 매주 토요일 08:00(한국시간)에 돌린다.
-  분기 공시 마감(분기 말 + 45일, 주말이면 다음 월요일) 뒤 첫 토요일에 한 번 만들고, 그 뒤엔 건너뛴다.
+  GitHub Actions(.github/workflows/f13.yml)가 매일 03:17(한국시간)에 돌린다(GitHub 예약이 서너 시간씩 밀려도 07:30 매일 판단 전에 끝나게).
+  공시 마감(분기 말 + 45일, 주말이면 다음 월요일) + 이틀이 지난 최신 분기를 처음 만들고,
+  그 뒤 일주일은 매일 다시 받아 늦게 반영된 매니저가 늘었을 때만 바꾼다. 그 뒤엔 접속 없이 건너뛴다.
 
 규칙(README와 같음)
 - 출처: Dataroma 매니저 목록(managers.php)의 슈퍼투자자 전원, 매니저별 거래 내역(m_activity.php)의 해당 분기 부분
@@ -17,10 +18,12 @@
 - 매수:매도 = (신규+확대 인원) : (축소+청산 인원)
 - 합의 강도(리스트에 오른 종목 중): 매수 우위 = 매수 비중 70% 이상, 매도 우위 = 30% 이하, 의견 분산 = 40~60%이고 10명 이상
 - 제외: ETF, 분기 중 새로 상장된 종목(분사·신규 상장으로 기계적으로 편입된 물량) — 야후 시세의 상품 종류·첫 거래일로 가린다
+        Dataroma가 '-OLD'를 붙인 옛 티커(합병·인수·티커 변경으로 없어진 종목 — 판 게 아니라 기계적으로 빠진 물량)
+- 접속: Dataroma는 처음 접속에 쿠키를 심는 화면(409)을 돌려준다 — 그 쿠키를 달고 다시 받는다(11/16 확인)
 - 분기 말 종가: 야후 일봉의 분기 말(그 날 이전 마지막 거래일) 종가
 - 받지 못한 매니저가 10명을 넘으면 파일을 쓰지 않고 멈춘다
 """
-import json, os, re, sys, time, datetime as dt, urllib.request, urllib.parse
+import json, os, re, sys, time, datetime as dt, urllib.request, urllib.parse, urllib.error
 from concurrent.futures import ThreadPoolExecutor
 
 try:                                   # GitHub 서버에선 브라우저 흉내가 있어야 막히지 않는 사이트가 있다
@@ -34,23 +37,42 @@ NAMES = os.path.join(ROOT, 'lists', 'names_ko.json')
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36'
 DR = 'https://www.dataroma.com/m/'
 MIN_CNT, TOP_N, MAX_FAIL = 2, 10, 10
+REFRESH_DAYS = 7                       # 처음 만든 뒤 이 기간엔 매일 다시 받아, 공시한 매니저가 늘었을 때만 바꾼다
 KST = dt.timezone(dt.timedelta(hours=9))
 CATS = (('new', 'Buy'), ('add', 'Add'), ('reduce', 'Reduce'), ('exit', 'Sell'))
 
 
+COOK = {}                              # 사이트별 쿠키 — Dataroma는 처음 접속에 쿠키를 심는 스크립트(409)를 돌려준다
+_CK = re.compile(r'document\.cookie\s*=\s*"([^"=;\s]+)=([^";]*)')
+
+
 def fetch(url, as_json=False, tries=3):
+    host = urllib.parse.urlsplit(url).netloc
     for i in range(tries):
+        body, ck = None, COOK.get(host) or {}
         try:
             if _cr is not None:
-                r = _cr.get(url, impersonate='chrome' if i % 2 == 0 else 'safari', timeout=30)
+                r = _cr.get(url, impersonate='chrome' if i % 2 == 0 else 'safari', timeout=30, cookies=dict(ck) or None)
                 if r.status_code == 200:
                     return r.json() if as_json else r.text
+                body = r.text
             else:
-                req = urllib.request.Request(url, headers={'User-Agent': UA})
-                b = urllib.request.urlopen(req, timeout=30).read()
+                h = {'User-Agent': UA}
+                if ck:
+                    h['Cookie'] = '; '.join('%s=%s' % kv for kv in ck.items())
+                b = urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=30).read()
                 return json.loads(b) if as_json else b.decode('utf-8', 'replace')
+        except urllib.error.HTTPError as e:
+            try:
+                body = e.read().decode('utf-8', 'replace')
+            except Exception:
+                body = None
         except Exception:
             pass
+        m = _CK.search(body or '')
+        if m and ck.get(m.group(1)) != m.group(2):    # 쿠키 확인 화면 → 그 쿠키를 달고 바로 다시 받는다
+            COOK.setdefault(host, {})[m.group(1)] = m.group(2)
+            continue
         time.sleep(1.5 * (i + 1))
     return None
 
@@ -134,8 +156,13 @@ def main(argv):
     qkey, label = '%dQ%d' % (y, q), 'Q%d %d' % (q, y)
     qe, qs = quarter_end(y, q), quarter_end(y, q - 1) if q > 1 else quarter_end(y - 1, 4)
     path = os.path.join(DIR, qkey + '.json')
+    due = deadline(qe) + dt.timedelta(days=2)
+    prev = None
     if os.path.exists(path) and not force and not dry:
-        print('%s 파일이 이미 있음 — 건너뜀 (다음 분기 마감 뒤 첫 토요일에 새로 만든다)' % qkey); return 0
+        if today > due + dt.timedelta(days=REFRESH_DAYS):
+            print('%s 파일이 이미 있음 — 건너뜀 (다음 분기는 마감 이틀 뒤에 새로 만든다)' % qkey); return 0
+        prev = json.load(open(path, encoding='utf-8'))
+        print('%s 파일이 있음 — 마감 뒤 %d일 안이라 다시 받아, 공시한 매니저가 늘었으면 바꾼다(지금 %s명)' % (qkey, REFRESH_DAYS, prev.get('filed')))
 
     mg = managers()
     if len(mg) < 50:
@@ -162,12 +189,15 @@ def main(argv):
 
     # 리스트 후보(같은 행동 2명 이상)만 야후로 상품 종류·첫 거래일·분기 말 종가를 확인
     cand = sorted(tk for tk, c in cnt.items() if max(c.values()) >= MIN_CNT)
+    live = [tk for tk in cand if not tk.endswith('-OLD')]
     with ThreadPoolExecutor(6) as ex:
-        meta = dict(zip(cand, ex.map(lambda tk: ymeta(tk, qe), cand)))
+        meta = dict(zip(live, ex.map(lambda tk: ymeta(tk, qe), live)))
     excluded = []
     for tk in cand:
-        typ, ftd, _ = meta[tk]
-        if typ == 'ETF':
+        typ, ftd, _ = meta.get(tk, (None, None, None))
+        if tk.endswith('-OLD'):
+            excluded.append({'ticker': tk, 'reason': '합병·인수·티커 변경으로 없어진 옛 종목 — 판 게 아니라 기계적으로 빠진 물량'})
+        elif typ == 'ETF':
             excluded.append({'ticker': tk, 'reason': 'ETF'})
         elif ftd and qs < ftd <= qe:
             excluded.append({'ticker': tk, 'reason': '%s 상장 — 분기 중 새로 상장(분사·신규 상장)돼 기계적으로 편입된 물량' % ftd.isoformat()})
@@ -210,8 +240,13 @@ def main(argv):
     print(' 제외: %s' % (', '.join('%s(%s)' % (e['ticker'], e['reason'][:12]) for e in excluded) or '없음'))
     miss = sorted({x['ticker'] for cat, _ in CATS for x in lists[cat]} - set(names))
     print(' 한글명이 없는 티커 %d개: %s' % (len(miss), ', '.join(miss)))
+    print(' 접속: %s' % ('쿠키 확인 화면을 넘김(%s)' % ', '.join('%s=%s' % kv for h in COOK.values() for kv in h.items()) if COOK else '쿠키 확인 화면 없음'))
     if dry:
         return 0
+    if prev is not None:
+        if failed or filed <= (prev.get('filed') or 0):
+            print('바꾸지 않음 — 공시한 매니저 %d명(전 %s명)%s' % (filed, prev.get('filed'), ', 못 받은 매니저 있음' if failed else '')); return 0
+        out['generated'], out['refreshed'] = prev.get('generated') or out['generated'], today.isoformat()   # 처음 만든 날은 그대로, 다시 받은 날을 따로
     os.makedirs(DIR, exist_ok=True)
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, indent=1); f.write('\n')

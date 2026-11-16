@@ -90,6 +90,17 @@ def sector_scores(mk, S, growth_by_bucket):
     return out
 
 
+def latest_13f():
+    """13F 최신 분기 자료 — 색인(lists/13f/index.json)의 latest, 없으면 분기 이름 파일(2026Q2.json 등) 중 가장 늦은 것
+    (예전엔 폴더의 json을 이름순으로 세워 맨 뒤를 골라, 색인 파일 index.json을 집는 바람에 13F가 점수에 하나도 안 들어갔다 — 11/16 고침)"""
+    d13 = os.path.join(ROOT, 'lists', '13f')
+    q = J('lists/13f/index.json').get('latest')
+    if q and os.path.exists(os.path.join(d13, q + '.json')):
+        return J('lists/13f/%s.json' % q)
+    qs = sorted(glob.glob(os.path.join(d13, '[0-9][0-9][0-9][0-9]Q[1-4].json')))
+    return json.load(open(qs[-1], encoding='utf-8')) if qs else {}
+
+
 def members(P, mk):
     out = {}
     for t in ('stable', 'aggressive'):
@@ -101,9 +112,9 @@ def members(P, mk):
 def main():
     S, US, KR, E = J('lists/sectors.json'), J('lists/us_fund.json'), J('lists/kr_fund.json'), J('lists/events.json')
     A, D, P = J('lists/analyst.json'), J('data.json'), J('top20/picks.json')
-    f13p = sorted(glob.glob(os.path.join(ROOT, 'lists', '13f', '*.json')))
-    F = json.load(open(f13p[-1], encoding='utf-8')) if f13p else {}
-    out = {'updated': dt.datetime.now(KST).strftime('%Y-%m-%d %H:%M'), 'sectors': {}, 'us': [], 'kr': [], 'notes': []}
+    F = latest_13f()
+    out = {'updated': dt.datetime.now(KST).strftime('%Y-%m-%d %H:%M'), 'f13_quarter': F.get('quarter'),
+           'sectors': {}, 'us': [], 'kr': [], 'notes': []}
 
     # ── 미장 ──
     UI = US.get('items') or {}
@@ -238,6 +249,7 @@ def main():
             for g in r['why_pick']:
                 tags[g] = tags.get(g, 0) + 1
         print('%s 후보 %d개 %s · 업종 상위: %s' % (mk, len(L), tags, ', '.join('%s %.0f' % (s['name'], s['score']) for s in out['sectors'][mk][:5])))
+    print('13F %s · 목록에 오른 종목 %d개 · 그중 미장 후보 %d개' % (F.get('quarter') or '없음', len(f13), sum(1 for r in out['us'] if r.get('f13'))))
     return 0
 
 
