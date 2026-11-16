@@ -94,7 +94,11 @@ def sources():
     y = get_json('https://query1.finance.yahoo.com/v8/finance/chart/SPY?range=5d&interval=1d')
     try:
         r = y['chart']['result'][0]
-        ts, off = r['timestamp'][-1], (r.get('meta') or {}).get('gmtoffset') or 0
+        m_ = r.get('meta') or {}; tl = r['timestamp']; off = m_.get('gmtoffset') or 0
+        reg = (m_.get('currentTradingPeriod') or {}).get('regular') or {}
+        ts = tl[-1]
+        if reg.get('start') and reg.get('end') and reg['start'] <= time.time() < reg['end'] and len(tl) >= 2:
+            ts = tl[-2]          # 미장 장중 — 오늘 봉은 아직 종가가 아니다(11/16 23:36 장 시작 6분 뒤 값을 '종가'로 받은 일)
         out['us_date'] = dt.datetime.fromtimestamp(ts + off, dt.timezone.utc).date().isoformat()
     except Exception:
         out['us_date'] = None
