@@ -3,7 +3,7 @@
  "as_of": "2026-09-30",
  "generated": "2026-11-17",
  "tracked": 83,
- "filed": 50,
+ "filed": 58,
  "source": "Dataroma 슈퍼투자자 분기 거래 내역(m_activity.php)",
  "rules": {
   "count": "같은 행동을 한 슈퍼투자자 수",
@@ -35,6 +35,15 @@
     "price_0930": 150.86
    },
    {
+    "ticker": "MBGL",
+    "name_ko": "",
+    "name": "Mobility Global Inc",
+    "count": 3,
+    "buy": 3,
+    "sell": 0,
+    "price_0930": 17.15
+   },
+   {
     "ticker": "TYL",
     "name_ko": "타일러 테크놀로지스",
     "name": "Tyler Technologies Inc.",
@@ -62,6 +71,15 @@
     "price_0930": 50.53
    },
    {
+    "ticker": "ATAT",
+    "name_ko": "",
+    "name": "Atour Lifestyle Holdings ADR",
+    "count": 2,
+    "buy": 3,
+    "sell": 0,
+    "price_0930": 32.62
+   },
+   {
     "ticker": "EQX",
     "name_ko": "",
     "name": "Equinox Gold Corp",
@@ -80,60 +98,51 @@
     "price_0930": 406.63
    },
    {
-    "ticker": "ACI",
-    "name_ko": "",
-    "name": "Albertsons Co Inc.",
+    "ticker": "TDG",
+    "name_ko": "트랜스다임 그룹",
+    "name": "TransDigm Group Inc.",
     "count": 2,
-    "buy": 2,
-    "sell": 0,
-    "price_0930": 11.61
-   },
-   {
-    "ticker": "MBGL",
-    "name_ko": "",
-    "name": "Mobility Global Inc",
-    "count": 2,
-    "buy": 2,
-    "sell": 0,
-    "price_0930": 17.15
-   },
-   {
-    "ticker": "SITE",
-    "name_ko": "",
-    "name": "SiteOne Landscape Supply Inc.",
-    "count": 2,
-    "buy": 2,
-    "sell": 0,
-    "price_0930": 90.31
+    "buy": 4,
+    "sell": 1,
+    "price_0930": 1082.6
    }
   ],
   "add": [
    {
-    "ticker": "DIS",
-    "name_ko": "디즈니",
-    "name": "Walt Disney Co.",
-    "count": 8,
-    "buy": 9,
-    "sell": 7,
-    "price_0930": 104.9
-   },
-   {
     "ticker": "META",
     "name_ko": "메타",
     "name": "Meta Platforms Inc.",
-    "count": 8,
-    "buy": 9,
-    "sell": 8,
+    "count": 10,
+    "buy": 11,
+    "sell": 10,
     "price_0930": 725.18
+   },
+   {
+    "ticker": "DIS",
+    "name_ko": "디즈니",
+    "name": "Walt Disney Co.",
+    "count": 9,
+    "buy": 10,
+    "sell": 7,
+    "price_0930": 104.9
    },
    {
     "ticker": "AMZN",
     "name_ko": "아마존",
     "name": "Amazon.com Inc.",
-    "count": 8,
-    "buy": 9,
-    "sell": 10,
+    "count": 9,
+    "buy": 10,
+    "sell": 11,
     "price_0930": 249.15
+   },
+   {
+    "ticker": "MSFT",
+    "name_ko": "마이크로소프트",
+    "name": "Microsoft Corp.",
+    "count": 9,
+    "buy": 9,
+    "sell": 14,
+    "price_0930": 512.9
    },
    {
     "ticker": "GOOG",
@@ -145,22 +154,22 @@
     "price_0930": 340.74
    },
    {
-    "ticker": "MSFT",
-    "name_ko": "마이크로소프트",
-    "name": "Microsoft Corp.",
-    "count": 8,
-    "buy": 8,
-    "sell": 13,
-    "price_0930": 512.9
-   },
-   {
     "ticker": "NVDA",
     "name_ko": "엔비디아",
     "name": "NVIDIA Corp.",
-    "count": 6,
-    "buy": 7,
+    "count": 7,
+    "buy": 8,
     "sell": 6,
     "price_0930": 228.38
+   },
+   {
+    "ticker": "BRK.B",
+    "name_ko": "버크셔 해서웨이 B",
+    "name": "Berkshire Hathaway CL B",
+    "count": 6,
+    "buy": 6,
+    "sell": 11,
+    "price_0930": 497.95
    },
    {
     "ticker": "FERG",
@@ -186,17 +195,8 @@
     "name": "United Health Group Inc.",
     "count": 5,
     "buy": 5,
-    "sell": 5,
+    "sell": 6,
     "price_0930": 367.08
-   },
-   {
-    "ticker": "BRK.B",
-    "name_ko": "버크셔 해서웨이 B",
-    "name": "Berkshire Hathaway CL B",
-    "count": 5,
-    "buy": 5,
-    "sell": 11,
-    "price_0930": 497.95
    }
   ],
   "reduce": [
@@ -204,18 +204,18 @@
     "ticker": "GOOGL",
     "name_ko": "알파벳 A",
     "name": "Alphabet Inc.",
-    "count": 18,
+    "count": 19,
     "buy": 1,
-    "sell": 18,
+    "sell": 19,
     "price_0930": 344.08
    },
    {
     "ticker": "MSFT",
     "name_ko": "마이크로소프트",
     "name": "Microsoft Corp.",
-    "count": 13,
-    "buy": 8,
-    "sell": 13,
+    "count": 14,
+    "buy": 9,
+    "sell": 14,
     "price_0930": 512.9
    },
    {
@@ -237,11 +237,20 @@
     "price_0930": 340.74
    },
    {
+    "ticker": "MA",
+    "name_ko": "마스터카드",
+    "name": "Mastercard Inc.",
+    "count": 11,
+    "buy": 3,
+    "sell": 11,
+    "price_0930": 551.47
+   },
+   {
     "ticker": "BRK.B",
     "name_ko": "버크셔 해서웨이 B",
     "name": "Berkshire Hathaway CL B",
     "count": 11,
-    "buy": 5,
+    "buy": 6,
     "sell": 11,
     "price_0930": 497.95
    },
@@ -249,46 +258,37 @@
     "ticker": "AMZN",
     "name_ko": "아마존",
     "name": "Amazon.com Inc.",
-    "count": 10,
-    "buy": 9,
-    "sell": 10,
+    "count": 11,
+    "buy": 10,
+    "sell": 11,
     "price_0930": 249.15
-   },
-   {
-    "ticker": "MA",
-    "name_ko": "마스터카드",
-    "name": "Mastercard Inc.",
-    "count": 9,
-    "buy": 3,
-    "sell": 9,
-    "price_0930": 551.47
    },
    {
     "ticker": "TSM",
     "name_ko": "TSMC(ADR)",
     "name": "Taiwan Semiconductor S.A.",
-    "count": 9,
+    "count": 10,
     "buy": 4,
-    "sell": 9,
+    "sell": 10,
     "price_0930": 456.19
    },
    {
     "ticker": "META",
     "name_ko": "메타",
     "name": "Meta Platforms Inc.",
-    "count": 8,
-    "buy": 9,
-    "sell": 8,
+    "count": 10,
+    "buy": 11,
+    "sell": 10,
     "price_0930": 725.18
    },
    {
-    "ticker": "JPM",
-    "name_ko": "제이피모건 체이스",
-    "name": "JPMorgan Chase & Co.",
-    "count": 7,
-    "buy": 1,
-    "sell": 7,
-    "price_0930": 330.83
+    "ticker": "AAPL",
+    "name_ko": "애플",
+    "name": "Apple Inc.",
+    "count": 8,
+    "buy": 3,
+    "sell": 8,
+    "price_0930": 333.02
    }
   ],
   "exit": [
@@ -297,7 +297,7 @@
     "name_ko": "",
     "name": "Builders FirstSource Inc.",
     "count": 2,
-    "buy": 1,
+    "buy": 3,
     "sell": 2,
     "price_0930": 57.01
    }
@@ -336,6 +336,12 @@
     "sell": 1
    },
    {
+    "ticker": "ATAT",
+    "name_ko": "",
+    "buy": 3,
+    "sell": 0
+   },
+   {
     "ticker": "EQX",
     "name_ko": "",
     "buy": 3,
@@ -346,12 +352,6 @@
     "name_ko": "인튜이티브 서지컬",
     "buy": 3,
     "sell": 0
-   },
-   {
-    "ticker": "TYL",
-    "name_ko": "타일러 테크놀로지스",
-    "buy": 3,
-    "sell": 0
    }
   ],
   "sell_tilt": [
@@ -359,7 +359,7 @@
     "ticker": "GOOGL",
     "name_ko": "알파벳 A",
     "buy": 1,
-    "sell": 18
+    "sell": 19
    },
    {
     "ticker": "V",
@@ -368,19 +368,37 @@
     "sell": 12
    },
    {
-    "ticker": "JPM",
-    "name_ko": "제이피모건 체이스",
-    "buy": 1,
-    "sell": 7
-   },
-   {
     "ticker": "MA",
     "name_ko": "마스터카드",
     "buy": 3,
-    "sell": 9
+    "sell": 11
+   },
+   {
+    "ticker": "TSM",
+    "name_ko": "TSMC(ADR)",
+    "buy": 4,
+    "sell": 10
+   },
+   {
+    "ticker": "AAPL",
+    "name_ko": "애플",
+    "buy": 3,
+    "sell": 8
    }
   ],
   "split": [
+   {
+    "ticker": "AMZN",
+    "name_ko": "아마존",
+    "buy": 10,
+    "sell": 11
+   },
+   {
+    "ticker": "META",
+    "name_ko": "메타",
+    "buy": 11,
+    "sell": 10
+   },
    {
     "ticker": "GOOG",
     "name_ko": "알파벳 C",
@@ -388,27 +406,15 @@
     "sell": 12
    },
    {
-    "ticker": "AMZN",
-    "name_ko": "아마존",
-    "buy": 9,
-    "sell": 10
-   },
-   {
-    "ticker": "META",
-    "name_ko": "메타",
-    "buy": 9,
-    "sell": 8
-   },
-   {
     "ticker": "DIS",
     "name_ko": "디즈니",
-    "buy": 9,
+    "buy": 10,
     "sell": 7
    },
    {
     "ticker": "NVDA",
     "name_ko": "엔비디아",
-    "buy": 7,
+    "buy": 8,
     "sell": 6
    }
   ]
@@ -421,6 +427,10 @@
   {
    "ticker": "BIL",
    "reason": "ETF"
+  },
+  {
+   "ticker": "BSP",
+   "reason": "2026-07-01 상장 — 분기 중 새로 상장(분사·신규 상장)돼 기계적으로 편입된 물량"
   },
   {
    "ticker": "EFA",
@@ -513,7 +523,7 @@
   "AAPL": {
    "new": 0,
    "add": 3,
-   "reduce": 7,
+   "reduce": 8,
    "exit": 0
   },
   "ABBV": {
@@ -717,7 +727,7 @@
   "AJG": {
    "new": 0,
    "add": 4,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "AKAM": {
@@ -758,7 +768,7 @@
   },
   "ALK": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
    "exit": 0
   },
@@ -798,10 +808,16 @@
    "reduce": 1,
    "exit": 0
   },
-  "AMAT": {
+  "AM": {
    "new": 0,
    "add": 0,
    "reduce": 1,
+   "exit": 0
+  },
+  "AMAT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 2,
    "exit": 1
   },
   "AMBA": {
@@ -884,8 +900,14 @@
   },
   "AMZN": {
    "new": 1,
-   "add": 8,
-   "reduce": 10,
+   "add": 9,
+   "reduce": 11,
+   "exit": 0
+  },
+  "AN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
    "exit": 0
   },
   "ANET": {
@@ -922,6 +944,18 @@
    "new": 0,
    "add": 3,
    "reduce": 2,
+   "exit": 0
+  },
+  "APLD": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
+  "APO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "APP": {
@@ -1033,7 +1067,7 @@
    "exit": 1
   },
   "ATAT": {
-   "new": 1,
+   "new": 2,
    "add": 1,
    "reduce": 0,
    "exit": 0
@@ -1089,7 +1123,7 @@
   "AXP": {
    "new": 1,
    "add": 1,
-   "reduce": 5,
+   "reduce": 6,
    "exit": 0
   },
   "AXS": {
@@ -1155,7 +1189,7 @@
   "BAC": {
    "new": 0,
    "add": 1,
-   "reduce": 6,
+   "reduce": 7,
    "exit": 1
   },
   "BAH": {
@@ -1326,6 +1360,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "BL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "BLCO": {
    "new": 0,
    "add": 0,
@@ -1334,7 +1374,7 @@
   },
   "BLDR": {
    "new": 0,
-   "add": 1,
+   "add": 3,
    "reduce": 0,
    "exit": 2
   },
@@ -1436,7 +1476,7 @@
   },
   "BRK.B": {
    "new": 0,
-   "add": 5,
+   "add": 6,
    "reduce": 11,
    "exit": 0
   },
@@ -1467,6 +1507,12 @@
   "BSM": {
    "new": 0,
    "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "BSP": {
+   "new": 2,
+   "add": 0,
    "reduce": 0,
    "exit": 0
   },
@@ -1507,6 +1553,12 @@
    "exit": 0
   },
   "BUDFF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "BULL": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -1580,7 +1632,7 @@
   },
   "CACC": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 0,
    "exit": 0
   },
@@ -1638,6 +1690,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "CBRS": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "CCC": {
    "new": 0,
    "add": 0,
@@ -1660,6 +1718,12 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "CDLX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "CDNS": {
@@ -1736,7 +1800,7 @@
   },
   "CGNX": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 0,
    "exit": 0
   },
@@ -1768,13 +1832,13 @@
    "new": 1,
    "add": 3,
    "reduce": 0,
-   "exit": 0
+   "exit": 1
   },
   "CHYM": {
    "new": 0,
    "add": 1,
    "reduce": 1,
-   "exit": 0
+   "exit": 1
   },
   "CI": {
    "new": 0,
@@ -1787,6 +1851,12 @@
    "add": 1,
    "reduce": 0,
    "exit": 0
+  },
+  "CIFR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
   },
   "CIGI": {
    "new": 0,
@@ -1840,6 +1910,12 @@
    "new": 0,
    "add": 3,
    "reduce": 0,
+   "exit": 0
+  },
+  "CMI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "CMPR": {
@@ -1911,8 +1987,8 @@
   "COF": {
    "new": 1,
    "add": 4,
-   "reduce": 3,
-   "exit": 0
+   "reduce": 4,
+   "exit": 1
   },
   "COHR": {
    "new": 0,
@@ -1939,7 +2015,7 @@
    "exit": 0
   },
   "COO": {
-   "new": 0,
+   "new": 1,
    "add": 0,
    "reduce": 0,
    "exit": 1
@@ -1950,10 +2026,16 @@
    "reduce": 2,
    "exit": 0
   },
+  "CORZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "COST": {
    "new": 0,
    "add": 1,
-   "reduce": 2,
+   "reduce": 3,
    "exit": 0
   },
   "COTY": {
@@ -1995,11 +2077,11 @@
   "CPNG": {
    "new": 0,
    "add": 1,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 1
   },
   "CPRT": {
-   "new": 1,
+   "new": 2,
    "add": 1,
    "reduce": 3,
    "exit": 1
@@ -2138,7 +2220,7 @@
   },
   "CTSH": {
    "new": 1,
-   "add": 1,
+   "add": 2,
    "reduce": 2,
    "exit": 0
   },
@@ -2160,6 +2242,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "CVNA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
   "CVS": {
    "new": 0,
    "add": 2,
@@ -2175,7 +2263,7 @@
   "CVX": {
    "new": 0,
    "add": 0,
-   "reduce": 5,
+   "reduce": 6,
    "exit": 0
   },
   "CW": {
@@ -2186,7 +2274,7 @@
   },
   "DAL": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
    "exit": 0
   },
@@ -2230,6 +2318,12 @@
    "new": 0,
    "add": 0,
    "reduce": 1,
+   "exit": 1
+  },
+  "DECK": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
    "exit": 0
   },
   "DEI": {
@@ -2250,6 +2344,12 @@
    "reduce": 2,
    "exit": 1
   },
+  "DG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "DGEAF": {
    "new": 1,
    "add": 0,
@@ -2264,13 +2364,13 @@
   },
   "DHI": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 1,
    "exit": 0
   },
   "DHR": {
    "new": 0,
-   "add": 2,
+   "add": 3,
    "reduce": 3,
    "exit": 1
   },
@@ -2283,12 +2383,12 @@
   "DINO": {
    "new": 0,
    "add": 2,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "DIS": {
    "new": 1,
-   "add": 8,
+   "add": 9,
    "reduce": 7,
    "exit": 0
   },
@@ -2311,6 +2411,12 @@
    "exit": 0
   },
   "DLR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "DLTR": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -2392,6 +2498,12 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "DVA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "DVN": {
@@ -2493,7 +2605,7 @@
   "ELV": {
    "new": 0,
    "add": 3,
-   "reduce": 5,
+   "reduce": 6,
    "exit": 0
   },
   "EMBC": {
@@ -2556,6 +2668,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "EQNR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "EQT": {
    "new": 0,
    "add": 2,
@@ -2608,7 +2726,7 @@
    "new": 0,
    "add": 0,
    "reduce": 1,
-   "exit": 0
+   "exit": 1
   },
   "ETN": {
    "new": 0,
@@ -2626,6 +2744,12 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "EVH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "EVLV": {
@@ -2748,6 +2872,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "FG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "FICO": {
    "new": 0,
    "add": 2,
@@ -2755,7 +2885,7 @@
    "exit": 1
   },
   "FIGR": {
-   "new": 0,
+   "new": 1,
    "add": 1,
    "reduce": 0,
    "exit": 0
@@ -2787,7 +2917,7 @@
   "FIVE": {
    "new": 0,
    "add": 0,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "FIVN": {
@@ -2846,7 +2976,7 @@
   },
   "FNF": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
    "exit": 0
   },
@@ -2928,6 +3058,12 @@
    "reduce": 0,
    "exit": 0
   },
+  "FRPT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "FSLR": {
    "new": 0,
    "add": 1,
@@ -3003,7 +3139,7 @@
   "FWONK": {
    "new": 0,
    "add": 0,
-   "reduce": 2,
+   "reduce": 3,
    "exit": 0
   },
   "FXI": {
@@ -3051,7 +3187,7 @@
   "GE": {
    "new": 0,
    "add": 0,
-   "reduce": 3,
+   "reduce": 4,
    "exit": 0
   },
   "GEHC": {
@@ -3069,7 +3205,7 @@
   "GEV": {
    "new": 0,
    "add": 0,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 1
   },
   "GFL": {
@@ -3213,7 +3349,7 @@
   "GOOGL": {
    "new": 0,
    "add": 1,
-   "reduce": 18,
+   "reduce": 19,
    "exit": 0
   },
   "GPC": {
@@ -3327,7 +3463,7 @@
   "HCA": {
    "new": 1,
    "add": 2,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "HCC": {
@@ -3337,7 +3473,7 @@
    "exit": 1
   },
   "HD": {
-   "new": 1,
+   "new": 2,
    "add": 2,
    "reduce": 1,
    "exit": 1
@@ -3357,7 +3493,7 @@
   "HGV": {
    "new": 0,
    "add": 0,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 1
   },
   "HII": {
@@ -3480,6 +3616,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "HTHT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "HTLD": {
    "new": 0,
    "add": 1,
@@ -3567,7 +3709,7 @@
   "ICLR": {
    "new": 0,
    "add": 1,
-   "reduce": 3,
+   "reduce": 4,
    "exit": 0
   },
   "IDA": {
@@ -3710,12 +3852,12 @@
   },
   "INTC": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 2,
    "exit": 1
   },
   "INTU": {
-   "new": 0,
+   "new": 1,
    "add": 3,
    "reduce": 3,
    "exit": 1
@@ -3984,6 +4126,12 @@
    "reduce": 2,
    "exit": 0
   },
+  "KGC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "KHC": {
    "new": 0,
    "add": 0,
@@ -4036,7 +4184,7 @@
    "new": 0,
    "add": 0,
    "reduce": 4,
-   "exit": 0
+   "exit": 1
   },
   "KOF": {
    "new": 0,
@@ -4047,7 +4195,7 @@
   "KR": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "KRYS": {
@@ -4148,13 +4296,13 @@
   },
   "LEN": {
    "new": 0,
-   "add": 1,
-   "reduce": 0,
+   "add": 2,
+   "reduce": 1,
    "exit": 0
   },
   "LEN.B": {
    "new": 1,
-   "add": 2,
+   "add": 3,
    "reduce": 0,
    "exit": 0
   },
@@ -4257,7 +4405,7 @@
   "LRCX": {
    "new": 0,
    "add": 0,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "LRLCF": {
@@ -4332,10 +4480,16 @@
    "reduce": 1,
    "exit": 0
   },
+  "M": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "MA": {
    "new": 0,
    "add": 3,
-   "reduce": 9,
+   "reduce": 11,
    "exit": 0
   },
   "MAA": {
@@ -4387,7 +4541,7 @@
    "exit": 0
   },
   "MBGL": {
-   "new": 2,
+   "new": 3,
    "add": 0,
    "reduce": 0,
    "exit": 0
@@ -4414,7 +4568,7 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
-   "exit": 0
+   "exit": 1
   },
   "MCK": {
    "new": 0,
@@ -4460,7 +4614,7 @@
   },
   "MELI": {
    "new": 0,
-   "add": 2,
+   "add": 3,
    "reduce": 0,
    "exit": 0
   },
@@ -4472,8 +4626,8 @@
   },
   "META": {
    "new": 1,
-   "add": 8,
-   "reduce": 8,
+   "add": 10,
+   "reduce": 10,
    "exit": 0
   },
   "MFP": {
@@ -4626,6 +4780,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "MPLX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "MPWR": {
    "new": 0,
    "add": 1,
@@ -4635,13 +4795,13 @@
   "MRK": {
    "new": 0,
    "add": 1,
-   "reduce": 3,
+   "reduce": 4,
    "exit": 0
   },
   "MRP": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "MRSH": {
@@ -4676,8 +4836,8 @@
   },
   "MSFT": {
    "new": 0,
-   "add": 8,
-   "reduce": 13,
+   "add": 9,
+   "reduce": 14,
    "exit": 0
   },
   "MSGE": {
@@ -4797,7 +4957,7 @@
   "NEM": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "NESR": {
@@ -4944,10 +5104,16 @@
    "reduce": 1,
    "exit": 0
   },
+  "NU": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "NUE": {
    "new": 0,
    "add": 0,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "NUVB": {
@@ -4958,7 +5124,7 @@
   },
   "NVDA": {
    "new": 1,
-   "add": 6,
+   "add": 7,
    "reduce": 5,
    "exit": 1
   },
@@ -5025,7 +5191,7 @@
   "NXPI": {
    "new": 0,
    "add": 1,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "NXT": {
@@ -5090,7 +5256,7 @@
   },
   "OLN": {
    "new": 0,
-   "add": 2,
+   "add": 3,
    "reduce": 0,
    "exit": 0
   },
@@ -5103,7 +5269,7 @@
   "OMF": {
    "new": 0,
    "add": 1,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "ONB": {
@@ -5113,6 +5279,12 @@
    "exit": 0
   },
   "ONC": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
+  "ONON": {
    "new": 1,
    "add": 0,
    "reduce": 0,
@@ -5226,6 +5398,12 @@
    "reduce": 0,
    "exit": 0
   },
+  "PAYX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "PBF": {
    "new": 0,
    "add": 1,
@@ -5263,7 +5441,7 @@
    "exit": 1
   },
   "PDD": {
-   "new": 0,
+   "new": 1,
    "add": 2,
    "reduce": 0,
    "exit": 0
@@ -5478,6 +5656,18 @@
    "reduce": 1,
    "exit": 0
   },
+  "PRI": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PRIM": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
   "PRLB": {
    "new": 0,
    "add": 1,
@@ -5515,6 +5705,12 @@
    "exit": 0
   },
   "PTEN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PTLO": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -5599,7 +5795,7 @@
    "exit": 0
   },
   "RACE": {
-   "new": 0,
+   "new": 1,
    "add": 1,
    "reduce": 1,
    "exit": 0
@@ -5620,6 +5816,12 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "RDDT": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "REG": {
@@ -5820,6 +6022,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "RYAAY": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "RYAN": {
    "new": 0,
    "add": 0,
@@ -5858,7 +6066,7 @@
   },
   "SBUX": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
    "exit": 0
   },
@@ -5919,7 +6127,7 @@
   "SE": {
    "new": 1,
    "add": 1,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "SEB": {
@@ -5934,10 +6142,16 @@
    "reduce": 0,
    "exit": 0
   },
+  "SGI": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
   "SGOV": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "SHAK": {
@@ -5959,7 +6173,7 @@
    "exit": 0
   },
   "SHW": {
-   "new": 0,
+   "new": 1,
    "add": 0,
    "reduce": 3,
    "exit": 0
@@ -6000,6 +6214,12 @@
    "reduce": 0,
    "exit": 0
   },
+  "SKYD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "SKYX": {
    "new": 0,
    "add": 0,
@@ -6016,6 +6236,12 @@
    "new": 1,
    "add": 1,
    "reduce": 3,
+   "exit": 0
+  },
+  "SLM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "SLVR": {
@@ -6096,6 +6322,12 @@
    "reduce": 2,
    "exit": 0
   },
+  "SNX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "SNY": {
    "new": 0,
    "add": 1,
@@ -6134,8 +6366,8 @@
   },
   "SPGI": {
    "new": 0,
-   "add": 2,
-   "reduce": 0,
+   "add": 3,
+   "reduce": 1,
    "exit": 0
   },
   "SPHR": {
@@ -6147,7 +6379,7 @@
   "SPOT": {
    "new": 1,
    "add": 0,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "SPSM": {
@@ -6231,7 +6463,7 @@
   "STX": {
    "new": 1,
    "add": 0,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "STZ": {
@@ -6280,6 +6512,12 @@
    "new": 0,
    "add": 0,
    "reduce": 3,
+   "exit": 0
+  },
+  "SWIM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "SWK": {
@@ -6368,7 +6606,7 @@
   },
   "TDG": {
    "new": 2,
-   "add": 1,
+   "add": 2,
    "reduce": 1,
    "exit": 0
   },
@@ -6531,7 +6769,7 @@
   "TRV": {
    "new": 0,
    "add": 1,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "TSHA": {
@@ -6549,7 +6787,7 @@
   "TSM": {
    "new": 0,
    "add": 4,
-   "reduce": 9,
+   "reduce": 10,
    "exit": 0
   },
   "TSN": {
@@ -6565,6 +6803,12 @@
    "exit": 0
   },
   "TTE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TTWO": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -6676,7 +6920,7 @@
    "new": 0,
    "add": 5,
    "reduce": 5,
-   "exit": 0
+   "exit": 1
   },
   "UNP": {
    "new": 0,
@@ -6730,6 +6974,12 @@
    "new": 0,
    "add": 3,
    "reduce": 12,
+   "exit": 0
+  },
+  "VAC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "VAL": {
@@ -6786,6 +7036,12 @@
    "reduce": 3,
    "exit": 0
   },
+  "VFC": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "VGIT": {
    "new": 0,
    "add": 0,
@@ -6832,6 +7088,12 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "VLO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "VMC": {
@@ -6909,7 +7171,7 @@
   "VRSN": {
    "new": 0,
    "add": 1,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 0
   },
   "VRT": {
@@ -7284,10 +7546,16 @@
    "reduce": 0,
    "exit": 0
   },
+  "XNDU": {
+   "new": 1,
+   "add": 0,
+   "reduce": 0,
+   "exit": 0
+  },
   "XOM": {
    "new": 0,
    "add": 2,
-   "reduce": 4,
+   "reduce": 5,
    "exit": 0
   },
   "XOP": {
@@ -7332,6 +7600,18 @@
    "reduce": 0,
    "exit": 0
   },
+  "XYZ": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "YETI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "YMM": {
    "new": 0,
    "add": 1,
@@ -7352,7 +7632,7 @@
   },
   "YUMC": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 0,
    "exit": 0
   },
@@ -7413,5 +7693,6 @@
  },
  "failed": [],
  "preliminary": true,
- "final_from": "2026-11-18"
+ "final_from": "2026-11-18",
+ "refreshed": "2026-11-17"
 }
