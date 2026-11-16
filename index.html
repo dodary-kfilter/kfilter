@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-14a (자료 갱신을 서버에서 끝까지 — 버튼은 refresh_all.yml 하나만 부르고, 화면을 닫아도 판단까지) / 이전: 2026-11-03f -->
+<!-- build: 2026-11-16a (자료 상태 — 시계가 대상마다 최근 실행·내용 기준을 확인, '최종 갱신'을 누르면 보임 · 13F 잠정·공시 들어오는 중) / 이전: 2026-11-14a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -44,6 +44,15 @@
   .tab .l{font-size:12px; color:var(--dim); margin-top:2px}
   .tab.stale .l::after{content:' ●'; color:var(--red)}
   .stalebar{font-size:13px; font-weight:700; color:var(--red); margin:0 0 10px}
+  #hlthbtn{cursor:pointer}
+  .hlth{display:none; border:1px solid var(--line); border-radius:10px; background:var(--panel); padding:10px 12px; margin:0 0 12px; font-size:13px}
+  .hlth.on{display:block}
+  .hlth .hh{font-weight:700; margin-bottom:4px}
+  .hlth .hr{padding:7px 0; border-top:1px solid var(--line)}
+  .hlth .hn{font-weight:700}
+  .hlth .hs{float:right; font-weight:700; color:var(--foreign)}
+  .hlth .hs.wait{color:var(--dim)} .hlth .hs.bad{color:var(--red)}
+  .hlth .hd{color:var(--dim); font-size:12px; margin-top:2px; line-height:1.5}
   .rgm{font-size:13.5px; line-height:1.6; margin:2px 0 12px; padding:8px 10px; border:1px solid var(--line); border-radius:8px}
   .rgm b{color:var(--fg)} .rgm .fv{color:#3fb950} .rgm .df{color:#ff7b72}
   .sct-g{margin:6px 0 4px; font-size:12.5px; color:var(--dim)} .sct{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px}
@@ -297,9 +306,10 @@
       <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
       <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급·저가매수·모멘텀·시총순·애널·거시·업종·재무·공시·TOP 20 가격·13F를 새로 받고, 끝나면 매일 판단도 다시 합니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
       <div class="ghmsg" id="ghmsg"></div>
-      <div class="meta">최종 갱신 <b id="updated">—</b><span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
+      <div class="meta" id="hlthbtn" onclick="hlthToggle()" title="눌러서 자료 상태(최근 실행·내용 기준) 보기">최종 갱신 <b id="updated">—</b> ▾<span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
     </div>
   </header>
+  <div class="hlth" id="hlth"></div>
   <div class="rule" id="rule" style="display:none"></div>
   <div class="tabs">
     <div class="tab active" data-k="index" onclick="show('index')"><div class="c" id="c-index">📈</div><div class="l">지수</div></div>
@@ -1389,56 +1399,9 @@ const GH_REPO='dodary-kfilter/kfilter', GH_KEY='kf_gh_token';
 // 자료를 새로 만드는 수집은 모두 — 매일 판단(Claude 루틴)과 한글 이름(토스가 막혀 지금은 실패)만 빼고
 const GH_FLOWS=[['update.yml','수급·저가매수·모멘텀'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시'],['materials.yml','업종·재무·공시'],['top20.yml','TOP 20 가격'],['f13.yml','13F']];
 function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h; }
-// ── 자료를 다 받으면 판단도 다시 (2026-11-03) ── 변화가 큰 국면에서 아침 판단을 하루 내내 두지 않는다
-//   사이트 → 점검 워크플로(fire) → GitHub 비밀 값으로 루틴 API 트리거 → 루틴이 새 자료로 시황·TOP 20·추천·비중을 다시 판단(30분 안팎)
-//   루틴 토큰은 브라우저에 두지 않는다. 겹치지 않게: 07:20~08:20 정기 판단 중이면 건너뛰고, 40분 안에 다시 시작한 판단이 있으면 건너뛴다
+// ── 자료 갱신 뒤 새 판단 기다리기 ── 판단은 서버(refresh_all.yml)가 부른다. 화면은 새 판단이 올라오면 다시 불러올 뿐이다
 const RAW_KF='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/';
 function kstStr(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
-// ── 노크 (2026-11-03) ── 루틴은 일을 시작할 때 문패(claude/running-YYYYMMDD-HHMM)를 달고 끝나면 뗀다.
-//   문패가 60분 안이면 안에 사람이 있는 것 — 부르지 않고 5분마다 다시 노크한다. 비면 그 판단이 새 자료 뒤인지 보고, 아니면 그때 부른다
-let RETRY_MS=5*60*1000;
-async function routineInside(){
-  try{
-    const L=await fetch('https://api.github.com/repos/'+GH_REPO+'/branches?per_page=100',{cache:'no-store'}).then(r=>r.ok?r.json():[]);
-    const now=kstNow();
-    for(const b of (L||[])){
-      const m=/^claude\/running-(\d{8})-(\d{4})/.exec(b.name||''); if(!m) continue;
-      const t=new Date(+m[1].slice(0,4), +m[1].slice(4,6)-1, +m[1].slice(6,8), +m[2].slice(0,2), +m[2].slice(2,4));
-      if(now-t>=0 && now-t<60*60000) return m[2].slice(0,2)+':'+m[2].slice(2,4);
-    }
-  }catch(e){}
-  return null;
-}
-function startRetry(){
-  let since=null; try{ since=localStorage.getItem('kf_judge_retry'); }catch(e){}
-  const s0=since && kParse(since);
-  if(!s0 || (kstNow()-s0)>60*60000){ try{ localStorage.removeItem('kf_judge_retry'); }catch(e){} return; }
-  setTimeout(async ()=>{
-    let tok=null; try{ tok=localStorage.getItem(GH_KEY); }catch(e){}
-    if(!tok) return;
-    const inside=await routineInside();
-    if(inside){ ghMsg('판단이 진행 중이에요('+inside+' 시작). 5분 뒤 다시 노크할게요.'); startRetry(); return; }
-    let j=null; try{ const t=await fetch(RAW_KF+'top20/top20.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null); j=kParse(t && t.meta && (t.meta.judged_at||t.meta.judged)); }catch(e){}
-    try{ localStorage.removeItem('kf_judge_retry'); }catch(e){}
-    if(j && j>=s0){ ghMsg('진행 중이던 판단이 새 자료로 끝났어요. 새로 불러옵니다.'); setTimeout(hardReload, 1500); return; }
-    ghMsg(await judgeFire({'Authorization':'Bearer '+tok, 'Accept':'application/vnd.github+json'}));
-  }, RETRY_MS);
-}
-setTimeout(()=>{ try{ startRetry(); }catch(e){} }, 1500);       // 다시 열어도 노크를 이어 간다(최대 60분)
-async function judgeFire(H){
-  const now=kstNow(), hm=now.getHours()*60+now.getMinutes(), today=new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  let j=null; try{ const t=await fetch(RAW_KF+'top20/top20.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null); j=kParse(t && t.meta && (t.meta.judged_at||t.meta.judged)); }catch(e){}
-  const inside=await routineInside();
-  if(inside){ try{ localStorage.setItem('kf_judge_retry', kstStr(now)); }catch(e){} startRetry();
-    return '판단이 이미 진행 중이에요('+inside+' 시작). 5분마다 노크해서, 끝난 판단이 새 자료 전이면 그때 한 번 더 부를게요.'; }
-  if(hm>=440 && hm<=500 && (!j || j<today)) return '판단은 07:30 정기 판단이 도는 중이라 따로 다시 하지 않았어요.';
-  try{ const w=await fetch(RAW_KF+'status/watchdog.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null);
-       const lf=w && kParse(w.last_fire); if(lf && (now-lf)<40*60000) return '판단은 '+String(w.last_fire).slice(11,16)+'에 이미 다시 시작해 진행 중이에요.'; }catch(e){}
-  const st=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/watchdog.yml/dispatches', {method:'POST', headers:H,
-      body:JSON.stringify({ref:'main', inputs:{fire:'true', reason:'판단 — 사용자가 사이트에서 자료 갱신을 눌렀습니다('+kstStr(now)+' KST). 방금 새로 받은 자료로 가볍게 다시 판단하세요(국면·업종·편입편출·추천·비중, 깊이 보기는 시장마다 3개까지, 노트는 쓰지 않음).'}})}).then(r=>r.status).catch(()=>0);
-  if(st===204){ try{ localStorage.setItem('kf_wait_judge', kstStr(now)); }catch(e){} return '판단(시황 리포트·TOP 20·추천·비중)도 다시 시작했어요. 30분 안팎이면 바뀌고, 그때 화면이 알아서 새로 불러와요.'; }
-  return '판단 다시 시작은 실패했어요('+st+').';
-}
 // 새 판단을 기다리는 중이면(자료 갱신 뒤) 2분마다 확인해서, 올라오면 새로 불러온다 — 최대 60분
 (function waitJudge(){
   let since=null; try{ since=localStorage.getItem('kf_wait_judge'); }catch(e){}
@@ -1449,7 +1412,7 @@ async function judgeFire(H){
     try{ const t=await fetch(RAW_KF+'top20/top20.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null);
          const j=kParse(t && t.meta && (t.meta.judged_at||t.meta.judged));
          if(j && j>=kParse(since)){ try{ localStorage.removeItem('kf_wait_judge'); }catch(e){} ghMsg('새 판단('+kstStr(j).slice(11)+')이 올라왔어요. 새로 불러옵니다.'); setTimeout(hardReload, 1500); return; } }catch(e){}
-    if((kstNow()-s0)>60*60000){ try{ localStorage.removeItem('kf_wait_judge'); }catch(e){} ghMsg('새 판단이 60분 안에 올라오지 않았어요. 점검이 다시 확인합니다.'); return; }
+    if((kstNow()-s0)>60*60000){ try{ localStorage.removeItem('kf_wait_judge'); }catch(e){} ghMsg('새 판단이 60분 안에 올라오지 않았어요. 시계가 다시 확인합니다.'); return; }
     setTimeout(tick, 2*60*1000);
   };
   setTimeout(tick, 60*1000);
@@ -1906,8 +1869,9 @@ function loadList(k){
     if(k==='top20') return listJSON('top20/top20.json');
     if(k==='analyst') return listJSON('lists/analyst.json');
     if(k==='mcap') return listJSON('lists/mcap.json');
-    const ix=await listJSON('lists/13f/index.json');          // 최신 분기 파일을 가리키는 색인
+    const ix=await listJSON('lists/13f/index.json');          // 최신 분기 파일을 가리키는 색인 + 출처 확인(check: 공시가 들어오는 분기)
     if(!ix || !ix.latest) throw new Error('lists/13f/index.json에 latest 없음');
+    F13IX=ix;
     return listJSON('lists/13f/'+ix.latest+'.json');
   })().then(d=>{ LISTS[k]=d; LIST_ERR[k]=''; listBadge(k); try{ markStale(); }catch(e){} if(k==='top20' && CUR==='index' && DATA) render(); return d; },   // 지수 탭의 '오늘의 시황 판단'을 채운다(data.json이 실패해 안내 중이면 덮지 않음)
             e=>{ LIST_ERR[k]=String((e&&e.message)||e||'받기 실패'); return null; })
@@ -1932,28 +1896,54 @@ function lCnt(k){
   if(k==='mcap') return MC_L.reduce((n,[m])=>n+((d[m]||[]).length),0);
   return F13_LISTS.reduce((a,[x])=>a+(((d.lists||{})[x])||[]).length, 0);
 }
-// ── 자료 나이 점검 (2026-11-02) — 자동 갱신이 빠졌으면 빨갛게. 기준은 tools/watchdog.py와 같다(한국시간)
+// ── 자료 상태 (2026-11-16) ── 시계(tools/clock.py)가 5분마다 대상마다 '최근 언제 돌았나 · 내용은 언제 것인가'를 확인해
+//   status 브랜치 health.json에 쓴다. 빨간 점도 그 결과로 찍는다(늦음·실패·한도). 시계 기록이 20분 넘게 끊기면 '시계 멈춤'
+var HEALTH=null;
+const HEALTH_URL='https://raw.githubusercontent.com/dodary-kfilter/kfilter/status/health.json', H_BAD=new Set(['늦음','실패','한도']);
+function healthAge(){ const b=HEALTH && kParse(HEALTH.beat); return b ? (kstNow()-b)/60000 : Infinity; }
+function loadHealth(){ return fetch(HEALTH_URL+'?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null)
+  .then(j=>{ if(j) HEALTH=j; renderHealth(); try{ markStale(); }catch(e){} }).catch(()=>{ renderHealth(); }); }
+function hlthToggle(){ const e=document.getElementById('hlth'); if(!e) return; e.classList.toggle('on'); renderHealth(); if(e.classList.contains('on')) loadHealth(); }
+function renderHealth(){
+  const e=document.getElementById('hlth'); if(!e || !e.classList.contains('on')) return;
+  if(!HEALTH){ e.innerHTML='<div class="hh">자료 상태</div><div class="hd">시계 기록을 아직 받지 못했어요.</div>'; return; }
+  const D=HEALTH.day||{}, dead=healthAge()>20;
+  let h='<div class="hh">자료 상태</div><div class="hd">'+(dead ? '<b style="color:var(--red)">시계 멈춤</b> — 마지막 확인 '+esc(HEALTH.beat||'—')+' · 다음 루틴이 다시 띄웁니다'
+    : '시계가 '+esc(String(HEALTH.beat||'').slice(11))+'에 확인 · 오늘 부르기 '+esc(D.dispatches||0)+'/60번')+(D.trading_day===false ? ' · 오늘 국장 휴장' : '')+'</div>';
+  h+=(HEALTH.items||[]).map(it=>'<div class="hr"><span class="hn">'+esc(it.name)+'</span><span class="hs'+(H_BAD.has(it.state)?' bad':(it.state==='정상'?'':' wait'))+'">'+esc(it.state)+'</span>'
+    +'<div class="hd">최근 실행 '+esc(it.run)+'<br>내용 '+esc(it.content)+'</div>'+(it.why ? '<div class="hd">'+esc(it.why)+'</div>' : '')+'</div>').join('');
+  e.innerHTML=h;
+}
+setInterval(()=>{ loadHealth(); }, 5*60*1000);
+setTimeout(()=>{ loadHealth(); }, 300);
+// ── 시계 기록이 없을 때만 쓰는 예전 기준(한국시간) — 자동 갱신이 빠졌으면 빨갛게
 //   수급·저가매수·모멘텀(data.json) 평일 10:30~16:30엔 90분, 17:00 이후엔 그날 15:30 이후 · 시총순 14시간 · 애널 11:00 이후 오늘 날짜 · 매일 판단 08:30 이후 오늘
 function kstNow(){ const d=new Date(); return new Date(d.getTime()+(d.getTimezoneOffset()+540)*60000); }
 function kParse(s){ const m=String(s||'').match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/); return m ? new Date(+m[1], m[2]-1, +m[3], +(m[4]||0), +(m[5]||0)) : null; }
 let SCANHB=null;        // 휴장 표시(status/scan.json) — 스캐너가 휴장일 예약을 건너뛸 때 하루 한 번 남긴다
 function staleOf(){
+  if(HEALTH && healthAge()<=20){                                    // 시계 기록이 살아 있으면 그 판정을 그대로
+    const b={}; (HEALTH.items||[]).forEach(it=>{ b[it.key]=H_BAD.has(it.state); });
+    return {flow:b.scan, mcap:b.mcap, analyst:b.analyst, judge:b.judge, top20:b.top20, f13:b.f13, clock:false};
+  }
   const now=kstNow(), hm=now.getHours()*60+now.getMinutes(), wk=now.getDay()>=1 && now.getDay()<=5;
   const today=new Date(now.getFullYear(), now.getMonth(), now.getDate()), out={};
   const tstr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
-  const holiday=!!(SCANHB && SCANHB.date===tstr && SCANHB.trading_day===false);
+  const holiday=!!(SCANHB && SCANHB.date===tstr && SCANHB.trading_day===false) || !!(HEALTH && HEALTH.day && HEALTH.day.date===tstr && HEALTH.day.trading_day===false);
   if(typeof DATA!=='undefined' && DATA && !holiday){ const d=kParse(DATA.updated);
     if(d && wk){ if(hm>=630 && hm<=990) out.flow=(now-d)>90*60000; else if(hm>=1020) out.flow=d<new Date(today.getTime()+930*60000); } }
   if(LISTS.mcap){ const m=kParse((LISTS.mcap.meta||{}).updated), lim=[2,3,4,5].includes(now.getDay()) ? 14 : 26;   // 토·일·월은 26시간(주말엔 하루 두 번만 돈다)
     out.mcap=!m || (now-m)>lim*3600000; }
   if(LISTS.analyst){ const a=kParse(LISTS.analyst.updated); out.analyst=!a || a<(hm>=660 ? today : new Date(today.getTime()-86400000)); }
   if(LISTS.top20){ const T=LISTS.top20.meta||{}, j=kParse(T.judged_at||T.judged); out.judge=hm>=510 && (!j || j<today); }
+  out.clock=!!HEALTH;                                                 // 기록은 있는데 20분 넘게 끊김 = 시계 멈춤
   return out;
 }
 function markStale(){
-  const s=staleOf(), map={flow:s.flow, value_pick:s.flow, momentum:s.flow, mcap:s.mcap, analyst:s.analyst, top20:s.judge, index:s.judge};
+  const s=staleOf(), map={flow:s.flow, value_pick:s.flow, momentum:s.flow, mcap:s.mcap, analyst:s.analyst, top20:s.judge||s.top20, index:s.judge, f13:s.f13};
   Object.entries(map).forEach(([k,v])=>{ const t=document.querySelector('.tab[data-k="'+k+'"]'); if(t) t.classList.toggle('stale', !!v); });
-  const u=document.getElementById('updated'); if(u){ u.style.color=s.flow ? 'var(--red)' : ''; u.title=s.flow ? '수급 자료가 예정보다 오래됐어요 — 점검이 2시간 안에 다시 돌립니다' : ''; }
+  const u=document.getElementById('updated'); if(u){ const bad=s.flow||s.clock; u.style.color=bad ? 'var(--red)' : '';
+    u.title=s.clock ? '시계가 멈췄어요 — 다음 루틴이 다시 띄웁니다(눌러서 자료 상태 보기)' : (s.flow ? '수급 자료가 예정보다 늦어요 — 시계가 다시 부릅니다(눌러서 자료 상태 보기)' : ''); }
 }
 setInterval(()=>{ try{ markStale(); }catch(e){} }, 10*60*1000);
 fetch('https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/status/scan.json?t='+Date.now(), {cache:'no-store'})
@@ -1978,7 +1968,7 @@ function listRule(k){
   if(k==='mcap'){ const M=d.meta||{};
     return '기준: <b>'+esc(M.updated||'—')+'</b> 갱신 · 시가총액 큰 순 · 코스피 상위 <b>200</b>·코스닥 상위 <b>150</b>(보통주 — ETF·ETN·우선주·스팩·리츠 제외) · S&P 500·나스닥 100 전 종목 · 하루 두 번(07:20·16:40) 자동'; }
   const q=f13Q(d), r=d.rules||{};
-  return '기준: <b>'+q.y+'년 '+q.q+'분기</b> 13F('+esc(lMd2(d.as_of))+' 보유) · 슈퍼투자자 '+esc(d.tracked)+'명 중 공시 <b>'+esc(d.filed)+'명</b> · 같은 행동 <b>'
+  return '기준: <b>'+q.y+'년 '+q.q+'분기</b> 13F('+esc(lMd2(d.as_of))+' 보유'+(d.preliminary?', 잠정':'')+') · 슈퍼투자자 '+esc(d.tracked)+'명 중 공시 <b>'+esc(d.filed)+'명</b> · 같은 행동 <b>'
     +esc(r.min_count||2)+'명 이상</b>'+(r.exclude?' · 제외: '+esc(r.exclude):'');
 }
 function ruleFor(k){
@@ -2201,6 +2191,15 @@ function anView(d){
 
 // ── 13F — 신규 편입 · 비중 확대 · 비중 축소 · 청산 구간과 합의 강도 ──
 function f13Q(d){ const m=String(d.quarter||'').match(/^(\d{4})Q(\d)$/); return m ? {y:m[1], q:m[2]} : {y:'', q:''}; }
+var F13IX=null;      // lists/13f/index.json — 13F 탭을 불러올 때 같이 받는다
+// 출처 확인 — 잠정이면 몇 명 기준인지, 새 분기 공시가 들어오는 중이면 몇 명 들어왔는지 (lists/13f/index.json check)
+function f13Incoming(d){
+  const ck=(F13IX||{}).check||{}, st='<div class="sechd" style="color:var(--dim);font-weight:400;margin:-4px 0 8px;font-size:12px">';
+  if(d.preliminary) return st+'잠정 — 슈퍼투자자 '+esc(d.tracked)+'명 중 '+esc(d.filed)+'명 공시 기준. '+esc(lMd2(d.final_from))+'부터 최종으로 바뀝니다</div>';
+  const m=String(ck.quarter||'').match(/^(\d{4})Q(\d)$/);
+  if(m && ck.quarter>String(d.quarter||'')) return st+m[1]+'년 '+m[2]+'분기 공시가 들어오는 중 — '+esc(ck.tracked)+'명 중 '+esc(ck.filed)+'명('+esc(lMd(ck.at))+' '+esc(String(ck.at||'').slice(11,16))+' 확인). '+esc(ck.need)+'명이 넘으면 잠정으로 바꿉니다</div>';
+  return '';
+}
 function f13Price(x){ const k=Object.keys(x).find(k=>/^price_/.test(k)); return k ? x[k] : null; }   // 분기마다 price_0630·price_0930…
 // 13F — 네 목록과 합의 강도를 버튼으로 골라 본다(TOP 20처럼 한 번에 하나만). 고른 것은 다시 열어도 유지
 const F13_DESC={new:'이번 분기에 처음 산 슈퍼투자자 수 순', add:'비중을 늘린 슈퍼투자자 수 순', reduce:'비중을 줄인 슈퍼투자자 수 순', exit:'전량 판 슈퍼투자자 수 순', cons:'리스트 종목의 매수:매도 인원 — 한쪽으로 쏠리면 합의, 비슷하면 의견이 갈린 것'};
@@ -2215,7 +2214,7 @@ function f13View(d){
   const t=btns.some(([k])=>k===F13_T) ? F13_T : 'new';
   const pick='<div class="mk2 f13t">'+btns.map(([k,n])=>'<button type="button"'+(k===t?' class="on"':'')+' onclick="f13T(\''+k+'\')">'+short[k]+' <span>'+n+'</span></button>').join('')+'</div>';
   const qq=f13Q(d);
-  let h=pick+'<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">'+qq.y+'년 '+qq.q+'분기 보유 기준 · '+F13_DESC[t]+'</div>';
+  let h=pick+'<div class="sechd" style="color:var(--dim);font-weight:400;margin:2px 0 8px">'+qq.y+'년 '+qq.q+'분기 보유 기준'+(d.preliminary ? ' <b style="color:var(--pension)">잠정</b>' : '')+' · '+F13_DESC[t]+'</div>'+f13Incoming(d);
   if(t==='cons'){
     const chips=a=>(a||[]).length ? '<div class="peer-row">'+a.map(x=>'<span class="peer">'+esc(x.name_ko||x.ticker)+' <b>'+esc(x.buy)+':'+esc(x.sell)+'</b></span>').join('')+'</div>'
                                   : '<div class="en-empty" style="padding:4px 0">없음</div>';
@@ -2291,7 +2290,7 @@ function listPrompt(kind, a, b){
       parts=F13_LISTS.map(([k,l])=>{ const x=((d.lists||{})[k]||[]).find(v=>v.ticker===tk); return x ? l+' '+x.count+'명' : ''; }).filter(Boolean);
       buy=hit.buy; sell=hit.sell;
     }
-    const note=`${q.y}년 ${q.q}분기 13F(${asOf} 기준 보유, 슈퍼투자자 ${d.filed}명 공시)에서 ${parts.length ? parts.join(', ')+'이었고, ' : ''}사거나 늘린 인원 대 줄이거나 판 인원은 ${buy}:${sell}입니다. `
+    const note=`${q.y}년 ${q.q}분기 13F(${asOf} 기준 보유, 슈퍼투자자 ${d.filed}명 공시${d.preliminary ? ' — 마감 전 잠정 집계' : ''})에서 ${parts.length ? parts.join(', ')+'이었고, ' : ''}사거나 늘린 인원 대 줄이거나 판 인원은 ${buy}:${sell}입니다. `
       +`13F는 분기 말 보유 내역을 45일 안에 내는 공시라 ${asOf} 이후의 매매는 담겨 있지 않습니다.`;
     return reportPrompt({kind:'one', subj:'이 종목', title:`${nm}(${tk}) — 슈퍼투자자들의 13F 공통 매매 리스트에 오른 종목으로 선별되었습니다.`, note,
       bg:true, cmd:cmdUS(tk), data:DATA_US, code:tk, name:nm});

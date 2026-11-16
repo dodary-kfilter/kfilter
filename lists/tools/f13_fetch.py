@@ -3,13 +3,16 @@
 """13F 공통 매매 — Dataroma 슈퍼투자자 분기 거래 내역을 모아 lists/13f/<분기>.json을 만든다.
 
 사용(저장소 루트에서):
-  python3 lists/tools/f13_fetch.py                   # 공시 마감이 지난 최신 분기를, 파일이 없을 때만 만든다
-  python3 lists/tools/f13_fetch.py --quarter 2026Q3  # 분기를 지정한다
+  python3 lists/tools/f13_fetch.py                   # 공시가 들어오는 분기를 확인하고, 규칙대로 잠정·최종 파일을 만든다
+  python3 lists/tools/f13_fetch.py --quarter 2026Q3  # 분기를 지정해 만든다(파일이 있으면 --force)
   python3 lists/tools/f13_fetch.py --dry             # 쓰지 않고 요약만 본다
-  python3 lists/tools/f13_fetch.py --force           # 파일이 있어도 다시 만든다
-  GitHub Actions(.github/workflows/f13.yml)가 매일 03:17(한국시간)에 돌린다(GitHub 예약이 서너 시간씩 밀려도 07:30 매일 판단 전에 끝나게).
-  공시 마감(분기 말 + 45일, 주말이면 다음 월요일) + 이틀이 지난 최신 분기를 처음 만들고,
-  그 뒤 일주일은 매일 다시 받아 늦게 반영된 매니저가 늘었을 때만 바꾼다. 그 뒤엔 접속 없이 건너뛴다.
+  시계(tools/clock.py)가 매일 03:00(한국시간)에 f13.yml을 부른다.
+
+공시가 들어오는 분기 = 가장 최근에 끝난 분기. 분기가 끝난 다음 날부터 '마감 + 이틀 + 7일'까지 매일 출처(Dataroma)를 확인한다
+  - 확인할 때마다 그 분기에 공시한 슈퍼투자자 수를 13f/index.json의 check에 남긴다 — 사이트가 'N명 공시'로 보여 준다
+  - 마감(분기 말 + 45일, 주말이면 다음 월요일) + 이틀 전: 절반 넘게 공시했으면 '잠정' 파일(preliminary=true)을 만들고, 늘 때마다 바꾼다
+  - 마감 + 이틀부터: 최종 파일(preliminary=false) — 그 뒤 7일은 공시한 사람이 늘었을 때만 바꾼다(늦게 낸 매니저 보충)
+  - 그 기간이 지나면 접속 없이 끝난다(다음 분기가 끝날 때까지)
 
 규칙(README와 같음)
 - 출처: Dataroma 매니저 목록(managers.php)의 슈퍼투자자 전원, 매니저별 거래 내역(m_activity.php)의 해당 분기 부분
@@ -37,7 +40,8 @@ NAMES = os.path.join(ROOT, 'lists', 'names_ko.json')
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36'
 DR = 'https://www.dataroma.com/m/'
 MIN_CNT, TOP_N, MAX_FAIL = 2, 10, 10
-REFRESH_DAYS = 7                       # 처음 만든 뒤 이 기간엔 매일 다시 받아, 공시한 매니저가 늘었을 때만 바꾼다
+REFRESH_DAYS = 7                       # 최종 기준일(마감 + 이틀) 뒤 이 기간엔 매일 다시 받아, 공시한 매니저가 늘었을 때만 바꾼다
+PRELIM_SHARE = 0.5                     # 마감 전엔 추적하는 슈퍼투자자의 이 비율 이상이 공시했을 때부터 잠정으로 반영
 KST = dt.timezone(dt.timedelta(hours=9))
 CATS = (('new', 'Buy'), ('add', 'Add'), ('reduce', 'Reduce'), ('exit', 'Sell'))
 
@@ -98,6 +102,17 @@ def latest_due(today):
     return None
 
 
+def watching(today):
+    """공시가 들어오는 분기(가장 최근에 끝난 분기)와 그 일정 — (연, 분기, 분기 말, 최종 기준일, 확인 끝나는 날).
+    확인 기간(분기 끝난 다음 날 ~ 최종 기준일 + REFRESH_DAYS)이 지났으면 None"""
+    y, q = today.year, (today.month - 1) // 3 + 1
+    y, q = (y, q - 1) if q > 1 else (y - 1, 4)
+    qe = quarter_end(y, q)
+    due = deadline(qe) + dt.timedelta(days=2)
+    end = due + dt.timedelta(days=REFRESH_DAYS)
+    return (y, q, qe, due, end) if today <= end else None
+
+
 def managers():
     t = fetch(DR + 'managers.php') or ''
     out = []
@@ -144,25 +159,25 @@ def ymeta(tk, qe):
 
 def main(argv):
     dry, force = '--dry' in argv, '--force' in argv
-    today = dt.datetime.now(KST).date()
-    if '--quarter' in argv:
+    now = dt.datetime.now(KST)
+    today = now.date()
+    manual = '--quarter' in argv
+    if manual:
         m = re.match(r'^(\d{4})Q([1-4])$', argv[argv.index('--quarter') + 1])
         y, q = int(m.group(1)), int(m.group(2))
+        qe = quarter_end(y, q)
+        due = deadline(qe) + dt.timedelta(days=2)
     else:
-        yq = latest_due(today)
-        if not yq:
-            print('공시 마감이 지난 분기가 없음'); return 0
-        y, q = yq
+        w = watching(today)
+        if not w:
+            print('공시가 들어오는 분기가 없음 — 지난 분기는 보충까지 끝났고, 다음 분기는 분기가 끝난 다음 날부터 확인한다'); return 0
+        y, q, qe, due, end = w
     qkey, label = '%dQ%d' % (y, q), 'Q%d %d' % (q, y)
-    qe, qs = quarter_end(y, q), quarter_end(y, q - 1) if q > 1 else quarter_end(y - 1, 4)
+    qs = quarter_end(y, q - 1) if q > 1 else quarter_end(y - 1, 4)
     path = os.path.join(DIR, qkey + '.json')
-    due = deadline(qe) + dt.timedelta(days=2)
-    prev = None
-    if os.path.exists(path) and not force and not dry:
-        if today > due + dt.timedelta(days=REFRESH_DAYS):
-            print('%s 파일이 이미 있음 — 건너뜀 (다음 분기는 마감 이틀 뒤에 새로 만든다)' % qkey); return 0
-        prev = json.load(open(path, encoding='utf-8'))
-        print('%s 파일이 있음 — 마감 뒤 %d일 안이라 다시 받아, 공시한 매니저가 늘었으면 바꾼다(지금 %s명)' % (qkey, REFRESH_DAYS, prev.get('filed')))
+    prev = json.load(open(path, encoding='utf-8')) if os.path.exists(path) else None
+    if manual and prev is not None and not force and not dry:
+        print('%s 파일이 이미 있음 — 다시 만들려면 --force' % qkey); return 0
 
     mg = managers()
     if len(mg) < 50:
@@ -173,7 +188,58 @@ def main(argv):
     if len(failed) > MAX_FAIL:
         sys.exit('★ 매니저 %d명의 거래 내역을 받지 못함 — 쓰지 않음' % len(failed))
     filed = sum(1 for a in acts if a)
+    need = -(-len(mg) * int(PRELIM_SHARE * 100) // 100)            # 올림 — 83명이면 42명
+    prelim = today < due
+    print('%s(%s 보유) · 슈퍼투자자 %d명 중 공시 %d명 · 못 받음 %s · %s' % (
+        qkey, qe, len(mg), filed, failed or '없음',
+        '마감 전(최종 기준일 %s) — %d명 넘으면 잠정' % (due, need) if prelim else '최종 기준일(%s) 지남' % due))
 
+    # 쓸지 정한다 — 출처에 새 자료가 있을 때만 바꾼다
+    if dry or force or manual:
+        write, why = not dry, ('요약만' if dry else '지정한 분기를 만든다')
+    elif prelim and filed < need:
+        write, why = False, '마감 전이고 공시가 절반(%d명)에 못 미쳐 숫자만 남긴다' % need
+    elif prev is None:
+        write, why = True, '처음 만든다(%s)' % ('잠정' if prelim else '최종')
+    elif failed:
+        write, why = False, '못 받은 매니저가 있어 있던 파일을 그대로 둔다'
+    elif filed > (prev.get('filed') or 0):
+        write, why = True, '공시가 %s명 → %d명으로 늘었다' % (prev.get('filed'), filed)
+    elif prev.get('preliminary') and not prelim:
+        write, why = True, '최종 기준일이 지나 잠정을 최종으로 바꾼다'
+    else:
+        write, why = False, '공시한 사람 수가 그대로(%d명)라 바꾸지 않는다' % filed
+    print(' →', why)
+
+    if write or dry:
+        out = build(acts, mg, filed, failed, qkey, qe, qs, today)
+        out['preliminary'], out['final_from'] = prelim, due.isoformat()
+        if prev is not None and not force:
+            out['generated'], out['refreshed'] = prev.get('generated') or out['generated'], today.isoformat()   # 처음 만든 날은 그대로
+    print(' 접속: %s' % ('쿠키 확인 화면을 넘김(%s)' % ', '.join('%s=%s' % kv for h in COOK.values() for kv in h.items()) if COOK else '쿠키 확인 화면 없음'))
+    if dry:
+        return 0
+
+    os.makedirs(DIR, exist_ok=True)
+    if write:
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(out, f, ensure_ascii=False, indent=1); f.write('\n')
+    ipath = os.path.join(DIR, 'index.json')
+    ix = json.load(open(ipath, encoding='utf-8')) if os.path.exists(ipath) else {'latest': qkey, 'quarters': []}
+    if write:
+        ix['quarters'] = sorted(set(ix.get('quarters', [])) | {qkey})
+        ix['latest'] = max(ix['quarters'])
+    if not manual:                     # 출처 확인 기록 — 내용(파일)과 별개로 '언제 확인했고 출처에 몇 명이 냈나'
+        ix['check'] = {'quarter': qkey, 'filed': filed, 'tracked': len(mg), 'failed': len(failed), 'need': need,
+                       'final_from': due.isoformat(), 'at': now.strftime('%Y-%m-%d %H:%M'), 'result': why}
+    with open(ipath, 'w', encoding='utf-8') as f:
+        json.dump(ix, f, ensure_ascii=False); f.write('\n')
+    print('저장:', (os.path.relpath(path, ROOT) + ' · ') if write else '', 'index.json latest =', ix['latest'], '· check', ix.get('check', {}).get('at', '-'))
+    return 0
+
+
+def build(acts, mg, filed, failed, qkey, qe, qs, today):
+    """매니저별 거래 → 네 목록·합의 강도·제외 종목 (파일 하나 분량)"""
     cnt, en = {}, {}
     for a in acts:
         seen = set()
@@ -225,13 +291,12 @@ def main(argv):
            'rules': {'count': '같은 행동을 한 슈퍼투자자 수', 'min_count': MIN_CNT, 'top_n': TOP_N,
                      'sort': '인원 내림차순, 동률이면 같은 방향 순매수(순매도) 큰 순', 'buy_sell': 'buy=신규+확대 인원, sell=축소+청산 인원',
                      'consensus': '리스트 종목 중 매수 비중 70% 이상=매수 우위, 30% 이하=매도 우위, 40~60%이고 10명 이상=의견 분산',
-                     'exclude': 'ETF, 분기 중 신규 상장(분사·IPO)'},
+                     'exclude': 'ETF, 분기 중 신규 상장(분사·IPO), 합병 등으로 없어진 옛 티커'},
            'lists': lists,
            'consensus': {'buy_tilt': [chip(tk) for tk in buy_t[:8]], 'sell_tilt': [chip(tk) for tk in sell_t[:8]],
                          'split': [chip(tk) for tk in split[:5]]},
            'excluded': excluded, 'counts_all': {tk: cnt[tk] for tk in sorted(cnt)}, 'failed': failed}
 
-    print('%s(%s 보유) · 슈퍼투자자 %d명 중 이 분기 거래 %d명 · 못 받음 %s' % (qkey, qe, len(mg), filed, failed or '없음'))
     for cat, lab in (('new', '신규 편입'), ('add', '비중 확대'), ('reduce', '비중 축소'), ('exit', '청산')):
         print(' %s: %s' % (lab, ', '.join('%s %d(%d:%d)' % (x['ticker'], x['count'], x['buy'], x['sell']) for x in lists[cat])))
     print(' 매수 우위: %s' % ', '.join('%s %d:%d' % (c['ticker'], c['buy'], c['sell']) for c in out['consensus']['buy_tilt']))
@@ -240,24 +305,7 @@ def main(argv):
     print(' 제외: %s' % (', '.join('%s(%s)' % (e['ticker'], e['reason'][:12]) for e in excluded) or '없음'))
     miss = sorted({x['ticker'] for cat, _ in CATS for x in lists[cat]} - set(names))
     print(' 한글명이 없는 티커 %d개: %s' % (len(miss), ', '.join(miss)))
-    print(' 접속: %s' % ('쿠키 확인 화면을 넘김(%s)' % ', '.join('%s=%s' % kv for h in COOK.values() for kv in h.items()) if COOK else '쿠키 확인 화면 없음'))
-    if dry:
-        return 0
-    if prev is not None:
-        if failed or filed <= (prev.get('filed') or 0):
-            print('바꾸지 않음 — 공시한 매니저 %d명(전 %s명)%s' % (filed, prev.get('filed'), ', 못 받은 매니저 있음' if failed else '')); return 0
-        out['generated'], out['refreshed'] = prev.get('generated') or out['generated'], today.isoformat()   # 처음 만든 날은 그대로, 다시 받은 날을 따로
-    os.makedirs(DIR, exist_ok=True)
-    with open(path, 'w', encoding='utf-8') as f:
-        json.dump(out, f, ensure_ascii=False, indent=1); f.write('\n')
-    ipath = os.path.join(DIR, 'index.json')
-    ix = json.load(open(ipath, encoding='utf-8')) if os.path.exists(ipath) else {'latest': qkey, 'quarters': []}
-    ix['quarters'] = sorted(set(ix.get('quarters', [])) | {qkey})
-    ix['latest'] = max(ix['quarters'])
-    with open(ipath, 'w', encoding='utf-8') as f:
-        json.dump(ix, f, ensure_ascii=False); f.write('\n')
-    print('저장:', os.path.relpath(path, ROOT), '· index.json latest =', ix['latest'])
-    return 0
+    return out
 
 
 if __name__ == '__main__':

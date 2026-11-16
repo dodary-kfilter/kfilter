@@ -1,0 +1,39 @@
+name: 시계
+
+# 제시각에 수집을 직접 부르고, 대상마다 '최근 언제 돌았나 · 내용은 언제 것인가'를 확인한다 — tools/clock.py (2026-11-16)
+#   GitHub 예약(schedule)은 이 저장소에서 제때 안 돈다(수급 스캔 예약 16번 중 하루 4~5번, 몇 시간씩 늦게).
+#   push와 직접 부르기(workflow_dispatch)는 바로 돈다 — 그래서 시계는 이 둘로 뜬다.
+#   뜨는 때: Claude 루틴이 문패(claude/running-*)를 달 때 · 판단 브랜치(claude/judge-*)가 올라올 때 · 시계가 5시간 40분 뒤 스스로 이어 붙일 때
+#   예비: 아래 GitHub 예약 한 줄 — 제때 안 돌아도, 시계가 죽어 있으면 언젠가 다시 띄운다
+#   한 번에 하나만 돈다(이미 돌고 있으면 새로 뜬 쪽이 바로 끝남) · 결과는 status 브랜치의 health.json
+on:
+  push:
+    branches: ['claude/running-*', 'claude/judge-*']
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */3 * * *'
+
+permissions:
+  contents: write          # status 브랜치에 health.json을 올린다(main은 건드리지 않음)
+  actions: write           # 수집 워크플로를 부른다
+
+jobs:
+  clock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: 시계
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ROUTINE_TRIGGER_URL: ${{ secrets.ROUTINE_TRIGGER_URL }}
+          ROUTINE_TRIGGER_TOKEN: ${{ secrets.ROUTINE_TRIGGER_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_EVENT: ${{ github.event_name }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          python3 tools/clock.py

@@ -1,6 +1,7 @@
 name: 매일 판단 반영
 
 # Claude Code 예약 작업(tools/daily_judge.md)이 claude/judge-* 브랜치로 올린 판단을 main으로 옮긴다
+#   빠진 수집 확인은 여기서 하지 않는다 — 같은 push로 시계(clock.yml)가 떠서 한다(2026-11-16)
 #   옮기는 파일: top20/picks.json, top20/top20.json, top20/log/*.md, notes/kr|us/*.md(기업 노트) — 다른 파일이 섞여 있으면 멈춘다
 #   (예약 작업은 claude/ 브랜치에만 올릴 수 있고, main에는 자동 갱신 봇의 커밋이 섞여 있어 직접 올리지 못한다)
 on:
@@ -9,7 +10,6 @@ on:
 
 permissions:
   contents: write
-  actions: write           # 반영 뒤 점검(빠진 수집 다시 실행) — 루틴의 push로 매일 확실히 도는 자리라서
 
 concurrency:
   group: judge-merge
@@ -104,9 +104,3 @@ jobs:
             age=$(( now - $(date -u -d "$when" +%s) ))
             if [ "$ok" = "true" ] && [ $age -gt 7200 ]; then git push -q origin --delete "$b" && echo "지움: $b"; else echo "둠: $b ($ok, ${age}초)"; fi
           done
-      - name: 점검 한 번 더(빠진 수집 다시 실행)
-        # GitHub 예약은 이 저장소에서 자주 빠진다(11/03: 점검 예약이 20시간 동안 2번만 돎). 루틴의 push로 도는 이 워크플로는
-        # 매일 확실히 돌기 때문에, 여기서 한 번 더 점검해 빠진 수집을 따라잡는다
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 tools/watchdog.py || true

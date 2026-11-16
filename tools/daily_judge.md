@@ -21,7 +21,7 @@
 ### 0-1. 노크 — 안에 사람이 있으면 돌아간다
 1. **안에 누가 있나 본다:** `git ls-remote --heads origin 'claude/running-*'`
    이름 끝의 시각(`claude/running-YYYYMMDD-HHMM`, 한국시간)이 **60분 안**인 것이 있으면 다른 실행이 돌고 있는 것이다.
-   → 아무것도 하지 않고 '다른 실행이 진행 중 — 다음 차례에 다시'라고만 보고하고 끝낸다(커밋·push 없음). 다음 예약 시각이나 점검이 다시 노크한다.
+   → 아무것도 하지 않고 '다른 실행이 진행 중 — 다음 차례에 다시'라고만 보고하고 끝낸다(커밋·push 없음). 다음 예약 시각이나 시계가 다시 노크한다.
    60분이 넘은 것은 멈춘 실행의 흔적이니 무시한다(판단 반영 워크플로가 치운다).
 2. **들어간다:** `git push origin HEAD:refs/heads/claude/running-$(TZ=Asia/Seoul date +%Y%m%d-%H%M)` — 문패를 단다.
 3. **나온다:** 일을 마치면(실패해도) `git push origin --delete claude/running-…`로 문패를 뗀다.

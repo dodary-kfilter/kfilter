@@ -9,7 +9,7 @@
   1. 수집 7가지(수급·시총순·애널·거시·깔때기 재료·TOP 20 가격·13F)를 실행하고, 모두 끝날 때까지 20초마다 본다(최대 20분)
   2. 판단을 부른다 — 노크: 루틴이 안에 있으면(문패 claude/running-…, 60분 안) 5분마다 다시 노크(최대 60분)
      문이 비었을 때 그동안 끝난 판단이 새 자료 뒤의 것이면 다시 부르지 않는다
-  3. 부르면 깨운 시각을 status/watchdog.json에 남긴다(워크플로가 커밋) — 점검 담당이 겹쳐 깨우지 않게
+  3. 부르면 깨운 시각을 status/watchdog.json에 남긴다(워크플로가 커밋) — 시계(tools/clock.py)가 겹쳐 깨우지 않게 읽는다
 환경: GITHUB_TOKEN(actions·contents 쓰기), ROUTINE_TRIGGER_URL·ROUTINE_TRIGGER_TOKEN(비밀 값), JUDGE(true/false), FIRE_REASON
 """
 import json, os, sys, time, datetime as dt, urllib.request, urllib.error
@@ -64,7 +64,7 @@ def judge(t_done):
         if not inside:
             break
         if time.time() > deadline:
-            print('60분 동안 루틴이 안에 있음 — 이번엔 부르지 않음(다음 예약·점검에 맡김)'); return
+            print('60분 동안 루틴이 안에 있음 — 이번엔 부르지 않음(다음 루틴·시계에 맡김)'); return
         print('  안에 실행이 있음(%s) — 5분 뒤 다시 노크' % inside, flush=True)
         time.sleep(300)
     j = judged_at()

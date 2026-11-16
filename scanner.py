@@ -1497,9 +1497,22 @@ def fetch_us_quote(ticker):
 
 
 def latest_trade_date():
-    """기준 종목(삼성전자) 다음 투자자별 최신 날짜 = 최신 거래일. 실패 시 None."""
+    """기준 종목(삼성전자) 다음 투자자별 최신 날짜 = 수급 기준일. 실패 시 None.
+    ★다음은 그날 외국인·기관 줄을 저녁에야 올린다(11/12 16:10엔 전날, 11/2 21:47엔 그날) — 거래일 판단에는 latest_price_date()를 쓴다."""
     body = daum_flows("005930", 5)
     return body[0].get("baseDate") if body else None
+
+
+def latest_price_date():
+    """기준 종목(삼성전자) 다음 시세의 최근 거래일 — 장이 열린 날이면 장중부터 오늘. 실패 시 None (2026-11-16)"""
+    try:
+        r = requests.get("https://finance.daum.net/api/quotes/A005930?summary=false", headers=HDR_DAUM, timeout=10)
+        if r.status_code == 200:
+            d = (r.json() or {}).get("date")
+            return str(d)[:10] if d else None
+    except Exception:
+        pass
+    return None
 
 
 def main():
@@ -1510,21 +1523,24 @@ def main():
     #     (하루 1회 예약이던 시절엔 '같은 날이면 스킵'이었으나, 장중 모니터링용 다회 예약으로 바뀌어 조건을 분리했다.)
     #   수동 실행(workflow_dispatch)·로컬 실행은 언제나 갱신.
     new_date = latest_trade_date()
-    if new_date and os.environ.get("RUN_TRIGGER") == "schedule":
+    # ★거래일 판단은 시세 날짜로 한다(2026-11-16). 예전엔 투자자별 매매의 최신 날짜로 봤는데, 다음은 그날 줄을 저녁에야 올려서
+    #   평일 장중·장 마감 직후의 예약 스캔이 '오늘은 거래일이 아님'으로 건너뛰고 휴장 표시까지 남겼다(11/13 15:28·16:09 등).
+    #   지금은 시계(tools/clock.py)가 workflow_dispatch로 부르므로 이 가드는 GitHub 예약으로 돌 때만 쓰인다.
+    px_date = latest_price_date() if os.environ.get("RUN_TRIGGER") == "schedule" else None
+    if px_date and os.environ.get("RUN_TRIGGER") == "schedule":
         today_kst = now_kst().strftime("%Y-%m-%d")
-        if new_date != today_kst:
-            # 소스의 최신 거래일이 오늘이 아니다 = 오늘은 장이 안 열렸다(주말·공휴일).
-            #   단, 장 시작 직후엔 소스가 아직 전일자를 줄 수 있으므로 09:00~09:40 사이는 통과시킨다.
+        if px_date != today_kst:
+            # 시세의 최근 거래일이 오늘이 아니다 = 오늘은 장이 안 열렸다(주말·공휴일). 장 시작 전(09:00 전)에도 전날이 나오므로 그때는 통과시킨다.
             hm = now_kst().strftime("%H:%M")
-            if not ("09:00" <= hm <= "09:40"):
-                print(f"[스킵] 오늘({today_kst})은 거래일이 아님 (소스 최신 {new_date}). 예약 실행 생략.", flush=True)
+            if hm >= "09:00":
+                print(f"[스킵] 오늘({today_kst})은 거래일이 아님 (시세 최근 거래일 {px_date}). 예약 실행 생략.", flush=True)
                 # 휴장 표시(하루 한 번) — 점검 담당·사이트가 휴장일의 '갱신 없음'을 빠짐으로 잘못 보지 않게 (2026-11-03)
                 try:
                     hb_p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "status", "scan.json")
                     hb = json.load(open(hb_p, encoding="utf-8")) if os.path.exists(hb_p) else {}
                     if hb.get("date") != today_kst:
                         os.makedirs(os.path.dirname(hb_p), exist_ok=True)
-                        json.dump({"date": today_kst, "trading_day": False, "latest": new_date,
+                        json.dump({"date": today_kst, "trading_day": False, "latest": px_date,
                                    "checked": now_kst().strftime("%Y-%m-%d %H:%M")}, open(hb_p, "w", encoding="utf-8"), ensure_ascii=False)
                 except Exception as e:
                     print("  휴장 표시 실패:", e, flush=True)

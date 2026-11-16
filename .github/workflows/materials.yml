@@ -1,11 +1,10 @@
 name: 깔때기 재료
 
 # 매일 판단(07:30) 전에 업종 추세·미장 기업 재무와 공시·국장 공시 사건을 모은다 — tools/sector_fetch.py · us_fund_fetch.py · kr_events_fetch.py
+#   시계가 부른다: 06:40 · 12:10(장중 공시) 한국시간, 13F 새 분기가 들어오면 후보 표를 다시 만들려고 한 번 더
 #   국장 기업 숫자(lists/kr_fund.json)는 수급 스캔(update.yml)이 함께 만든다
 on:
-  schedule:
-    - cron: '41 21 * * *'          # 한국시간 06:41
-    - cron: '13 3 * * *'           # 한국시간 12:13 — 장중 공시를 한 번 더
+  # 언제 돌지는 시계(tools/clock.py)가 정한다 — GitHub 예약(schedule)은 이 저장소에서 제때 안 돌아서 쓰지 않는다(2026-11-16)
   workflow_dispatch:
 
 permissions:
