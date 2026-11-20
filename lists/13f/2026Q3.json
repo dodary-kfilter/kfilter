@@ -2,8 +2,8 @@
  "quarter": "2026Q3",
  "as_of": "2026-09-30",
  "generated": "2026-11-17",
- "tracked": 82,
- "filed": 80,
+ "tracked": 83,
+ "filed": 81,
  "source": "Dataroma 슈퍼투자자 분기 거래 내역(m_activity.php)",
  "rules": {
   "count": "같은 행동을 한 슈퍼투자자 수",
@@ -544,6 +544,10 @@
    "reason": "ETF"
   },
   {
+   "ticker": "IWD",
+   "reason": "ETF"
+  },
+  {
    "ticker": "LBRDA-OLD",
    "reason": "합병·인수·티커 변경으로 없어진 옛 종목 — 판 게 아니라 기계적으로 빠진 물량"
   },
@@ -800,7 +804,7 @@
   "AER": {
    "new": 0,
    "add": 2,
-   "reduce": 2,
+   "reduce": 3,
    "exit": 0
   },
   "AESI": {
@@ -812,6 +816,12 @@
   "AFL": {
    "new": 0,
    "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "AFLYY": {
+   "new": 0,
+   "add": 0,
    "reduce": 1,
    "exit": 0
   },
@@ -854,6 +864,12 @@
   "AIG": {
    "new": 1,
    "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "AII": {
+   "new": 0,
+   "add": 1,
    "reduce": 0,
    "exit": 0
   },
@@ -917,6 +933,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "ALGT": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "ALK": {
    "new": 0,
    "add": 1,
@@ -937,7 +959,7 @@
   },
   "ALLY": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 1,
    "exit": 0
   },
@@ -1211,6 +1233,12 @@
    "reduce": 0,
    "exit": 1
   },
+  "ASIX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "ASLE": {
    "new": 0,
    "add": 1,
@@ -1233,6 +1261,12 @@
    "new": 0,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "ASTL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "ATAI-OLD": {
@@ -1880,13 +1914,13 @@
   "BZH-OLD": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "C": {
    "new": 1,
    "add": 2,
-   "reduce": 4,
+   "reduce": 5,
    "exit": 0
   },
   "CABJF": {
@@ -2071,7 +2105,7 @@
   },
   "CGAU": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
    "exit": 0
   },
@@ -2148,6 +2182,12 @@
    "exit": 1
   },
   "CLB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "CLDT": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -2414,7 +2454,7 @@
   "CRBG": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 1
   },
   "CRCL": {
@@ -2942,7 +2982,13 @@
   "EG": {
    "new": 0,
    "add": 0,
-   "reduce": 3,
+   "reduce": 4,
+   "exit": 0
+  },
+  "EGO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "EGP": {
@@ -3587,6 +3633,18 @@
    "reduce": 2,
    "exit": 0
   },
+  "GAU": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GBX": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "GCMG": {
    "new": 0,
    "add": 0,
@@ -3645,6 +3703,18 @@
    "new": 1,
    "add": 0,
    "reduce": 0,
+   "exit": 0
+  },
+  "GFR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "GGB": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "GGG": {
@@ -3746,7 +3816,7 @@
   "GM": {
    "new": 0,
    "add": 1,
-   "reduce": 3,
+   "reduce": 4,
    "exit": 1
   },
   "GMED": {
@@ -3770,6 +3840,12 @@
   "GNTX": {
    "new": 0,
    "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GNW": {
+   "new": 0,
+   "add": 0,
    "reduce": 1,
    "exit": 0
   },
@@ -3845,6 +3921,18 @@
    "reduce": 3,
    "exit": 0
   },
+  "GSL": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "GSM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "GT": {
    "new": 0,
    "add": 0,
@@ -3917,6 +4005,12 @@
    "reduce": 0,
    "exit": 0
   },
+  "HBM": {
+   "new": 0,
+   "add": 0,
+   "reduce": 0,
+   "exit": 1
+  },
   "HCA": {
    "new": 1,
    "add": 2,
@@ -3947,11 +4041,23 @@
    "reduce": 1,
    "exit": 0
   },
+  "HG": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "HGV": {
    "new": 0,
    "add": 0,
    "reduce": 1,
    "exit": 1
+  },
+  "HHH": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
   },
   "HII": {
    "new": 1,
@@ -3995,6 +4101,12 @@
    "reduce": 3,
    "exit": 0
   },
+  "HMC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "HNGE": {
    "new": 1,
    "add": 0,
@@ -4003,14 +4115,14 @@
   },
   "HOFT": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
    "exit": 0
   },
   "HOG": {
    "new": 0,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "HON": {
@@ -4142,7 +4254,7 @@
   "IAG": {
    "new": 1,
    "add": 1,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "IBKR": {
@@ -4484,7 +4596,7 @@
   "IWD": {
    "new": 0,
    "add": 0,
-   "reduce": 1,
+   "reduce": 2,
    "exit": 1
   },
   "IWF": {
@@ -4522,6 +4634,12 @@
    "add": 0,
    "reduce": 0,
    "exit": 1
+  },
+  "JAKK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
   },
   "JAN": {
    "new": 0,
@@ -4631,6 +4749,18 @@
    "reduce": 0,
    "exit": 0
   },
+  "JRVR": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
+  "JXN": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "KARO": {
    "new": 0,
    "add": 1,
@@ -4641,6 +4771,12 @@
    "new": 0,
    "add": 0,
    "reduce": 1,
+   "exit": 0
+  },
+  "KBH": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
    "exit": 0
   },
   "KCE": {
@@ -4654,6 +4790,12 @@
    "add": 0,
    "reduce": 0,
    "exit": 1
+  },
+  "KELYA": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
   },
   "KEX": {
    "new": 0,
@@ -4854,7 +4996,7 @@
    "exit": 0
   },
   "LEN": {
-   "new": 0,
+   "new": 1,
    "add": 2,
    "reduce": 1,
    "exit": 0
@@ -5264,7 +5406,13 @@
   "MHK": {
    "new": 0,
    "add": 0,
-   "reduce": 3,
+   "reduce": 4,
+   "exit": 0
+  },
+  "MHO": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "MICC": {
@@ -5407,8 +5555,14 @@
   },
   "MOS": {
    "new": 0,
-   "add": 0,
+   "add": 1,
    "reduce": 1,
+   "exit": 0
+  },
+  "MPAA": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
    "exit": 0
   },
   "MPLX": {
@@ -5543,6 +5697,12 @@
    "reduce": 0,
    "exit": 0
   },
+  "MTUS": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "MTZ": {
    "new": 0,
    "add": 1,
@@ -5659,8 +5819,14 @@
   },
   "NMIH": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 0,
+   "exit": 0
+  },
+  "NMR": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "NOC": {
@@ -6132,7 +6298,7 @@
    "exit": 0
   },
   "PCG": {
-   "new": 1,
+   "new": 2,
    "add": 1,
    "reduce": 0,
    "exit": 1
@@ -6149,7 +6315,19 @@
    "reduce": 1,
    "exit": 0
   },
+  "PDM": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "PDRDF": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "PEB": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -6195,6 +6373,12 @@
    "new": 0,
    "add": 0,
    "reduce": 2,
+   "exit": 0
+  },
+  "PFSI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
    "exit": 0
   },
   "PG": {
@@ -6273,6 +6457,12 @@
    "new": 1,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "PK": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "PLAY": {
@@ -6575,6 +6765,12 @@
    "reduce": 1,
    "exit": 1
   },
+  "RDN": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "REG": {
    "new": 0,
    "add": 0,
@@ -6683,6 +6879,12 @@
    "reduce": 0,
    "exit": 1
   },
+  "RJET": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
   "RJF": {
    "new": 0,
    "add": 0,
@@ -6698,6 +6900,12 @@
   "RLI": {
    "new": 0,
    "add": 2,
+   "reduce": 0,
+   "exit": 0
+  },
+  "RLJ": {
+   "new": 0,
+   "add": 1,
    "reduce": 0,
    "exit": 0
   },
@@ -6831,6 +7039,12 @@
    "new": 1,
    "add": 0,
    "reduce": 2,
+   "exit": 0
+  },
+  "RYI-OLD": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
    "exit": 0
   },
   "RYN": {
@@ -7124,7 +7338,7 @@
   "SM": {
    "new": 1,
    "add": 0,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "SMBK": {
@@ -7262,6 +7476,12 @@
   "SPHR": {
    "new": 0,
    "add": 1,
+   "reduce": 1,
+   "exit": 0
+  },
+  "SPNT": {
+   "new": 0,
+   "add": 0,
    "reduce": 1,
    "exit": 0
   },
@@ -7647,7 +7867,7 @@
    "new": 0,
    "add": 0,
    "reduce": 0,
-   "exit": 2
+   "exit": 3
   },
   "TMO": {
    "new": 4,
@@ -7675,6 +7895,12 @@
   },
   "TOST": {
    "new": 2,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "TPC": {
+   "new": 0,
    "add": 0,
    "reduce": 1,
    "exit": 0
@@ -7805,6 +8031,12 @@
    "reduce": 1,
    "exit": 0
   },
+  "TWI": {
+   "new": 0,
+   "add": 1,
+   "reduce": 0,
+   "exit": 0
+  },
   "TWLO": {
    "new": 1,
    "add": 1,
@@ -7815,6 +8047,12 @@
    "new": 1,
    "add": 1,
    "reduce": 0,
+   "exit": 0
+  },
+  "TX": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
    "exit": 0
   },
   "TXG": {
@@ -7922,7 +8160,7 @@
   "UNM": {
    "new": 1,
    "add": 0,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 0
   },
   "UNP": {
@@ -7972,6 +8210,12 @@
    "add": 0,
    "reduce": 1,
    "exit": 1
+  },
+  "UVE": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
   },
   "UVV": {
    "new": 0,
@@ -8263,7 +8507,7 @@
   },
   "VTOL": {
    "new": 0,
-   "add": 1,
+   "add": 2,
    "reduce": 0,
    "exit": 0
   },
@@ -8407,7 +8651,7 @@
   },
   "WF": {
    "new": 1,
-   "add": 0,
+   "add": 1,
    "reduce": 0,
    "exit": 0
   },
@@ -8420,7 +8664,7 @@
   "WFG": {
    "new": 0,
    "add": 0,
-   "reduce": 0,
+   "reduce": 1,
    "exit": 1
   },
   "WFRD": {
@@ -8508,6 +8752,12 @@
    "exit": 0
   },
   "WRLC": {
+   "new": 0,
+   "add": 0,
+   "reduce": 1,
+   "exit": 0
+  },
+  "WSBF": {
    "new": 0,
    "add": 0,
    "reduce": 1,
@@ -8781,5 +9031,5 @@
  "failed": [],
  "preliminary": false,
  "final_from": "2026-11-18",
- "refreshed": "2026-11-20"
+ "refreshed": "2026-11-21"
 }
