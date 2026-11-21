@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-16a (자료 상태 — 시계가 대상마다 최근 실행·내용 기준을 확인, '최종 갱신'을 누르면 보임 · 13F 잠정·공시 들어오는 중) / 이전: 2026-11-14a -->
+<!-- build: 2026-11-22a (머리에 수급 기준일과 판단 시각을 나눠 표시 — 예전 '최종 갱신'은 수급 스캔 시각뿐이라 토요일 판단이 안 보였다) / 이전: 2026-11-16a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -306,7 +306,7 @@
       <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
       <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급·저가매수·모멘텀·시총순·애널·거시·업종·재무·공시·TOP 20 가격·13F를 새로 받고, 끝나면 매일 판단도 다시 합니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
       <div class="ghmsg" id="ghmsg"></div>
-      <div class="meta" id="hlthbtn" onclick="hlthToggle()" title="눌러서 자료 상태(최근 실행·내용 기준) 보기">최종 갱신 <b id="updated">—</b> ▾<span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
+      <div class="meta" id="hlthbtn" onclick="hlthToggle()" title="눌러서 자료 상태(최근 실행·내용 기준) 보기">수급 <b id="updated">—</b> · 판단 <b id="judged">—</b> ▾<span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
     </div>
   </header>
   <div class="hlth" id="hlth"></div>
@@ -1939,11 +1939,26 @@ function staleOf(){
   out.clock=!!HEALTH;                                                 // 기록은 있는데 20분 넘게 끊김 = 시계 멈춤
   return out;
 }
+// 머리 시각 (2026-11-22) — 수급과 판단을 나눠 보여 준다. 수급은 하루 단위 자료라 외국인·기관 수급의 기준일(요일 포함),
+//   판단은 매일 판단(리포트·TOP 20·추천)이 올라온 시각. 장중 스캔은 가격만 새로 하므로 스캔 시각은 툴팁·자료 상태에서 본다
+function mdw(v){ const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/); if(!m) return '—';
+  return (+m[2])+'/'+(+m[3])+'('+'일월화수목금토'[new Date(+m[1], +m[2]-1, +m[3]).getDay()]+')'; }
+function hdrTimes(s){
+  const u=document.getElementById('updated'), j=document.getElementById('judged');
+  if(u && typeof DATA!=='undefined' && DATA){ u.textContent=mdw(DATA.market_date||DATA.updated);
+    u.style.color=(s.flow||s.clock) ? 'var(--red)' : '';
+    u.title='외국인·기관 수급 기준일 '+(DATA.market_date||'—')+' · 마지막 스캔 '+(DATA.updated||'—')
+      +(s.clock ? ' — 시계가 멈췄어요(다음 루틴이 다시 띄웁니다)' : (s.flow ? ' — 예정보다 늦어요(시계가 다시 부릅니다)' : '')); }
+  const T=LISTS.top20 && LISTS.top20.meta;
+  if(j && T){ const ja=String(T.judged_at||T.judged||'');
+    j.textContent=ja ? mdw(ja)+(ja.length>=16 ? ' '+ja.slice(11,16) : '') : '—';
+    j.style.color=s.judge ? 'var(--red)' : '';
+    j.title='매일 판단(리포트·TOP 20·추천) '+(ja||'—')+(T.basis ? ' · '+T.basis : '')+(s.judge ? ' — 오늘 판단이 아직 없어요' : ''); }
+}
 function markStale(){
   const s=staleOf(), map={flow:s.flow, value_pick:s.flow, momentum:s.flow, mcap:s.mcap, analyst:s.analyst, top20:s.judge||s.top20, index:s.judge, f13:s.f13};
   Object.entries(map).forEach(([k,v])=>{ const t=document.querySelector('.tab[data-k="'+k+'"]'); if(t) t.classList.toggle('stale', !!v); });
-  const u=document.getElementById('updated'); if(u){ const bad=s.flow||s.clock; u.style.color=bad ? 'var(--red)' : '';
-    u.title=s.clock ? '시계가 멈췄어요 — 다음 루틴이 다시 띄웁니다(눌러서 자료 상태 보기)' : (s.flow ? '수급 자료가 예정보다 늦어요 — 시계가 다시 부릅니다(눌러서 자료 상태 보기)' : ''); }
+  hdrTimes(s);
 }
 setInterval(()=>{ try{ markStale(); }catch(e){} }, 10*60*1000);
 fetch('https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/status/scan.json?t='+Date.now(), {cache:'no-store'})
@@ -2558,7 +2573,7 @@ async function load(){
     try{ res=await fetch('https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw 0; }
     catch(_){ res=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error(); }
     DATA=await res.json();
-    document.getElementById('updated').textContent=DATA.updated;
+    document.getElementById('updated').textContent=mdw(DATA.market_date||DATA.updated);   // 수급 기준일(판단 시각은 TOP 20을 받으면 채운다)
   setTimeout(()=>{ try{ markStale(); }catch(e){} }, 0);
     document.getElementById('c-flow').textContent=DATA.both.length;     // 수급 탭 숫자 = 동시 수급(0순위)
     document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
