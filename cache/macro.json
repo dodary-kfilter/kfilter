@@ -1,5 +1,5 @@
 {
- "collected_at": "2026-11-21 23:13 KST",
+ "collected_at": "2026-11-22 07:24 KST",
  "hist": {
   "ISM_MFG": {
    "2025-06": {
@@ -740,48 +740,7 @@
    }
   }
  },
- "bls": {
-  "CPI": {
-   "per": "2026-10",
-   "rel": "2026-11-11",
-   "yoy": null,
-   "yoy_prev": 3.7,
-   "mom": 0.4,
-   "mom_prev": 0.6,
-   "ann3": 5.7
-  },
-  "CORE_CPI": {
-   "per": "2026-10",
-   "rel": "2026-11-11",
-   "yoy": null,
-   "yoy_prev": 2.6,
-   "mom": 0.3,
-   "mom_prev": 0.3,
-   "ann3": 3.7
-  },
-  "UNRATE": {
-   "per": "2026-10",
-   "rel": "2026-11-07",
-   "v": 4.1,
-   "prev": 4.2,
-   "sahm": 0.0,
-   "sahm_on": false
-  },
-  "NFP": {
-   "per": "2026-10",
-   "rel": "2026-11-07",
-   "v": 165,
-   "prev": 60,
-   "prelim": true,
-   "avg3": 137
-  },
-  "AHE": {
-   "per": "2026-10",
-   "rel": "2026-11-07",
-   "yoy": 3.1,
-   "yoy_prev": 3.2
-  }
- },
+ "bls": {},
  "seen": {
   "_init": true,
   "CPI": {
@@ -955,15 +914,15 @@
   },
   {
    "date": "11-20",
-   "title": "서두르지 않겠다는 트럼프…“미·이스라엘군은 이란 공격 채비” - KBS 뉴스"
-  },
-  {
-   "date": "11-20",
    "title": "AI 열풍도 못 막은 뉴욕증시 급락…다우 5만선 다시 무너졌다 - 뉴스로드"
   },
   {
    "date": "11-19",
    "title": "[칼럼] 중동 전쟁에 따른 원유 수급 위기와 대처 방안 - 아시아투데이"
+  },
+  {
+   "date": "11-19",
+   "title": "이란, 걸프 미군기지 타격…미 공습 맞서 중동전쟁 격화 - 디펜스투데이"
   }
  ],
  "earnings": [
@@ -987,5 +946,13 @@
    "name": "ISM Non-Manufacturing PMI"
   }
  ],
- "err": []
+ "err": [
+  "BLS CPI_SA 받지 못함",
+  "BLS CPI_NSA 받지 못함",
+  "BLS CORE_SA 받지 못함",
+  "BLS CORE_NSA 받지 못함",
+  "BLS UNRATE 받지 못함",
+  "BLS PAYEMS 받지 못함",
+  "BLS AHE 받지 못함"
+ ]
 }
