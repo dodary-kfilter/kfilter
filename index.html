@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-22a (머리에 수급 기준일과 판단 시각을 나눠 표시 — 예전 '최종 갱신'은 수급 스캔 시각뿐이라 토요일 판단이 안 보였다) / 이전: 2026-11-16a -->
+<!-- build: 2026-11-25a (버튼 두 개 — 수급 갱신(수급 스캔만, 누르면 화면을 바로 최신으로) · 판단 갱신(수급 포함 자료 7가지 + 매일 판단)) / 이전: 2026-11-22a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -303,8 +303,8 @@
   <header>
     <h1>투자 분석</h1>
     <div class="hd-r">
-      <div class="hdbtns"><button class="hdbtn reload" onclick="hardReload()" title="캐시를 무시하고 최신 데이터를 다시 받습니다">↻ 새로고침</button>
-      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급·저가매수·모멘텀·시총순·애널·거시·업종·재무·공시·TOP 20 가격·13F를 새로 받고, 끝나면 매일 판단도 다시 합니다(토큰은 이 기기에만 저장)">⚙ 자료 갱신</button></div>
+      <div class="hdbtns"><button class="hdbtn reload" id="flowbtn" onclick="flowRun()" title="지금 올라와 있는 최신 자료로 화면을 바로 바꾸고, 수급 스캔(수급·저가매수·모멘텀)을 새로 돌려 끝나면 다시 바꿉니다(3~5분)">↻ 수급 갱신</button>
+      <button class="hdbtn ghrun" id="ghbtn" onclick="ghRun()" title="수급을 포함해 자료 7가지(수급·시총순·애널·거시·업종·재무·공시·TOP 20 가격·13F)를 새로 받고, 끝나면 매일 판단(리포트·TOP 20·추천)을 다시 합니다(토큰은 이 기기에만 저장)">⚙ 판단 갱신</button></div>
       <div class="ghmsg" id="ghmsg"></div>
       <div class="meta" id="hlthbtn" onclick="hlthToggle()" title="눌러서 자료 상태(최근 실행·내용 기준) 보기">수급 <b id="updated">—</b> · 판단 <b id="judged">—</b> ▾<span id="pverw" style="display:none"> · 프롬프트 <b id="pver">—</b></span></div>
     </div>
@@ -1392,17 +1392,17 @@ function fallbackCopy(text, done){
   try{ document.execCommand('copy'); }catch(e){}
   document.body.removeChild(ta); done();
 }
-// ── 자료 갱신 — GitHub 워크플로(수급 스캔·시총순·애널 추천·거시)를 지금 돌리고 끝나면 다시 불러온다 ──
+// ── 버튼 두 개 (2026-11-25) — 수급 갱신: 수급 스캔만 · 판단 갱신: 수급을 포함한 자료 7가지 + 매일 판단 ──
 //   토큰은 사이트 코드에 넣지 않는다(공개 저장소라 누구나 본다). 처음 누를 때 붙여 넣은 토큰을 이 기기의 브라우저에만 저장
 //   토큰 권한: kfilter 저장소의 Actions 읽기·쓰기만 — 실행 단추를 누르는 권한일 뿐 코드·자료는 못 바꾼다
 const GH_REPO='dodary-kfilter/kfilter', GH_KEY='kf_gh_token';
 // 자료를 새로 만드는 수집은 모두 — 매일 판단(Claude 루틴)과 한글 이름(토스가 막혀 지금은 실패)만 빼고
 const GH_FLOWS=[['update.yml','수급·저가매수·모멘텀'],['mcap.yml','시총순'],['analyst.yml','애널'],['macro.yml','거시'],['materials.yml','업종·재무·공시'],['top20.yml','TOP 20 가격'],['f13.yml','13F']];
 function ghMsg(h){ const e=document.getElementById('ghmsg'); if(e) e.innerHTML=h; }
-// ── 자료 갱신 뒤 새 판단 기다리기 ── 판단은 서버(refresh_all.yml)가 부른다. 화면은 새 판단이 올라오면 다시 불러올 뿐이다
+// ── 판단 갱신 뒤 새 판단 기다리기 ── 판단은 서버(refresh_all.yml)가 부른다. 화면은 새 판단이 올라오면 다시 불러올 뿐이다
 const RAW_KF='https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/';
 function kstStr(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
-// 새 판단을 기다리는 중이면(자료 갱신 뒤) 2분마다 확인해서, 올라오면 새로 불러온다 — 최대 60분
+// 새 판단을 기다리는 중이면(판단 갱신 뒤) 2분마다 확인해서, 올라오면 새로 불러온다 — 최대 60분
 (function waitJudge(){
   let since=null; try{ since=localStorage.getItem('kf_wait_judge'); }catch(e){}
   if(!since) return;
@@ -1417,24 +1417,30 @@ function kstStr(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2
   };
   setTimeout(tick, 60*1000);
 })();
-async function ghRun(){
-  // 2026-11-14: 수집 → 판단까지를 서버(refresh_all.yml)가 한다. 예전엔 '수집이 끝나면 판단 부르기'를 이 화면이 해서,
-  //   폰 화면을 끄거나 창을 닫으면 판단이 불리지 않았다. 이제 버튼은 요청 한 번만 보내고, 화면은 진행을 보여 줄 뿐이다
-  const btn=document.getElementById('ghbtn'); if(!btn || btn.disabled) return;
+function ghToken(){
   let tok=null; try{ tok=localStorage.getItem(GH_KEY); }catch(e){}
   if(!tok){
     tok=(prompt('GitHub 토큰을 붙여 넣어 주세요.\n이 기기의 브라우저에만 저장되고 사이트 코드에는 들어가지 않아요.\n(권한: kfilter 저장소 Actions 읽기·쓰기)')||'').trim();
-    if(!tok) return;
+    if(!tok) return null;
     try{ localStorage.setItem(GH_KEY, tok); }catch(e){}
   }
+  return tok;
+}
+// 판단 갱신 — 수집 → 판단까지를 서버(refresh_all.yml)가 한다(2026-11-14). 폰 화면을 끄거나 창을 닫아도 판단까지 간다.
+//   수급 스캔(update.yml)도 수집 7가지에 들어 있어서, 판단은 방금 받은 수급으로 한다
+async function ghRun(){
+  const btn=document.getElementById('ghbtn'); if(!btn || btn.disabled) return;
+  const tok=ghToken(); if(!tok) return;
   const H={'Authorization':'Bearer '+tok, 'Accept':'application/vnd.github+json'};
   btn.disabled=true; btn.textContent='요청 중…'; ghMsg('');
+  try{ await load(); }catch(e){}                                             // 지금 올라와 있는 최신 자료로 화면부터 바꾼다
+  reviveClock(H);
   const since=new Date(Date.now()-90*1000).toISOString(), pressed=kstStr(kstNow());
-  const reason='판단 — 사용자가 사이트에서 자료 갱신을 눌렀습니다('+pressed+' KST). 방금 새로 받은 자료로 가볍게 다시 판단하세요(국면·업종·편입편출·추천·비중, 깊이 보기는 시장마다 3개까지, 노트는 쓰지 않음).';
+  const reason='판단 — 사용자가 사이트에서 판단 갱신을 눌렀습니다('+pressed+' KST). 방금 새로 받은 자료로 가볍게 다시 판단하세요(국면·업종·편입편출·추천·비중, 깊이 보기는 시장마다 3개까지, 노트는 쓰지 않음).';
   const st=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/refresh_all.yml/dispatches',
       {method:'POST', headers:H, body:JSON.stringify({ref:'main', inputs:{judge:'true', reason}})}).then(r=>r.status).catch(()=>0);
   if(st!==204){
-    btn.disabled=false; btn.textContent='⚙ 자료 갱신';
+    btn.disabled=false; btn.textContent='⚙ 판단 갱신';
     ghMsg(st===401||st===403||st===404 ? '토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요). 설정 링크를 다시 열면 새 토큰으로 바뀝니다.' : 'GitHub에 닿지 못했어요. 잠시 뒤 다시 눌러 주세요.');
     return;
   }
@@ -1459,10 +1465,72 @@ async function ghRun(){
   };
   setTimeout(tick, 20*1000);
 }
+// 수급 갱신 (2026-11-25) — 자동으로 화면을 바꾸지 않고, 누를 때만:
+//   ① 지금 올라와 있는 최신 자료로 화면을 바로 바꾼다 ② 수급 스캔을 부른다(이미 돌고 있으면 새로 부르지 않고 그걸 기다림)
+//   ③ data.json이 바뀌면(스캔이 끝나 올라오면) 화면을 다시 바꾼다. 기다리는 중임을 이 기기에 적어 둬서 화면을 껐다 켜도 이어 간다(최대 12분)
+const BUSY_ST=['queued','in_progress','waiting','requested','pending'];
+// 버튼을 누를 때 시계가 멈춰 있으면(기록이 20분 넘게 끊김) 시계도 다시 띄운다 — 11/24 22:46 GitHub 쪽 문제로 시계가 멈춘 일
+async function reviveClock(H){
+  try{ await loadHealth(); }catch(e){}
+  if(!HEALTH || healthAge()<=20) return false;
+  const st=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/clock.yml/dispatches',
+      {method:'POST', headers:H, body:JSON.stringify({ref:'main'})}).then(r=>r.status).catch(()=>0);
+  return st===204;
+}
+async function flowRun(){
+  const btn=document.getElementById('flowbtn'); if(!btn || btn.disabled) return;
+  const tok=ghToken(); if(!tok) return;
+  const H={'Authorization':'Bearer '+tok, 'Accept':'application/vnd.github+json'};
+  btn.disabled=true; btn.textContent='불러오는 중…'; ghMsg('');
+  try{ await load(); }catch(e){}
+  reviveClock(H);
+  const prev=(DATA && DATA.updated) || '';
+  let running=false;
+  try{ const j=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/update.yml/runs?per_page=1',{headers:H,cache:'no-store'}).then(r=>r.json());
+       const r0=j && j.workflow_runs && j.workflow_runs[0]; running=!!(r0 && BUSY_ST.includes(r0.status)); }catch(e){}
+  if(!running){
+    const st=await fetch('https://api.github.com/repos/'+GH_REPO+'/actions/workflows/update.yml/dispatches',
+        {method:'POST', headers:H, body:JSON.stringify({ref:'main'})}).then(r=>r.status).catch(()=>0);
+    if(st!==204){
+      btn.disabled=false; btn.textContent='↻ 수급 갱신';
+      ghMsg(st===401||st===403||st===404 ? '토큰이 맞지 않거나 권한이 없어요(Actions 읽기·쓰기 필요).' : 'GitHub에 닿지 못했어요. 잠시 뒤 다시 눌러 주세요.');
+      return;
+    }
+  }
+  try{ localStorage.setItem('kf_wait_flow', JSON.stringify({at:Date.now(), prev, joined:running})); }catch(e){}
+  waitFlow();
+}
+function waitFlow(){
+  let w=null; try{ w=JSON.parse(localStorage.getItem('kf_wait_flow')||'null'); }catch(e){}
+  if(!w || !w.at) return;
+  const btn=document.getElementById('flowbtn'), left=()=>12*60*1000-(Date.now()-w.at);
+  const done=(msg)=>{ try{ localStorage.removeItem('kf_wait_flow'); }catch(e){} if(btn){ btn.disabled=false; btn.textContent='↻ 수급 갱신'; } ghMsg(msg); };
+  if(left()<=0){ try{ localStorage.removeItem('kf_wait_flow'); }catch(e){} return; }
+  if(btn){ btn.disabled=true; btn.textContent='수급 스캔 중…'; }
+  ghMsg('수급 스캔을 돌리고 있어요(3~5분)'+(w.joined ? ' — 이미 돌던 스캔을 기다려요' : '')+'. 끝나면 이 화면이 새 자료로 바뀌어요.');
+  const tick=async()=>{
+    let d=null; try{ d=await fetch(RAW_KF+'data.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null); }catch(e){}
+    if(d && d.updated && d.updated!==w.prev){
+      if(verStale){ try{ localStorage.removeItem('kf_wait_flow'); }catch(e){} hardReload(); return; }   // 페이지 자체가 새 버전이면 통째로 다시
+      try{ await load(); }catch(e){}
+      const md=String(d.market_date||''), now=kstNow(), today=kstStr(now).slice(0,10);
+      const closed=HEALTH && HEALTH.day && HEALTH.day.date===today && HEALTH.day.trading_day===false;
+      const wait=md && md<today && now.getDay()>=1 && now.getDay()<=5 && !closed;
+      done('수급 갱신 끝 — 가격 '+esc(String(d.updated).slice(5))+' · 수급 '+esc(mdw(md))+'.'
+        +(wait ? ' 오늘 외국인·기관 수급은 다음 금융이 저녁에(보통 8시 반쯤) 올려서, 그 전엔 전 거래일 것이 최신이에요.' : '')
+        +(d.supply_note ? ' <b style="color:var(--red)">'+esc(d.supply_note)+'</b>' : ''));
+      return;
+    }
+    if(left()<=0){ done('12분 안에 새 수급이 올라오지 않았어요. 위의 수급 날짜를 눌러 자료 상태를 확인해 주세요.'); return; }
+    setTimeout(tick, 20*1000);
+  };
+  setTimeout(tick, 20*1000);
+}
+setTimeout(()=>{ try{ waitFlow(); }catch(e){} }, 900);
 // 한 번 누르는 설정 링크(…/kfilter/#gh=토큰) — 토큰을 이 기기에 저장하고 주소·방문 기록에서 바로 지운다(#뒤는 서버로 가지 않음)
 (function(){ try{ const m=(location.hash||'').match(/^#gh=([A-Za-z0-9_]{20,})$/);
   if(m){ localStorage.setItem(GH_KEY, m[1]); history.replaceState(null,'',location.pathname+location.search);
-    setTimeout(()=>ghMsg('자료 갱신 토큰을 이 기기에 저장했어요. 이제 ⚙ 자료 갱신만 누르면 돼요.'), 400); } }catch(e){} })();
+    setTimeout(()=>ghMsg('갱신 토큰을 이 기기에 저장했어요. 이제 수급 갱신·판단 갱신 버튼만 누르면 돼요.'), 400); } }catch(e){} })();
 function hardReload(){
   // 캐시 무시 재접속: 주소에 현재 시각을 붙여 브라우저가 index.html을 새로 받게 한다
   const u = location.origin + location.pathname + '?t=' + Date.now();

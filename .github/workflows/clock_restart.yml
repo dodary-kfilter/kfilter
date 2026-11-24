@@ -1,0 +1,36 @@
+name: 시계 다시 띄우기
+
+# 시계(clock.yml) 실행이 끝날 때마다(성공·실패 모두) 돌아, 돌고 있는 시계가 없으면 새로 띄운다 (2026-11-25)
+#   11/24 22:31에 이어 붙은 시계가 GitHub 쪽 문제("The hosted runner lost communication with the server")로 22:46에 멈췄는데,
+#   다음 루틴(07:30)이 올 때까지 시계를 다시 띄울 것이 없었다. '시계 실행이 끝났다'는 사건(workflow_run)은 예약과 달리 바로 온다
+#   (GitHub이 끊긴 실행을 실패로 정리하는 데는 1시간쯤 걸린다 — 11/24엔 22:46 끊김 → 23:43 실패 처리)
+#   폭주 막기: 최근 1시간에 시계 실행이 6번 넘게 생겼으면 다시 띄우지 않는다(뜨자마자 죽는 시계를 끝없이 띄우지 않게)
+on:
+  workflow_run:
+    workflows: ['시계']
+    types: [completed]
+
+permissions:
+  actions: write
+
+jobs:
+  restart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 시계가 없으면 띄우기
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          ENDED: ${{ github.event.workflow_run.id }}
+          ENDED_HOW: ${{ github.event.workflow_run.conclusion }}
+        run: |
+          sleep 60   # 이어 붙이기(앞 시계가 다음 시계를 부르고 끝남)였다면 새 시계가 뜰 시간을 준다
+          busy=$(gh api "repos/$REPO/actions/workflows/clock.yml/runs?status=in_progress&per_page=20" --jq '.workflow_runs | length')
+          queued=$(gh api "repos/$REPO/actions/workflows/clock.yml/runs?status=queued&per_page=20" --jq '.workflow_runs | length')
+          echo "끝난 시계 $ENDED ($ENDED_HOW) · 도는 시계 $busy · 기다리는 시계 $queued"
+          if [ "$busy" -gt 0 ] || [ "$queued" -gt 0 ]; then echo "시계가 있음 — 그대로 둠"; exit 0; fi
+          since=$(date -u -d '-60 min' +%Y-%m-%dT%H:%M:%SZ)
+          recent=$(gh api "repos/$REPO/actions/workflows/clock.yml/runs?created=%3E$since&per_page=50" --jq '.workflow_runs | length')
+          if [ "$recent" -gt 6 ]; then echo "최근 1시간에 시계 실행 $recent번 — 뜨자마자 죽는 문제일 수 있어 다시 띄우지 않음"; exit 0; fi
+          gh api -X POST "repos/$REPO/actions/workflows/clock.yml/dispatches" -f ref=main && echo "시계를 다시 띄움"
