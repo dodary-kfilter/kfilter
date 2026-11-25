@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-25b (시황 리포트를 시황 종합 틀로 — 목차, 지수·자산 9개는 접었다 펴기(요약은 결론 줄)) / 이전: 2026-11-25a -->
+<!-- build: 2026-11-25c (머리 시각은 최종 갱신 시각만 — 수급 = 마지막 스캔 시각, 판단 = 판단 올라온 시각) / 이전: 2026-11-25b -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -1525,15 +1525,11 @@ function waitFlow(){
     if(d && d.updated && d.updated!==w.prev){
       if(verStale){ try{ localStorage.removeItem('kf_wait_flow'); }catch(e){} hardReload(); return; }   // 페이지 자체가 새 버전이면 통째로 다시
       try{ await load(); }catch(e){}
-      const md=String(d.market_date||''), now=kstNow(), today=kstStr(now).slice(0,10);
-      const closed=HEALTH && HEALTH.day && HEALTH.day.date===today && HEALTH.day.trading_day===false;
-      const wait=md && md<today && now.getDay()>=1 && now.getDay()<=5 && !closed;
-      done('수급 갱신 끝 — 가격 '+esc(String(d.updated).slice(5))+' · 수급 '+esc(mdw(md))+'.'
-        +(wait ? ' 오늘 외국인·기관 수급은 다음 금융이 저녁에(보통 8시 반쯤) 올려서, 그 전엔 전 거래일 것이 최신이에요.' : '')
+      done('수급 갱신 끝 — '+esc(mdwt(d.updated))+'.'
         +(d.supply_note ? ' <b style="color:var(--red)">'+esc(d.supply_note)+'</b>' : ''));
       return;
     }
-    if(left()<=0){ done('12분 안에 새 수급이 올라오지 않았어요. 위의 수급 날짜를 눌러 자료 상태를 확인해 주세요.'); return; }
+    if(left()<=0){ done('12분 안에 새 수급이 올라오지 않았어요. 위의 수급 시각을 눌러 자료 상태를 확인해 주세요.'); return; }
     setTimeout(tick, 20*1000);
   };
   setTimeout(tick, 20*1000);
@@ -2019,19 +2015,21 @@ function staleOf(){
   out.clock=!!HEALTH;                                                 // 기록은 있는데 20분 넘게 끊김 = 시계 멈춤
   return out;
 }
-// 머리 시각 (2026-11-22) — 수급과 판단을 나눠 보여 준다. 수급은 하루 단위 자료라 외국인·기관 수급의 기준일(요일 포함),
-//   판단은 매일 판단(리포트·TOP 20·추천)이 올라온 시각. 장중 스캔은 가격만 새로 하므로 스캔 시각은 툴팁·자료 상태에서 본다
+// 머리 시각 (2026-11-22 나눔 → 2026-11-25 최종 갱신 시각만) — 수급과 판단을 나눠, 둘 다 마지막으로 갱신된 시각만 보여 준다.
+//   수급 = 마지막 수급 스캔 시각(data.json updated), 판단 = 매일 판단(리포트·TOP 20·추천)이 올라온 시각.
+//   외국인·기관 수급의 기준일은 머리에 내지 않는다(헷갈림) — 자료 상태(머리를 누르면 펼침)의 '내용' 줄에만 있다
 function mdw(v){ const m=String(v||'').match(/^(\d{4})-(\d{2})-(\d{2})/); if(!m) return '—';
   return (+m[2])+'/'+(+m[3])+'('+'일월화수목금토'[new Date(+m[1], +m[2]-1, +m[3]).getDay()]+')'; }
+function mdwt(v){ const s=String(v||''); return s ? mdw(s)+(s.length>=16 ? ' '+s.slice(11,16) : '') : '—'; }   // 11/25(수) 16:19
 function hdrTimes(s){
   const u=document.getElementById('updated'), j=document.getElementById('judged');
-  if(u && typeof DATA!=='undefined' && DATA){ u.textContent=mdw(DATA.market_date||DATA.updated);
+  if(u && typeof DATA!=='undefined' && DATA){ u.textContent=mdwt(DATA.updated);
     u.style.color=(s.flow||s.clock) ? 'var(--red)' : '';
-    u.title='외국인·기관 수급 기준일 '+(DATA.market_date||'—')+' · 마지막 스캔 '+(DATA.updated||'—')
+    u.title='수급 마지막 갱신 '+(DATA.updated||'—')
       +(s.clock ? ' — 시계가 멈췄어요(다음 루틴이 다시 띄웁니다)' : (s.flow ? ' — 예정보다 늦어요(시계가 다시 부릅니다)' : '')); }
   const T=LISTS.top20 && LISTS.top20.meta;
   if(j && T){ const ja=String(T.judged_at||T.judged||'');
-    j.textContent=ja ? mdw(ja)+(ja.length>=16 ? ' '+ja.slice(11,16) : '') : '—';
+    j.textContent=mdwt(ja);
     j.style.color=s.judge ? 'var(--red)' : '';
     j.title='매일 판단(리포트·TOP 20·추천) '+(ja||'—')+(T.basis ? ' · '+T.basis : '')+(s.judge ? ' — 오늘 판단이 아직 없어요' : ''); }
 }
@@ -2686,7 +2684,7 @@ async function load(){
     try{ res=await fetch('https://raw.githubusercontent.com/dodary-kfilter/kfilter/main/data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw 0; }
     catch(_){ res=await fetch('data.json?t='+Date.now(),{cache:'no-store'}); if(!res.ok) throw new Error(); }
     DATA=await res.json();
-    document.getElementById('updated').textContent=mdw(DATA.market_date||DATA.updated);   // 수급 기준일(판단 시각은 TOP 20을 받으면 채운다)
+    document.getElementById('updated').textContent=mdwt(DATA.updated);   // 수급 마지막 갱신 시각(판단 시각은 TOP 20을 받으면 채운다)
   setTimeout(()=>{ try{ markStale(); }catch(e){} }, 0);
     document.getElementById('c-flow').textContent=DATA.both.length;     // 수급 탭 숫자 = 동시 수급(0순위)
     document.getElementById('c-value_pick').textContent=(DATA.value_pick||[]).length;
