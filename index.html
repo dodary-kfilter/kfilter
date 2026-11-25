@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-25a (버튼 두 개 — 수급 갱신(수급 스캔만, 누르면 화면을 바로 최신으로) · 판단 갱신(수급 포함 자료 7가지 + 매일 판단)) / 이전: 2026-11-22a -->
+<!-- build: 2026-11-25b (시황 리포트를 시황 종합 틀로 — 목차, 지수·자산 9개는 접었다 펴기(요약은 결론 줄)) / 이전: 2026-11-25a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -86,6 +86,18 @@
   .drp-title{font-size:20px; font-weight:800; line-height:1.4; margin:0 0 12px}
   .drp-h2{font-size:16.5px; font-weight:700; margin:16px 0 6px; padding-top:10px; border-top:1px solid var(--line)}
   .drp-h3{font-size:17.5px; font-weight:800; line-height:1.45; margin:12px 0 6px; color:#d2a8ff}
+  /* 시황 리포트 목차와 지수·자산 접기(2026-11-25) — 리포트가 시황 종합 틀로 길어져 폰에서 읽기 쉽게 */
+  .drp-toc{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 12px}
+  .drp-toc a{font-size:12px; color:var(--dim); border:1px solid var(--line); border-radius:999px; padding:4px 10px; text-decoration:none; cursor:pointer}
+  .drp-toc a:active{color:var(--txt)}
+  .drp-fold{border:1px solid var(--line); border-radius:9px; margin:7px 0; padding:0 12px; background:rgba(255,255,255,.02)}
+  .drp-fold>summary{cursor:pointer; padding:10px 0; list-style:none; font-size:15px}
+  .drp-fold>summary::-webkit-details-marker{display:none}
+  .drp-fold>summary::before{content:'▸ '; color:var(--dim)}
+  .drp-fold[open]>summary::before{content:'▾ '}
+  .drp-fold[open]>summary{border-bottom:1px dotted var(--line); margin-bottom:6px}
+  .drp-fs{display:block; font-size:12.5px; color:var(--dim); margin-top:3px; line-height:1.5}
+  .drp-foldall{font-size:12px; color:var(--dim); background:none; border:1px solid var(--line); border-radius:999px; padding:3px 10px; margin:2px 0 4px; cursor:pointer}
   .drp-p{font-size:15px; line-height:1.75; margin:0 0 8px}
   .drp-ul{margin:0 0 8px; padding-left:18px; font-size:14.5px; line-height:1.7} .drp-ul li{margin:2px 0}
   .drp-sents{font-size:15px; line-height:1.7} .drp-sents li{margin:0 0 9px; padding-left:2px}
@@ -2448,6 +2460,37 @@ function buildMarketPrompt(){
 function rpInline(t){ return esc(t).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); }
 // 긴 문단을 문장 단위로 쪼갠다 — '다. ' 같은 문장 끝에서만(3.00%의 점은 뒤에 빈칸이 없어 안 쪼개짐)
 function rpSents(t){ return String(t||'').split(/(?<=[다요함음됨임])[.:]\s+/).map(x=>x.trim()).filter(Boolean).map(x=>/[.:!?]$/.test(x)?x:x+'.'); }
+// 제목 → 앵커 id(목차에서 그 단락으로 이동)
+function rpId(t){ let h=0; for(const c of String(t||'').replace(/\*\*/g,'')) h=(h*31+c.codePointAt(0))>>>0; return 'rp'+h.toString(36); }
+// 지수·자산 단락('## 2. 지수·자산별 판단' 아래의 '### 이름' ~ 다음 제목 앞)을 접었다 펴는 칸으로. 요약 줄엔 그 단락의 '결론:' 줄
+let RP_TOC='';      // 목차 — 리포트 타이틀(#) 바로 아래 '{{목차}}' 자리에 그린다
+function rpFold(md){
+  let out='', buf=[], cur=null, inFold=false;
+  const plain=()=>{ if(buf.length){ out+=rpRender(buf.join('\n')); buf=[]; } };
+  const fold=()=>{ if(!cur) return;
+    const c=cur.lines.find(l=>/^\s*(\*\*)?결론/.test(l));
+    const sum=c ? c.replace(/^\s*(\*\*)?결론(\*\*)?\s*[:：]?\s*(\*\*)?/,'').replace(/\*\*$/,'') : '';
+    out+='<details class="drp-fold"><summary><b>'+rpInline(cur.name.replace(/\*\*/g,''))+'</b>'+(sum?'<span class="drp-fs">'+rpInline(sum)+'</span>':'')+'</summary>'+rpRender(cur.lines.join('\n'))+'</details>';
+    cur=null; };
+  for(const raw of String(md||'').split('\n')){
+    const l=raw.trim();
+    if(l==='{{목차}}'){ fold(); plain(); out+=RP_TOC; continue; }
+    if(/^##\s/.test(l)){ fold(); plain(); inFold=/^##\s+(\d+\.\s*)?지수/.test(l); buf.push(raw);
+      if(inFold){ plain(); out+='<button type="button" class="drp-foldall" onclick="rpFoldAll(this)">모두 펴기</button>'; } continue; }
+    if(/^#\s/.test(l)){ fold(); plain(); inFold=false; buf.push(raw); continue; }
+    if(inFold && /^###\s/.test(l)){ fold(); plain(); cur={name:l.replace(/^###\s+/,''), lines:[]}; continue; }
+    if(cur) cur.lines.push(raw); else buf.push(raw);
+  }
+  fold(); plain(); return out;
+}
+function rpFoldAll(b){ const box=b.closest('.drp'); if(!box) return; const L=[...box.querySelectorAll('details.drp-fold')], open=!L.every(d=>d.open);
+  L.forEach(d=>{ d.open=open; }); b.textContent=open?'모두 접기':'모두 펴기'; }
+// 목차 — 리포트의 큰 단락(##) 제목을 칩으로, 누르면 그 단락으로 이동
+function rpToc(md){
+  const H=String(md||'').split('\n').map(l=>l.trim()).filter(l=>/^##\s/.test(l)).map(l=>l.replace(/^##\s+/,''));
+  if(H.length<3) return '';
+  return '<div class="drp-toc">'+H.map(t=>'<a onclick="const e=document.getElementById(\''+rpId(t)+'\'); if(e) e.scrollIntoView({behavior:\'smooth\',block:\'start\'})">'+rpInline(t.replace(/\*\*/g,''))+'</a>').join('')+'</div>';
+}
 function rpRender(md){
   const out=[]; let ul=null;
   const flush=()=>{ if(ul){ out.push('<ul class="drp-ul">'+ul.join('')+'</ul>'); ul=null; } };
@@ -2456,7 +2499,7 @@ function rpRender(md){
     if(!l){ flush(); continue; }
     let m;
     if((m=l.match(/^#\s+(.*)$/))){ flush(); out.push('<div class="drp-title">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
-    else if((m=l.match(/^##\s+(.*)$/))){ flush(); out.push('<div class="drp-h2">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
+    else if((m=l.match(/^##\s+(.*)$/))){ flush(); out.push('<div class="drp-h2" id="'+rpId(m[1])+'">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^###+\s+(.*)$/))){ flush(); out.push('<div class="drp-h3">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^[-*]\s+(.*)$/))){ (ul=ul||[]).push('<li>'+rpInline(m[1])+'</li>'); }
     else if(l.length>150 && rpSents(l).length>1){ flush(); out.push('<ul class="drp-ul drp-sents">'+rpSents(l).map(x=>'<li>'+rpInline(x)+'</li>').join('')+'</ul>'); }
@@ -2528,19 +2571,21 @@ function sectorsBlock(S){
 }
 // 마크다운의 어떤 단락(제목) 바로 뒤에 블록을 끼운다 — 그 단락의 글이 끝나는 곳(다음 제목 앞)
 function injectAfter(md, re, block){
-  if(!block) return rpRender(md);
+  if(!block) return rpFold(md);
   const L=md.split('\n'), i=L.findIndex(l=>re.test(l.trim()));
-  if(i<0) return rpRender(md)+block;
+  if(i<0) return rpFold(md)+block;
   let j=i+1; while(j<L.length && !/^#{1,3}\s/.test(L[j].trim())) j++;
-  return rpRender(L.slice(0,j).join('\n'))+block+rpRender(L.slice(j).join('\n'));
+  return rpFold(L.slice(0,j).join('\n'))+block+rpFold(L.slice(j).join('\n'));
 }
 function dailyReport(TM){
   if(!(TM.report||TM.view_kr||TM.view_us)) return '';
-  const md=dailyReportMd(TM), rc=allocBlock(TM)+recoCards(TM.recos), sb=sectorsBlock(TM.sectors), secRe=/^##\s+(\d+\.\s*)?업종/;
+  const md0=dailyReportMd(TM), rc=allocBlock(TM)+recoCards(TM.recos), sb=sectorsBlock(TM.sectors), secRe=/^##\s+(\d+\.\s*)?업종/;
+  RP_TOC=rpToc(md0);
+  const md=/^#\s/m.test(md0) ? md0.replace(/^(#\s.*)$/m, '$1\n{{목차}}') : (RP_TOC ? '{{목차}}\n'+md0 : md0);
   let html;
-  if(md.includes('{{추천 종목}}')){ const [a,b]=md.split('{{추천 종목}}'); html=injectAfter(a, secRe, sb)+rc+rpRender(b); }
+  if(md.includes('{{추천 종목}}')){ const [a,b]=md.split('{{추천 종목}}'); html=injectAfter(a, secRe, sb)+rc+rpFold(b); }
   else { const L=md.split('\n'), i=L.findIndex(l=>/^##\s+(5\.|TOP 20)/.test(l.trim()));
-    html = i>=0 ? injectAfter(L.slice(0,i).join('\n'), secRe, sb)+rc+rpRender(L.slice(i).join('\n')) : injectAfter(md, secRe, sb)+rc; }
+    html = i>=0 ? injectAfter(L.slice(0,i).join('\n'), secRe, sb)+rc+rpFold(L.slice(i).join('\n')) : injectAfter(md, secRe, sb)+rc; }
   const late=staleOf().judge ? '<div class="stalebar">오늘 판단이 아직 없습니다 — 아래는 '+esc(TM.judged_at||TM.judged||'')+' 판단입니다</div>' : '';
   return '<div class="drp">'+late+'<div class="drp-at">오늘의 시황 리포트 · '+esc(TM.judged_at||TM.judged||'')+' 기준</div>'+regimeLine(TM.regime)+html+'</div>';
 }

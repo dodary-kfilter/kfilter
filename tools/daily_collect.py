@@ -3,7 +3,8 @@
 
 사용(저장소 루트): python3 tools/daily_collect.py > /tmp/today.txt      (판단 실행)
                   python3 tools/daily_collect.py --notes                (노트 쌓기 실행 — 노트 쓸 차례 6개만)
-  - 번들(tools/bundle.py)을 국장·미장 한 번씩 돌려 머리 줄(#거시·#시장·#미국시장·#미국 심리·신용·#환율·유가·시장 뉴스)만 가져온다
+  - 번들(tools/bundle.py)을 국장·미장 한 번씩 돌려 머리 줄(#거시·#시장·#미국시장·#미국 심리·신용·#환율·유가·시장 뉴스)과
+    지수·자산 자료 카드(시황 종합과 같은 대용 ETF 7개 — 가격 위치·거래량·수급·분배금·공매도)를 가져온다(2026-11-25)
   - 지정학·정책 뉴스 제목(최근 2일): 휴전·공습·관세·금리·수출 규제 등 — 판단을 바꿀 사건을 놓치지 않으려고
   - TOP 20 판단 종목(top20/picks.json) 80개의 지금 가격·1일·5일 등락·판단 때 대비·목표까지·손절까지·도달 여부
   - 깔때기 재료(2026-11-03): 재료가 오래됐으면 여기서 새로 받고(업종 추세·공시 사건은 매번, 미장 재무는 20시간 넘으면),
@@ -18,6 +19,11 @@ UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like 
 KST = dt.timezone(dt.timedelta(hours=9))
 HEAD_KR = ('#거시', '물가 ·', '경기 ·', '정책 ·', '지정학 ·', '일정(2주)', '거시 수집 오류', '#시장 ', '#해외·환율', '#미국 금리·달러', '#시장 뉴스')
 HEAD_US = ('#미국시장', '#미국 심리·신용', '#환율·유가', '#시장 뉴스')
+# 지수·자산 자료 카드(2026-11-25) — 사이트의 '시황 종합' 프롬프트와 같은 자료로 리포트를 쓰려고. 대용: KODEX 200=코스피, KODEX 코스닥150=코스닥,
+#   SPY=S&P 500, IWM=러셀 2000, QQQ=나스닥, SOXX=필라델피아 반도체, TLT=미국 장기 국채(금·비트코인은 #미국시장 줄)
+IDX_KR = ['069500', '229200']
+IDX_US = ['SPY', 'IWM', 'QQQ', 'SOXX', 'TLT']
+CARD_US = ('#시세', '#가격', '#분할·배당', '#기관·공매도·내부자')       # ETF라 재무·실적·SEC·영문 뉴스는 뺀다
 NEWS_KO = ['휴전', '이란 공습', '관세', '연준 금리', '한국은행 금리', '반도체 수출 규제', '코스피 외국인']
 NEWS_EN = ['ceasefire', 'Fed rate decision', 'tariffs', 'AI capex', 'oil prices']
 
@@ -44,6 +50,21 @@ def heads(text, keys):
     out = []
     for l in (text or '').split('\n'):
         if l.startswith(keys):
+            out.append(l[:1600])
+    return out or ['확인 불가']
+
+
+def cards(text, us):
+    """번들의 자료 카드(==== 이름 ====)에서 지수·자산 판단에 쓸 줄만 — 국장 카드는 전부, 미장 카드는 시세·가격·분배금·공매도"""
+    out, on = [], False
+    for l in (text or '').split('\n'):
+        if l.startswith('===='):
+            on = True; out.append(l); continue
+        if not on:
+            continue
+        if l.startswith(('#오류', '#수집시간')):
+            on = False; continue
+        if (l.startswith(CARD_US) if us else l.strip()):
             out.append(l[:1600])
     return out or ['확인 불가']
 
@@ -213,7 +234,7 @@ def main():
     for l in refresh_materials():
         print('- ' + l)
     with ThreadPoolExecutor(4) as ex:
-        fk = ex.submit(bundle, ['kr', '069500', '--brief']); fu = ex.submit(bundle, ['us', 'SPY'])
+        fk = ex.submit(bundle, ['kr'] + IDX_KR + ['--brief']); fu = ex.submit(bundle, ['us'] + IDX_US)
         fn = [ex.submit(news, q) for q in NEWS_KO] + [ex.submit(news, q, True) for q in NEWS_EN]
         kr, us = fk.result(), fu.result()
         nw = [f.result() for f in fn]
@@ -221,6 +242,9 @@ def main():
     print('\n'.join(heads(kr, HEAD_KR)))
     print('\n## 미장 시장·심리·신용 (번들 미장 머리 줄)')
     print('\n'.join(heads(us, HEAD_US)))
+    print('\n## 지수·자산 자료 카드 — 시황 종합 리포트와 같은 자료 (대용 ETF: KODEX 200=코스피 · KODEX 코스닥150=코스닥 · SPY=S&P 500 · '
+          'IWM=러셀 2000 · QQQ=나스닥 · SOXX=필라델피아 반도체 · TLT=미국 장기 국채, 금·비트코인은 위 #미국시장 줄)')
+    print('\n'.join(cards(kr, False) + cards(us, True)))
     print('\n## 지정학·정책 뉴스 제목(최근 2일)')
     for q, items in zip(NEWS_KO + NEWS_EN, nw):
         print('- %s: %s' % (q, ' / '.join(items) if items else '없음'))
