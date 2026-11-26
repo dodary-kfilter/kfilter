@@ -9,7 +9,8 @@
   - TOP 20 판단 종목(top20/picks.json) 80개의 지금 가격·1일·5일 등락·판단 때 대비·목표까지·손절까지·도달 여부
   - 깔때기 재료(2026-11-03): 재료가 오래됐으면 여기서 새로 받고(업종 추세·공시 사건은 매번, 미장 재무는 20시간 넘으면),
     거르기(tools/funnel_screen.py)를 돌려 업종 점수·후보 표·공시 사건·기업 노트 현황을 붙인다
-  - 지표 판(2026-11-26): 공포·탐욕·VIX·미국 2년·10년·연준·한은 기준금리·원/달러·달러 인덱스·WTI를 코드가 모아
+  - 지표 판(점수판, 2026-11-26): 주요 지수 8개(S&P 500·나스닥·필라델피아 반도체·코스피·코스닥·니케이·대만 가권·중국 상해, 2026-11-27)와
+    공포·탐욕·VIX·미국 2년·10년·연준·한은 기준금리·원/달러·달러 인덱스·WTI를 코드가 모아
     /tmp/kf_dash.json에 쓴다 → top20/tools/build.py가 top20.json의 meta.dash로 넣고, 사이트가 시황 리포트 맨 위에 보여 준다.
     판단도 같은 값을 보도록 출력에도 찍는다. 저장소 밖(/tmp)에 쓰는 건 판단 커밋에 섞이지 않게(판단 반영 워크플로가 허용 파일만 옮긴다)
 받지 못한 것은 '확인 불가'로 적고 멈추지 않는다.
@@ -197,6 +198,45 @@ def daum_fx():
 FG_RATE = {'extreme fear': '극단적 공포', 'fear': '공포', 'neutral': '중립', 'greed': '탐욕', 'extreme greed': '극단적 탐욕'}
 
 
+# 점수판의 주요 지수(2026-11-27) — 다음 금융 한 곳에서(번들의 #시장·#해외·환율과 같은 출처). 국장은 시장 지수 일별, 해외는 지수 일별
+DASH_IDX = [('S&P 500', 'US.SP500'), ('나스닥', 'US.COMP'), ('필라델피아 반도체', 'US.SOX'), ('코스피', 'KOSPI'), ('코스닥', 'KOSDAQ'),
+            ('니케이', 'JP.NI225'), ('대만 가권', 'TW.TAIEX'), ('중국 상해', 'CN000001')]
+
+
+def daum_idx(code):
+    """다음 지수 일별 — (마지막 날짜, 종가 오래된 것부터). 장 열기 전 거래량 0인 줄은 뺀다"""
+    if code in ('KOSPI', 'KOSDAQ'):
+        url, ref = ('https://finance.daum.net/api/market_index/days?page=1&perPage=%d&market=%s&pagination=true' % (DASH_N, code),
+                    'https://finance.daum.net/domestic')
+    else:
+        url, ref = 'https://finance.daum.net/api/quote/%s/days?page=1&perPage=%d' % (code, DASH_N), 'https://finance.daum.net/global/quotes/' + code
+    try:
+        rows = [r for r in json.loads(get_h(url, {'Referer': ref}))['data'] if r.get('tradePrice')]
+        if code in ('KOSPI', 'KOSDAQ'):
+            rows = [r for r in rows if r.get('accTradeVolume') != 0]
+        c = [r['tradePrice'] for r in rows][::-1]
+        return (rows[0]['date'][:10], c) if len(c) >= 2 else None
+    except Exception:
+        return None
+
+
+def dash_indices():
+    """점수판 지수 칸 — 값·전 거래일 대비·최근 3달 추이. 다른 지수보다 날짜가 늦은 칸(휴장 등)엔 그 날짜를 적는다"""
+    with ThreadPoolExecutor(8) as ex:
+        got = list(ex.map(lambda x: daum_idx(x[1]), DASH_IDX))
+    last = max((g[0] for g in got if g), default='')
+    out = []
+    for (nm, _), g in zip(DASH_IDX, got):
+        if not g:
+            out.append({'g': 'idx', 'name': nm, 'value': '확인 불가', 'chg': '', 'dir': '', 'sub': ''}); continue
+        d, c = g
+        r = (c[-1] / c[-2] - 1) * 100 if c[-2] else None
+        out.append({'g': 'idx', 'name': nm, 'value': '{:,.2f}'.format(c[-1]), 'chg': '%+.2f%%' % r if r is not None else '',
+                    'dir': ('up' if r > 0 else 'down' if r < 0 else '') if r is not None else '',
+                    'sub': ('%d/%d 기준' % (int(d[5:7]), int(d[8:10]))) if d < last else '', 'hist': [round(v, 2) for v in c]})
+    return out
+
+
 def dash_snapshot(kr, us):
     """지표 판(점수판) — 리포트 맨 위에 박아 두고 매일 추적하는 값. 받지 못한 값은 '확인 불가'(추정하지 않는다).
     변화는 전 거래일 대비, hist는 최근 3달(약 60거래일) 추이 — 값·변화·추이를 같은 출처에서 받는다"""
@@ -262,7 +302,9 @@ def dash_snapshot(kr, us):
         out.append(item('원/달러', '{:,.1f}원'.format(fx[0]) if ok else None, '%+.2f%%' % fx[1] if ok and num(fx[1]) else None, '', ok and fx[1]))
     out.append(mkt('달러 인덱스', R['dxy'], '%.2f', 2))
     out.append(mkt('WTI', R['wti'], '%.2f달러', 1))
-    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'n': DASH_N, 'items': out}
+    for x in out:
+        x['g'] = 'mac'
+    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'n': DASH_N, 'items': dash_indices() + out}
 
 
 def run_tool(args, timeout):
@@ -416,8 +458,9 @@ def main():
         print('(지표 판 저장 실패 — %s)' % type(e).__name__)
     print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 점수판으로 이대로 박힌다(코드가 %s KST에 모음, 변화는 전 거래일 대비, 최근 3달 추이 선 포함).'
           ' 본문에서 이 숫자를 다시 읽어 주지 않는다. 아래 머리 줄의 같은 지표와 숫자가 다르면 이 줄이 기준' % dash['at'][11:])
-    print(' · '.join('%s %s%s' % (x['name'], x['value'], '(' + ', '.join(s for s in (x['chg'], x['sub']) if s) + ')' if (x['chg'] or x['sub']) else '')
-                     for x in dash['items']))
+    for g, lab in (('idx', '지수'), ('mac', '지표')):
+        print(lab + ': ' + ' · '.join('%s %s%s' % (x['name'], x['value'], '(' + ', '.join(s for s in (x['chg'], x['sub']) if s) + ')' if (x['chg'] or x['sub']) else '')
+                                    for x in dash['items'] if x.get('g') == g))
     print('\n## 거시·국장 시장 (번들 국장 머리 줄)')
     print('\n'.join(heads(kr, HEAD_KR)))
     print('\n## 미장 시장·심리·신용 (번들 미장 머리 줄)')

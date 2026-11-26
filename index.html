@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-26b (점수판에 최근 3달 추이 선, 리포트는 빈 줄 단위 문단으로 — 문장마다 끊지 않음) / 이전: 2026-11-26a -->
+<!-- build: 2026-11-27a (점수판에 주요 지수 8개 — S&P 500·나스닥·필라델피아 반도체·코스피·코스닥·니케이·대만·중국, 지수·지표 두 묶음) / 이전: 2026-11-26b -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -56,12 +56,13 @@
   .dsh{margin:0 0 14px} .dsh-h{font-size:11.5px; color:var(--dim); margin:0 0 6px}
   .dsh-g{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px}
   .dsh-i{border:1px solid var(--line); border-radius:9px; padding:7px 9px; background:rgba(255,255,255,.02); min-width:0}
-  .dsh-n{font-size:11.5px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .dsh-n{font-size:11.5px; color:var(--dim); line-height:1.35; word-break:keep-all}
   .dsh-v{font-family:'Space Mono',monospace; font-size:15px; font-weight:700; line-height:1.35; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .dsh-v.sm{font-size:13px; line-height:1.56}
   .dsh-s{font-size:11.5px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .dsh-s .up{color:#ff7b72} .dsh-s .dn{color:#4493f8}
   .dsh-sp{display:block; width:100%; height:22px; margin-top:4px; color:#6e7d91}
+  .dsh-gl{font-size:12px; font-weight:700; color:var(--txt); margin:10px 0 5px} .dsh-h+.dsh-gl{margin-top:0}
   .sct-g{margin:6px 0 4px; font-size:12.5px; color:var(--dim)} .sct{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px}
   .sct details{border:1px solid var(--line); border-radius:12px; font-size:12.5px; padding:2px 9px}
   .sct details[open]{flex-basis:100%; border-radius:8px; padding:6px 10px}
@@ -2563,7 +2564,7 @@ function allocBlock(TM){
 // ── 깔때기 결과 (2026-11-03) — 업종 판단(meta.sectors), 편입·편출(meta.moves) ──
 //   국면(meta.regime) 칸은 2026-11-26에 뺐다 — 리포트 1단락(그때 이름 '공통 배경', 지금 '시장 종합')과 같은 내용이 리포트 앞에 길게 한 번 더 나왔다
 // 지표 판 (2026-11-26) — 리포트 맨 위. 판단 자료를 모을 때 코드가 모은 값(meta.dash: tools/daily_collect.py → top20/tools/build.py)
-//   점수판처럼 매일 같은 자리·같은 모양으로 — 값, 전 거래일 대비 변화, 최근 3달 추이 선(hist, 2026-11-26 추적용)
+//   점수판처럼 매일 같은 자리·같은 모양으로 — 값, 전 거래일 대비 변화, 최근 3달 추이 선(hist, 2026-11-26 추적용). 지수(g=idx)·지표(g=mac) 두 묶음(2026-11-27)
 function dashSpark(h){
   if(!Array.isArray(h) || h.length<5) return '';
   const W=100, H=22, n=h.length, lo=Math.min(...h), hi=Math.max(...h), sp=(hi-lo)||1;
@@ -2572,14 +2573,17 @@ function dashSpark(h){
 }
 function dashBlock(D){
   if(!D || !(D.items||[]).length) return '';
-  const it=D.items.map(x=>{
+  const tile=x=>{
     const v=String(x.value||''), c=x.chg ? '<div class="dsh-s"><span class="'+(x.dir==='up'?'up':(x.dir==='down'?'dn':''))+'">'+esc(x.chg)+'</span></div>' : '';
     const h=Array.isArray(x.hist) ? x.hist : null, rng=h&&h.length>=5 ? ' title="최근 3달 최저 '+esc(String(Math.min(...h)))+' · 최고 '+esc(String(Math.max(...h)))+'"' : '';
     return '<div class="dsh-i"'+rng+'><div class="dsh-n">'+esc(x.name)+'</div><div class="dsh-v'+(v.length>8?' sm':'')+'">'+esc(v)+'</div>'
       +c+(x.sub ? '<div class="dsh-s">'+esc(x.sub)+'</div>' : '')+dashSpark(h)+'</div>';   // 변화와 설명은 따로 한 줄씩(폰 폭에서 잘리지 않게)
-  }).join('');
+  };
+  const G=[['idx','지수'],['mac','지표']].map(([g,lab])=>[lab, D.items.filter(x=>(x.g||'mac')===g)]).filter(([,L])=>L.length);
   const hasH=D.items.some(x=>Array.isArray(x.hist) && x.hist.length>=5);
-  return '<div class="dsh"><div class="dsh-h">지표 · '+esc(mdwt(D.at))+' 기준 · 변화는 전 거래일 대비'+(hasH?' · 선은 최근 3달':'')+'</div><div class="dsh-g">'+it+'</div></div>';
+  const seg=t=>'<span style="white-space:nowrap">'+t+'</span>';      // 폰에서 줄이 바뀌어도 토막 안에서는 끊기지 않게
+  return '<div class="dsh"><div class="dsh-h">'+[seg('점수판 · '+esc(mdwt(D.at))+' 기준'), seg('변화는 전 거래일 대비')].concat(hasH?[seg('선은 최근 3달')]:[]).join(' · ')+'</div>'
+    +G.map(([lab,L])=>(G.length>1?'<div class="dsh-gl">'+lab+'</div>':'')+'<div class="dsh-g">'+L.map(tile).join('')+'</div>').join('')+'</div>';
 }
 function sectorsBlock(S){
   if(!S || !((S.kr||[]).length || (S.us||[]).length)) return '';
