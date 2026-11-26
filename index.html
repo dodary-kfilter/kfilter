@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-26a (시황 리포트: 국면 칸 빼고 맨 위에 지표 판 — 공포·탐욕·금리·환율 등, 그다음 타이틀부터) / 이전: 2026-11-25c -->
+<!-- build: 2026-11-26b (점수판에 최근 3달 추이 선, 리포트는 빈 줄 단위 문단으로 — 문장마다 끊지 않음) / 이전: 2026-11-26a -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -61,6 +61,7 @@
   .dsh-v.sm{font-size:13px; line-height:1.56}
   .dsh-s{font-size:11.5px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .dsh-s .up{color:#ff7b72} .dsh-s .dn{color:#4493f8}
+  .dsh-sp{display:block; width:100%; height:22px; margin-top:4px; color:#6e7d91}
   .sct-g{margin:6px 0 4px; font-size:12.5px; color:var(--dim)} .sct{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px}
   .sct details{border:1px solid var(--line); border-radius:12px; font-size:12.5px; padding:2px 9px}
   .sct details[open]{flex-basis:100%; border-radius:8px; padding:6px 10px}
@@ -104,9 +105,9 @@
   .drp-fold[open]>summary{border-bottom:1px dotted var(--line); margin-bottom:6px}
   .drp-fs{display:block; font-size:12.5px; color:var(--dim); margin-top:3px; line-height:1.5}
   .drp-foldall{font-size:12px; color:var(--dim); background:none; border:1px solid var(--line); border-radius:999px; padding:3px 10px; margin:2px 0 4px; cursor:pointer}
-  .drp-p{font-size:15px; line-height:1.75; margin:0 0 8px}
+  .drp-p{font-size:15px; line-height:1.75; margin:0 0 12px}
+  .drp-lead{margin-bottom:6px} .drp-concl{padding:6px 10px; border-left:3px solid var(--line); background:rgba(255,255,255,.02); border-radius:0 6px 6px 0}
   .drp-ul{margin:0 0 8px; padding-left:18px; font-size:14.5px; line-height:1.7} .drp-ul li{margin:2px 0}
-  .drp-sents{font-size:15px; line-height:1.7} .drp-sents li{margin:0 0 9px; padding-left:2px}
   .tag.reco{background:rgba(210,168,255,.18); color:#d2a8ff; white-space:nowrap}
   .rcact{display:inline-block; font-size:12px; font-weight:800; padding:1px 7px; border-radius:6px; margin-left:6px; white-space:nowrap}
   .rcact.buy{background:rgba(248,81,73,.16); color:#ff7b72} .rcact.split{background:rgba(219,171,9,.16); color:#e3b341} .rcact.wait{background:rgba(139,152,169,.18); color:var(--dim)}
@@ -2462,8 +2463,6 @@ function buildMarketPrompt(){
 }
 // 지수 탭 — 시황 종합 → 미장 → 국장 → 자산
 function rpInline(t){ return esc(t).replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>'); }
-// 긴 문단을 문장 단위로 쪼갠다 — '다. ' 같은 문장 끝에서만(3.00%의 점은 뒤에 빈칸이 없어 안 쪼개짐)
-function rpSents(t){ return String(t||'').split(/(?<=[다요함음됨임])[.:]\s+/).map(x=>x.trim()).filter(Boolean).map(x=>/[.:!?]$/.test(x)?x:x+'.'); }
 // 제목 → 앵커 id(목차에서 그 단락으로 이동)
 function rpId(t){ let h=0; for(const c of String(t||'').replace(/\*\*/g,'')) h=(h*31+c.codePointAt(0))>>>0; return 'rp'+h.toString(36); }
 // 지수·자산 단락('## 2. 지수·자산별 판단' 아래의 '### 이름' ~ 다음 제목 앞)을 접었다 펴는 칸으로. 요약 줄엔 그 단락의 '결론:' 줄
@@ -2495,9 +2494,13 @@ function rpToc(md){
   if(H.length<3) return '';
   return '<div class="drp-toc">'+H.map(t=>'<a onclick="const e=document.getElementById(\''+rpId(t)+'\'); if(e) e.scrollIntoView({behavior:\'smooth\',block:\'start\'})">'+rpInline(t.replace(/\*\*/g,''))+'</a>').join('')+'</div>';
 }
+// 리포트 마크다운 → 화면 (2026-11-26) — 빈 줄로 나뉜 줄들을 한 문단으로 이어 보여 준다. 예전엔 줄마다·문장마다 한 줄로 끊어서
+//   사실이 한 줄씩 늘어선 나열처럼 읽혔다. 한 줄 전체가 굵은 줄(단락의 판단 한 줄)과 '결론:' 줄만 따로 한 줄로 둔다
 function rpRender(md){
-  const out=[]; let ul=null;
-  const flush=()=>{ if(ul){ out.push('<ul class="drp-ul">'+ul.join('')+'</ul>'); ul=null; } };
+  const out=[]; let ul=null, para=[];
+  const flushP=()=>{ if(para.length){ out.push('<p class="drp-p">'+rpInline(para.join(' '))+'</p>'); para=[]; } };
+  const flushU=()=>{ if(ul){ out.push('<ul class="drp-ul">'+ul.join('')+'</ul>'); ul=null; } };
+  const flush=()=>{ flushP(); flushU(); };
   for(const raw of String(md||'').split('\n')){
     const l=raw.trim();
     if(!l){ flush(); continue; }
@@ -2505,9 +2508,10 @@ function rpRender(md){
     if((m=l.match(/^#\s+(.*)$/))){ flush(); out.push('<div class="drp-title">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^##\s+(.*)$/))){ flush(); out.push('<div class="drp-h2" id="'+rpId(m[1])+'">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
     else if((m=l.match(/^###+\s+(.*)$/))){ flush(); out.push('<div class="drp-h3">'+rpInline(m[1].replace(/\*\*/g,''))+'</div>'); }
-    else if((m=l.match(/^[-*]\s+(.*)$/))){ (ul=ul||[]).push('<li>'+rpInline(m[1])+'</li>'); }
-    else if(l.length>150 && rpSents(l).length>1){ flush(); out.push('<ul class="drp-ul drp-sents">'+rpSents(l).map(x=>'<li>'+rpInline(x)+'</li>').join('')+'</ul>'); }
-    else { flush(); out.push('<p class="drp-p">'+rpInline(l)+'</p>'); }
+    else if((m=l.match(/^[-*]\s+(.*)$/))){ flushP(); (ul=ul||[]).push('<li>'+rpInline(m[1])+'</li>'); }
+    else if(/^(\*\*)?결론/.test(l)){ flush(); out.push('<p class="drp-p drp-concl">'+rpInline(l)+'</p>'); }
+    else if(/^\*\*[^*]+\*\*$/.test(l)){ flush(); out.push('<p class="drp-p drp-lead">'+rpInline(l)+'</p>'); }
+    else { flushU(); para.push(l); }
   }
   flush(); return out.join('');
 }
@@ -2557,16 +2561,25 @@ function allocBlock(TM){
     +'<div class="alc-note">전체 자금을 100으로 놓은 배분 · 주식 '+eq+'%'+(rc?'(그중 오늘의 추천 종목 '+rc+'%)':'')+(P?' · 숫자 옆은 어제 대비':'')+(A.note?' · '+esc(A.note):'')+'</div></div>';
 }
 // ── 깔때기 결과 (2026-11-03) — 업종 판단(meta.sectors), 편입·편출(meta.moves) ──
-//   국면(meta.regime) 칸은 2026-11-26에 뺐다 — 리포트 1. 공통 배경과 같은 내용이 리포트 앞에 길게 한 번 더 나왔다
+//   국면(meta.regime) 칸은 2026-11-26에 뺐다 — 리포트 1단락(그때 이름 '공통 배경', 지금 '시장 종합')과 같은 내용이 리포트 앞에 길게 한 번 더 나왔다
 // 지표 판 (2026-11-26) — 리포트 맨 위. 판단 자료를 모을 때 코드가 모은 값(meta.dash: tools/daily_collect.py → top20/tools/build.py)
+//   점수판처럼 매일 같은 자리·같은 모양으로 — 값, 전 거래일 대비 변화, 최근 3달 추이 선(hist, 2026-11-26 추적용)
+function dashSpark(h){
+  if(!Array.isArray(h) || h.length<5) return '';
+  const W=100, H=22, n=h.length, lo=Math.min(...h), hi=Math.max(...h), sp=(hi-lo)||1;
+  const pts=h.map((v,i)=>(i*W/(n-1)).toFixed(1)+','+(H-1.5-(v-lo)/sp*(H-3)).toFixed(1)).join(' ');
+  return '<svg class="dsh-sp" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+pts+'" fill="none" stroke="currentColor" stroke-width="1.3" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>';
+}
 function dashBlock(D){
   if(!D || !(D.items||[]).length) return '';
   const it=D.items.map(x=>{
     const v=String(x.value||''), c=x.chg ? '<div class="dsh-s"><span class="'+(x.dir==='up'?'up':(x.dir==='down'?'dn':''))+'">'+esc(x.chg)+'</span></div>' : '';
-    return '<div class="dsh-i"><div class="dsh-n">'+esc(x.name)+'</div><div class="dsh-v'+(v.length>8?' sm':'')+'">'+esc(v)+'</div>'
-      +c+(x.sub ? '<div class="dsh-s">'+esc(x.sub)+'</div>' : '')+'</div>';   // 변화와 설명은 따로 한 줄씩(폰 폭에서 잘리지 않게)
+    const h=Array.isArray(x.hist) ? x.hist : null, rng=h&&h.length>=5 ? ' title="최근 3달 최저 '+esc(String(Math.min(...h)))+' · 최고 '+esc(String(Math.max(...h)))+'"' : '';
+    return '<div class="dsh-i"'+rng+'><div class="dsh-n">'+esc(x.name)+'</div><div class="dsh-v'+(v.length>8?' sm':'')+'">'+esc(v)+'</div>'
+      +c+(x.sub ? '<div class="dsh-s">'+esc(x.sub)+'</div>' : '')+dashSpark(h)+'</div>';   // 변화와 설명은 따로 한 줄씩(폰 폭에서 잘리지 않게)
   }).join('');
-  return '<div class="dsh"><div class="dsh-h">지표 · '+esc(mdwt(D.at))+' 기준 · 변화는 전 거래일 대비</div><div class="dsh-g">'+it+'</div></div>';
+  const hasH=D.items.some(x=>Array.isArray(x.hist) && x.hist.length>=5);
+  return '<div class="dsh"><div class="dsh-h">지표 · '+esc(mdwt(D.at))+' 기준 · 변화는 전 거래일 대비'+(hasH?' · 선은 최근 3달':'')+'</div><div class="dsh-g">'+it+'</div></div>';
 }
 function sectorsBlock(S){
   if(!S || !((S.kr||[]).length || (S.us||[]).length)) return '';

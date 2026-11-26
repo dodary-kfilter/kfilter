@@ -113,66 +113,156 @@ def head_json(text, key):
     return {}
 
 
+def get_h(url, headers, tries=2):
+    """머리글(Referer 등)이 있어야 열리는 곳 — 다음 환율·CNN"""
+    h = {'User-Agent': UA}
+    h.update(headers)
+    for i in range(tries):
+        try:
+            return urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=20).read().decode('utf-8', 'replace')
+        except Exception:
+            time.sleep(1.5 * (i + 1))
+    return None
+
+
+# ── 지표 판(점수판) 자료 — 값·전 거래일 대비 변화·최근 3달 추이(DASH_N 거래일)를 한 출처에서 같이 받는다(값과 추이 선이 어긋나지 않게)
+DASH_N = 61
+
+
+def ych(sym):
+    """야후 일봉 — (지금 값, 종가 목록 오래된 것부터). 마지막 봉이 오늘 것이면 그 종가가 지금 값이다"""
+    t = get('https://query1.finance.yahoo.com/v8/finance/chart/%s?range=6mo&interval=1d' % urllib.parse.quote(sym))
+    try:
+        r = json.loads(t)['chart']['result'][0]
+        c = [v for v in r['indicators']['quote'][0]['close'] if v]
+        cur = (r.get('meta') or {}).get('regularMarketPrice') or c[-1]
+        if c and abs(c[-1] - cur) > 1e-9 * max(1, abs(cur)):
+            c[-1] = cur                                         # 오늘 봉의 종가가 늦게 채워지는 경우 지금 값으로
+        return cur, c[-DASH_N:]
+    except Exception:
+        return None
+
+
 def treasury():
-    """재무부 금리 곡선(일별, 최근이 앞) — 2년·10년의 지금과 전 거래일"""
+    """재무부 금리 곡선(일별) — {'2 Yr': [오래된 것부터], '10 Yr': [...]}"""
     yr, rows = dt.datetime.now(KST).year, []
     for y in (yr, yr - 1):
         t = get(TREASURY % (y, y))
         if t:
             rows += list(csv.DictReader(io.StringIO(t)))
-        if len(rows) >= 2:
+        if len(rows) >= DASH_N:
             break
     f = lambda r, k: float(r[k]) if r.get(k) not in (None, '', 'N/A') else None
-    return {k: [f(r, k) for r in rows[:2]] for k in ('2 Yr', '10 Yr')} if len(rows) >= 2 else {}
+    out = {}
+    for k in ('2 Yr', '10 Yr'):
+        v = [f(r, k) for r in rows[:DASH_N]]
+        v = [x for x in v if x is not None][::-1]
+        if len(v) >= 2:
+            out[k] = v
+    return out
+
+
+def cnn_fg():
+    """CNN 공포·탐욕 — (지금 점수, 상태, 날짜별 점수 오래된 것부터). 날짜마다 마지막 값, 끝의 이월된 같은 값(장 열기 전)은 뺀다"""
+    t = get_h('https://production.dataviz.cnn.io/index/fearandgreed/graphdata',
+              {'Accept': 'application/json', 'Origin': 'https://edition.cnn.com', 'Referer': 'https://edition.cnn.com/markets/fear-and-greed'})
+    try:
+        j = json.loads(t)
+        fg = j['fear_and_greed']
+        day = {}
+        for p in (j.get('fear_and_greed_historical') or {}).get('data') or []:
+            day[dt.datetime.fromtimestamp(p['x'] / 1000, dt.timezone.utc).strftime('%Y-%m-%d')] = p['y']
+        h = [day[d] for d in sorted(day)]
+        if len(h) >= 2 and h[-1] == h[-2]:
+            h.pop()
+        s = fg['score']
+        if not h or abs(h[-1] - s) > 0.05:
+            h.append(s)
+        return s, FG_RATE.get(fg.get('rating'), fg.get('rating') or ''), h[-DASH_N:]
+    except Exception:
+        return None
+
+
+def daum_fx():
+    """다음 원/달러(매매기준율) 일별 — (지금 값, 오래된 것부터)"""
+    t = get_h('https://finance.daum.net/api/exchanges/FRX.KRWUSD/days?symbolCode=FRX.KRWUSD&terms=days&page=1&perPage=%d' % DASH_N,
+              {'Referer': 'https://finance.daum.net/exchanges/FRX.KRWUSD'})
+    try:
+        v = [r['basePrice'] for r in json.loads(t)['data'] if r.get('basePrice')][::-1]
+        return (v[-1], v) if len(v) >= 2 else None
+    except Exception:
+        return None
+
+
+FG_RATE = {'extreme fear': '극단적 공포', 'fear': '공포', 'neutral': '중립', 'greed': '탐욕', 'extreme greed': '극단적 탐욕'}
 
 
 def dash_snapshot(kr, us):
-    """지표 판 — 리포트 맨 위에 나갈 값. 받지 못한 값은 '확인 불가'(추정하지 않는다). 변화는 전 거래일 대비"""
+    """지표 판(점수판) — 리포트 맨 위에 박아 두고 매일 추적하는 값. 받지 못한 값은 '확인 불가'(추정하지 않는다).
+    변화는 전 거래일 대비, hist는 최근 3달(약 60거래일) 추이 — 값·변화·추이를 같은 출처에서 받는다"""
     now = dt.datetime.now(KST)
-    with ThreadPoolExecutor(5) as ex:
-        fv, fd, fw = ex.submit(price, '^VIX'), ex.submit(price, 'DX-Y.NYB'), ex.submit(price, 'CL=F')
-        ft, fm = ex.submit(treasury), ex.submit(get, RAW + '/cache/macro.json')
-        vix, dxy, wti, tr = fv.result(), fd.result(), fw.result(), ft.result()
-        try:
-            M = json.loads(fm.result() or '{}')
-        except Exception:
-            M = {}
+    with ThreadPoolExecutor(7) as ex:
+        F = {k: ex.submit(*a) for k, a in {'vix': (ych, '^VIX'), 'dxy': (ych, 'DX-Y.NYB'), 'wti': (ych, 'CL=F'), 'tr': (treasury,),
+                                            'fg': (cnn_fg,), 'fx': (daum_fx,), 'mac': (get, RAW + '/cache/macro.json')}.items()}
+        R = {k: f.result() for k, f in F.items()}
+    try:
+        M = json.loads(R['mac'] or '{}')
+    except Exception:
+        M = {}
     NA = '확인 불가'
     sign = lambda v: 'up' if v and v > 0 else ('down' if v and v < 0 else '')
-    def item(name, value, chg=None, sub='', d=None):
-        return {'name': name, 'value': value if value else NA, 'chg': chg or '', 'dir': sign(d) if chg else '', 'sub': sub}
+    def item(name, value, chg=None, sub='', d=None, hist=None):
+        x = {'name': name, 'value': value if value else NA, 'chg': chg or '', 'dir': sign(d) if chg else '', 'sub': sub}
+        if value and hist and len(hist) >= 5:
+            x['hist'] = [round(v, 4) for v in hist]
+        return x
+    def mkt(name, got, fmt, pct_dp):                            # 야후·다음 일봉: 값, 전 거래일 대비 %, 추이
+        if not got or len(got[1]) < 2:
+            return item(name, None)
+        cur, h = got
+        d = (cur / h[-2] - 1) * 100 if h[-2] else None
+        return item(name, fmt % cur if '%' in fmt else fmt.format(cur), ('%+.' + str(pct_dp) + 'f%%') % d if d is not None else None, '', d, h)
     out = []
-    sent = head_json(us, '#미국 심리·신용')
-    fg = next((v for k, v in sent.items() if k.startswith('CNN공포탐욕')), None) or {}
-    s, p = fg.get('점수'), fg.get('전일')
-    dd = round(s - p, 1) if isinstance(s, (int, float)) and isinstance(p, (int, float)) else None
-    out.append(item('공포·탐욕', '%.1f' % s if isinstance(s, (int, float)) else None, '%+.1f' % dd if dd is not None else None, fg.get('상태') or '', dd))
-    out.append(item('VIX', '%.2f' % vix[0] if vix else None, '%+.1f%%' % vix[1] if vix and vix[1] is not None else None, '', vix and vix[1]))
-    usm = head_json(us, '#미국시장')
-    for nm, k, alt in (('미국 10년', '10 Yr', (usm.get('미국10년물금리') or {}).get('수준')), ('미국 2년', '2 Yr', ((sent.get('미국2년물') or {}).get('금리')))):
-        v = tr.get(k) or [None, None]
-        if v[0] is not None:
-            bp = round((v[0] - v[1]) * 100) if v[1] is not None else None
-            out.append(item(nm, '%.2f%%' % v[0], '%+dbp' % bp if bp is not None else None, '', bp))
-        else:                                                   # 재무부 표를 못 받으면 번들이 본 값(변화 없이)
+    fg = R['fg']
+    if fg:
+        s, rate, h = fg
+        d = round(h[-1] - h[-2], 1) if len(h) >= 2 else None
+        out.append(item('공포·탐욕', '%.1f' % s, '%+.1f' % d if d is not None else None, rate, d, h))
+    else:                                                       # CNN을 직접 못 받으면 번들이 본 값(추이 없이)
+        sent = head_json(us, '#미국 심리·신용')
+        b = next((v for k, v in sent.items() if k.startswith('CNN공포탐욕')), None) or {}
+        s = b.get('점수')
+        out.append(item('공포·탐욕', '%.1f' % s if isinstance(s, (int, float)) else None, sub=b.get('상태') or ''))
+    out.append(mkt('VIX', R['vix'], '%.2f', 1))
+    tr, usm, sent = R['tr'] or {}, head_json(us, '#미국시장'), head_json(us, '#미국 심리·신용')
+    for nm, k, alt in (('미국 10년', '10 Yr', (usm.get('미국10년물금리') or {}).get('수준')), ('미국 2년', '2 Yr', (sent.get('미국2년물') or {}).get('금리'))):
+        h = tr.get(k)
+        if h:
+            bp = round((h[-1] - h[-2]) * 100)
+            out.append(item(nm, '%.2f%%' % h[-1], '%+dbp' % bp, '', bp, h))
+        else:                                                   # 재무부 표를 못 받으면 번들이 본 값(변화·추이 없이)
             out.append(item(nm, '%.2f%%' % alt if isinstance(alt, (int, float)) else None))
-    R, B = (M.get('rates') or {}).get('effr') or {}, M.get('bok') or {}
+    E, B = (M.get('rates') or {}).get('effr') or {}, M.get('bok') or {}
     md = lambda s: '%d/%d' % (int(s[5:7]), int(s[8:10])) if s and re.match(r'\d{4}-\d\d-\d\d', s) else ''
     nx = next((f for f in (M.get('fomc') or []) if (f.get('end') or '') >= now.date().isoformat()), None)
     fomc = ''
     if nx:
         a, b = nx.get('start') or nx['end'], nx['end']
         fomc = '다음 ' + (md(a) + ('~%d' % int(b[8:10]) if a[5:7] == b[5:7] else '~' + md(b)) if a != b else md(b))
-    out.append(item('연준 기준금리', '%.2f~%.2f%%' % (R['lo'], R['hi']) if isinstance(R.get('lo'), (int, float)) and isinstance(R.get('hi'), (int, float)) else None, sub=fomc))
+    num = lambda v: isinstance(v, (int, float))
+    out.append(item('연준 기준금리', '%.2f~%.2f%%' % (E['lo'], E['hi']) if num(E.get('lo')) and num(E.get('hi')) else None, sub=fomc))
     br = (B.get('rate') or {}).get('v')
-    out.append(item('한은 기준금리', '%.2f%%' % br if isinstance(br, (int, float)) else None, sub=('다음 ' + md(B.get('next'))) if md(B.get('next')) else ''))
-    gl = head_json(kr, '#해외·환율') or head_json(us, '#환율·유가')
-    fx = next((v for k, v in gl.items() if 'USD/KRW' in k), None)
-    ok = fx and isinstance(fx[0], (int, float))
-    out.append(item('원/달러', '{:,.1f}원'.format(fx[0]) if ok else None, '%+.2f%%' % fx[1] if ok and isinstance(fx[1], (int, float)) else None, '', ok and fx[1]))
-    out.append(item('달러 인덱스', '%.2f' % dxy[0] if dxy else None, '%+.2f%%' % dxy[1] if dxy and dxy[1] is not None else None, '', dxy and dxy[1]))
-    out.append(item('WTI', '%.2f달러' % wti[0] if wti else None, '%+.1f%%' % wti[1] if wti and wti[1] is not None else None, '', wti and wti[1]))
-    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'items': out}
+    out.append(item('한은 기준금리', '%.2f%%' % br if num(br) else None, sub=('다음 ' + md(B.get('next'))) if md(B.get('next')) else ''))
+    if R['fx']:
+        out.append(mkt('원/달러', R['fx'], '{:,.1f}원', 2))
+    else:                                                       # 다음 환율을 못 받으면 번들이 본 값(추이 없이)
+        gl = head_json(kr, '#해외·환율') or head_json(us, '#환율·유가')
+        fx = next((v for k, v in gl.items() if 'USD/KRW' in k), None)
+        ok = fx and num(fx[0])
+        out.append(item('원/달러', '{:,.1f}원'.format(fx[0]) if ok else None, '%+.2f%%' % fx[1] if ok and num(fx[1]) else None, '', ok and fx[1]))
+    out.append(mkt('달러 인덱스', R['dxy'], '%.2f', 2))
+    out.append(mkt('WTI', R['wti'], '%.2f달러', 1))
+    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'n': DASH_N, 'items': out}
 
 
 def run_tool(args, timeout):
@@ -324,7 +414,8 @@ def main():
             json.dump(dash, f, ensure_ascii=False)
     except Exception as e:
         print('(지표 판 저장 실패 — %s)' % type(e).__name__)
-    print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 이대로 나간다(코드가 %s KST에 모음, 변화는 전 거래일 대비). 리포트에서 이 지표를 말할 땐 이 숫자를 쓴다' % dash['at'][11:])
+    print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 점수판으로 이대로 박힌다(코드가 %s KST에 모음, 변화는 전 거래일 대비, 최근 3달 추이 선 포함).'
+          ' 본문에서 이 숫자를 다시 읽어 주지 않는다. 아래 머리 줄의 같은 지표와 숫자가 다르면 이 줄이 기준' % dash['at'][11:])
     print(' · '.join('%s %s%s' % (x['name'], x['value'], '(' + ', '.join(s for s in (x['chg'], x['sub']) if s) + ')' if (x['chg'] or x['sub']) else '')
                      for x in dash['items']))
     print('\n## 거시·국장 시장 (번들 국장 머리 줄)')
