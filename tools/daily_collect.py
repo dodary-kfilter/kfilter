@@ -126,13 +126,13 @@ def get_h(url, headers, tries=2):
     return None
 
 
-# ── 지표 판(점수판) 자료 — 값·전 거래일 대비 변화·최근 3달 추이(DASH_N 거래일)를 한 출처에서 같이 받는다(값과 추이 선이 어긋나지 않게)
-DASH_N = 61
+# ── 지표 판(점수판) 자료 — 값과 전 거래일 대비 변화를 한 출처의 일별 값에서 같이 받는다(DASH_N일 — 휴장이 끼어도 전 거래일이 들어오게)
+DASH_N = 10
 
 
 def ych(sym):
     """야후 일봉 — (지금 값, 종가 목록 오래된 것부터). 마지막 봉이 오늘 것이면 그 종가가 지금 값이다"""
-    t = get('https://query1.finance.yahoo.com/v8/finance/chart/%s?range=6mo&interval=1d' % urllib.parse.quote(sym))
+    t = get('https://query1.finance.yahoo.com/v8/finance/chart/%s?range=1mo&interval=1d' % urllib.parse.quote(sym))
     try:
         r = json.loads(t)['chart']['result'][0]
         c = [v for v in r['indicators']['quote'][0]['close'] if v]
@@ -221,7 +221,7 @@ def daum_idx(code):
 
 
 def dash_indices():
-    """점수판 지수 칸 — 값·전 거래일 대비·최근 3달 추이. 다른 지수보다 날짜가 늦은 칸(휴장 등)엔 그 날짜를 적는다"""
+    """점수판 지수 칸 — 값·전 거래일 대비. 다른 지수보다 날짜가 늦은 칸(휴장 등)엔 그 날짜를 적는다"""
     with ThreadPoolExecutor(8) as ex:
         got = list(ex.map(lambda x: daum_idx(x[1]), DASH_IDX))
     last = max((g[0] for g in got if g), default='')
@@ -233,13 +233,13 @@ def dash_indices():
         r = (c[-1] / c[-2] - 1) * 100 if c[-2] else None
         out.append({'g': 'idx', 'name': nm, 'value': '{:,.2f}'.format(c[-1]), 'chg': '%+.2f%%' % r if r is not None else '',
                     'dir': ('up' if r > 0 else 'down' if r < 0 else '') if r is not None else '',
-                    'sub': ('%d/%d 기준' % (int(d[5:7]), int(d[8:10]))) if d < last else '', 'hist': [round(v, 2) for v in c]})
+                    'sub': ('%d/%d 기준' % (int(d[5:7]), int(d[8:10]))) if d < last else ''})
     return out
 
 
 def dash_snapshot(kr, us):
     """지표 판(점수판) — 리포트 맨 위에 박아 두고 매일 추적하는 값. 받지 못한 값은 '확인 불가'(추정하지 않는다).
-    변화는 전 거래일 대비, hist는 최근 3달(약 60거래일) 추이 — 값·변화·추이를 같은 출처에서 받는다"""
+    변화는 전 거래일 대비 — 값과 변화를 같은 출처에서 받는다(그래프는 넣지 않는다, 2026-11-27)"""
     now = dt.datetime.now(KST)
     with ThreadPoolExecutor(7) as ex:
         F = {k: ex.submit(*a) for k, a in {'vix': (ych, '^VIX'), 'dxy': (ych, 'DX-Y.NYB'), 'wti': (ych, 'CL=F'), 'tr': (treasury,),
@@ -251,23 +251,20 @@ def dash_snapshot(kr, us):
         M = {}
     NA = '확인 불가'
     sign = lambda v: 'up' if v and v > 0 else ('down' if v and v < 0 else '')
-    def item(name, value, chg=None, sub='', d=None, hist=None):
-        x = {'name': name, 'value': value if value else NA, 'chg': chg or '', 'dir': sign(d) if chg else '', 'sub': sub}
-        if value and hist and len(hist) >= 5:
-            x['hist'] = [round(v, 4) for v in hist]
-        return x
-    def mkt(name, got, fmt, pct_dp):                            # 야후·다음 일봉: 값, 전 거래일 대비 %, 추이
+    def item(name, value, chg=None, sub='', d=None):
+        return {'name': name, 'value': value if value else NA, 'chg': chg or '', 'dir': sign(d) if chg else '', 'sub': sub}
+    def mkt(name, got, fmt, pct_dp):                            # 야후·다음 일봉: 값, 전 거래일 대비 %
         if not got or len(got[1]) < 2:
             return item(name, None)
         cur, h = got
         d = (cur / h[-2] - 1) * 100 if h[-2] else None
-        return item(name, fmt % cur if '%' in fmt else fmt.format(cur), ('%+.' + str(pct_dp) + 'f%%') % d if d is not None else None, '', d, h)
+        return item(name, fmt % cur if '%' in fmt else fmt.format(cur), ('%+.' + str(pct_dp) + 'f%%') % d if d is not None else None, '', d)
     out = []
     fg = R['fg']
     if fg:
         s, rate, h = fg
         d = round(h[-1] - h[-2], 1) if len(h) >= 2 else None
-        out.append(item('공포·탐욕', '%.1f' % s, '%+.1f' % d if d is not None else None, rate, d, h))
+        out.append(item('공포·탐욕', '%.1f' % s, '%+.1f' % d if d is not None else None, rate, d))
     else:                                                       # CNN을 직접 못 받으면 번들이 본 값(추이 없이)
         sent = head_json(us, '#미국 심리·신용')
         b = next((v for k, v in sent.items() if k.startswith('CNN공포탐욕')), None) or {}
@@ -279,7 +276,7 @@ def dash_snapshot(kr, us):
         h = tr.get(k)
         if h:
             bp = round((h[-1] - h[-2]) * 100)
-            out.append(item(nm, '%.2f%%' % h[-1], '%+dbp' % bp, '', bp, h))
+            out.append(item(nm, '%.2f%%' % h[-1], '%+dbp' % bp, '', bp))
         else:                                                   # 재무부 표를 못 받으면 번들이 본 값(변화·추이 없이)
             out.append(item(nm, '%.2f%%' % alt if isinstance(alt, (int, float)) else None))
     E, B = (M.get('rates') or {}).get('effr') or {}, M.get('bok') or {}
@@ -304,7 +301,7 @@ def dash_snapshot(kr, us):
     out.append(mkt('WTI', R['wti'], '%.2f달러', 1))
     for x in out:
         x['g'] = 'mac'
-    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'n': DASH_N, 'items': dash_indices() + out}
+    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'items': dash_indices() + out}
 
 
 def run_tool(args, timeout):
@@ -456,7 +453,7 @@ def main():
             json.dump(dash, f, ensure_ascii=False)
     except Exception as e:
         print('(지표 판 저장 실패 — %s)' % type(e).__name__)
-    print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 점수판으로 이대로 박힌다(코드가 %s KST에 모음, 변화는 전 거래일 대비, 최근 3달 추이 선 포함).'
+    print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 점수판으로 이대로 박힌다(코드가 %s KST에 모음, 변화는 전 거래일 대비).'
           ' 본문에서 이 숫자를 다시 읽어 주지 않는다. 아래 머리 줄의 같은 지표와 숫자가 다르면 이 줄이 기준' % dash['at'][11:])
     for g, lab in (('idx', '지수'), ('mac', '지표')):
         print(lab + ': ' + ' · '.join('%s %s%s' % (x['name'], x['value'], '(' + ', '.join(s for s in (x['chg'], x['sub']) if s) + ')' if (x['chg'] or x['sub']) else '')
