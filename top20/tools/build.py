@@ -15,6 +15,9 @@ GitHub Actions(.github/workflows/top20.yml)가 매주 토요일 08:30(한국시�
   - 지금 가격이 목표가 이상이면 '목표 도달', 손절가 이하면 '손절 도달' — 다음 판단 때 바꿀 신호
   - 점검: 목표까지의 폭이 이 종목의 평소 석 달 움직임(1년 일봉의 흔들림)의 몇 배인지 — 판단이 현실적인지 보는 참고(순서에는 쓰지 않음)
 (이전 v3의 공식 계산기는 top20/tools/build_v3_formula.py — 2026-10-24 애널리스트 판단 방식으로 바꾸며 쓰지 않음)
+지표 판(meta.dash, 2026-11-26) — 사이트 시황 리포트 맨 위의 공포·탐욕·금리·환율 등. tools/daily_collect.py가 판단 자료를 모을 때
+  /tmp/kf_dash.json에 쓴 것(6시간 안)을 넣고, 없으면(토요일 가격만 새로 할 때 등) 지금 top20.json에 있던 것을 그대로 둔다.
+  판단 시각과 6시간 넘게 떨어진 지표 판은 그 판단의 것이 아니라 넣지 않는다(엉뚱한 날의 숫자가 리포트 위에 붙지 않게)
 """
 import json, math, os, sys, time, datetime as dt, urllib.request, urllib.parse
 from concurrent.futures import ThreadPoolExecutor
@@ -26,6 +29,37 @@ FUND = os.path.join(ROOT, 'cache', 'fundamentals.json')
 NAMES = os.path.join(ROOT, 'lists', 'names_ko.json')
 UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36'
 KST = dt.timezone(dt.timedelta(hours=9))
+DASH_TMP = '/tmp/kf_dash.json'
+DASH_GAP = dt.timedelta(hours=6)
+
+
+def kst_time(s):
+    try:
+        return dt.datetime.strptime(str(s)[:16], '%Y-%m-%d %H:%M').replace(tzinfo=KST)
+    except Exception:
+        return None
+
+
+def dash_for(meta):
+    """이 판단에 붙일 지표 판 — 방금 모은 것(6시간 안) → 지금 top20.json의 것 순서로, 판단 시각과 6시간 안인 첫 번째. 없으면 None"""
+    cand = []
+    try:
+        x = json.load(open(DASH_TMP, encoding='utf-8'))
+        a = kst_time(x.get('at'))
+        if a and dt.timedelta(0) <= dt.datetime.now(KST) - a <= DASH_GAP:
+            cand.append(x)
+    except Exception:
+        pass
+    try:
+        cand.append((json.load(open(OUT, encoding='utf-8')).get('meta') or {}).get('dash'))
+    except Exception:
+        pass
+    j = kst_time(meta.get('judged_at'))
+    for d in cand:
+        a = kst_time((d or {}).get('at'))
+        if d and d.get('items') and a and (not j or abs(j - a) <= DASH_GAP):
+            return d
+    return None
 
 
 def get(url, tries=3):
@@ -105,6 +139,11 @@ def main(argv):
         sys.exit('★ 시세를 받지 못한 종목 %d개(%s…) — 쓰지 않음' % (len(miss), ', '.join(miss[:5])))
     M = dict(P['meta']); M.update(version=4, record_date=dt.datetime.now(KST).date().isoformat(), stale=miss,
                                   basis='가격 국장 %s, 미장 %s 기준' % (last.get('kr', '-'), last.get('us', '-')))
+    M.pop('dash', None)
+    dash = dash_for(M)
+    if dash:
+        M['dash'] = dash
+    print('지표 판:', ('%s 모음 %d개' % (dash['at'], len(dash['items']))) if dash else '없음(이 판단 때 모은 것이 없음)')
     out = {'meta': M, 'kr': res['kr'], 'us': res['us']}
     for mk in ('kr', 'us'):
         for t, lab in (('stable', '안정형'), ('aggressive', '적극형')):

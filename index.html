@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-25c (머리 시각은 최종 갱신 시각만 — 수급 = 마지막 스캔 시각, 판단 = 판단 올라온 시각) / 이전: 2026-11-25b -->
+<!-- build: 2026-11-26a (시황 리포트: 국면 칸 빼고 맨 위에 지표 판 — 공포·탐욕·금리·환율 등, 그다음 타이틀부터) / 이전: 2026-11-25c -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -53,8 +53,14 @@
   .hlth .hs{float:right; font-weight:700; color:var(--foreign)}
   .hlth .hs.wait{color:var(--dim)} .hlth .hs.bad{color:var(--red)}
   .hlth .hd{color:var(--dim); font-size:12px; margin-top:2px; line-height:1.5}
-  .rgm{font-size:13.5px; line-height:1.6; margin:2px 0 12px; padding:8px 10px; border:1px solid var(--line); border-radius:8px}
-  .rgm b{color:var(--fg)} .rgm .fv{color:#3fb950} .rgm .df{color:#ff7b72}
+  .dsh{margin:0 0 14px} .dsh-h{font-size:11.5px; color:var(--dim); margin:0 0 6px}
+  .dsh-g{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px}
+  .dsh-i{border:1px solid var(--line); border-radius:9px; padding:7px 9px; background:rgba(255,255,255,.02); min-width:0}
+  .dsh-n{font-size:11.5px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .dsh-v{font-family:'Space Mono',monospace; font-size:15px; font-weight:700; line-height:1.35; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .dsh-v.sm{font-size:13px; line-height:1.56}
+  .dsh-s{font-size:11.5px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .dsh-s .up{color:#ff7b72} .dsh-s .dn{color:#4493f8}
   .sct-g{margin:6px 0 4px; font-size:12.5px; color:var(--dim)} .sct{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px}
   .sct details{border:1px solid var(--line); border-radius:12px; font-size:12.5px; padding:2px 9px}
   .sct details[open]{flex-basis:100%; border-radius:8px; padding:6px 10px}
@@ -2550,13 +2556,17 @@ function allocBlock(TM){
   return '<div class="drp-h2">전체 비중</div><div class="alc">'+rows
     +'<div class="alc-note">전체 자금을 100으로 놓은 배분 · 주식 '+eq+'%'+(rc?'(그중 오늘의 추천 종목 '+rc+'%)':'')+(P?' · 숫자 옆은 어제 대비':'')+(A.note?' · '+esc(A.note):'')+'</div></div>';
 }
-// ── 깔때기 결과 (2026-11-03) — 국면(meta.regime), 업종 판단(meta.sectors), 편입·편출(meta.moves) ──
-function regimeLine(G){
-  if(!G || !G.phase) return '';
-  const j=a=>(a||[]).map(esc).join(' · ');
-  return '<div class="rgm"><b>국면</b> '+esc(G.phase)+(G.risk?' · 위험 '+esc(G.risk):'')
-    +((G.favored||[]).length?'<br><span class="fv">유리</span> '+j(G.favored):'')+((G.disfavored||[]).length?' &nbsp;<span class="df">불리</span> '+j(G.disfavored):'')
-    +(G.note?'<br><span style="color:var(--dim)">'+esc(G.note)+'</span>':'')+'</div>';
+// ── 깔때기 결과 (2026-11-03) — 업종 판단(meta.sectors), 편입·편출(meta.moves) ──
+//   국면(meta.regime) 칸은 2026-11-26에 뺐다 — 리포트 1. 공통 배경과 같은 내용이 리포트 앞에 길게 한 번 더 나왔다
+// 지표 판 (2026-11-26) — 리포트 맨 위. 판단 자료를 모을 때 코드가 모은 값(meta.dash: tools/daily_collect.py → top20/tools/build.py)
+function dashBlock(D){
+  if(!D || !(D.items||[]).length) return '';
+  const it=D.items.map(x=>{
+    const v=String(x.value||''), c=x.chg ? '<div class="dsh-s"><span class="'+(x.dir==='up'?'up':(x.dir==='down'?'dn':''))+'">'+esc(x.chg)+'</span></div>' : '';
+    return '<div class="dsh-i"><div class="dsh-n">'+esc(x.name)+'</div><div class="dsh-v'+(v.length>8?' sm':'')+'">'+esc(v)+'</div>'
+      +c+(x.sub ? '<div class="dsh-s">'+esc(x.sub)+'</div>' : '')+'</div>';   // 변화와 설명은 따로 한 줄씩(폰 폭에서 잘리지 않게)
+  }).join('');
+  return '<div class="dsh"><div class="dsh-h">지표 · '+esc(mdwt(D.at))+' 기준 · 변화는 전 거래일 대비</div><div class="dsh-g">'+it+'</div></div>';
 }
 function sectorsBlock(S){
   if(!S || !((S.kr||[]).length || (S.us||[]).length)) return '';
@@ -2585,7 +2595,7 @@ function dailyReport(TM){
   else { const L=md.split('\n'), i=L.findIndex(l=>/^##\s+(5\.|TOP 20)/.test(l.trim()));
     html = i>=0 ? injectAfter(L.slice(0,i).join('\n'), secRe, sb)+rc+rpFold(L.slice(i).join('\n')) : injectAfter(md, secRe, sb)+rc; }
   const late=staleOf().judge ? '<div class="stalebar">오늘 판단이 아직 없습니다 — 아래는 '+esc(TM.judged_at||TM.judged||'')+' 판단입니다</div>' : '';
-  return '<div class="drp">'+late+'<div class="drp-at">오늘의 시황 리포트 · '+esc(TM.judged_at||TM.judged||'')+' 기준</div>'+regimeLine(TM.regime)+html+'</div>';
+  return '<div class="drp">'+late+'<div class="drp-at">오늘의 시황 리포트 · '+esc(TM.judged_at||TM.judged||'')+' 기준</div>'+dashBlock(TM.dash)+html+'</div>';
 }
 function idxBlock(){
   const btn=(k,label,cls)=>'<button type="button" class="copybtn'+(cls?' '+cls:'')+'" data-label="'+esc(label)+'" onclick="copyIndex(event,\''+k+'\')" title="'+esc(label)+' 리포트 프롬프트 → Claude에 붙여넣기">'+esc(label)+'</button>';

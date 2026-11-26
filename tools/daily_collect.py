@@ -9,9 +9,12 @@
   - TOP 20 판단 종목(top20/picks.json) 80개의 지금 가격·1일·5일 등락·판단 때 대비·목표까지·손절까지·도달 여부
   - 깔때기 재료(2026-11-03): 재료가 오래됐으면 여기서 새로 받고(업종 추세·공시 사건은 매번, 미장 재무는 20시간 넘으면),
     거르기(tools/funnel_screen.py)를 돌려 업종 점수·후보 표·공시 사건·기업 노트 현황을 붙인다
+  - 지표 판(2026-11-26): 공포·탐욕·VIX·미국 2년·10년·연준·한은 기준금리·원/달러·달러 인덱스·WTI를 코드가 모아
+    /tmp/kf_dash.json에 쓴다 → top20/tools/build.py가 top20.json의 meta.dash로 넣고, 사이트가 시황 리포트 맨 위에 보여 준다.
+    판단도 같은 값을 보도록 출력에도 찍는다. 저장소 밖(/tmp)에 쓰는 건 판단 커밋에 섞이지 않게(판단 반영 워크플로가 허용 파일만 옮긴다)
 받지 못한 것은 '확인 불가'로 적고 멈추지 않는다.
 """
-import html, json, os, re, subprocess, sys, time, datetime as dt, urllib.request, urllib.parse
+import csv, html, io, json, os, re, subprocess, sys, time, datetime as dt, urllib.request, urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
@@ -26,6 +29,10 @@ IDX_US = ['SPY', 'IWM', 'QQQ', 'SOXX', 'TLT']
 CARD_US = ('#시세', '#가격', '#분할·배당', '#기관·공매도·내부자')       # ETF라 재무·실적·SEC·영문 뉴스는 뺀다
 NEWS_KO = ['휴전', '이란 공습', '관세', '연준 금리', '한국은행 금리', '반도체 수출 규제', '코스피 외국인']
 NEWS_EN = ['ceasefire', 'Fed rate decision', 'tariffs', 'AI capex', 'oil prices']
+DASH_TMP = '/tmp/kf_dash.json'
+RAW = 'https://raw.githubusercontent.com/dodary-kfilter/kfilter/main'
+TREASURY = ('https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/%d/all'
+            '?type=daily_treasury_yield_curve&field_tdr_date_value=%d&page&_format=csv')
 
 
 def get(url, tries=2):
@@ -93,6 +100,79 @@ def price(sym):
         return cur, (cur / c[-2] - 1) * 100 if len(c) > 1 else None, (cur / c[-6] - 1) * 100 if len(c) > 5 else None
     except Exception:
         return None
+
+
+def head_json(text, key):
+    """번들 머리 줄 '#키 {json}'의 json — 없거나 깨졌으면 {}"""
+    for l in (text or '').split('\n'):
+        if l.startswith(key + ' {'):
+            try:
+                return json.loads(l[len(key) + 1:])
+            except Exception:
+                return {}
+    return {}
+
+
+def treasury():
+    """재무부 금리 곡선(일별, 최근이 앞) — 2년·10년의 지금과 전 거래일"""
+    yr, rows = dt.datetime.now(KST).year, []
+    for y in (yr, yr - 1):
+        t = get(TREASURY % (y, y))
+        if t:
+            rows += list(csv.DictReader(io.StringIO(t)))
+        if len(rows) >= 2:
+            break
+    f = lambda r, k: float(r[k]) if r.get(k) not in (None, '', 'N/A') else None
+    return {k: [f(r, k) for r in rows[:2]] for k in ('2 Yr', '10 Yr')} if len(rows) >= 2 else {}
+
+
+def dash_snapshot(kr, us):
+    """지표 판 — 리포트 맨 위에 나갈 값. 받지 못한 값은 '확인 불가'(추정하지 않는다). 변화는 전 거래일 대비"""
+    now = dt.datetime.now(KST)
+    with ThreadPoolExecutor(5) as ex:
+        fv, fd, fw = ex.submit(price, '^VIX'), ex.submit(price, 'DX-Y.NYB'), ex.submit(price, 'CL=F')
+        ft, fm = ex.submit(treasury), ex.submit(get, RAW + '/cache/macro.json')
+        vix, dxy, wti, tr = fv.result(), fd.result(), fw.result(), ft.result()
+        try:
+            M = json.loads(fm.result() or '{}')
+        except Exception:
+            M = {}
+    NA = '확인 불가'
+    sign = lambda v: 'up' if v and v > 0 else ('down' if v and v < 0 else '')
+    def item(name, value, chg=None, sub='', d=None):
+        return {'name': name, 'value': value if value else NA, 'chg': chg or '', 'dir': sign(d) if chg else '', 'sub': sub}
+    out = []
+    sent = head_json(us, '#미국 심리·신용')
+    fg = next((v for k, v in sent.items() if k.startswith('CNN공포탐욕')), None) or {}
+    s, p = fg.get('점수'), fg.get('전일')
+    dd = round(s - p, 1) if isinstance(s, (int, float)) and isinstance(p, (int, float)) else None
+    out.append(item('공포·탐욕', '%.1f' % s if isinstance(s, (int, float)) else None, '%+.1f' % dd if dd is not None else None, fg.get('상태') or '', dd))
+    out.append(item('VIX', '%.2f' % vix[0] if vix else None, '%+.1f%%' % vix[1] if vix and vix[1] is not None else None, '', vix and vix[1]))
+    usm = head_json(us, '#미국시장')
+    for nm, k, alt in (('미국 10년', '10 Yr', (usm.get('미국10년물금리') or {}).get('수준')), ('미국 2년', '2 Yr', ((sent.get('미국2년물') or {}).get('금리')))):
+        v = tr.get(k) or [None, None]
+        if v[0] is not None:
+            bp = round((v[0] - v[1]) * 100) if v[1] is not None else None
+            out.append(item(nm, '%.2f%%' % v[0], '%+dbp' % bp if bp is not None else None, '', bp))
+        else:                                                   # 재무부 표를 못 받으면 번들이 본 값(변화 없이)
+            out.append(item(nm, '%.2f%%' % alt if isinstance(alt, (int, float)) else None))
+    R, B = (M.get('rates') or {}).get('effr') or {}, M.get('bok') or {}
+    md = lambda s: '%d/%d' % (int(s[5:7]), int(s[8:10])) if s and re.match(r'\d{4}-\d\d-\d\d', s) else ''
+    nx = next((f for f in (M.get('fomc') or []) if (f.get('end') or '') >= now.date().isoformat()), None)
+    fomc = ''
+    if nx:
+        a, b = nx.get('start') or nx['end'], nx['end']
+        fomc = '다음 ' + (md(a) + ('~%d' % int(b[8:10]) if a[5:7] == b[5:7] else '~' + md(b)) if a != b else md(b))
+    out.append(item('연준 기준금리', '%.2f~%.2f%%' % (R['lo'], R['hi']) if isinstance(R.get('lo'), (int, float)) and isinstance(R.get('hi'), (int, float)) else None, sub=fomc))
+    br = (B.get('rate') or {}).get('v')
+    out.append(item('한은 기준금리', '%.2f%%' % br if isinstance(br, (int, float)) else None, sub=('다음 ' + md(B.get('next'))) if md(B.get('next')) else ''))
+    gl = head_json(kr, '#해외·환율') or head_json(us, '#환율·유가')
+    fx = next((v for k, v in gl.items() if 'USD/KRW' in k), None)
+    ok = fx and isinstance(fx[0], (int, float))
+    out.append(item('원/달러', '{:,.1f}원'.format(fx[0]) if ok else None, '%+.2f%%' % fx[1] if ok and isinstance(fx[1], (int, float)) else None, '', ok and fx[1]))
+    out.append(item('달러 인덱스', '%.2f' % dxy[0] if dxy else None, '%+.2f%%' % dxy[1] if dxy and dxy[1] is not None else None, '', dxy and dxy[1]))
+    out.append(item('WTI', '%.2f달러' % wti[0] if wti else None, '%+.1f%%' % wti[1] if wti and wti[1] is not None else None, '', wti and wti[1]))
+    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'items': out}
 
 
 def run_tool(args, timeout):
@@ -238,6 +318,15 @@ def main():
         fn = [ex.submit(news, q) for q in NEWS_KO] + [ex.submit(news, q, True) for q in NEWS_EN]
         kr, us = fk.result(), fu.result()
         nw = [f.result() for f in fn]
+    dash = dash_snapshot(kr, us)
+    try:
+        with open(DASH_TMP, 'w', encoding='utf-8') as f:
+            json.dump(dash, f, ensure_ascii=False)
+    except Exception as e:
+        print('(지표 판 저장 실패 — %s)' % type(e).__name__)
+    print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 이대로 나간다(코드가 %s KST에 모음, 변화는 전 거래일 대비). 리포트에서 이 지표를 말할 땐 이 숫자를 쓴다' % dash['at'][11:])
+    print(' · '.join('%s %s%s' % (x['name'], x['value'], '(' + ', '.join(s for s in (x['chg'], x['sub']) if s) + ')' if (x['chg'] or x['sub']) else '')
+                     for x in dash['items']))
     print('\n## 거시·국장 시장 (번들 국장 머리 줄)')
     print('\n'.join(heads(kr, HEAD_KR)))
     print('\n## 미장 시장·심리·신용 (번들 미장 머리 줄)')
