@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: 2026-11-27b (점수판에서 추이 그래프를 뺌 — 값과 전 거래일 대비만) / 이전: 2026-11-27a -->
+<!-- build: 2026-11-29a (리포트 글씨 크기 순서 정리, 점수판 머리에 시장별 마지막 거래일) / 이전: 2026-11-27b -->
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -53,15 +53,15 @@
   .hlth .hs{float:right; font-weight:700; color:var(--foreign)}
   .hlth .hs.wait{color:var(--dim)} .hlth .hs.bad{color:var(--red)}
   .hlth .hd{color:var(--dim); font-size:12px; margin-top:2px; line-height:1.5}
-  .dsh{margin:0 0 14px} .dsh-h{font-size:11.5px; color:var(--dim); margin:0 0 6px}
+  .dsh{margin:0 0 14px} .dsh-h{font-size:12px; color:var(--dim); margin:0 0 6px}
   .dsh-g{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px}
   .dsh-i{border:1px solid var(--line); border-radius:9px; padding:7px 9px; background:rgba(255,255,255,.02); min-width:0}
-  .dsh-n{font-size:11.5px; color:var(--dim); line-height:1.35; word-break:keep-all}
+  .dsh-n{font-size:12px; color:var(--dim); line-height:1.35; word-break:keep-all}
   .dsh-v{font-family:'Space Mono',monospace; font-size:15px; font-weight:700; line-height:1.35; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .dsh-v.sm{font-size:13px; line-height:1.56}
-  .dsh-s{font-size:11.5px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .dsh-s{font-size:12px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   .dsh-s .up{color:#ff7b72} .dsh-s .dn{color:#4493f8}
-  .dsh-gl{font-size:12px; font-weight:700; color:var(--txt); margin:10px 0 5px} .dsh-h+.dsh-gl{margin-top:0}
+  .dsh-gl{font-size:12.5px; font-weight:700; color:var(--txt); margin:10px 0 5px} .dsh-h+.dsh-gl{margin-top:0}
   .sct-g{margin:6px 0 4px; font-size:12.5px; color:var(--dim)} .sct{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px}
   .sct details{border:1px solid var(--line); border-radius:12px; font-size:12.5px; padding:2px 9px}
   .sct details[open]{flex-basis:100%; border-radius:8px; padding:6px 10px}
@@ -89,25 +89,26 @@
   @media (max-width:640px){ .mk2.f13t{grid-template-columns:repeat(3,1fr)} }
   .t20at{font-size:11.5px; margin-top:4px; opacity:.8} .t20chg{font-size:12.5px; color:var(--dim); margin:-4px 0 10px; padding:0 10px}
   .drp{display:block; margin:18px 0 6px; padding:16px 16px 10px; border:1px solid var(--line); border-radius:12px; background:var(--panel)}
-  .drp-at{font-size:12px; color:var(--dim); margin:0 0 10px}
-  .drp-title{font-size:20px; font-weight:800; line-height:1.4; margin:0 0 12px}
-  .drp-h2{font-size:16.5px; font-weight:700; margin:16px 0 6px; padding-top:10px; border-top:1px solid var(--line)}
-  .drp-h3{font-size:17.5px; font-weight:800; line-height:1.45; margin:12px 0 6px; color:#d2a8ff}
+  /* 글씨 크기(2026-11-29): 타이틀 18 > 큰 단락 17.5 > 작은 제목 16 > 단락의 판단 줄 15.5 > 본문·목록 15 > 요약 13 > 작은 글씨 12~12.5 */
+  .drp-at{font-size:12.5px; color:var(--dim); margin:0 0 10px}
+  .drp-title{font-size:18px; font-weight:800; line-height:1.45; margin:0 0 12px}
+  .drp-h2{font-size:17.5px; font-weight:800; margin:22px 0 8px; padding-top:14px; border-top:1px solid var(--line)}
+  .drp-h3{font-size:16px; font-weight:700; line-height:1.45; margin:14px 0 6px; color:#d2a8ff}
   /* 시황 리포트 목차와 지수·자산 접기(2026-11-25) — 리포트가 시황 종합 틀로 길어져 폰에서 읽기 쉽게 */
   .drp-toc{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 12px}
-  .drp-toc a{font-size:12px; color:var(--dim); border:1px solid var(--line); border-radius:999px; padding:4px 10px; text-decoration:none; cursor:pointer}
+  .drp-toc a{font-size:12.5px; color:var(--dim); border:1px solid var(--line); border-radius:999px; padding:4px 10px; text-decoration:none; cursor:pointer}
   .drp-toc a:active{color:var(--txt)}
   .drp-fold{border:1px solid var(--line); border-radius:9px; margin:7px 0; padding:0 12px; background:rgba(255,255,255,.02)}
-  .drp-fold>summary{cursor:pointer; padding:10px 0; list-style:none; font-size:15px}
+  .drp-fold>summary{cursor:pointer; padding:10px 0; list-style:none; font-size:15.5px}
   .drp-fold>summary::-webkit-details-marker{display:none}
   .drp-fold>summary::before{content:'▸ '; color:var(--dim)}
   .drp-fold[open]>summary::before{content:'▾ '}
   .drp-fold[open]>summary{border-bottom:1px dotted var(--line); margin-bottom:6px}
-  .drp-fs{display:block; font-size:12.5px; color:var(--dim); margin-top:3px; line-height:1.5}
+  .drp-fs{display:block; font-size:13px; color:var(--dim); margin-top:3px; line-height:1.5}
   .drp-foldall{font-size:12px; color:var(--dim); background:none; border:1px solid var(--line); border-radius:999px; padding:3px 10px; margin:2px 0 4px; cursor:pointer}
   .drp-p{font-size:15px; line-height:1.75; margin:0 0 12px}
-  .drp-lead{margin-bottom:6px} .drp-concl{padding:6px 10px; border-left:3px solid var(--line); background:rgba(255,255,255,.02); border-radius:0 6px 6px 0}
-  .drp-ul{margin:0 0 8px; padding-left:18px; font-size:14.5px; line-height:1.7} .drp-ul li{margin:2px 0}
+  .drp-lead{font-size:15.5px; margin:16px 0 6px} .drp-h2+.drp-lead,.drp-h3+.drp-lead{margin-top:0} .drp-concl{padding:6px 10px; border-left:3px solid var(--line); background:rgba(255,255,255,.02); border-radius:0 6px 6px 0}
+  .drp-ul{margin:0 0 10px; padding-left:18px; font-size:15px; line-height:1.7} .drp-ul li{margin:2px 0}
   .tag.reco{background:rgba(210,168,255,.18); color:#d2a8ff; white-space:nowrap}
   .rcact{display:inline-block; font-size:12px; font-weight:800; padding:1px 7px; border-radius:6px; margin-left:6px; white-space:nowrap}
   .rcact.buy{background:rgba(248,81,73,.16); color:#ff7b72} .rcact.split{background:rgba(219,171,9,.16); color:#e3b341} .rcact.wait{background:rgba(139,152,169,.18); color:var(--dim)}
@@ -2018,7 +2019,7 @@ function staleOf(){
   if(LISTS.mcap){ const m=kParse((LISTS.mcap.meta||{}).updated), lim=[2,3,4,5].includes(now.getDay()) ? 14 : 26;   // 토·일·월은 26시간(주말엔 하루 두 번만 돈다)
     out.mcap=!m || (now-m)>lim*3600000; }
   if(LISTS.analyst){ const a=kParse(LISTS.analyst.updated); out.analyst=!a || a<(hm>=660 ? today : new Date(today.getTime()-86400000)); }
-  if(LISTS.top20){ const T=LISTS.top20.meta||{}, j=kParse(T.judged_at||T.judged); out.judge=hm>=510 && (!j || j<today); }
+  if(LISTS.top20){ const T=LISTS.top20.meta||{}, j=kParse(T.judged_at||T.judged); out.judge=now.getDay()!==0 && hm>=510 && (!j || j<today); }   // 일요일은 판단 쉼(새 거래 없음)
   out.clock=!!HEALTH;                                                 // 기록은 있는데 20분 넘게 끊김 = 시계 멈춤
   return out;
 }
@@ -2573,7 +2574,8 @@ function dashBlock(D){
   };
   const G=[['idx','지수'],['mac','지표']].map(([g,lab])=>[lab, D.items.filter(x=>(x.g||'mac')===g)]).filter(([,L])=>L.length);
   const seg=t=>'<span style="white-space:nowrap">'+t+'</span>';      // 폰에서 줄이 바뀌어도 토막 안에서는 끊기지 않게
-  return '<div class="dsh"><div class="dsh-h">'+[seg('점수판 · '+esc(mdwt(D.at))+' 기준'), seg('변화는 전 거래일 대비')].join(' · ')+'</div>'
+  const S=D.sessions||{}, when=(S.kr||S.us) ? seg('점수판 · 국장 '+esc(mdw(S.kr))+' · 미장 '+esc(mdw(S.us))+' 기준') : seg('점수판 · '+esc(mdwt(D.at))+' 기준');
+  return '<div class="dsh"><div class="dsh-h">'+[when, seg('변화는 전 거래일 대비')].join(' · ')+'</div>'
     +G.map(([lab,L])=>(G.length>1?'<div class="dsh-gl">'+lab+'</div>':'')+'<div class="dsh-g">'+L.map(tile).join('')+'</div>').join('')+'</div>';
 }
 function sectorsBlock(S){

@@ -227,7 +227,7 @@ def tick(H, now, src, runs, act=True):
     items = []
     for key in ORDER:
         if key == 'judge':
-            items.append(judge_item(H, now, runs, act)); continue
+            items.append(judge_item(H, now, runs, act, src)); continue
         name, wf, _, wait, kr_only = JOBS[key]
         S = last_slot(key, now)
         ok, ctext, bad, new = content(key, S, src, now)
@@ -295,11 +295,27 @@ def tick(H, now, src, runs, act=True):
     H['slots'] = {k: v for k, v in slots.items() if (re.search(r'\d{4}-\d{2}-\d{2}', k) or [''])[0] >= keep}
 
 
-def judge_item(H, now, runs, act):
+def judge_rest(src, now):
+    """판단 쉼(2026-11-29) — 지난 판단 뒤로 국장·미장 모두 새 거래가 없으면(주말·연휴) 깨우지 않는다. 쉬는 이유 글, 아니면 None.
+    월요일은 장 전에 주말 소식을 반영하려 깨운다. 지난 판단의 거래일 기록이나 출처 날짜가 없으면 평소대로(깨운다)"""
+    last = ((J('top20/top20.json').get('meta') or {}).get('dash') or {}).get('sessions') or {}
+    kr, us = src.get('kr_date'), src.get('us_date')
+    if now.weekday() == 0 or not (last.get('kr') and last.get('us')) or not (kr and us):
+        return None
+    if kr > last['kr'] or us > last['us']:
+        return None
+    return '지난 판단 뒤로 새 거래 없음(국장 %s·미장 %s 그대로, 주말·휴장) — 판단 쉼' % (md(last['kr']), md(last['us']))
+
+
+def judge_item(H, now, runs, act, src=None):
     ok, ctext, _, _ = content('judge', None, {}, now)
     rtext, busy = run_text(runs.get('judge_merge.yml'))
     it = {'key': 'judge', 'name': '매일 판단', 'run': rtext, 'content': ctext, 'slot': '07:30', 'next': '', 'why': ''}
     hmn = now.strftime('%H:%M')
+    rest = None if ok else judge_rest(src or {}, now)
+    if rest:                                                          # 주말·휴장 — 기다리지도 깨우지도 않는다
+        it['state'] = '쉼'; it['why'] = rest
+        return it
     if ok or hmn < '08:30':
         it['state'] = '정상' if ok else '기다림'
         if not ok: it['why'] = '07:30 루틴 판단을 기다리는 중(08:30까지)'

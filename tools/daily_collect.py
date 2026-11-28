@@ -221,9 +221,10 @@ def daum_idx(code):
 
 
 def dash_indices():
-    """점수판 지수 칸 — 값·전 거래일 대비. 다른 지수보다 날짜가 늦은 칸(휴장 등)엔 그 날짜를 적는다"""
+    """점수판 지수 칸 — (칸 목록, 지수 코드별 마지막 거래일). 다른 지수보다 날짜가 늦은 칸(휴장 등)엔 그 날짜를 적는다"""
     with ThreadPoolExecutor(8) as ex:
         got = list(ex.map(lambda x: daum_idx(x[1]), DASH_IDX))
+    dates = {code: (g[0] if g else None) for (_, code), g in zip(DASH_IDX, got)}
     last = max((g[0] for g in got if g), default='')
     out = []
     for (nm, _), g in zip(DASH_IDX, got):
@@ -234,7 +235,7 @@ def dash_indices():
         out.append({'g': 'idx', 'name': nm, 'value': '{:,.2f}'.format(c[-1]), 'chg': '%+.2f%%' % r if r is not None else '',
                     'dir': ('up' if r > 0 else 'down' if r < 0 else '') if r is not None else '',
                     'sub': ('%d/%d 기준' % (int(d[5:7]), int(d[8:10]))) if d < last else ''})
-    return out
+    return out, dates
 
 
 def dash_snapshot(kr, us):
@@ -301,7 +302,41 @@ def dash_snapshot(kr, us):
     out.append(mkt('WTI', R['wti'], '%.2f달러', 1))
     for x in out:
         x['g'] = 'mac'
-    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'items': dash_indices() + out}
+    idx, dates = dash_indices()
+    # 각 시장의 마지막 거래일(국장 = 코스피, 미장 = S&P 500) — 다음 판단 때 '새 거래가 있나'를 이걸로 본다(휴장·주말엔 판단 쉼)
+    return {'at': now.strftime('%Y-%m-%d %H:%M'), 'sessions': {'kr': dates.get('KOSPI'), 'us': dates.get('US.SP500')}, 'items': idx + out}
+
+
+# ── 새 거래 확인(2026-11-29) — 지난 판단 뒤로 국장·미장 어디에도 새 거래가 없으면(주말·연휴) 판단을 새로 하지 않는다.
+#   같은 숫자로 다시 판단하면 리포트가 '토요일이라 거래가 없었다'로 채워지고 사용량만 든다. 월요일 아침만은 주말 소식을 반영하려 판단한다
+WEEK = '월화수목금토일'
+
+
+def mdw(s):
+    return '%d/%d(%s)' % (int(s[5:7]), int(s[8:10]), WEEK[dt.date(int(s[:4]), int(s[5:7]), int(s[8:10])).weekday()]) if s and re.match(r'\d{4}-\d\d-\d\d', s) else '확인 불가'
+
+
+def session_check(now=None):
+    """(판단할지, 설명 줄들). 지난 판단의 거래일은 top20/top20.json의 meta.dash.sessions"""
+    now = now or dt.datetime.now(KST)
+    with ThreadPoolExecutor(2) as ex:
+        k, u = ex.submit(daum_idx, 'KOSPI'), ex.submit(daum_idx, 'US.SP500')
+        cur = {'kr': (k.result() or [None])[0], 'us': (u.result() or [None])[0]}
+    try:
+        m = json.load(open(os.path.join(ROOT, 'top20', 'top20.json'), encoding='utf-8')).get('meta') or {}
+    except Exception:
+        m = {}
+    last, ja = (m.get('dash') or {}).get('sessions') or {}, str(m.get('judged_at') or '')
+    new = [k for k in ('kr', 'us') if cur.get(k) and last.get(k) and cur[k] > last[k]]
+    lines = ['국장 마지막 거래 %s · 미장 마지막 거래 %s' % (mdw(cur['kr']), mdw(cur['us'])),
+             '지난 판단 %s — 국장 %s · 미장 %s 거래까지 반영' % (ja[:16] or '확인 불가', mdw(last.get('kr')), mdw(last.get('us')))]
+    if not last or not (cur['kr'] or cur['us']):
+        return True, lines + ['→ 판단함: 지난 판단의 거래일 기록이 없거나 지금 거래일을 받지 못해 평소대로 판단한다']
+    if new:
+        return True, lines + ['→ 판단함: 새 거래 — ' + ' · '.join('%s %s' % ('국장' if x == 'kr' else '미장', mdw(cur[x])) for x in new)]
+    if now.weekday() == 0 and ja[:10] < now.strftime('%Y-%m-%d'):
+        return True, lines + ['→ 판단함: 새 거래는 없지만 월요일 장 전이라 주말 소식을 반영한다']
+    return False, lines + ['→ 판단 쉼: 지난 판단 뒤로 국장·미장 모두 새 거래가 없다(주말·휴장). 판단을 새로 하지 않는다']
 
 
 def run_tool(args, timeout):
@@ -437,6 +472,11 @@ def notes_queue(n=6):
 def main():
     if '--notes' in sys.argv:
         return notes_queue()
+    if '--sessions' in sys.argv:                                 # 판단을 고르기 전 빠른 확인(절차서 0-2)
+        go, lines = session_check()
+        print('## 새 거래 확인 — ' + ('판단함' if go else '판단 쉼'))
+        print('\n'.join(lines))
+        return 0
     now = dt.datetime.now(KST)
     print('# 매일 판단 입력 — 모은 시각 %s KST' % now.strftime('%Y-%m-%d %H:%M'))
     print('## 깔때기 재료 새로 받기')
@@ -453,6 +493,9 @@ def main():
             json.dump(dash, f, ensure_ascii=False)
     except Exception as e:
         print('(지표 판 저장 실패 — %s)' % type(e).__name__)
+    ss = dash.get('sessions') or {}
+    print('\n## 거래일 — 국장 마지막 거래 %s · 미장 마지막 거래 %s. 각 시장의 숫자는 이 날짜 기준이다. 장이 열리지 않은 날(주말·휴장)의 이야기는 리포트에 쓰지 않는다'
+          % (mdw(ss.get('kr')), mdw(ss.get('us'))))
     print('\n## 지표 판 — 사이트 시황 리포트 맨 위에 점수판으로 이대로 박힌다(코드가 %s KST에 모음, 변화는 전 거래일 대비).'
           ' 본문에서 이 숫자를 다시 읽어 주지 않는다. 아래 머리 줄의 같은 지표와 숫자가 다르면 이 줄이 기준' % dash['at'][11:])
     for g, lab in (('idx', '지수'), ('mac', '지표')):
